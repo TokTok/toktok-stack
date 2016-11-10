@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -eux
+
+BRANCH=$1
+
+case "$BRANCH" in
+  --continue)
+    git rebase --continue
+    BRANCH=`git rev-parse --abbrev-ref HEAD`
+    ;;
+
+  *)
+    git checkout $BRANCH
+    git rebase upstream/master
+    ;;
+esac
+
+git push --force
+git checkout master
+git branch -d $BRANCH
