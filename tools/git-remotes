@@ -39,21 +39,17 @@ my %repos = (
       upstream => 'toktok',
       repo 'iphydf',
       repo 'nbraud',
+      repo 'nurupo',
    }],
    'c-msgpack' => ['msgpack-c', {
       origin => 'msgpack',
-   }],
-   'c-opus' => ['opus', {
-      origin => 'xiph',
-   }],
-   'c-sodium' => ['libsodium', {
-      origin => 'jedisct1',
    }],
    'c-toxcore' => ['c-toxcore', {
       upstream => 'toktok',
       repo ['ansa89', 'toxcore'],
       repo 'antis81',
       repo ['cleverca22', 'toxcore'],
+      repo ['diadlo', 'toxcore'],
       repo 'dvor',
       repo ['endoffile78', 'toxcore'],
       repo 'gjedeer',
@@ -64,23 +60,27 @@ my %repos = (
       repo 'jin-eld',
       repo 'linux-modder',
       repo ['jfreegman', 'toxcore'],
+      repo 'littlevulpix',
       repo ['mannol', 'toxcore'],
       repo ['nurupo', 'InsertProjectNameHere'],
+      repo 'nyoroon',
       repo 'pchk',
       repo ['piling', 'toxcore'],
       repo 'pranomostro',
       repo 'robinlinden',
+      repo 'romik-g',
+      repo 'skyzohkeyforks',
       repo 'sudden6',
+      repo 'xhebox',
+      repo 'yurivict',
       repo 'zer0-one',
       repo ['zetok', 'toxcore'],
       repo 'zoff99',
+      repo 'zugz',
    }],
    'c-toxcore-hs' => ['c-toxcore-hs', {
       upstream => 'toktok',
       repo 'iphydf',
-   }],
-   'c-vpx' => ['libvpx', {
-      origin => 'webmproject',
    }],
    'dockerfiles' => ['dockerfiles', {
       upstream => 'toktok',
@@ -97,6 +97,11 @@ my %repos = (
       repo 'iphydf',
       repo 'sx91',
    }],
+   'hs-msgpack-types' => ['hs-msgpack-types', {
+      upstream => 'toktok',
+      repo 'iphydf',
+      repo 'sx91',
+   }],
    'hs-schema' => ['hs-schema', {
       upstream => 'toktok',
       repo 'iphydf',
@@ -108,18 +113,19 @@ my %repos = (
       repo 'iphydf',
       repo ['neduard', 'hstox'],
       repo ['piling', 'hstox'],
+      repo 'zugz',
    }],
    'hs-toxcore-c' => ['hs-toxcore-c', {
       upstream => 'toktok',
+      repo 'gordon-quad',
       repo 'iphydf',
    }],
    'js-toxcore-c' => ['js-toxcore-c', {
       upstream => 'toktok',
       repo 'iphydf',
    }],
-   'jvm-linters' => ['jvm-linters', {
-      upstream => 'toktok',
-      repo 'iphydf',
+   'jtox' => ['jtox', {
+      origin => 'toktok',
    }],
    'jvm-macros' => ['jvm-macros', {
       upstream => 'toktok',
@@ -151,10 +157,6 @@ my %repos = (
       upstream => 'toktok',
       repo 'iphydf',
       repo 'qtox',
-   }],
-   'semdoc' => ['semdoc', {
-      upstream => 'toktok',
-      repo 'iphydf',
    }],
    'tokstyle' => ['tokstyle', {
       upstream => 'toktok',

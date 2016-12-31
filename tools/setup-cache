@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -eux
+
+DIR=$(basename $PWD)
+
+if [ -f "pom.xml" -o -f "build.sbt" ]; then
+  mkdir -p ../../../.cache/toktok-stack/$DIR/.idea
+  rm -rf .idea
+  ln -s ../../../.cache/toktok-stack/$DIR/.idea .idea
+
+  mkdir -p ../../../.cache/toktok-stack/$DIR/target
+  rm -rf target
+  ln -s ../../../.cache/toktok-stack/$DIR/target target
+fi
+
+if [ -f "build.sbt" ]; then
+  mkdir -p ../../../.cache/toktok-stack/$DIR/project/project
+  rm -rf project/project
+  ln -s ../../../../.cache/toktok-stack/$DIR/project/project project/project
+
+  mkdir -p ../../../.cache/toktok-stack/$DIR/project/target
+  rm -rf project/target
+  ln -s ../../../../.cache/toktok-stack/$DIR/project/target project/target
+fi
+
+if [ -f "CMakeLists.txt" ]; then
+  mkdir -p ../../../.cache/toktok-stack/$DIR/_build
+  rm -rf _build
+  ln -s ../../../.cache/toktok-stack/$DIR/_build _build
+fi

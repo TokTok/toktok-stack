@@ -3,4 +3,4 @@
 /.stack-work
 /cabal.config
 /cabal.sandbox.config
-/checksums.txt
+/cov-analysis*

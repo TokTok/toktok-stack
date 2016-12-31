@@ -1,0 +1,24 @@
+#!/bin/sh
+
+set -e
+
+if [ ! -d cov-int ]; then
+  echo "No 'cov-int' directory found; run the following command:"
+  echo "--------------------------------"
+  echo "cov-build --dir cov-int make -j8"
+  echo "--------------------------------"
+  exit 1
+fi
+
+tar zcf cov-int.tar.gz cov-int
+
+curl						\
+  --form token=S_iS5THArdYOC-qmjkY7mA		\
+  --form email=iphydf@gmail.com			\
+  --form file=@cov-int.tar.gz			\
+  --form version="0.1.5"			\
+  --form description="Pre-release analysis"	\
+  "https://scan.coverity.com/builds?project=TokTok%2Fc-toxcore" > /dev/null
+
+echo "Uploaded build to coverity-scan"
+rm -rf cov-int cov-int.tar.gz

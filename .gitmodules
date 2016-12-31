@@ -1,12 +1,3 @@
-[submodule "c-opus"]
-	path = c-opus
-	url = https://github.com/xiph/opus
-[submodule "c-sodium"]
-	path = c-sodium
-	url = https://github.com/jedisct1/libsodium
-[submodule "c-vpx"]
-	path = c-vpx
-	url = https://github.com/webmproject/libvpx
 [submodule "hs-toxcore-c"]
 	path = hs-toxcore-c
 	url = https://github.com/TokTok/hs-toxcore-c
@@ -46,9 +37,6 @@
 [submodule "js-toxcore-c"]
 	path = js-toxcore-c
 	url = https://github.com/TokTok/js-toxcore-c
-[submodule "jvm-linters"]
-	path = jvm-linters
-	url = https://github.com/TokTok/jvm-linters
 [submodule "jvm-macros"]
 	path = jvm-macros
 	url = https://github.com/TokTok/jvm-macros
@@ -64,9 +52,6 @@
 [submodule "toktok-android"]
 	path = toktok-android
 	url = https://github.com/TokTok/toktok-android
-[submodule "semdoc"]
-	path = semdoc
-	url = https://github.com/TokTok/semdoc
 [submodule "github-tools"]
 	path = github-tools
 	url = https://github.com/TokTok/github-tools
@@ -79,3 +64,12 @@
 [submodule "hs-schema"]
 	path = hs-schema
 	url = https://github.com/TokTok/hs-schema
+[submodule "hs-msgpack-types"]
+	path = hs-msgpack-types
+	url = https://github.com/TokTok/hs-msgpack-types
+[submodule "jtox"]
+	path = jtox
+	url = https://github.com/TokTok/jtox
+[submodule "echobot-jvm"]
+	path = echobot-jvm
+	url = https://github.com/TokTok/echobot-jvm

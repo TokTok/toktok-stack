@@ -2,79 +2,83 @@ language: scala
 dist: trusty
 sudo: required
 
-env: CABALVER=1.18 GHCVER=7.8.4
-
 addons:
   apt:
     sources:
-      - avsm
-      - hvr-ghc
-      - sourceline: 'ppa:mc3man/trusty-media'
-      - sourceline: 'ppa:chris-lea/libsodium'
+    - avsm
+    - sourceline: 'ppa:mc3man/trusty-media'
+    - sourceline: 'ppa:chris-lea/libsodium'
     packages:
-      - opam    # For apidsl and Frama-C.
-      - texinfo # For libconfig.
-      - yasm    # For libvpx.
-      # For qTox:
-      - ffmpeg
-      - libasound-dev
-      - libass-dev
-      - libfdk-aac-dev
-      - libgtk2.0-dev
-      - libmp3lame-dev
-      - libogg-dev
-      - libopenal-dev
-      - libopencore-amrnb-dev
-      - libopencore-amrwb-dev
-      - libopus-dev
-      - libqrencode-dev
-      - libqt5opengl5-dev
-      - libqt5svg5-dev
-      - libsdl1.2-dev
-      - libsdl2-dev
-      - libsodium-dev
-      - libsoxr-dev
-      - libspeex-dev
-      - libsqlcipher-dev
-      - libswscale-dev
-      - libva-dev
-      - libvdpau-dev
-      - libvidstab-dev
-      - libvorbis-dev
-      - libvpx-dev
-      - libwavpack-dev
-      - libx264-dev
-      - libx265-dev
-      - libxv-dev
-      - libxvidcore-dev
-      - qttools5-dev
-      - qttools5-dev-tools
+    - opam             # For apidsl and Frama-C.
+    - texinfo          # For libconfig.
+    # For github-tools/tools/expand-yaml
+    - libdir-self-perl
+    - libyaml-libyaml-perl
+    # For Haskell packages:
+    - alex
+    - happy
+    # For qTox:
+    - ffmpeg
+    - libasound-dev
+    - libass-dev
+    - libfdk-aac-dev
+    - libgtk2.0-dev
+    - libmp3lame-dev
+    - libogg-dev
+    - libopenal-dev
+    - libopencore-amrnb-dev
+    - libopencore-amrwb-dev
+    - libopus-dev
+    - libqrencode-dev
+    - libqt5opengl5-dev
+    - libqt5svg5-dev
+    - libsdl1.2-dev
+    - libsdl2-dev
+    - libsodium-dev
+    - libsoxr-dev
+    - libspeex-dev
+    - libsqlcipher-dev
+    - libswscale-dev
+    - libva-dev
+    - libvdpau-dev
+    - libvidstab-dev
+    - libvorbis-dev
+    - libvpx-dev
+    - libwavpack-dev
+    - libx264-dev
+    - libx265-dev
+    - libxv-dev
+    - libxvidcore-dev
+    - qttools5-dev
+    - qttools5-dev-tools
 
 cache:
   directories:
-    - $HOME/.ivy2
-    - $HOME/.m2
-    - $HOME/.opam
-    - $HOME/.sbt
-    - $TRAVIS_BUILD_DIR/.stack-work
+  - $HOME/.ivy2
+  - $HOME/.m2
+  - $HOME/.opam
+  - $HOME/.sbt
+  - $HOME/.stack
 
 before_install:
-  # Download and unpack the stack executable
-  - mkdir -p ~/.local/bin
-  - export PATH=$HOME/.local/bin:$PATH
-  - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
+# Download and unpack the stack executable
+- mkdir -p ~/.local/bin
+- export PATH=$HOME/.local/bin:$PATH
+- travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
+- export STACK_FLAGS="--no-terminal"
 
 install:
-  - dpkg -L opam
-  - opam init -y
-  - eval `opam config env`
-  - make pull
+- export CC=clang CXX=clang++
+- opam init -y
+- eval `opam config env`
+- make pull && make checkout
 
-script: make -j2
+#script: make -j2
+script: make -j2 $PWD/_install/.cabal.stamp
 
 notifications:
   irc: "chat.freenode.net#toktok-status"
 
 branches:
   only:
-    - master
+  - master

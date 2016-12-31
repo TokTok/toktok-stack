@@ -1,0 +1,5 @@
+#!/bin/sh
+
+for i in `curl https://api.github.com/orgs/TokTok/repos | grep '^    "name":' | grep -o ': ".*",' | egrep -o '[a-zA-Z.-]+' | sort -u`; do
+  eval `printf "$1" "$i"`
+done

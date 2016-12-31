@@ -1,0 +1,6 @@
+43c7cd3d4cf973ac615577451757b1bd17bf91ce  /home/pippijn/code/toktok-stack/_install/bin/protoc
+df816a944bf9d103a6472193b390ac48ada46cbb  /home/pippijn/code/toktok-stack/_install/bin/qtox
+ba01838f11a57973d775d8a948a0b6f610c7c087  /home/pippijn/code/toktok-stack/_install/bin/tox-bootstrapd
+409e57829b4adeffe09fb68e8a20f619113c8ef1  /home/pippijn/code/toktok-stack/_install/lib/libmsgpackc.so
+f7f5121dfab0861fe9422d70f95eb98f4ce9bb51  /home/pippijn/code/toktok-stack/_install/lib/libtox4j-c.so
+8b843cf57fc25f889b81d68c12c281927d2561ec  /home/pippijn/code/toktok-stack/_install/lib/libtoxcore.so
