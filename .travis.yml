@@ -78,3 +78,7 @@ notifications:
 branches:
   only:
     - master
+
+git:
+  depth: 1
+  submodule_depth: 1
