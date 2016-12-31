@@ -2,13 +2,10 @@ language: scala
 dist: trusty
 sudo: required
 
-env: CABALVER=1.18 GHCVER=7.8.4
-
 addons:
   apt:
     sources:
       - avsm
-      - hvr-ghc
       - sourceline: 'ppa:mc3man/trusty-media'
       - sourceline: 'ppa:chris-lea/libsodium'
     packages:
@@ -56,6 +53,7 @@ cache:
     - $HOME/.m2
     - $HOME/.opam
     - $HOME/.sbt
+    - $HOME/.stack
     - $TRAVIS_BUILD_DIR/.stack-work
 
 before_install:
@@ -68,9 +66,9 @@ install:
   - dpkg -L opam
   - opam init -y
   - eval `opam config env`
-  - make pull
+  - make pull && make checkout
 
-script: make -j2
+script: make -j2 V=0
 
 notifications:
   irc: "chat.freenode.net#toktok-status"
@@ -78,3 +76,6 @@ notifications:
 branches:
   only:
     - master
+
+git:
+  depth: 1

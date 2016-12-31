@@ -6,15 +6,15 @@ flags:
   iso8601-time:
     new-time: false
 packages:
-#- github-tools/
+- github-tools/
 - hs-msgpack/
-#- hs-msgpack-rpc/
-#- hs-schema/
-#- hs-toxcore/
+- hs-msgpack-rpc/
+- hs-schema/
+- hs-toxcore/
 #- hs-toxcore-c/
-#- semdoc/
-#- tokstyle/
-#- website/
+- semdoc/
+- tokstyle/
+- website/
 extra-deps:
 - HDBC-2.4.0.1
 - HDBC-sqlite3-2.3.3.1

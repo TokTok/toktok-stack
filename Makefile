@@ -83,7 +83,7 @@ $(DESTDIR)/.c-toxcore-hs.stamp:
 
 $(DESTDIR)/.website.stamp: $(DESTDIR)/.cabal.stamp $(foreach f,$(shell cd hs-toxcore && git ls-files),hs-toxcore/$f)
 	cd hs-toxcore && $(STACK) exec -- semdoc src/tox/Network/Tox.lhs $(CURDIR)/website/toktok/src/content/spec.md
-#	$(STACK) exec -- hub-changelog TokTok c-toxcore > $(CURDIR)/website/toktok/src/content/changelog/c-toxcore.md
+	test -z "$(TRAVIS)" || $(STACK) exec -- hub-changelog TokTok c-toxcore > $(CURDIR)/website/toktok/src/content/changelog/c-toxcore.md
 	cd website/toktok && $(STACK) exec -- yst
 	rm -rf $(DESTDIR)/site
 	mv website/toktok/site $(DESTDIR)/
@@ -94,8 +94,9 @@ $(DESTDIR)/.dockerfiles.stamp:
 	$(MAKE) -C dockerfiles
 	@touch $@
 
-$(DESTDIR)/.cabal.stamp: $(DESTDIR)/.c-toxcore.stamp $(foreach P,$(CABAL_PKGS),$(foreach f,$(shell cd $P && git ls-files),$P$f))
-	$(STACK) install $(STACK_FLAGS) hlint stylish-haskell
+$(DESTDIR)/.cabal.stamp: $(DESTDIR)/.c-toxcore.stamp stack.yaml $(foreach P,$(CABAL_PKGS),$(foreach f,$(shell cd $P && git ls-files),$P$f))
+	$(STACK) setup
+	$(STACK) install $(STACK_FLAGS) hlint stylish-haskell alex happy
 	$(STACK) build $(STACK_FLAGS) --test
 	@touch $@
 
