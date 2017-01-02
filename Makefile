@@ -147,7 +147,7 @@ clean:
 		(cd $$P && cabal clean);	\
 	done
 	-$(MAKE) -C c-vpx/_build distclean
-	rm -rf c-protobuf/_build
+	rm -rf c-protobuf/_build c-protobuf/config.h.in~
 	rm -rf c-msgpack/_build
 	rm -rf c-opus/_build
 	rm -rf c-sodium/_build

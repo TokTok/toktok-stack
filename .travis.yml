@@ -9,9 +9,10 @@ addons:
       - sourceline: 'ppa:mc3man/trusty-media'
       - sourceline: 'ppa:chris-lea/libsodium'
     packages:
-      - opam    # For apidsl and Frama-C.
-      - texinfo # For libconfig.
-      - yasm    # For libvpx.
+      - opam             # For apidsl and Frama-C.
+      - texinfo          # For libconfig.
+      - yasm             # For libvpx.
+      - libdir-self-perl # For github-tools/tools/expand-yaml
       # For qTox:
       - ffmpeg
       - libasound-dev
