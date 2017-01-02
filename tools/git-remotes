@@ -39,6 +39,7 @@ my %repos = (
       upstream => 'toktok',
       repo 'iphydf',
       repo 'nbraud',
+      repo 'nurupo',
    }],
    'c-msgpack' => ['msgpack-c', {
       origin => 'msgpack',
@@ -54,6 +55,7 @@ my %repos = (
       repo ['ansa89', 'toxcore'],
       repo 'antis81',
       repo ['cleverca22', 'toxcore'],
+      repo ['diadlo', 'toxcore'],
       repo 'dvor',
       repo ['endoffile78', 'toxcore'],
       repo 'gjedeer',
@@ -111,6 +113,7 @@ my %repos = (
    }],
    'hs-toxcore-c' => ['hs-toxcore-c', {
       upstream => 'toktok',
+      repo 'gordon-quad',
       repo 'iphydf',
    }],
    'js-toxcore-c' => ['js-toxcore-c', {

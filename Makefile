@@ -4,7 +4,7 @@ c-protobuf_VERSION		:= v3.1.0
 c-sodium_VERSION		:= 1.0.11
 c-vpx_VERSION			:= v1.6.0
 
-c-toxcore_CMAKE_FLAGS		:= -DDEBUG=ON -DSTRICT_ABI=ON -DASAN=OFF
+c-toxcore_CMAKE_FLAGS		:= -DDEBUG=ON -DSTRICT_ABI=ON -DASAN=OFF -DBUILD_NTOX=ON
 c-msgpack_CMAKE_FLAGS		:= -DMSGPACK_ENABLE_CXX=OFF -DMSGPACK_BUILD_EXAMPLES=OFF -DMSGPACK_BUILD_TESTS=OFF
 
 SUBMODULES := $(notdir $(shell git submodule foreach -q pwd))
@@ -18,6 +18,7 @@ STACK := stack --stack-yaml $(CURDIR)/stack.yaml
 STACK_FLAGS :=						\
 	--extra-include-dirs=$(CURDIR)/_install/include	\
 	--extra-lib-dirs=$(CURDIR)/_install/lib		\
+	--install-ghc					\
 	--ghc-options "-Werror"
 
 # Explicitly set to empty.
@@ -78,16 +79,10 @@ $(DESTDIR)/.js-%.stamp: js-%/Gruntfile.js
 	@touch $@
 
 $(DESTDIR)/.c-toxcore-hs.stamp:
-#	$(MAKE) -C c-toxcore-hs
+	$(MAKE) -C c-toxcore-hs
 	@touch $@
 
-$(DESTDIR)/.website.stamp: $(DESTDIR)/.cabal.stamp $(foreach f,$(shell cd hs-toxcore && git ls-files),hs-toxcore/$f)
-	cd hs-toxcore && $(STACK) exec -- semdoc src/tox/Network/Tox.lhs $(CURDIR)/website/toktok/src/content/spec.md
-	test -z "$(TRAVIS)" || $(STACK) exec -- hub-changelog TokTok c-toxcore > $(CURDIR)/website/toktok/src/content/changelog/c-toxcore.md
-	cd website/toktok && $(STACK) exec -- yst
-	rm -rf $(DESTDIR)/site
-	mv website/toktok/site $(DESTDIR)/
-	! which linkchecker || linkchecker --ignore-url "https://travis-ci.org.*" --ignore-url "irc://.*" $(DESTDIR)/site/
+$(DESTDIR)/.website.stamp: $(foreach f,$(shell cd hs-toxcore && git ls-files),hs-toxcore/$f)
 	@touch $@
 
 $(DESTDIR)/.dockerfiles.stamp:
@@ -95,8 +90,7 @@ $(DESTDIR)/.dockerfiles.stamp:
 	@touch $@
 
 $(DESTDIR)/.cabal.stamp: $(DESTDIR)/.c-toxcore.stamp stack.yaml $(foreach P,$(CABAL_PKGS),$(foreach f,$(shell cd $P && git ls-files),$P$f))
-	$(STACK) setup
-	$(STACK) install $(STACK_FLAGS) hlint stylish-haskell alex happy
+	$(STACK) install $(STACK_FLAGS) hlint stylish-haskell
 	$(STACK) build $(STACK_FLAGS) --test
 	@touch $@
 
@@ -108,7 +102,7 @@ $(DESTDIR)/.apidsl.stamp: apidsl/.git
 
 $(DESTDIR)/.c-protobuf.stamp: c-protobuf/_build
 	cd $< && ../configure --prefix=$(DESTDIR) --disable-shared CXXFLAGS="-fPIC"
-	$(MAKE) -C $< install
+	$(MAKE) -C $< install V=0
 	@touch $@
 
 $(DESTDIR)/.c-sodium.stamp: c-sodium/_build
@@ -147,7 +141,7 @@ clean:
 		(cd $$P && cabal clean);	\
 	done
 	-$(MAKE) -C c-vpx/_build distclean
-	rm -rf c-protobuf/_build
+	rm -rf c-protobuf/_build c-protobuf/config.h.in~
 	rm -rf c-msgpack/_build
 	rm -rf c-opus/_build
 	rm -rf c-sodium/_build

@@ -9,9 +9,15 @@ addons:
       - sourceline: 'ppa:mc3man/trusty-media'
       - sourceline: 'ppa:chris-lea/libsodium'
     packages:
-      - opam    # For apidsl and Frama-C.
-      - texinfo # For libconfig.
-      - yasm    # For libvpx.
+      - opam             # For apidsl and Frama-C.
+      - texinfo          # For libconfig.
+      - yasm             # For libvpx.
+      # For github-tools/tools/expand-yaml
+      - libdir-self-perl
+      - libyaml-libyaml-perl
+      # For Haskell packages:
+      - alex
+      - happy
       # For qTox:
       - ffmpeg
       - libasound-dev
@@ -63,12 +69,11 @@ before_install:
   - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 
 install:
-  - dpkg -L opam
   - opam init -y
   - eval `opam config env`
   - make pull && make checkout
 
-script: make -j2 V=0
+script: make -j2
 
 notifications:
   irc: "chat.freenode.net#toktok-status"

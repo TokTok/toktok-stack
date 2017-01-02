@@ -1,6 +1,6 @@
 flags:
-  HDBC:
-    mintime15: false
+  wai-cors:
+    transformers-3: true
   pandoc:
     old-locale: true
   iso8601-time:
@@ -11,30 +11,31 @@ packages:
 - hs-msgpack-rpc/
 - hs-schema/
 - hs-toxcore/
-#- hs-toxcore-c/
+- hs-toxcore-c/
 - semdoc/
 - tokstyle/
-- website/
 extra-deps:
-- HDBC-2.4.0.1
-- HDBC-sqlite3-2.3.3.1
 - QuickCheck-2.9.2
 - aeson-compat-0.3.6
 - asn1-parse-0.9.4
 - asn1-types-0.3.2
+- auto-update-0.1.4
 - base-compat-0.9.1
 - binary-bits-0.5
 - binary-conduit-1.2.4.1
 - binary-orphans-0.1.5.1
 - bytestring-arbitrary-0.1.0
+- bytestring-builder-0.10.8.1.0
 - call-stack-0.1.0
 - cmark-0.5.4
 - conduit-extra-1.1.15
 - connection-0.2.6
 - cpphs-1.20.2
 - cryptonite-0.20
+- fast-logger-2.4.7
 - github-0.15.0
 - groom-0.1.2
+- hex-0.1.2
 - highlighting-kate-0.6.3
 - hspec-2.3.2
 - hspec-core-2.3.2
@@ -43,13 +44,15 @@ extra-deps:
 - http-api-data-0.2.4
 - http-client-0.4.31.1
 - http-link-header-1.0.3
-- integer-simple-0.1.1.1
+- http2-1.6.2
 - iso8601-time-0.1.4
 - memory-0.13
-- pandoc-1.16
+- pandoc-1.16.0.2
 - pandoc-types-1.16
 - primitive-0.6.1.0
+- psqueues-0.2.2.2
 - quickcheck-io-0.1.4
+- quickcheck-text-0.1.2.1
 - saltine-0.0.0.4
 - servant-0.5
 - servant-server-0.5
@@ -58,12 +61,18 @@ extra-deps:
 - texmath-0.8.6.7
 - time-locale-compat-0.1.1.3
 - tls-1.3.8
-- uri-bytestring-0.2.2.0
+- unix-time-0.3.7
 - vector-0.11.0.0
 - vector-algorithms-0.7.0.1
 - vector-binary-instances-0.2.3.3
 - vector-instances-3.3.1
 - vector-th-unbox-0.2.1.6
+- wai-3.2.1.1
+- wai-app-static-3.1.6.1
+- wai-cors-0.2.5
+- wai-extra-3.0.19
+- wai-logger-2.3.0
+- warp-3.2.9
 - x509-1.6.4
 - x509-store-1.6.2
 - x509-system-1.6.4
