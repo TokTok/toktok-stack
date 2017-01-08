@@ -1,8 +1,5 @@
 c-msgpack_VERSION		:= master
-c-opus_VERSION			:= v1.1.3
 c-protobuf_VERSION		:= v3.1.0
-c-sodium_VERSION		:= 1.0.11
-c-vpx_VERSION			:= v1.6.0
 
 c-toxcore_CMAKE_FLAGS		:= -DDEBUG=ON -DSTRICT_ABI=ON -DASAN=OFF -DBUILD_NTOX=ON
 c-msgpack_CMAKE_FLAGS		:= -DMSGPACK_ENABLE_CXX=OFF -DMSGPACK_BUILD_EXAMPLES=OFF -DMSGPACK_BUILD_TESTS=OFF
@@ -15,10 +12,11 @@ DESTDIR := $(CURDIR)/_install
 
 STACK := stack --stack-yaml $(CURDIR)/stack.yaml
 
-STACK_FLAGS :=						\
+STACK_FLAGS +=						\
 	--extra-include-dirs=$(CURDIR)/_install/include	\
 	--extra-lib-dirs=$(CURDIR)/_install/lib		\
 	--install-ghc					\
+	--color=always					\
 	--ghc-options "-Werror"
 
 # Explicitly set to empty.
@@ -78,7 +76,7 @@ $(DESTDIR)/.%.stamp: %/Setup.lhs $(DESTDIR)/.cabal.stamp
 $(DESTDIR)/.js-%.stamp: js-%/Gruntfile.js
 	@touch $@
 
-$(DESTDIR)/.c-toxcore-hs.stamp:
+$(DESTDIR)/.c-toxcore-hs.stamp: $(DESTDIR)/.cabal.stamp
 	$(MAKE) -C c-toxcore-hs
 	@touch $@
 
@@ -105,27 +103,11 @@ $(DESTDIR)/.c-protobuf.stamp: c-protobuf/_build
 	$(MAKE) -C $< install V=0
 	@touch $@
 
-$(DESTDIR)/.c-sodium.stamp: c-sodium/_build
-	cd $< && ../configure --prefix=$(DESTDIR) --disable-shared --disable-pie CFLAGS="-fPIC"
-	$(MAKE) -C $< install
-	@touch $@
-
-$(DESTDIR)/.c-vpx.stamp: c-vpx/.git
-	mkdir -p $(<D)/_build
-	cd $(<D)/_build && ../configure --prefix=$(CURDIR)/_install --disable-examples --disable-docs --disable-unit-tests --disable-install-bins --enable-pic --disable-shared
-	$(MAKE) -C $(<D)/_build install
-	@touch $@
-
 $(DESTDIR)/.c-msgpack.stamp: c-msgpack/_build
 	$(MAKE) -C $< install
 	@touch $@
 
-$(DESTDIR)/.c-opus.stamp: c-opus/_build
-	cd $< && ../configure --prefix=$(DESTDIR) --disable-shared CFLAGS="-fPIC"
-	$(MAKE) -C $< install
-	@touch $@
-
-c-toxcore/_build: $(DESTDIR)/.c-vpx.stamp $(DESTDIR)/.c-sodium.stamp $(DESTDIR)/.c-opus.stamp $(DESTDIR)/.apidsl.stamp
+c-toxcore/_build: $(DESTDIR)/.apidsl.stamp
 $(DESTDIR)/.c-toxcore.stamp: c-toxcore/_build
 	$(MAKE) -C $< install
 	@touch $@
@@ -140,13 +122,9 @@ clean:
 	for P in $(CABAL_PKGS); do		\
 		(cd $$P && cabal clean);	\
 	done
-	-$(MAKE) -C c-vpx/_build distclean
 	rm -rf c-protobuf/_build c-protobuf/config.h.in~
 	rm -rf c-msgpack/_build
-	rm -rf c-opus/_build
-	rm -rf c-sodium/_build
 	rm -rf c-toxcore/_build
-	rm -rf c-vpx/_build
 	rm -rf qtox/_build
 
 git-clean:

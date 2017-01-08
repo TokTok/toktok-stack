@@ -6,14 +6,14 @@ flags:
   iso8601-time:
     new-time: false
 packages:
-- github-tools/
+#- github-tools/
 - hs-msgpack/
 - hs-msgpack-rpc/
-- hs-schema/
+#- hs-schema/
 - hs-toxcore/
-- hs-toxcore-c/
-- semdoc/
-- tokstyle/
+#- hs-toxcore-c/
+#- semdoc/
+#- tokstyle/
 extra-deps:
 - QuickCheck-2.9.2
 - aeson-compat-0.3.6
@@ -32,6 +32,7 @@ extra-deps:
 - connection-0.2.6
 - cpphs-1.20.2
 - cryptonite-0.20
+- expiring-cache-map-0.0.6.1
 - fast-logger-2.4.7
 - github-0.15.0
 - groom-0.1.2
