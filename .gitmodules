@@ -1,12 +1,3 @@
-[submodule "c-opus"]
-	path = c-opus
-	url = https://github.com/xiph/opus
-[submodule "c-sodium"]
-	path = c-sodium
-	url = https://github.com/jedisct1/libsodium
-[submodule "c-vpx"]
-	path = c-vpx
-	url = https://github.com/webmproject/libvpx
 [submodule "hs-toxcore-c"]
 	path = hs-toxcore-c
 	url = https://github.com/TokTok/hs-toxcore-c

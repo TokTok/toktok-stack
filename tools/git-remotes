@@ -73,6 +73,7 @@ my %repos = (
       repo 'pranomostro',
       repo 'robinlinden',
       repo 'sudden6',
+      repo 'yurivict',
       repo 'zer0-one',
       repo ['zetok', 'toxcore'],
       repo 'zoff99',
@@ -110,6 +111,7 @@ my %repos = (
       repo 'iphydf',
       repo ['neduard', 'hstox'],
       repo ['piling', 'hstox'],
+      repo 'zugz',
    }],
    'hs-toxcore-c' => ['hs-toxcore-c', {
       upstream => 'toktok',
