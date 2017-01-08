@@ -78,7 +78,7 @@ $(DESTDIR)/.%.stamp: %/Setup.lhs $(DESTDIR)/.cabal.stamp
 $(DESTDIR)/.js-%.stamp: js-%/Gruntfile.js
 	@touch $@
 
-$(DESTDIR)/.c-toxcore-hs.stamp:
+$(DESTDIR)/.c-toxcore-hs.stamp: $(DESTDIR)/.cabal.stamp
 	$(MAKE) -C c-toxcore-hs
 	@touch $@
 
