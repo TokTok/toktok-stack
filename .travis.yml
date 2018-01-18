@@ -1,4 +1,5 @@
-language: generic
+language: cpp
+compiler: clang
 dist: trusty
 sudo: required
 
@@ -12,8 +13,8 @@ before_install:
 - sha256sum -c tools/bazel_0.9.0-linux-x86_64.deb.sha256
 - sudo dpkg -i bazel_0.9.0-linux-x86_64.deb
 
-#script: bazel build //...
-script: bazel build //c-toxcore/... --verbose_failures | cat
+script: bazel test //c-toxcore/... --verbose_failures | cat
 
 git:
   depth: 1
+  submodules_depth: 1

@@ -1,0 +1,20 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "hashable",
+    srcs = glob(["Data/**/*.*hs"]),
+    compiler_flags = ["-DGENERICS"],
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+        "ghc-prim",
+        "integer-gmp",
+        "deepseq",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_text//:text",
+    ],
+)
+
+# vim:ft=bzl

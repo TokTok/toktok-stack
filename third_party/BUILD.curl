@@ -1,0 +1,55 @@
+genrule(
+    name = "config",
+    srcs = glob(["**/*.in"]) + [
+        "config.guess",
+        "config.sub",
+        "configure",
+        "include/curl/curlver.h",
+        "install-sh",
+        "lib/urldata.h",
+        "ltmain.sh",
+        "missing",
+    ],
+    outs = ["lib/curl_config.h"],
+    cmd = """
+        cd `dirname $(location configure)`
+        ./configure
+        sed -i -e 's/SIZEOF_CURL_OFF_T 0/SIZEOF_CURL_OFF_T 8/' lib/curl_config.h
+        DIR=`pwd`
+        cd -
+        for i in $(OUTS); do
+          cp $$DIR/`echo $$i | sed -e 's|$(GENDIR)/external/curl/||'` $$i
+        done
+    """,
+)
+
+cc_library(
+    name = "curl",
+    srcs = glob([
+        "lib/**/*.c",
+        "lib/**/*.h",
+    ]) + ["lib/curl_config.h"],
+    hdrs = glob([
+        "include/**/*.h",
+    ]),
+    copts = [
+        "-DBUILDING_LIBCURL",
+        "-DHAVE_CONFIG_H",
+        "-I$(GENDIR)/external/curl/lib",
+        "-Iexternal/curl/lib",
+        "-w",  # Disable all warnings.
+    ],
+    includes = [
+        "include",
+    ],
+    linkopts = [
+        "-Wl,-z,defs",
+        "-llber",
+        "-lldap",
+        "-lpthread",
+        "-lz",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+# vim:ft=bzl

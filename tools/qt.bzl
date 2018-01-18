@@ -30,3 +30,18 @@ def qt_moc(name, hdr, mocopts=[], deps=[]):
   	hdr=hdr,
       ),
   )
+
+def qt_rcc(name, srcs, data):
+  native.genrule(
+      name = "%s_rcc" % name,
+      srcs = srcs + data,
+      outs = ["rcc_%s.cpp" % name],
+      cmd = "rcc {} -o $@".format(" ".join(["$(location %s)" % src for src in srcs])),
+  )
+
+  native.cc_library(
+      name = name,
+      srcs = [":%s_rcc" % name],
+      deps = ["@qt//:qt_core"],
+      alwayslink = True,
+  )

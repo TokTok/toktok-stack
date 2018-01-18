@@ -1,0 +1,29 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_cc_import", "haskell_library")
+
+cc_library(
+    name = "empty",
+    hdrs = ["include/vector.h"],
+)
+
+haskell_cc_import(
+    name = "cbits",
+    hdrs = [
+        "include/vector.h",
+        "internal/unbox-tuple-instances",
+    ],
+    shared_library = ":empty",
+)
+
+haskell_library(
+    name = "vector",
+    srcs = glob(["Data/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "base",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":cbits",
+    ],
+)
+
+# vim:ft=bzl

@@ -6,15 +6,17 @@ build --features=parse_headers
 build --features=cc_include_scanning
 build --process_headers_in_dependencies
 
-build --copt="-maes"
-build --copt="-mavx"
-build --copt="-mmmx"
-build --copt="-msse"
-build --copt="-msse2"
-build --copt="-msse3"
-build --copt="-msse4.1"
-build --copt="-mssse3"
+build --per_file_copt=".*-avx2\.c@-mavx2"
+
+build --copt="-march=native"
 build --copt="-O3"
+
 build --copt="-Werror"
+
+build --copt="-fdiagnostics-color=always"
+build --linkopt="-Wl,-z,noexecstack"
+#build --linkopt="-Wl,--fatal-warnings"
+build --linkopt="-Wl,--warn-common"
+#build --linkopt="-Wl,--warn-execstack"
 
 build --strict_java_deps=ERROR

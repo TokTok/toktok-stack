@@ -1,0 +1,18 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "tf-random",
+    srcs = glob(["src/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "time",
+    ],
+    src_strip_prefix = "src",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_primitive//:primitive",
+        "@haskell_random//:random",
+    ],
+)
+
+# vim:ft=bzl

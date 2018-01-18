@@ -1,4 +1,8 @@
 DEFS = [
+    # Includes and other common flags.
+    "-Iexternal/libsodium/src/libsodium/include/sodium",
+    "-w",  # no warnings
+    # Defines.
     "-DPACKAGE_NAME=\"libsodium\"",
     "-DPACKAGE_TARNAME=\"libsodium\"",
     "-DPACKAGE_VERSION=\"1.0.16\"",
@@ -82,31 +86,38 @@ genrule(
 )
 
 cc_library(
-    name = "libsodium",
-    srcs = glob([
+    name = "headers",
+    hdrs = glob([
         "src/libsodium/**/*.h",
-        "src/libsodium/**/*.c",
         "src/libsodium/crypto_scalarmult/curve25519/sandy2x/*.S",
     ]) + [
         "src/libsodium/crypto_stream/salsa20/xmm6/salsa20_xmm6-asm.S",
     ],
+)
+
+cc_library(
+    name = "libsodium",
+    srcs = glob([
+        "src/libsodium/**/*.h",
+        "src/libsodium/**/*.c",
+        "src/libsodium/**/*.S",
+    ]),
     hdrs = glob([
         "src/libsodium/include/**/*.h",
-        "src/libsodium/crypto_scalarmult/curve25519/sandy2x/*.S",
     ]) + [
         "src/libsodium/include/sodium/version.h",
     ],
     copts = DEFS + [
-        "-Wno-strict-aliasing",
-        "-Wno-unknown-pragmas",
-        "-Wno-unused-function",
-        "-Wno-unused-variable",
+        "-Iexternal/libsodium/src/libsodium/include/sodium",
+        "-mrdrnd",
     ],
     includes = [
         "src/libsodium/include",
         "src/libsodium/include/sodium",
     ],
+    linkopts = ["-Wl,-z,defs"],
     visibility = ["//visibility:public"],
+    deps = [":headers"],
 )
 
 # vim:ft=bzl

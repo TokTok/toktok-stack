@@ -1,11 +1,20 @@
 cc_library(
     name = "check",
-    srcs = glob(["src/**/*.c"]),
-    hdrs = glob([
-        "src/**/*.h",
+    srcs = glob([
         "lib/**/*.h",
+        "src/**/*.c",
+        "src/**/*.h",
     ]),
+    hdrs = [
+        "check_stdint.h",
+        "src/check.h",
+    ],
     copts = ["-w"],  # Disable all warnings.
+    includes = [
+        ".",
+        "src",
+    ],
+    linkopts = ["-Wl,-z,defs"],
     visibility = ["//visibility:public"],
 )
 

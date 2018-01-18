@@ -9,6 +9,7 @@ cc_library(
     ),
     hdrs = ["filter_audio.h"],
     includes = ["."],
+    linkopts = ["-Wl,-z,defs"],
     visibility = ["//visibility:public"],
 )
 

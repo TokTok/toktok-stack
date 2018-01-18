@@ -1,0 +1,36 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_cc_import", "haskell_library")
+
+cc_library(
+    name = "text_cbits",
+    srcs = ["cbits/cbits.c"],
+    hdrs = ["include/text_cbits.h"],
+    includes = ["include"],
+)
+
+haskell_cc_import(
+    name = "cbits",
+    hdrs = ["include/text_cbits.h"],
+    shared_library = ":text_cbits",
+)
+
+haskell_library(
+    name = "text",
+    srcs = glob(["Data/**/*.*hs"]),
+    compiler_flags = [
+        "-DHAVE_DEEPSEQ",
+        "-DINTEGER_GMP",
+    ],
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+        "deepseq",
+        "ghc-prim",
+        "binary",
+        "integer-gmp",
+        "array",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [":cbits"],
+)
+
+# vim:ft=bzl

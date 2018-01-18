@@ -69,4 +69,7 @@
 	url = https://github.com/TokTok/echobot-jvm
 [submodule "streambot-jvm"]
 	path = streambot-jvm
-	url = https://github.com/iphydf/streambot-jvm
+	url = https://github.com/TokTok/streambot-jvm
+[submodule "toxic"]
+	path = toxic
+	url = https://github.com/iphydf/toxic
