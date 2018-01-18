@@ -1,0 +1,20 @@
+# Global bazel options for toktok-stack.
+
+build --features=public_proto_imports
+build --features=layering_check
+build --features=parse_headers
+build --features=cc_include_scanning
+build --process_headers_in_dependencies
+
+build --copt="-maes"
+build --copt="-mavx"
+build --copt="-mmmx"
+build --copt="-msse"
+build --copt="-msse2"
+build --copt="-msse3"
+build --copt="-msse4.1"
+build --copt="-mssse3"
+build --copt="-O3"
+build --copt="-Werror"
+
+build --strict_java_deps=ERROR

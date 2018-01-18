@@ -41,9 +41,6 @@ my %repos = (
       repo 'nbraud',
       repo 'nurupo',
    }],
-   'c-msgpack' => ['msgpack-c', {
-      origin => 'msgpack',
-   }],
    'c-toxcore' => ['c-toxcore', {
       upstream => 'toktok',
       repo ['ansa89', 'toxcore'],

@@ -1,0 +1,15 @@
+cc_library(
+    name = "filter_audio",
+    srcs = glob(
+        [
+            "**/*.c",
+            "**/*.h",
+        ],
+        exclude = ["test/*"],
+    ),
+    hdrs = ["filter_audio.h"],
+    includes = ["."],
+    visibility = ["//visibility:public"],
+)
+
+# vim:ft=bzl

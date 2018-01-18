@@ -1,0 +1,12 @@
+cc_library(
+    name = "check",
+    srcs = glob(["src/**/*.c"]),
+    hdrs = glob([
+        "src/**/*.h",
+        "lib/**/*.h",
+    ]),
+    copts = ["-w"],  # Disable all warnings.
+    visibility = ["//visibility:public"],
+)
+
+# vim:ft=bzl

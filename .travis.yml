@@ -1,84 +1,19 @@
-language: scala
+language: generic
 dist: trusty
 sudo: required
 
 addons:
   apt:
-    sources:
-    - avsm
-    - sourceline: 'ppa:mc3man/trusty-media'
-    - sourceline: 'ppa:chris-lea/libsodium'
     packages:
-    - opam             # For apidsl and Frama-C.
-    - texinfo          # For libconfig.
-    # For github-tools/tools/expand-yaml
-    - libdir-self-perl
-    - libyaml-libyaml-perl
-    # For Haskell packages:
-    - alex
-    - happy
-    # For qTox:
-    - ffmpeg
-    - libasound-dev
-    - libass-dev
-    - libfdk-aac-dev
-    - libgtk2.0-dev
-    - libmp3lame-dev
-    - libogg-dev
-    - libopenal-dev
-    - libopencore-amrnb-dev
-    - libopencore-amrwb-dev
-    - libopus-dev
-    - libqrencode-dev
-    - libqt5opengl5-dev
-    - libqt5svg5-dev
-    - libsdl1.2-dev
-    - libsdl2-dev
-    - libsodium-dev
-    - libsoxr-dev
-    - libspeex-dev
-    - libsqlcipher-dev
-    - libswscale-dev
-    - libva-dev
-    - libvdpau-dev
-    - libvidstab-dev
-    - libvorbis-dev
-    - libvpx-dev
-    - libwavpack-dev
-    - libx264-dev
-    - libx265-dev
-    - libxv-dev
-    - libxvidcore-dev
-    - qttools5-dev
-    - qttools5-dev-tools
-
-cache:
-  directories:
-  - $HOME/.ivy2
-  - $HOME/.m2
-  - $HOME/.opam
-  - $HOME/.sbt
-  - $HOME/.stack
+    - yasm
 
 before_install:
-# Download and unpack the stack executable
-- mkdir -p ~/.local/bin
-- export PATH=$HOME/.local/bin:$PATH
-- travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
-- export STACK_FLAGS="--no-terminal"
+- wget https://github.com/bazelbuild/bazel/releases/download/0.9.0/bazel_0.9.0-linux-x86_64.deb
+- sha256sum -c tools/bazel_0.9.0-linux-x86_64.deb.sha256
+- sudo dpkg -i bazel_0.9.0-linux-x86_64.deb
 
-install:
-- export CC=clang CXX=clang++
-- opam init -y
-- eval `opam config env`
-- make pull && make checkout
+#script: bazel build //...
+script: bazel build //c-toxcore/... --verbose_failures | cat
 
-#script: make -j2
-script: make -j2 $PWD/_install/.cabal.stamp
-
-notifications:
-  irc: "chat.freenode.net#toktok-status"
-
-branches:
-  only:
-  - master
+git:
+  depth: 1

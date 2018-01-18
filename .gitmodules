@@ -19,9 +19,6 @@
 [submodule "c-toxcore"]
 	path = c-toxcore
 	url = https://github.com/TokTok/toxcore
-[submodule "c-msgpack"]
-	path = c-msgpack
-	url = https://github.com/msgpack/msgpack-c
 [submodule "jvm-toxcore-c"]
 	path = jvm-toxcore-c
 	url = https://github.com/TokTok/jvm-toxcore-c
@@ -58,9 +55,6 @@
 [submodule "website"]
 	path = website
 	url = https://github.com/TokTok/website
-[submodule "c-protobuf"]
-	path = c-protobuf
-	url = https://github.com/google/protobuf
 [submodule "hs-schema"]
 	path = hs-schema
 	url = https://github.com/TokTok/hs-schema
@@ -73,3 +67,6 @@
 [submodule "echobot-jvm"]
 	path = echobot-jvm
 	url = https://github.com/TokTok/echobot-jvm
+[submodule "streambot-jvm"]
+	path = streambot-jvm
+	url = https://github.com/iphydf/streambot-jvm

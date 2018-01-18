@@ -1,0 +1,98 @@
+cc_library(
+    name = "qt_core",
+    hdrs = glob(["QtCore/**"]),
+    includes = [
+        ".",
+        "QtCore",
+    ],
+    linkopts = [
+        "-lQt5Core",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "qt_widgets",
+    hdrs = glob(["QtWidgets/**"]),
+    includes = [
+        ".",
+        "QtWidgets",
+    ],
+    linkopts = [
+        "-lQt5Widgets",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [":qt_core"],
+)
+
+cc_library(
+    name = "qt_network",
+    hdrs = glob(["QtNetwork/**"]),
+    includes = [
+        ".",
+        "QtNetwork",
+    ],
+    linkopts = [
+        "-lQt5Network",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [":qt_core"],
+)
+
+cc_library(
+    name = "qt_gui",
+    hdrs = glob(["QtGui/**"]),
+    includes = [
+        ".",
+        "QtGui",
+    ],
+    linkopts = [
+        "-lQt5Gui",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [":qt_core"],
+)
+
+cc_library(
+    name = "qt_concurrent",
+    hdrs = glob(["QtConcurrent/**"]),
+    includes = [
+        ".",
+        "QtConcurrent",
+    ],
+    linkopts = [
+        "-lQt5Concurrent",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [":qt_core"],
+)
+
+cc_library(
+    name = "qt_xml",
+    hdrs = glob(["QtXml/**"]),
+    includes = [
+        ".",
+        "QtXml",
+    ],
+    linkopts = [
+        "-lQt5Xml",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [":qt_core"],
+)
+
+cc_library(
+    name = "qt_svg",
+    hdrs = glob(["QtSvg/**"]),
+    includes = [
+        ".",
+        "QtSvg",
+    ],
+    linkopts = [
+        "-lQt5Svg",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [":qt_core"],
+)
+
+# vim:ft=bzl

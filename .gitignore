@@ -1,6 +1,7 @@
 /_install
 /.cabal-sandbox
 /.stack-work
+/bazel-*
 /cabal.config
 /cabal.sandbox.config
 /cov-analysis*
