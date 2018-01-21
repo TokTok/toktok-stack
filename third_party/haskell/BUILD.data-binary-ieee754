@@ -1,0 +1,14 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "data-binary-ieee754",
+    srcs = glob(["lib/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "binary",
+    ],
+    src_strip_prefix = "lib",
+    visibility = ["//visibility:public"],
+)
+
+# vim:ft=bzl

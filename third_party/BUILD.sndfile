@@ -1,0 +1,43 @@
+genrule(
+    name = "config",
+    srcs = glob([
+        "Cfg/*",
+        "**/*.in",
+    ]) + [
+        "configure",
+        "src/sndfile.c",
+    ],
+    outs = [
+        "src/config.h",
+        "src/sndfile.h",
+    ],
+    cmd = """
+        cd `dirname $(location configure)`
+        ./configure --disable-external-libs
+        DIR=`pwd`
+        cd -
+        for i in $(OUTS); do
+          cp $$DIR/`echo $$i | sed -e 's|$(GENDIR)/external/sndfile/||'` $$i
+        done
+    """,
+)
+
+cc_library(
+    name = "sndfile",
+    srcs = glob(
+        [
+            "src/**/*.c",
+            "src/**/*.h",
+        ],
+        exclude = ["src/test_*.c"],
+    ) + ["src/config.h"],
+    hdrs = ["src/sndfile.h"],
+    copts = [
+        "-I$(GENDIR)/external/sndfile/src",
+        "-w",  # disable all warnings
+    ],
+    includes = ["src"],
+    visibility = ["//visibility:public"],
+)
+
+# vim:ft=bzl

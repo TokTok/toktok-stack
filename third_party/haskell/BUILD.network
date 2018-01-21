@@ -1,0 +1,25 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "network",
+    srcs = [
+        "Network.hs",
+        "Network/BSD.hsc",
+        "Network/Socket.hsc",
+        "Network/Socket/ByteString.hs",
+        "Network/Socket/ByteString/IOVec.hs",
+        "Network/Socket/ByteString/Internal.hs",
+        "Network/Socket/ByteString/Lazy.hs",
+        "Network/Socket/ByteString/Lazy/Posix.hs",
+        "Network/Socket/ByteString/MsgHdr.hs",
+        "Network/Socket/Internal.hs",
+        "Network/Socket/Types.hs",
+    ],
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+# vim:ft=bzl

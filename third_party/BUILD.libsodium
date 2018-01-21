@@ -115,7 +115,6 @@ cc_library(
         "src/libsodium/include",
         "src/libsodium/include/sodium",
     ],
-    linkopts = ["-Wl,-z,defs"],
     visibility = ["//visibility:public"],
     deps = [":headers"],
 )

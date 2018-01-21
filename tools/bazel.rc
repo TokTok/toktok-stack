@@ -1,5 +1,8 @@
 # Global bazel options for toktok-stack.
 
+test --test_output=errors
+
+build --color=yes
 build --features=public_proto_imports
 build --features=layering_check
 build --features=parse_headers
@@ -10,8 +13,10 @@ build --per_file_copt=".*-avx2\.c@-mavx2"
 
 build --copt="-march=native"
 build --copt="-O3"
+build --copt="-g3"
 
 build --copt="-Werror"
+build --copt="-Wno-error=tautological-constant-out-of-range-compare"
 
 build --copt="-fdiagnostics-color=always"
 build --linkopt="-Wl,-z,noexecstack"
@@ -20,3 +25,10 @@ build --linkopt="-Wl,--warn-common"
 #build --linkopt="-Wl,--warn-execstack"
 
 build --strict_java_deps=ERROR
+
+build --strategy=Scalac=worker
+test --strategy=Scalac=worker
+
+# Address sanitizer.
+build:asan --copt="-fsanitize=address"
+build:asan --linkopt="-fsanitize=address"

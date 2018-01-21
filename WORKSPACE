@@ -34,6 +34,38 @@ new_http_archive(
 )
 
 new_http_archive(
+    name = "gtest",
+    build_file = "third_party/BUILD.gtest",
+    sha256 = "58a6f4277ca2bc8565222b3bbd58a177609e9c488e8a72649359ba51450db7d8",
+    strip_prefix = "googletest-release-1.8.0",
+    url = "https://github.com/google/googletest/archive/release-1.8.0.tar.gz",
+)
+
+new_http_archive(
+    name = "libconfig",
+    build_file = "third_party/BUILD.libconfig",
+    sha256 = "f67ac44099916ae260a6c9e290a90809e7d782d96cdd462cac656ebc5b685726",
+    strip_prefix = "libconfig-1.7.2",
+    url = "https://github.com/hyperrealm/libconfig/archive/v1.7.2.tar.gz",
+)
+
+new_http_archive(
+    name = "libexif",
+    build_file = "third_party/BUILD.libexif",
+    sha256 = "8cb37aa1745ca9050403c501ad4da2924e98ec5460bbd5c9d09bd57f0c746636",
+    strip_prefix = "libexif-libexif-0_6_21-release",
+    url = "https://github.com/libexif/libexif/archive/libexif-0_6_21-release.tar.gz",
+)
+
+new_http_archive(
+    name = "libqrencode",
+    build_file = "third_party/BUILD.libqrencode",
+    sha256 = "c2c8a8110354463a3332cb48abf8581c8d94136af4dc1418f891cc9c7719e3c1",
+    strip_prefix = "libqrencode-4.0.0",
+    url = "https://github.com/fukuchi/libqrencode/archive/v4.0.0.tar.gz",
+)
+
+new_http_archive(
     name = "libsodium",
     build_file = "third_party/BUILD.libsodium",
     sha256 = "eeadc7e1e1bcef09680fb4837d448fbdf57224978f865ac1c16745868fbd0533",
@@ -55,6 +87,22 @@ new_http_archive(
     sha256 = "6d258ffc874070087d15c584c0c491864baad14a55873730d9af35bf72fb1ce1",
     strip_prefix = "opus-1.2.1",
     url = "https://github.com/xiph/opus/archive/v1.2.1.tar.gz",
+)
+
+new_http_archive(
+    name = "portaudio",
+    build_file = "third_party/BUILD.portaudio",
+    sha256 = "f5a21d7dcd6ee84397446fa1fa1a0675bb2e8a4a6dceb4305a8404698d8d1513",
+    strip_prefix = "portaudio",
+    url = "http://www.portaudio.com/archives/pa_stable_v190600_20161030.tgz",
+)
+
+new_http_archive(
+    name = "sndfile",
+    build_file = "third_party/BUILD.sndfile",
+    sha256 = "1ff33929f042fa333aed1e8923aa628c3ee9e1eb85512686c55092d1e5a9dfa9",
+    strip_prefix = "libsndfile-1.0.28",
+    url = "http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28.tar.gz",
 )
 
 # Maven dependencies
@@ -222,9 +270,9 @@ new_local_repository(
 
 http_archive(
     name = "io_tweag_rules_haskell",
-    sha256 = "6417d9d180a4ada731ac0d81e6412d55d97ee1cea1653524af0115ebfbc28dbc",
-    strip_prefix = "rules_haskell-0.2",
-    urls = ["https://github.com/tweag/rules_haskell/archive/v0.2.tar.gz"],
+    sha256 = "f473773d19908970e5178bcef0e8a8528d13c1282805300e1ee1f2a7cace1242",
+    strip_prefix = "rules_haskell-14e546aff161fcb6ed00a3f5da660d35da921e74",
+    urls = ["https://github.com/tweag/rules_haskell/archive/14e546aff161fcb6ed00a3f5da660d35da921e74.tar.gz"],
 )
 
 load("@io_tweag_rules_haskell//haskell:repositories.bzl", "haskell_repositories")
@@ -309,4 +357,52 @@ new_http_archive(
     sha256 = "4f01b423f000c3e069aaf52a348564a6536797f31498bb85c3db4bd2d0973e56",
     strip_prefix = "data-default-class-0.1.2.0",
     url = "https://hackage.haskell.org/package/data-default-class-0.1.2.0/data-default-class-0.1.2.0.tar.gz",
+)
+
+new_http_archive(
+    name = "haskell_data_binary_ieee754",
+    build_file = "third_party/haskell/BUILD.data-binary-ieee754",
+    sha256 = "59975abed8f4caa602f0780c10a9b2493479e6feb71ad189bb10c3ac5678df0a",
+    strip_prefix = "data-binary-ieee754-0.4.4",
+    url = "https://hackage.haskell.org/package/data-binary-ieee754-0.4.4/data-binary-ieee754-0.4.4.tar.gz",
+)
+
+new_http_archive(
+    name = "haskell_MissingH",
+    build_file = "third_party/haskell/BUILD.MissingH",
+    sha256 = "283f2afd46625d98b4e29f77edadfa5e6009a227812ee2ece10091ad6a7e9b71",
+    strip_prefix = "MissingH-1.4.0.1",
+    url = "https://hackage.haskell.org/package/MissingH-1.4.0.1/MissingH-1.4.0.1.tar.gz",
+)
+
+new_http_archive(
+    name = "haskell_parsec",
+    build_file = "third_party/haskell/BUILD.parsec",
+    sha256 = "6f87251cb1d11505e621274dec15972de924a9074f07f7430a18892064c2676e",
+    strip_prefix = "parsec-3.1.11",
+    url = "https://hackage.haskell.org/package/parsec-3.1.11/parsec-3.1.11.tar.gz",
+)
+
+new_http_archive(
+    name = "haskell_mtl",
+    build_file = "third_party/haskell/BUILD.mtl",
+    sha256 = "cae59d79f3a16f8e9f3c9adc1010c7c6cdddc73e8a97ff4305f6439d855c8dc5",
+    strip_prefix = "mtl-2.2.1",
+    url = "https://hackage.haskell.org/package/mtl-2.2.1/mtl-2.2.1.tar.gz",
+)
+
+new_http_archive(
+    name = "haskell_hslogger",
+    build_file = "third_party/haskell/BUILD.hslogger",
+    sha256 = "d7ca6e94a4aacb47a8dc30e3960ab8deff482d2ec9dca9a87b225e03e97e452b",
+    strip_prefix = "hslogger-1.2.10",
+    url = "https://hackage.haskell.org/package/hslogger-1.2.10/hslogger-1.2.10.tar.gz",
+)
+
+new_http_archive(
+    name = "haskell_network",
+    build_file = "third_party/haskell/BUILD.network",
+    sha256 = "776668b0a969d0d57ebabf78943cfc21a1aaf7e5e2ae6288322292125c9440f5",
+    strip_prefix = "network-2.6.3.3",
+    url = "https://hackage.haskell.org/package/network-2.6.3.3/network-2.6.3.3.tar.gz",
 )

@@ -8,8 +8,8 @@ cc_library(
         exclude = ["test/*"],
     ),
     hdrs = ["filter_audio.h"],
+    copts = ["-w"],  # disable all warnings.
     includes = ["."],
-    linkopts = ["-Wl,-z,defs"],
     visibility = ["//visibility:public"],
 )
 

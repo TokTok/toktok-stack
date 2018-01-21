@@ -71,7 +71,6 @@ cc_library(
         "silk",
         "silk/float",
     ],
-    linkopts = ["-Wl,-z,defs"],
     visibility = ["//visibility:public"],
 )
 

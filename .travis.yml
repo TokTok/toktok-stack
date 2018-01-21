@@ -1,19 +1,28 @@
 language: cpp
 compiler: clang
 dist: trusty
-sudo: required
 
 addons:
   apt:
     packages:
+    - libconfig-dev
+    - libcv-dev
+    - libhighgui-dev
     - yasm
 
 before_install:
-- wget https://github.com/bazelbuild/bazel/releases/download/0.9.0/bazel_0.9.0-linux-x86_64.deb
-- sha256sum -c tools/bazel_0.9.0-linux-x86_64.deb.sha256
-- sudo dpkg -i bazel_0.9.0-linux-x86_64.deb
+- wget https://github.com/bazelbuild/bazel/releases/download/0.9.0/bazel-0.9.0-without-jdk-installer-linux-x86_64.sh
+- sha256sum -c tools/bazel-0.9.0-without-jdk-installer-linux-x86_64.sh.sha256
+- chmod +x bazel-0.9.0-without-jdk-installer-linux-x86_64.sh
+- ./bazel-0.9.0-without-jdk-installer-linux-x86_64.sh --user
+- export PATH=$HOME/bin:$PATH
 
-script: bazel test //c-toxcore/... --verbose_failures | cat
+install:
+- echo "build -j 4 --curses=no --verbose_failures" >> $HOME/.bazelrc
+- echo "test -j 1 --curses=no --verbose_failures" >> $HOME/.bazelrc
+
+script:
+- bazel build //c-toxcore/... && (travis_retry bazel test //c-toxcore/... || true)
 
 git:
   depth: 1

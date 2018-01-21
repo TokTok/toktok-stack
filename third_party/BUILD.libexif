@@ -1,0 +1,46 @@
+genrule(
+    name = "config",
+    srcs = glob([
+        "**/*.am",
+        "**/*.in",
+        "**/*.m4",
+        "libexif/*/Makefile-files",
+    ]) + [
+        "AUTHORS",
+        "COPYING",
+        "ChangeLog",
+        "NEWS",
+        "README",
+        "configure.ac",
+        "libexif/exif-data.h",
+    ],
+    outs = ["config.h"],
+    cmd = """
+        cd `dirname $(location configure.ac)`
+        autoreconf -fi
+        ./configure
+        DIR=`pwd`
+        cd -
+        for i in $(OUTS); do
+          cp $$DIR/`echo $$i | sed -e 's|$(GENDIR)/external/libexif/||'` $$i
+        done
+    """,
+)
+
+cc_library(
+    name = "libexif",
+    srcs = glob([
+        "libexif/**/*.c",
+        "libexif/**/*.h",
+    ]) + ["config.h"],
+    hdrs = ["libexif/exif.h"],
+    copts = [
+        "-w",  # disable all warnings.
+        "'-DLOCALEDIR=\"lib\"'",
+        "'-DGETTEXT_PACKAGE=\"libexif\"'",
+    ],
+    includes = ["."],
+    visibility = ["//visibility:public"],
+)
+
+# vim:ft=bzl

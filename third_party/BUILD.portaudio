@@ -1,0 +1,15 @@
+cc_library(
+    name = "portaudio",
+    srcs = glob([
+        "src/**/*.h",
+        "src/common/*.c",
+        "src/os/unix/*.c",
+    ]),
+    hdrs = glob(["include/*.h"]),
+    copts = ["-Iexternal/portaudio/src/common"],
+    includes = ["include"],
+    linkopts = ["-lpthread"],
+    visibility = ["//visibility:public"],
+)
+
+# vim:ft=bzl

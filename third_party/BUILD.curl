@@ -43,7 +43,6 @@ cc_library(
         "include",
     ],
     linkopts = [
-        "-Wl,-z,defs",
         "-llber",
         "-lldap",
         "-lpthread",

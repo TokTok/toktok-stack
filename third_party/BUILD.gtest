@@ -1,0 +1,30 @@
+cc_library(
+    name = "gtest",
+    srcs = glob(
+        [
+            "googletest/src/*.cc",
+            "googletest/src/*.h",
+        ],
+        exclude = ["googletest/src/gtest-all.cc"],
+    ),
+    hdrs = glob(["googletest/include/**/*.h"]),
+    copts = ["-Iexternal/gtest/googletest"],
+    includes = ["googletest/include"],
+    linkopts = ["-lpthread"],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "gmock",
+    srcs = glob(
+        ["googlemock/src/*.cc"],
+        exclude = ["googlemock/src/gmock-all.cc"],
+    ),
+    hdrs = glob(["googlemock/include/**/*.h"]),
+    copts = ["-Iexternal/gtest/googlemock"],
+    includes = ["googlemock/include"],
+    visibility = ["//visibility:public"],
+    deps = [":gtest"],
+)
+
+# vim:ft=bzl

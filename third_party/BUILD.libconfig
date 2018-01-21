@@ -1,0 +1,17 @@
+cc_library(
+    name = "libconfig",
+    srcs = glob([
+        "lib/*.c",
+        "lib/*.h",
+    ]),
+    hdrs = ["lib/libconfig.h"],
+    copts = [
+        "-DHAVE_NEWLOCALE",
+        "-DHAVE_USELOCALE",
+        "-DHAVE_FREELOCALE",
+    ],
+    includes = ["lib"],
+    visibility = ["//visibility:public"],
+)
+
+# vim:ft=bzl
