@@ -13,7 +13,13 @@ before_install:
 - sha256sum -c tools/bazel_0.9.0-linux-x86_64.deb.sha256
 - sudo dpkg -i bazel_0.9.0-linux-x86_64.deb
 
-script: bazel test //c-toxcore/... --verbose_failures | cat
+install:
+- echo "build -j 4 --curses=no --verbose_failures" >> $HOME/.bazelrc
+- echo "test -j 1 --curses=no --verbose_failures" >> $HOME/.bazelrc
+
+script:
+- bazel build //c-toxcore/...
+- travis_retry bazel test //c-toxcore/... || true
 
 git:
   depth: 1
