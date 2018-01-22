@@ -12,5 +12,3 @@ haskell_library(
         "@haskell_hashable//:hashable",
     ],
 )
-
-# vim:ft=bzl

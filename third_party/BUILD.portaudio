@@ -11,5 +11,3 @@ cc_library(
     linkopts = ["-lpthread"],
     visibility = ["//visibility:public"],
 )
-
-# vim:ft=bzl

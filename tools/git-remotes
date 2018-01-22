@@ -148,6 +148,7 @@ my %repos = (
    }],
    'py-toxcore-c' => ['py-toxcore-c', {
       upstream => 'toktok',
+      repo ['aitjcize', 'PyTox'],
       repo 'iphydf',
    }],
    'qtox' => ['qtox', {
@@ -168,6 +169,7 @@ my %repos = (
       upstream => 'toktok',
       repo 'iphydf',
       repo 'robinlinden',
+      repo 'zoff99',
    }],
 );
 

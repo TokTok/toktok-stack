@@ -39,5 +39,3 @@ cc_library(
     includes = ["src"],
     visibility = ["//visibility:public"],
 )
-
-# vim:ft=bzl

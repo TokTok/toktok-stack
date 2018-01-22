@@ -32,5 +32,3 @@ haskell_library(
     visibility = ["//visibility:public"],
     deps = [":cbits"],
 )
-
-# vim:ft=bzl

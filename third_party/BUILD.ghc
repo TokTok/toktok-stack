@@ -12,5 +12,3 @@ filegroup(
     ],
     visibility = ["//visibility:public"],
 )
-
-# vim:ft=bzl

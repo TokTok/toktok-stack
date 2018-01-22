@@ -3,7 +3,13 @@
 test --test_output=errors
 
 build --color=yes
+build --show_progress_rate_limit=0.5
+
 build --features=public_proto_imports
+build --features=pie
+build --features=module_maps
+build --features=header_modules
+build --features=use_header_modules
 build --features=layering_check
 build --features=parse_headers
 build --features=cc_include_scanning
@@ -15,12 +21,9 @@ build --copt="-march=native"
 build --copt="-O3"
 build --copt="-g3"
 
-build --copt="-Werror"
-build --copt="-Wno-error=tautological-constant-out-of-range-compare"
-
-build --copt="-fdiagnostics-color=always"
 build --linkopt="-Wl,-z,noexecstack"
 #build --linkopt="-Wl,--fatal-warnings"
+build --linkopt="-Wl,--detect-odr-violations"
 build --linkopt="-Wl,--warn-common"
 #build --linkopt="-Wl,--warn-execstack"
 
@@ -32,3 +35,20 @@ test --strategy=Scalac=worker
 # Address sanitizer.
 build:asan --copt="-fsanitize=address"
 build:asan --linkopt="-fsanitize=address"
+
+# Workaround for Go, because it can't deal with colours when compiling the
+# stdlib. It doesn't look at per_file_copt, so we can't disable colours for the
+# Go stdlib, but we can enable it for everything else.
+#build --copt="-fdiagnostics-color=always"
+build --per_file_copt=".*@-fdiagnostics-color=always"
+
+build --copt="-Wall"
+build --copt="-Werror"
+build --copt="-Wformat-security"
+build --copt="-Wthread-safety-analysis"
+
+build --copt="-funsigned-char"
+
+build --copt="-fno-exceptions"
+build --copt="-fno-rtti"
+build --copt="-DGOOGLE_PROTOBUF_NO_RTTI"

@@ -1,39 +1,48 @@
-[submodule "hs-toxcore-c"]
-	path = hs-toxcore-c
-	url = https://github.com/TokTok/hs-toxcore-c
+[submodule "apidsl"]
+	path = apidsl
+	url = https://github.com/TokTok/apidsl
+[submodule "c-toxcore-hs"]
+	path = c-toxcore-hs
+	url = https://github.com/TokTok/c-toxcore-hs
+[submodule "c-toxcore"]
+	path = c-toxcore
+	url = https://github.com/TokTok/toxcore
+[submodule "dockerfiles"]
+	path = dockerfiles
+	url = https://github.com/TokTok/dockerfiles
+[submodule "echobot-jvm"]
+	path = echobot-jvm
+	url = https://github.com/TokTok/echobot-jvm
+[submodule "github-tools"]
+	path = github-tools
+	url = https://github.com/TokTok/github-tools
+[submodule "go-toxcore-c"]
+	path = go-toxcore-c
+	url = https://github.com/TokTok/go-toxcore-c
 [submodule "hs-msgpack"]
 	path = hs-msgpack
 	url = https://github.com/TokTok/hs-msgpack
 [submodule "hs-msgpack-rpc"]
 	path = hs-msgpack-rpc
 	url = https://github.com/TokTok/hs-msgpack-rpc
+[submodule "hs-msgpack-types"]
+	path = hs-msgpack-types
+	url = https://github.com/TokTok/hs-msgpack-types
+[submodule "hs-schema"]
+	path = hs-schema
+	url = https://github.com/TokTok/hs-schema
+[submodule "hs-toxcore-c"]
+	path = hs-toxcore-c
+	url = https://github.com/TokTok/hs-toxcore-c
 [submodule "hs-toxcore"]
 	path = hs-toxcore
 	url = https://github.com/TokTok/hs-toxcore
-[submodule "qtox"]
-	path = qtox
-	url = https://github.com/TokTok/qtox
-[submodule "apidsl"]
-	path = apidsl
-	url = https://github.com/TokTok/apidsl
-[submodule "c-toxcore"]
-	path = c-toxcore
-	url = https://github.com/TokTok/toxcore
-[submodule "jvm-toxcore-c"]
-	path = jvm-toxcore-c
-	url = https://github.com/TokTok/jvm-toxcore-c
-[submodule "dockerfiles"]
-	path = dockerfiles
-	url = https://github.com/TokTok/dockerfiles
-[submodule "tokstyle"]
-	path = tokstyle
-	url = https://github.com/TokTok/tokstyle
-[submodule "py-toxcore-c"]
-	path = py-toxcore-c
-	url = https://github.com/TokTok/py-toxcore-c
 [submodule "js-toxcore-c"]
 	path = js-toxcore-c
 	url = https://github.com/TokTok/js-toxcore-c
+[submodule "jtox"]
+	path = jtox
+	url = https://github.com/TokTok/jtox
 [submodule "jvm-macros"]
 	path = jvm-macros
 	url = https://github.com/TokTok/jvm-macros
@@ -43,33 +52,27 @@
 [submodule "jvm-toxcore-api"]
 	path = jvm-toxcore-api
 	url = https://github.com/TokTok/jvm-toxcore-api
-[submodule "c-toxcore-hs"]
-	path = c-toxcore-hs
-	url = https://github.com/TokTok/c-toxcore-hs
-[submodule "toktok-android"]
-	path = toktok-android
-	url = https://github.com/TokTok/toktok-android
-[submodule "github-tools"]
-	path = github-tools
-	url = https://github.com/TokTok/github-tools
-[submodule "website"]
-	path = website
-	url = https://github.com/TokTok/website
-[submodule "hs-schema"]
-	path = hs-schema
-	url = https://github.com/TokTok/hs-schema
-[submodule "hs-msgpack-types"]
-	path = hs-msgpack-types
-	url = https://github.com/TokTok/hs-msgpack-types
-[submodule "jtox"]
-	path = jtox
-	url = https://github.com/TokTok/jtox
-[submodule "echobot-jvm"]
-	path = echobot-jvm
-	url = https://github.com/TokTok/echobot-jvm
+[submodule "jvm-toxcore-c"]
+	path = jvm-toxcore-c
+	url = https://github.com/TokTok/jvm-toxcore-c
+[submodule "py-toxcore-c"]
+	path = py_toxcore_c
+	url = https://github.com/TokTok/py-toxcore-c
+[submodule "qtox"]
+	path = qtox
+	url = https://github.com/TokTok/qtox
 [submodule "streambot-jvm"]
 	path = streambot-jvm
 	url = https://github.com/TokTok/streambot-jvm
+[submodule "tokstyle"]
+	path = tokstyle
+	url = https://github.com/TokTok/tokstyle
+[submodule "toktok-android"]
+	path = toktok-android
+	url = https://github.com/TokTok/toktok-android
 [submodule "toxic"]
 	path = toxic
 	url = https://github.com/iphydf/toxic
+[submodule "website"]
+	path = website
+	url = https://github.com/TokTok/website

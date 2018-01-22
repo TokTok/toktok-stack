@@ -1,11 +1,19 @@
+exports_files([
+    "bin/rcc",
+    "bin/uic",
+    "bin/moc",
+])
+
 cc_library(
     name = "qt_core",
-    hdrs = glob(["QtCore/**"]),
+    srcs = ["lib/libQt5Core.so"],
+    hdrs = glob(["include/QtCore/**"]),
     includes = [
-        ".",
-        "QtCore",
+        "include",
+        "include/QtCore",
     ],
     linkopts = [
+        "-Lexternal/qt/lib",
         "-lQt5Core",
     ],
     visibility = ["//visibility:public"],
@@ -13,12 +21,14 @@ cc_library(
 
 cc_library(
     name = "qt_widgets",
-    hdrs = glob(["QtWidgets/**"]),
+    srcs = ["lib/libQt5Widgets.so"],
+    hdrs = glob(["include/QtWidgets/**"]),
     includes = [
-        ".",
-        "QtWidgets",
+        "include",
+        "include/QtWidgets",
     ],
     linkopts = [
+        "-Lexternal/qt/lib",
         "-lQt5Widgets",
     ],
     visibility = ["//visibility:public"],
@@ -27,12 +37,14 @@ cc_library(
 
 cc_library(
     name = "qt_network",
-    hdrs = glob(["QtNetwork/**"]),
+    srcs = ["lib/libQt5Network.so"],
+    hdrs = glob(["include/QtNetwork/**"]),
     includes = [
-        ".",
-        "QtNetwork",
+        "include",
+        "include/QtNetwork",
     ],
     linkopts = [
+        "-Lexternal/qt/lib",
         "-lQt5Network",
     ],
     visibility = ["//visibility:public"],
@@ -41,12 +53,14 @@ cc_library(
 
 cc_library(
     name = "qt_gui",
-    hdrs = glob(["QtGui/**"]),
+    srcs = ["lib/libQt5Gui.so"],
+    hdrs = glob(["include/QtGui/**"]),
     includes = [
-        ".",
-        "QtGui",
+        "include",
+        "include/QtGui",
     ],
     linkopts = [
+        "-Lexternal/qt/lib",
         "-lQt5Gui",
     ],
     visibility = ["//visibility:public"],
@@ -55,12 +69,14 @@ cc_library(
 
 cc_library(
     name = "qt_concurrent",
-    hdrs = glob(["QtConcurrent/**"]),
+    srcs = ["lib/libQt5Concurrent.so"],
+    hdrs = glob(["include/QtConcurrent/**"]),
     includes = [
-        ".",
-        "QtConcurrent",
+        "include",
+        "include/QtConcurrent",
     ],
     linkopts = [
+        "-Lexternal/qt/lib",
         "-lQt5Concurrent",
     ],
     visibility = ["//visibility:public"],
@@ -69,12 +85,14 @@ cc_library(
 
 cc_library(
     name = "qt_xml",
-    hdrs = glob(["QtXml/**"]),
+    srcs = ["lib/libQt5Xml.so"],
+    hdrs = glob(["include/QtXml/**"]),
     includes = [
-        ".",
-        "QtXml",
+        "include",
+        "include/QtXml",
     ],
     linkopts = [
+        "-Lexternal/qt/lib",
         "-lQt5Xml",
     ],
     visibility = ["//visibility:public"],
@@ -83,16 +101,16 @@ cc_library(
 
 cc_library(
     name = "qt_svg",
-    hdrs = glob(["QtSvg/**"]),
+    srcs = ["lib/libQt5Svg.so"],
+    hdrs = glob(["include/QtSvg/**"]),
     includes = [
-        ".",
-        "QtSvg",
+        "include",
+        "include/QtSvg",
     ],
     linkopts = [
+        "-Lexternal/qt/lib",
         "-lQt5Svg",
     ],
     visibility = ["//visibility:public"],
     deps = [":qt_core"],
 )
-
-# vim:ft=bzl

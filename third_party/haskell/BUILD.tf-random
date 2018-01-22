@@ -14,5 +14,3 @@ haskell_library(
         "@haskell_random//:random",
     ],
 )
-
-# vim:ft=bzl

@@ -20,5 +20,3 @@ haskell_library(
         "@haskell_text//:text",
     ],
 )
-
-# vim:ft=bzl

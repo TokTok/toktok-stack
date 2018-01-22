@@ -10,5 +10,3 @@ haskell_library(
     src_strip_prefix = "lib",
     visibility = ["//visibility:public"],
 )
-
-# vim:ft=bzl

@@ -4,10 +4,16 @@ dist: trusty
 
 addons:
   apt:
+    sources:
+    - sourceline: 'ppa:beineri/opt-qt593-trusty'
     packages:
+    - autopoint
     - libconfig-dev
     - libcv-dev
     - libhighgui-dev
+    - libopenal-dev
+    - qt59tools
+    - qt59svg
     - yasm
 
 before_install:
@@ -22,7 +28,7 @@ install:
 - echo "test -j 1 --curses=no --verbose_failures" >> $HOME/.bazelrc
 
 script:
-- bazel build //c-toxcore/... && (travis_retry bazel test //c-toxcore/... || true)
+- bazel build //qtox/... && (travis_retry bazel test //c-toxcore/... || true)
 
 git:
   depth: 1

@@ -1,7 +1,4 @@
 DEFS = [
-    # Includes and other common flags.
-    "-Iexternal/libsodium/src/libsodium/include/sodium",
-    "-w",  # no warnings
     # Defines.
     "-DPACKAGE_NAME=\"libsodium\"",
     "-DPACKAGE_TARNAME=\"libsodium\"",
@@ -109,6 +106,7 @@ cc_library(
     ],
     copts = DEFS + [
         "-Iexternal/libsodium/src/libsodium/include/sodium",
+        "-w",  # no warnings
         "-mrdrnd",
     ],
     includes = [
@@ -118,5 +116,3 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [":headers"],
 )
-
-# vim:ft=bzl

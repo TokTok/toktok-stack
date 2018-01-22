@@ -16,5 +16,3 @@ haskell_library(
         "@haskell_tf_random//:tf-random",
     ],
 )
-
-# vim:ft=bzl

@@ -20,5 +20,3 @@ haskell_library(
         "-XCPP",
     ],
 )
-
-# vim:ft=bzl

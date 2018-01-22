@@ -322,5 +322,3 @@ cc_library(
         ":libvpx_avx2",
     ],
 )
-
-# vim:ft=bzl
