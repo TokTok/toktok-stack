@@ -1,3 +1,5 @@
+workspace(name = "toktok")
+
 # Protobuf
 # =========================================================
 
@@ -34,6 +36,14 @@ new_local_repository(
 )
 
 new_http_archive(
+    name = "haskell_MissingH",
+    build_file = "third_party/haskell/BUILD.MissingH",
+    sha256 = "283f2afd46625d98b4e29f77edadfa5e6009a227812ee2ece10091ad6a7e9b71",
+    strip_prefix = "MissingH-1.4.0.1",
+    url = "https://hackage.haskell.org/package/MissingH-1.4.0.1/MissingH-1.4.0.1.tar.gz",
+)
+
+new_http_archive(
     name = "haskell_QuickCheck",
     build_file = "third_party/haskell/BUILD.QuickCheck",
     sha256 = "488c5652139da0bac8b3e7d76f11320ded298549e62db530938bfee9ca981876",
@@ -42,19 +52,75 @@ new_http_archive(
 )
 
 new_http_archive(
-    name = "haskell_random",
-    build_file = "third_party/haskell/BUILD.random",
-    sha256 = "b718a41057e25a3a71df693ab0fe2263d492e759679b3c2fea6ea33b171d3a5a",
-    strip_prefix = "random-1.1",
-    url = "https://hackage.haskell.org/package/random-1.1/random-1.1.tar.gz",
+    name = "haskell_base16_bytestring",
+    build_file = "third_party/haskell/BUILD.base16-bytestring",
+    sha256 = "5afe65a152c5418f5f4e3579a5e0d5ca19c279dc9bf31c1a371ccbe84705c449",
+    strip_prefix = "base16-bytestring-0.1.1.6",
+    url = "https://hackage.haskell.org/package/base16-bytestring-0.1.1.6/base16-bytestring-0.1.1.6.tar.gz",
 )
 
 new_http_archive(
-    name = "haskell_tf_random",
-    build_file = "third_party/haskell/BUILD.tf-random",
-    sha256 = "2e30cec027b313c9e1794d326635d8fc5f79b6bf6e7580ab4b00186dadc88510",
-    strip_prefix = "tf-random-0.5",
-    url = "https://hackage.haskell.org/package/tf-random-0.5/tf-random-0.5.tar.gz",
+    name = "haskell_data_binary_ieee754",
+    build_file = "third_party/haskell/BUILD.data-binary-ieee754",
+    sha256 = "59975abed8f4caa602f0780c10a9b2493479e6feb71ad189bb10c3ac5678df0a",
+    strip_prefix = "data-binary-ieee754-0.4.4",
+    url = "https://hackage.haskell.org/package/data-binary-ieee754-0.4.4/data-binary-ieee754-0.4.4.tar.gz",
+)
+
+new_http_archive(
+    name = "haskell_data_default_class",
+    build_file = "third_party/haskell/BUILD.data-default-class",
+    sha256 = "4f01b423f000c3e069aaf52a348564a6536797f31498bb85c3db4bd2d0973e56",
+    strip_prefix = "data-default-class-0.1.2.0",
+    url = "https://hackage.haskell.org/package/data-default-class-0.1.2.0/data-default-class-0.1.2.0.tar.gz",
+)
+
+new_http_archive(
+    name = "haskell_hashable",
+    build_file = "third_party/haskell/BUILD.hashable",
+    sha256 = "94ca8789e13bc05c1582c46b709f3b0f5aeec2092be634b8606dbd9c5915bb7a",
+    strip_prefix = "hashable-1.2.6.1",
+    url = "https://hackage.haskell.org/package/hashable-1.2.6.1/hashable-1.2.6.1.tar.gz",
+)
+
+new_http_archive(
+    name = "haskell_hslogger",
+    build_file = "third_party/haskell/BUILD.hslogger",
+    sha256 = "d7ca6e94a4aacb47a8dc30e3960ab8deff482d2ec9dca9a87b225e03e97e452b",
+    strip_prefix = "hslogger-1.2.10",
+    url = "https://hackage.haskell.org/package/hslogger-1.2.10/hslogger-1.2.10.tar.gz",
+)
+
+new_http_archive(
+    name = "haskell_language_c",
+    build_file = "third_party/haskell/BUILD.language-c",
+    sha256 = "a7447123f9b3bec9319ee2a22b22d97f03acd6566b4f6caf5b9a1f71e4f7a9ca",
+    strip_prefix = "language-c-0.7.1",
+    url = "https://hackage.haskell.org/package/language-c-0.7.1/language-c-0.7.1.tar.gz",
+)
+
+new_http_archive(
+    name = "haskell_mtl",
+    build_file = "third_party/haskell/BUILD.mtl",
+    sha256 = "cae59d79f3a16f8e9f3c9adc1010c7c6cdddc73e8a97ff4305f6439d855c8dc5",
+    strip_prefix = "mtl-2.2.1",
+    url = "https://hackage.haskell.org/package/mtl-2.2.1/mtl-2.2.1.tar.gz",
+)
+
+new_http_archive(
+    name = "haskell_network",
+    build_file = "third_party/haskell/BUILD.network",
+    sha256 = "776668b0a969d0d57ebabf78943cfc21a1aaf7e5e2ae6288322292125c9440f5",
+    strip_prefix = "network-2.6.3.3",
+    url = "https://hackage.haskell.org/package/network-2.6.3.3/network-2.6.3.3.tar.gz",
+)
+
+new_http_archive(
+    name = "haskell_parsec",
+    build_file = "third_party/haskell/BUILD.parsec",
+    sha256 = "6f87251cb1d11505e621274dec15972de924a9074f07f7430a18892064c2676e",
+    strip_prefix = "parsec-3.1.11",
+    url = "https://hackage.haskell.org/package/parsec-3.1.11/parsec-3.1.11.tar.gz",
 )
 
 new_http_archive(
@@ -66,6 +132,22 @@ new_http_archive(
 )
 
 new_http_archive(
+    name = "haskell_random",
+    build_file = "third_party/haskell/BUILD.random",
+    sha256 = "b718a41057e25a3a71df693ab0fe2263d492e759679b3c2fea6ea33b171d3a5a",
+    strip_prefix = "random-1.1",
+    url = "https://hackage.haskell.org/package/random-1.1/random-1.1.tar.gz",
+)
+
+new_http_archive(
+    name = "haskell_syb",
+    build_file = "third_party/haskell/BUILD.syb",
+    sha256 = "b8757dce5ab4045c49a0ae90407d575b87ee5523a7dd5dfa5c9d54fcceff42b5",
+    strip_prefix = "syb-0.7",
+    url = "https://hackage.haskell.org/package/syb-0.7/syb-0.7.tar.gz",
+)
+
+new_http_archive(
     name = "haskell_text",
     build_file = "third_party/haskell/BUILD.text",
     sha256 = "20e0b1627f613b32cc7f2d2e8dcc48a4a61938b24f3d14fb77cee694f0c9311a",
@@ -74,11 +156,11 @@ new_http_archive(
 )
 
 new_http_archive(
-    name = "haskell_hashable",
-    build_file = "third_party/haskell/BUILD.hashable",
-    sha256 = "94ca8789e13bc05c1582c46b709f3b0f5aeec2092be634b8606dbd9c5915bb7a",
-    strip_prefix = "hashable-1.2.6.1",
-    url = "https://hackage.haskell.org/package/hashable-1.2.6.1/hashable-1.2.6.1.tar.gz",
+    name = "haskell_tf_random",
+    build_file = "third_party/haskell/BUILD.tf-random",
+    sha256 = "2e30cec027b313c9e1794d326635d8fc5f79b6bf6e7580ab4b00186dadc88510",
+    strip_prefix = "tf-random-0.5",
+    url = "https://hackage.haskell.org/package/tf-random-0.5/tf-random-0.5.tar.gz",
 )
 
 new_http_archive(
@@ -95,62 +177,6 @@ new_http_archive(
     sha256 = "b100ee79b9da2651276278cd3e0f08a3c152505cc52982beda507515af173d7b",
     strip_prefix = "vector-0.12.0.1",
     url = "https://hackage.haskell.org/package/vector-0.12.0.1/vector-0.12.0.1.tar.gz",
-)
-
-new_http_archive(
-    name = "haskell_data_default_class",
-    build_file = "third_party/haskell/BUILD.data-default-class",
-    sha256 = "4f01b423f000c3e069aaf52a348564a6536797f31498bb85c3db4bd2d0973e56",
-    strip_prefix = "data-default-class-0.1.2.0",
-    url = "https://hackage.haskell.org/package/data-default-class-0.1.2.0/data-default-class-0.1.2.0.tar.gz",
-)
-
-new_http_archive(
-    name = "haskell_data_binary_ieee754",
-    build_file = "third_party/haskell/BUILD.data-binary-ieee754",
-    sha256 = "59975abed8f4caa602f0780c10a9b2493479e6feb71ad189bb10c3ac5678df0a",
-    strip_prefix = "data-binary-ieee754-0.4.4",
-    url = "https://hackage.haskell.org/package/data-binary-ieee754-0.4.4/data-binary-ieee754-0.4.4.tar.gz",
-)
-
-new_http_archive(
-    name = "haskell_MissingH",
-    build_file = "third_party/haskell/BUILD.MissingH",
-    sha256 = "283f2afd46625d98b4e29f77edadfa5e6009a227812ee2ece10091ad6a7e9b71",
-    strip_prefix = "MissingH-1.4.0.1",
-    url = "https://hackage.haskell.org/package/MissingH-1.4.0.1/MissingH-1.4.0.1.tar.gz",
-)
-
-new_http_archive(
-    name = "haskell_parsec",
-    build_file = "third_party/haskell/BUILD.parsec",
-    sha256 = "6f87251cb1d11505e621274dec15972de924a9074f07f7430a18892064c2676e",
-    strip_prefix = "parsec-3.1.11",
-    url = "https://hackage.haskell.org/package/parsec-3.1.11/parsec-3.1.11.tar.gz",
-)
-
-new_http_archive(
-    name = "haskell_mtl",
-    build_file = "third_party/haskell/BUILD.mtl",
-    sha256 = "cae59d79f3a16f8e9f3c9adc1010c7c6cdddc73e8a97ff4305f6439d855c8dc5",
-    strip_prefix = "mtl-2.2.1",
-    url = "https://hackage.haskell.org/package/mtl-2.2.1/mtl-2.2.1.tar.gz",
-)
-
-new_http_archive(
-    name = "haskell_hslogger",
-    build_file = "third_party/haskell/BUILD.hslogger",
-    sha256 = "d7ca6e94a4aacb47a8dc30e3960ab8deff482d2ec9dca9a87b225e03e97e452b",
-    strip_prefix = "hslogger-1.2.10",
-    url = "https://hackage.haskell.org/package/hslogger-1.2.10/hslogger-1.2.10.tar.gz",
-)
-
-new_http_archive(
-    name = "haskell_network",
-    build_file = "third_party/haskell/BUILD.network",
-    sha256 = "776668b0a969d0d57ebabf78943cfc21a1aaf7e5e2ae6288322292125c9440f5",
-    strip_prefix = "network-2.6.3.3",
-    url = "https://hackage.haskell.org/package/network-2.6.3.3/network-2.6.3.3.tar.gz",
 )
 
 # Go
@@ -321,46 +347,14 @@ new_http_archive(
 # Maven dependencies
 # =========================================================
 
-maven_jar(
-    name = "com_intellij_annotations",
-    artifact = "com.intellij:annotations:12.0",
-    sha1 = "bbcf6448f6d40abe506e2c83b70a3e8bfd2b4539",
+local_repository(
+    name = "org_bytedeco_javacpp_presets_ffmpeg_linux_x86_64",
+    path = "third_party/javacpp/ffmpeg",
 )
 
-maven_jar(
-    name = "org_scalatest_scalatest",
-    artifact = "org.scalatest:scalatest_2.11:3.0.4",
-    sha1 = "a0df09cc87bb681674b05a883462b121866784e5",
-)
-
-maven_jar(
-    name = "org_scalactic_scalactic",
-    artifact = "org.scalactic:scalactic_2.11:3.0.4",
-    sha1 = "a97b52d531f6010b424813af260ac6ce748e187e",
-)
-
-maven_jar(
-    name = "org_scalacheck_scalacheck",
-    artifact = "org.scalacheck:scalacheck_2.11:1.13.4",
-    sha1 = "7845816647d5a80d30e5a71862b31f3fee894549",
-)
-
-maven_jar(
-    name = "com_typesafe_scala_logging_scala_logging",
-    artifact = "com.typesafe.scala-logging:scala-logging_2.11:3.7.2",
-    sha1 = "5015fe84c5aec4f8eb3daa2d1663d447d65f8c02",
-)
-
-maven_jar(
-    name = "org_slf4j_slf4j_api",
-    artifact = "org.slf4j:slf4j-api:1.7.25",
-    sha1 = "da76ca59f6a57ee3102f8f9bd9cee742973efa8a",
-)
-
-maven_jar(
-    name = "com_google_guava_guava",
-    artifact = "com.google.guava:guava:19.0",
-    sha1 = "6ce200f6b23222af3d8abb6b6459e6c44f4bb0e9",
+local_repository(
+    name = "org_bytedeco_javacpp_presets_opencv_linux_x86_64",
+    path = "third_party/javacpp/opencv",
 )
 
 maven_jar(
@@ -370,9 +364,21 @@ maven_jar(
 )
 
 maven_jar(
-    name = "org_apache_commons_commons_lang3",
-    artifact = "org.apache.commons:commons-lang3:3.4",
-    sha1 = "5fe28b9518e58819180a43a850fbc0dd24b7c050",
+    name = "com_google_guava_guava",
+    artifact = "com.google.guava:guava:19.0",
+    sha1 = "6ce200f6b23222af3d8abb6b6459e6c44f4bb0e9",
+)
+
+maven_jar(
+    name = "com_intellij_annotations",
+    artifact = "com.intellij:annotations:12.0",
+    sha1 = "bbcf6448f6d40abe506e2c83b70a3e8bfd2b4539",
+)
+
+maven_jar(
+    name = "com_typesafe_scala_logging_scala_logging",
+    artifact = "com.typesafe.scala-logging:scala-logging_2.11:3.7.2",
+    sha1 = "5015fe84c5aec4f8eb3daa2d1663d447d65f8c02",
 )
 
 maven_jar(
@@ -382,21 +388,33 @@ maven_jar(
 )
 
 maven_jar(
-    name = "org_slf4j_slf4j_log4j12",
-    artifact = "org.slf4j:slf4j-log4j12:1.7.22",
-    sha1 = "3bb94b26c2ad2f8755302aa9bf96f03b23a76639",
-)
-
-maven_jar(
     name = "log4j_log4j",
     artifact = "log4j:log4j:1.2.17",
     sha1 = "5af35056b4d257e4b64b9e8069c0746e8b08629f",
 )
 
 maven_jar(
+    name = "org_apache_commons_commons_lang3",
+    artifact = "org.apache.commons:commons-lang3:3.4",
+    sha1 = "5fe28b9518e58819180a43a850fbc0dd24b7c050",
+)
+
+maven_jar(
     name = "org_bytedeco_javacpp",
     artifact = "org.bytedeco:javacpp:1.4",
     sha1 = "6e9062d70f863a4e55b3827d42d302f94e89d7e5",
+)
+
+maven_jar(
+    name = "org_bytedeco_javacpp_presets_ffmpeg",
+    artifact = "org.bytedeco.javacpp-presets:ffmpeg:3.4.1-1.4",
+    sha1 = "bf46f2d74014475c948f1a8e063fae50ab724520",
+)
+
+maven_jar(
+    name = "org_bytedeco_javacpp_presets_opencv",
+    artifact = "org.bytedeco.javacpp-presets:opencv:3.4.0-1.4",
+    sha1 = "b82eeed2295f30369044b2520937d764efeb3e1e",
 )
 
 maven_jar(
@@ -412,25 +430,33 @@ maven_jar(
 )
 
 maven_jar(
-    name = "org_bytedeco_javacpp_presets_opencv",
-    artifact = "org.bytedeco.javacpp-presets:opencv:3.4.0-1.4",
-    sha1 = "b82eeed2295f30369044b2520937d764efeb3e1e",
-)
-
-local_repository(
-    name = "org_bytedeco_javacpp_presets_opencv_linux_x86_64",
-    path = "third_party/javacpp/opencv",
+    name = "org_scalacheck_scalacheck",
+    artifact = "org.scalacheck:scalacheck_2.11:1.13.4",
+    sha1 = "7845816647d5a80d30e5a71862b31f3fee894549",
 )
 
 maven_jar(
-    name = "org_bytedeco_javacpp_presets_ffmpeg",
-    artifact = "org.bytedeco.javacpp-presets:ffmpeg:3.4.1-1.4",
-    sha1 = "bf46f2d74014475c948f1a8e063fae50ab724520",
+    name = "org_scalactic_scalactic",
+    artifact = "org.scalactic:scalactic_2.11:3.0.4",
+    sha1 = "a97b52d531f6010b424813af260ac6ce748e187e",
 )
 
-local_repository(
-    name = "org_bytedeco_javacpp_presets_ffmpeg_linux_x86_64",
-    path = "third_party/javacpp/ffmpeg",
+maven_jar(
+    name = "org_scalatest_scalatest",
+    artifact = "org.scalatest:scalatest_2.11:3.0.4",
+    sha1 = "a0df09cc87bb681674b05a883462b121866784e5",
+)
+
+maven_jar(
+    name = "org_slf4j_slf4j_api",
+    artifact = "org.slf4j:slf4j-api:1.7.25",
+    sha1 = "da76ca59f6a57ee3102f8f9bd9cee742973efa8a",
+)
+
+maven_jar(
+    name = "org_slf4j_slf4j_log4j12",
+    artifact = "org.slf4j:slf4j-log4j12:1.7.22",
+    sha1 = "3bb94b26c2ad2f8755302aa9bf96f03b23a76639",
 )
 
 # Scala toolchain

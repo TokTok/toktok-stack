@@ -1,5 +1,5 @@
 genrule(
-    name = "config",
+    name = "autoreconf",
     srcs = glob([
         "Cfg/*",
         "**/*.in",
@@ -23,6 +23,11 @@ genrule(
 )
 
 cc_library(
+    name = "config",
+    hdrs = ["src/config.h"],
+)
+
+cc_library(
     name = "sndfile",
     srcs = glob(
         [
@@ -30,7 +35,7 @@ cc_library(
             "src/**/*.h",
         ],
         exclude = ["src/test_*.c"],
-    ) + ["src/config.h"],
+    ),
     hdrs = ["src/sndfile.h"],
     copts = [
         "-I$(GENDIR)/external/sndfile/src",
@@ -38,4 +43,5 @@ cc_library(
     ],
     includes = ["src"],
     visibility = ["//visibility:public"],
+    deps = [":config"],
 )

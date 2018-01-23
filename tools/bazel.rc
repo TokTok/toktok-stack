@@ -52,3 +52,11 @@ build --copt="-funsigned-char"
 build --copt="-fno-exceptions"
 build --copt="-fno-rtti"
 build --copt="-DGOOGLE_PROTOBUF_NO_RTTI"
+
+# Use remote caching
+# TODO(iphydf): Make this actually work.
+startup --host_jvm_args=-Dbazel.DigestFunction=sha256
+build --spawn_strategy=remote
+build --strategy=Javac=remote
+build --genrule_strategy=remote
+build --remote_rest_cache=https://bazel.herokuapp.com

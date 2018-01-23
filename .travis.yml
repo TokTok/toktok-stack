@@ -24,11 +24,11 @@ before_install:
 - export PATH=$HOME/bin:$PATH
 
 install:
-- echo "build -j 4 --curses=no --verbose_failures" >> $HOME/.bazelrc
-- echo "test -j 1 --curses=no --verbose_failures" >> $HOME/.bazelrc
+- echo "build --jobs=10 --curses=no --verbose_failures" >> $HOME/.bazelrc
+- echo "test --jobs=10 --curses=no --verbose_failures" >> $HOME/.bazelrc
 
 script:
-- bazel build //qtox/... && (travis_retry bazel test //c-toxcore/... || true)
+- bazel build //qtox/... && bazel test //qtox/...
 
 git:
   depth: 1

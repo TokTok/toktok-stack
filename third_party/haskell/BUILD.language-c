@@ -1,0 +1,23 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+# TODO(iphydf): Enable once https://github.com/tweag/rules_haskell/issues/101 is solved.
+haskell_library(
+    name = "language-c",
+    srcs = glob([
+        "src/**/*.*hs",
+        #"src/**/*.x",
+        #"src/**/*.y",
+    ]),
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+        "containers",
+        "directory",
+        "filepath",
+        "pretty",
+        "process",
+    ],
+    src_strip_prefix = "src",
+    visibility = ["//visibility:public"],
+    deps = ["@haskell_syb//:syb"],
+)

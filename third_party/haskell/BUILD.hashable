@@ -12,7 +12,5 @@ haskell_library(
         "deepseq",
     ],
     visibility = ["//visibility:public"],
-    deps = [
-        "@haskell_text//:text",
-    ],
+    deps = ["@haskell_text//:text"],
 )

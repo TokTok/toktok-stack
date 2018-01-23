@@ -28,20 +28,17 @@ cc_library(
     srcs = glob([
         "lib/**/*.c",
         "lib/**/*.h",
-    ]) + ["lib/curl_config.h"],
-    hdrs = glob([
-        "include/**/*.h",
     ]),
+    hdrs = glob(["include/**/*.h"]),
     copts = [
         "-DBUILDING_LIBCURL",
         "-DHAVE_CONFIG_H",
+        "-Iexternal/toktok/third_party/curl",
         "-I$(GENDIR)/external/curl/lib",
         "-Iexternal/curl/lib",
         "-w",  # Disable all warnings.
     ],
-    includes = [
-        "include",
-    ],
+    includes = ["include"],
     linkopts = [
         "-llber",
         "-lldap",
@@ -49,4 +46,5 @@ cc_library(
         "-lz",
     ],
     visibility = ["//visibility:public"],
+    deps = ["@toktok//third_party/curl:curl_config"],
 )

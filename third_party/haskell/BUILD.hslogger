@@ -6,7 +6,7 @@ haskell_library(
     compiler_flags = [
         #"-XDeriveDataTypeable",
         #"-XRankNTypes",
-    "-XCPP",
+        "-XCPP",
         #"-XFlexibleInstances",
         #"-XFlexibleContexts",
     ],

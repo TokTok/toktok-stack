@@ -141,21 +141,20 @@ ASSRCS = [
 
 ASOBJS = [src[:-3] + "o" for src in ASSRCS]
 
-genrule(
-    name = "assemblies",
-    srcs = ASSRCS + [
-        "config.asm",
-    ],
-    outs = ASOBJS,
-    cmd = "\n".join([
-        "for src in {assrcs}; do".format(
-            assrcs = " ".join(["$(location {})".format(src) for src in ASSRCS]),
-        ),
-        "  yasm {asopts} -o $(GENDIR)/$${{src%.asm}}.o $$src".format(
-            asopts = " ".join(ASOPTS),
-        ),
-        "done",
-    ]),
+[genrule(
+    name = src[:-4] + "_asm",
+    srcs = ASSRCS + ["config.asm"],
+    outs = [src[:-4] + ".o"],
+    cmd = "yasm %s -o $@ $(location %s)" % (
+        " ".join(ASOPTS),
+        src,
+    ),
+) for src in ASSRCS]
+
+cc_library(
+    name = "asm_code",
+    srcs = ASOBJS,
+    linkstatic = True,  # XXX Why can't build .so?
 )
 
 genrule(
@@ -272,12 +271,6 @@ cc_library(
 cc_library(
     name = "headers",
     hdrs = glob(["**/*.h"]),
-)
-
-cc_library(
-    name = "asm_code",
-    srcs = ASOBJS,
-    linkstatic = True,  # XXX Why can't build .so?
 )
 
 cc_library(
