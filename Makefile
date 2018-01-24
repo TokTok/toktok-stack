@@ -16,3 +16,6 @@ $(CURDIR)/%: $(CACHE)/%
 .PRECIOUS: $(CACHE)/%
 $(CACHE)/%:
 	mkdir -p $@
+
+haskell:
+	stack build --extra-lib-dirs=$(PWD)/bazel-bin/c-toxcore/toxcore

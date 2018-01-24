@@ -72,7 +72,7 @@
 	url = https://github.com/TokTok/toktok-android
 [submodule "toxic"]
 	path = toxic
-	url = https://github.com/iphydf/toxic
+	url = https://github.com/TokTok/toxic
 [submodule "website"]
 	path = website
 	url = https://github.com/TokTok/website
