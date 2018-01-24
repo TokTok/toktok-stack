@@ -29,14 +29,11 @@ build --linkopt="-Wl,--warn-common"
 
 build --strict_java_deps=ERROR
 
-build --strategy=Scalac=worker
-test --strategy=Scalac=worker
-
 # Address sanitizer.
 build:asan --copt="-fsanitize=address"
 build:asan --linkopt="-fsanitize=address"
 
-# Workaround for Go, because it can't deal with colours when compiling the
+# XXX: Workaround for Go, because it can't deal with colours when compiling the
 # stdlib. It doesn't look at per_file_copt, so we can't disable colours for the
 # Go stdlib, but we can enable it for everything else.
 #build --copt="-fdiagnostics-color=always"
@@ -54,9 +51,9 @@ build --copt="-fno-rtti"
 build --copt="-DGOOGLE_PROTOBUF_NO_RTTI"
 
 # Use remote caching
-# TODO(iphydf): Make this actually work.
 startup --host_jvm_args=-Dbazel.DigestFunction=sha256
 build --spawn_strategy=remote
 build --strategy=Javac=remote
+build --strategy=Scalac=remote
 build --genrule_strategy=remote
 build --remote_rest_cache=https://bazel.herokuapp.com

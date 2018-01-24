@@ -344,8 +344,18 @@ new_http_archive(
     url = "http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28.tar.gz",
 )
 
+new_http_archive(
+    name = "yasm",
+    build_file = "third_party/BUILD.yasm",
+    sha256 = "f708be0b7b8c59bc1dbe7134153cd2f31faeebaa8eec48676c10f972a1f13df3",
+    #strip_prefix = "yasm-1.3.0",
+    url = "https://github.com/yasm/yasm/archive/v1.3.0.tar.gz",
+)
+
 # Maven dependencies
 # =========================================================
+
+load("@bazel_tools//tools/build_defs/repo:maven_rules.bzl", "maven_aar")
 
 local_repository(
     name = "org_bytedeco_javacpp_presets_ffmpeg_linux_x86_64",
@@ -355,6 +365,30 @@ local_repository(
 local_repository(
     name = "org_bytedeco_javacpp_presets_opencv_linux_x86_64",
     path = "third_party/javacpp/opencv",
+)
+
+maven_aar(
+    name = "com_timehop_stickyheadersrecyclerview_library",
+    artifact = "com.timehop.stickyheadersrecyclerview:library:0.4.3",
+    sha1 = "44a237a0ebff7c7ebb10c79698f97f6d635d0e26",
+)
+
+maven_aar(
+    name = "com_tonicartos_superslim",
+    artifact = "com.tonicartos:superslim:0.4.13",
+    sha1 = "b05a0931a2d97fd370dc4ae6e003a9f57eada69a",
+)
+
+maven_aar(
+    name = "de_hdodenhof_circleimageview",
+    artifact = "de.hdodenhof:circleimageview:2.1.0",
+    sha1 = "c0fcd515432ccb654bc5b44af60320703880a0f6",
+)
+
+maven_aar(
+    name = "com_sothree_slidinguppanel_library",
+    artifact = "com.sothree.slidinguppanel:library:3.4.0",
+    sha1 = "a46c103238d666c097f6fefcffb479ebb450d365",
 )
 
 maven_jar(
@@ -454,6 +488,12 @@ maven_jar(
 )
 
 maven_jar(
+    name = "org_slf4j_slf4j_android",
+    artifact = "org.slf4j:slf4j-android:1.7.22",
+    sha1 = "74825860214ed889b38d0fc865b89af18f4e95a7",
+)
+
+maven_jar(
     name = "org_slf4j_slf4j_log4j12",
     artifact = "org.slf4j:slf4j-log4j12:1.7.22",
     sha1 = "3bb94b26c2ad2f8755302aa9bf96f03b23a76639",
@@ -482,6 +522,22 @@ scala_repositories()
 
 scala_proto_repositories()
 
+git_repository(
+    name = "gmaven_rules",
+    commit = "bceb76b27506392a39f8c5eacaa0eabc5752fe5a",
+    remote = "https://github.com/aj-michael/gmaven_rules",
+)
+
+load("@gmaven_rules//:gmaven.bzl", "gmaven_rules")
+
+gmaven_rules()
+
+android_sdk_repository(
+    name = "androidsdk",
+    api_level = 27,
+    build_tools_version = "27.0.3",
+)
+
 # Qt5
 # =========================================================
 
@@ -489,4 +545,19 @@ new_local_repository(
     name = "qt",
     build_file = "third_party/BUILD.qt",
     path = "/opt/qt59",
+)
+
+# Python
+# =========================================================
+
+load("//tools/workspace:python.bzl", "python_repository")
+
+python_repository(
+    name = "python2",
+    version = "2.7",
+)
+
+python_repository(
+    name = "python3",
+    version = "3.5",
 )

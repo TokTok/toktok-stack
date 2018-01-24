@@ -1,5 +1,8 @@
-/_install
+# Build artifacts.
 /.stack-work
 /bazel-*
 /cov-analysis*
 *.jar
+
+# Work-in-progress directory.
+/wip

@@ -1132,6 +1132,9 @@ cc_library(
         "libavcodec/zmbv.c",
         "libavcodec/zmbvenc.c",
         "libavdevice/alldevices.c",
+        "libavdevice/alsa.c",
+        "libavdevice/alsa_dec.c",
+        "libavdevice/alsa_enc.c",
         "libavdevice/avdevice.c",
         "libavdevice/fbdev_common.c",
         "libavdevice/fbdev_dec.c",
@@ -1969,6 +1972,7 @@ cc_library(
     ],
     includes = ["."],
     linkopts = [
+        "-lasound",
         "-lbz2",
         "-ldl",
         "-llzma",

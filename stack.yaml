@@ -1,15 +1,15 @@
 flags: {}
 packages:
-- bytestring-arbitrary/
 - hs-msgpack/
 - hs-msgpack-rpc/
 - hs-msgpack-types/
 - hs-schema/
 - hs-toxcore/
 - hs-toxcore-c/
-- github/
 - github-tools/
 - tokstyle/
+- wip/bytestring-arbitrary/
+- wip/github/
 extra-deps:
 - data-default-instances-base-0.1.0.1
 - saltine-0.0.1.0

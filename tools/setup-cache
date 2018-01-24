@@ -29,3 +29,9 @@ if [ -f "CMakeLists.txt" ]; then
   rm -rf _build
   ln -s ../../../.cache/toktok-stack/$DIR/_build _build
 fi
+
+if [ -f "build.gradle" ]; then
+  mkdir -p ../../../.cache/toktok-stack/$DIR/build
+  rm -rf _build
+  ln -s ../../../.cache/toktok-stack/$DIR/build build
+fi

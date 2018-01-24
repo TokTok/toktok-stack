@@ -17,6 +17,6 @@ def cc_library(name, hdrs=[], srcs=[], deps=[], visibility=None, **kwargs):
   native.cc_binary(
       name = "%s_bin" % name,
       srcs = hdrs + srcs,
-      deps = deps + ["//tools:empty_main"],
+      deps = deps + ["@toktok//tools:empty_main"],
       **kwargs
   )
