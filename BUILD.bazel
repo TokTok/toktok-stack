@@ -7,10 +7,6 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_toolchain")
 gazelle(
     name = "gazelle",
     command = "fix",
-    extra_args = [
-        "-build_file_name",
-        "BUILD",
-    ],
     prefix = "github.com/TokTok",
 )
 
