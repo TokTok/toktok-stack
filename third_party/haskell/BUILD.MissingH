@@ -3,7 +3,11 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "MissingH",
     srcs = glob(["src/**/*.*hs"]),
-    compiler_flags = ["-XCPP"],
+    compiler_flags = [
+        "-XCPP",
+        "-XMultiParamTypeClasses",
+        "-XScopedTypeVariables",
+    ],
     prebuilt_dependencies = [
         "base",
         "directory",
@@ -15,6 +19,8 @@ haskell_library(
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_hslogger//:hslogger",
+        "@haskell_network//:network",
+        "@haskell_old_time//:old-time",
         "@haskell_parsec//:parsec",
     ],
 )

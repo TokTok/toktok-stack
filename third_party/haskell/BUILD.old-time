@@ -1,0 +1,42 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+genrule(
+    name = "config",
+    srcs = [
+        "configure",
+        "install-sh",
+        "config.sub",
+        "config.guess",
+        "include/HsTime.h",
+        "include/HsTimeConfig.h.in",
+    ],
+    outs = ["include/HsTimeConfig.h"],
+    cmd = """
+        cd `dirname $(location configure)`
+        ./configure
+        DIR=`pwd`
+        cd -
+        cp $$DIR/include/HsTimeConfig.h $@
+    """,
+)
+
+cc_library(
+    name = "cbits",
+    srcs = [
+        "include/HsTime.h",
+        ":config",
+    ],
+    includes = ["include"],
+)
+
+haskell_library(
+    name = "old-time",
+    srcs = glob(["System/Time.hsc"]),
+    prebuilt_dependencies = [
+        "base",
+        #"bytestring",
+        #"ghc-prim",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [":cbits"],
+)

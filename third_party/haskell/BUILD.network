@@ -1,23 +1,64 @@
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 
+genrule(
+    name = "config",
+    srcs = [
+        "configure",
+        "install-sh",
+        "config.sub",
+        "config.guess",
+        "network.buildinfo.in",
+        "include/HsNet.h",
+        "include/HsNetworkConfig.h.in",
+    ],
+    outs = ["include/HsNetworkConfig.h"],
+    cmd = """
+        cd `dirname $(location configure)`
+        ./configure
+        DIR=`pwd`
+        cd -
+        cp $$DIR/include/HsNetworkConfig.h $@
+        # XXX: Hack because _GNU_SOURCE doesn't get propagated to hsc2hs.
+        sed -i -e 's|#define HAVE_STRUCT_UCRED 1||' $@
+    """,
+)
+
+cc_library(
+    name = "cbits",
+    srcs = glob(["cbits/*.c"]),
+    hdrs = [
+        "include/HsNet.h",
+        "include/HsNetworkConfig.h",
+    ],
+    includes = ["include"],
+    defines = ["_GNU_SOURCE"],
+    deps = ["@my_ghc//:ffi"],
+)
+
 haskell_library(
     name = "network",
     srcs = [
         "Network.hs",
         "Network/BSD.hsc",
         "Network/Socket.hsc",
-        "Network/Socket/ByteString.hs",
-        "Network/Socket/ByteString/IOVec.hs",
+        "Network/Socket/ByteString.hsc",
+        "Network/Socket/ByteString/IOVec.hsc",
         "Network/Socket/ByteString/Internal.hs",
         "Network/Socket/ByteString/Lazy.hs",
         "Network/Socket/ByteString/Lazy/Posix.hs",
-        "Network/Socket/ByteString/MsgHdr.hs",
-        "Network/Socket/Internal.hs",
-        "Network/Socket/Types.hs",
+        "Network/Socket/ByteString/MsgHdr.hsc",
+        "Network/Socket/Internal.hsc",
+        "Network/Socket/Types.hsc",
+    ],
+    compiler_flags = [
+        "-XCPP",
+        # XXX: Hack because for some reason it doesn't end up being defined.
+        "-DCALLCONV=ccall",
     ],
     prebuilt_dependencies = [
         "base",
         "bytestring",
     ],
     visibility = ["//visibility:public"],
+    deps = [":cbits"],
 )

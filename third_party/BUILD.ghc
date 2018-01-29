@@ -12,3 +12,10 @@ filegroup(
     ],
     visibility = ["//visibility:public"],
 )
+
+cc_library(
+    name = "ffi",
+    hdrs = glob(["lib/ghc/include/**/*.h"]),
+    includes = ["lib/ghc/include"],
+    visibility = ["//visibility:public"],
+)

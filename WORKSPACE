@@ -18,9 +18,9 @@ http_archive(
 
 http_archive(
     name = "io_tweag_rules_haskell",
-    sha256 = "f473773d19908970e5178bcef0e8a8528d13c1282805300e1ee1f2a7cace1242",
-    strip_prefix = "rules_haskell-14e546aff161fcb6ed00a3f5da660d35da921e74",
-    urls = ["https://github.com/tweag/rules_haskell/archive/14e546aff161fcb6ed00a3f5da660d35da921e74.tar.gz"],
+    sha256 = "66bea136ce29a0618937acd8d4d37013e854ae3ada4b3f9e1a5b81eeeff09b88",
+    strip_prefix = "rules_haskell-7103064ae2b272546140530f6f046cbfd7ded68d",
+    urls = ["https://github.com/tweag/rules_haskell/archive/7103064ae2b272546140530f6f046cbfd7ded68d.tar.gz"],
 )
 
 load("@io_tweag_rules_haskell//haskell:repositories.bzl", "haskell_repositories")
@@ -113,6 +113,14 @@ new_http_archive(
     sha256 = "776668b0a969d0d57ebabf78943cfc21a1aaf7e5e2ae6288322292125c9440f5",
     strip_prefix = "network-2.6.3.3",
     url = "https://hackage.haskell.org/package/network-2.6.3.3/network-2.6.3.3.tar.gz",
+)
+
+new_http_archive(
+    name = "haskell_old_time",
+    build_file = "third_party/haskell/BUILD.old-time",
+    sha256 = "1ccb158b0f7851715d36b757c523b026ca1541e2030d02239802ba39b4112bc1",
+    strip_prefix = "old-time-1.1.0.3",
+    url = "https://hackage.haskell.org/package/old-time-1.1.0.3/old-time-1.1.0.3.tar.gz",
 )
 
 new_http_archive(

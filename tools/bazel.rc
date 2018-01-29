@@ -50,10 +50,12 @@ build --copt="-fno-exceptions"
 build --copt="-fno-rtti"
 build --copt="-DGOOGLE_PROTOBUF_NO_RTTI"
 
-# Use remote caching
-startup --host_jvm_args=-Dbazel.DigestFunction=sha256
-build --spawn_strategy=remote
-build --strategy=Javac=remote
-build --strategy=Scalac=remote
-build --genrule_strategy=remote
-build --remote_rest_cache=https://bazel.herokuapp.com
+# Use remote caching. This is disabled by default, because we can't actually
+# afford to host this continuously. It's been tested, and works really well, so
+# if you have your own remote cache, enable it here.
+#startup --host_jvm_args=-Dbazel.DigestFunction=sha256
+#build --spawn_strategy=remote
+#build --strategy=Javac=remote
+#build --strategy=Scalac=remote
+#build --genrule_strategy=remote
+#build --remote_rest_cache=https://bazel.herokuapp.com
