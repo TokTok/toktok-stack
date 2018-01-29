@@ -17,6 +17,10 @@ addons:
     - qt59tools
     - yasm
 
+cache:
+  directories:
+  - $HOME/.cache/bazel
+
 before_install:
 - wget https://github.com/bazelbuild/bazel/releases/download/0.9.0/bazel-0.9.0-without-jdk-installer-linux-x86_64.sh
 - sha256sum -c tools/bazel-0.9.0-without-jdk-installer-linux-x86_64.sh.sha256
