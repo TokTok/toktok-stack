@@ -13,7 +13,7 @@ genrule(
     outs = ["lib/curl_config.h"],
     cmd = """
         cd `dirname $(location configure)`
-        ./configure
+        ./configure --disable-ldap
         sed -i -e 's/SIZEOF_CURL_OFF_T 0/SIZEOF_CURL_OFF_T 8/' lib/curl_config.h
         DIR=`pwd`
         cd -
@@ -25,10 +25,13 @@ genrule(
 
 cc_library(
     name = "curl",
-    srcs = glob([
-        "lib/**/*.c",
-        "lib/**/*.h",
-    ]),
+    srcs = glob(
+        [
+            "lib/**/*.c",
+            "lib/**/*.h",
+        ],
+        exclude = ["lib/openldap.c"],
+    ),
     hdrs = glob(["include/**/*.h"]),
     copts = [
         "-DBUILDING_LIBCURL",
@@ -40,11 +43,14 @@ cc_library(
     ],
     includes = ["include"],
     linkopts = [
-        "-llber",
-        "-lldap",
+        "-lcrypto",
+        "-lidn2",
         "-lpthread",
-        "-lz",
+        "-lssl",
     ],
     visibility = ["//visibility:public"],
-    deps = ["@toktok//third_party/curl:curl_config"],
+    deps = [
+        "@toktok//third_party/curl:curl_config",
+        "@zlib",
+    ],
 )

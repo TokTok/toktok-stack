@@ -76,3 +76,6 @@
 [submodule "website"]
 	path = website
 	url = https://github.com/TokTok/website
+[submodule "toxins"]
+	path = toxins
+	url = https://github.com/TokTok/toxins

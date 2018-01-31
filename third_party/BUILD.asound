@@ -1,0 +1,12 @@
+cc_library(
+    name = "asound",
+    srcs = glob(["lib/x86_64-linux-gnu/libasound.so*"]),
+    hdrs = [
+        "include/alsa/asoundef.h",
+        "include/alsa/asoundlib.h",
+        "include/alsa/global.h",
+        "include/alsa/version.h",
+    ],
+    includes = ["include"],
+    visibility = ["//visibility:public"],
+)

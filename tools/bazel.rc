@@ -19,7 +19,6 @@ build --per_file_copt=".*-avx2\.c@-mavx2"
 
 build --copt="-march=native"
 build --copt="-O3"
-build --copt="-g3"
 
 build --linkopt="-Wl,-z,noexecstack"
 #build --linkopt="-Wl,--fatal-warnings"
@@ -59,3 +58,9 @@ build --copt="-DGOOGLE_PROTOBUF_NO_RTTI"
 #build --strategy=Scalac=remote
 #build --genrule_strategy=remote
 #build --remote_rest_cache=https://bazel.herokuapp.com
+
+# Use musl instead of glibc.
+#build --copt="-nostdinc"
+#build --copt="-nostdlib"
+#build --copt="-isystem/usr/include/x86_64-linux-musl"
+#build --copt="-isystem/usr/include/clang/3.8/include"

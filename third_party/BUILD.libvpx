@@ -70,6 +70,7 @@ genrule(
         "vpx_version.h",
     ],
     cmd = """
+        export PATH=$$PWD/$$(dirname $(location @yasm)):$$PATH
         cd `dirname $(location configure)`
         ./configure --enable-pic
         make vpx_version.h
@@ -79,6 +80,7 @@ genrule(
           cp $$DIR/`basename $$i` $$i
         done
     """,
+    tools = ["@yasm"],
 )
 
 genrule(
@@ -92,11 +94,12 @@ genrule(
         "for src in {assrcs}; do".format(
             assrcs = " ".join(["$(location {})".format(src) for src in ASSRCS]),
         ),
-        "  yasm {asopts} -o $(GENDIR)/$${{src%.asm}}.o $$src".format(
+        "  $(location @yasm) {asopts} -o $(GENDIR)/$${{src%.asm}}.o $$src".format(
             asopts = " ".join(ASOPTS),
         ),
         "done",
     ]),
+    tools = ["@yasm"],
 )
 
 cc_library(

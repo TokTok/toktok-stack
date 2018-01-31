@@ -145,10 +145,11 @@ ASOBJS = [src[:-3] + "o" for src in ASSRCS]
     name = src[:-4] + "_asm",
     srcs = ASSRCS + ["config.asm"],
     outs = [src[:-4] + ".o"],
-    cmd = "yasm %s -o $@ $(location %s)" % (
+    cmd = "$(location @yasm) %s -o $@ $(location %s)" % (
         " ".join(ASOPTS),
         src,
     ),
+    tools = ["@yasm"],
 ) for src in ASSRCS]
 
 cc_library(
@@ -176,6 +177,7 @@ genrule(
         "libavutil/avconfig.h",
     ],
     cmd = """
+        export PATH=$$PWD/$$(dirname $(location @yasm)):$$PATH
         cd `dirname $(location configure)`
         ./configure --disable-v4l2_m2m
         DIR=`pwd`
@@ -184,6 +186,7 @@ genrule(
           cp $$DIR/`echo $$i | sed -e 's|$(GENDIR)/external/ffmpeg/||'` $$i
         done
     """,
+    tools = ["@yasm"],
 )
 
 genrule(
@@ -1973,15 +1976,12 @@ cc_library(
     includes = ["."],
     linkopts = [
         "-lasound",
-        "-lbz2",
         "-ldl",
-        "-llzma",
         "-lpthread",
         "-lxcb",
         "-lxcb-shape",
         "-lxcb-shm",
         "-lxcb-xfixes",
-        "-lz",
     ],
     linkstatic = True,  # XXX Why can't build .so?
     visibility = ["//visibility:public"],
@@ -1989,5 +1989,8 @@ cc_library(
         ":asm_code",
         ":headers",
         ":internal",
+        "@bzip2",
+        "@libxz",
+        "@zlib",
     ],
 )
