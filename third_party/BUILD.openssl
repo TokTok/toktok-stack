@@ -1,0 +1,232 @@
+genrule(
+    name = "regen_config",
+    srcs = glob(["**"]),
+    outs = [
+        "config.log",
+        "include/openssl/opensslconf.h",
+    ],
+    cmd = """
+        cd `dirname $(location config)`
+        ./config > config.log
+        DIR=`pwd`
+        cd -
+        for i in $(OUTS); do
+          cp $$DIR/`echo $$i | sed -e 's|$(GENDIR)/external/openssl/||'` $$i
+        done
+    """,
+)
+
+CRYPTO = [
+    "aes",
+    "asn1",
+    "bio",
+    "bn",
+    "buffer",
+    "camellia",
+    "cast",
+    "cmac",
+    "cms",
+    "comp",
+    "conf",
+    "des",
+    "dh",
+    "dsa",
+    "dso",
+    "ec",
+    "ecdh",
+    "ecdsa",
+    "engine",
+    "err",
+    "evp",
+    "hmac",
+    "idea",
+    "lhash",
+    "md4",
+    "md5",
+    "mdc2",
+    "modes",
+    "objects",
+    "ocsp",
+    "pem",
+    "pkcs12",
+    "pkcs7",
+    "pqueue",
+    "rand",
+    "rc2",
+    "rc4",
+    "ripemd",
+    "rsa",
+    "seed",
+    "sha",
+    "srp",
+    "stack",
+    "ts",
+    "txt_db",
+    "ui",
+    "whrlpool",
+    "x509",
+    "x509v3",
+]
+
+HEADERS = ["crypto/%s/%s.h" % (c, c) for c in CRYPTO] + [
+    "crypto/asn1/asn1_mac.h",
+    "crypto/asn1/asn1t.h",
+    "crypto/bf/blowfish.h",
+    "crypto/conf/conf_api.h",
+    "crypto/crypto.h",
+    "crypto/des/des_old.h",
+    "crypto/krb5/krb5_asn.h",
+    "crypto/objects/obj_mac.h",
+    "crypto/opensslv.h",
+    "crypto/ossl_typ.h",
+    "crypto/pem/pem2.h",
+    "crypto/stack/safestack.h",
+    "crypto/symhacks.h",
+    "crypto/ui/ui_compat.h",
+    "crypto/x509/x509_vfy.h",
+    "e_os2.h",
+    "ssl/dtls1.h",
+    "ssl/kssl.h",
+    "ssl/srtp.h",
+    "ssl/ssl23.h",
+    "ssl/ssl2.h",
+    "ssl/ssl3.h",
+    "ssl/ssl.h",
+    "ssl/tls1.h",
+]
+
+genrule(
+    name = "copy_headers",
+    srcs = HEADERS,
+    outs = ["include/openssl/" + (hdr[hdr.rindex("/") + 1:] if ("/" in hdr) else hdr) for hdr in HEADERS],
+    cmd = "\n".join(["cp $(location %s) $(location %s)" % (
+        hdr,
+        "include/openssl/" + (hdr[hdr.rindex("/") + 1:] if ("/" in hdr) else hdr),
+    ) for hdr in HEADERS]),
+)
+
+TEXTUAL_HDRS = [
+    "crypto/LPdir*.c",
+    "crypto/bf/bf_cbc.c",
+    "crypto/cast/castopts.c",
+    "crypto/des/des_opts.c",
+    "crypto/des/ncbc_enc.c",
+    "crypto/ec/ecp_nistz256_table.c",
+    "crypto/pkcs7/pk7_enc.c",
+    "engines/e_*_err.c",
+]
+
+cc_library(
+    name = "textual_hdrs",
+    hdrs = glob(TEXTUAL_HDRS) + [
+        "crypto/bf/bf_enc.c",
+        "crypto/cast/c_enc.c",
+        "crypto/des/cbc_enc.c",
+        "crypto/des/des_enc.c",
+    ],
+)
+
+PERLASM = [
+    "crypto/x86_64cpuid.s",
+    "crypto/camellia/asm/cmll-x86_64.s",
+    "crypto/ec/asm/ecp_nistz256-x86_64.s",
+    "crypto/whrlpool/asm/wp-x86_64.s",
+    "crypto/md5/asm/md5-x86_64.s",
+    "crypto/rc4/asm/rc4-md5-x86_64.s",
+    "crypto/rc4/asm/rc4-x86_64.s",
+    "crypto/sha/asm/sha1-x86_64.s",
+    "crypto/sha/asm/sha1-mb-x86_64.s",
+    "crypto/sha/asm/sha512-x86_64.s",
+    "crypto/sha/asm/sha256-mb-x86_64.s",
+    "crypto/modes/asm/ghash-x86_64.s",
+    "crypto/modes/asm/aesni-gcm-x86_64.s",
+    "crypto/bn/asm/rsaz-x86_64.s",
+]
+
+[genrule(
+    name = asm[asm.rindex("/") + 1:-2].replace("-", "_"),
+    srcs = glob(["crypto/**/*.pl"]),
+    outs = [asm],
+    cmd = "perl $(location %s.pl) elf > $@" % asm[:-2],
+) for asm in PERLASM]
+
+TOOLS = [
+    "crypto/des/des.c",
+    "crypto/des/rpw.c",
+    "crypto/md4/md4.c",
+    "crypto/md5/md5.c",
+    "crypto/ripemd/rmd160.c",
+    "crypto/sha/sha1.c",
+    "crypto/sha/sha256t.c",
+    "crypto/sha/sha512t.c",
+    "crypto/sha/sha.c",
+    "engines/ccgost/gostsum.c",
+]
+
+[cc_binary(
+    name = tool[:-2],
+    srcs = [tool],
+    deps = [":openssl"],
+    copts = ["-Iexternal/openssl/crypto"],
+) for tool in TOOLS]
+
+cc_library(
+    name = "openssl",
+    srcs = PERLASM + glob(
+        ["**/*.h"] + ["crypto/%s/*.c" % c for c in CRYPTO] + [
+            "crypto/*.c",
+            "crypto/bf/*.c",
+            "engines/*.c",
+            "engines/ccgost/*.c",
+            "ssl/*.c",
+        ],
+        exclude = TEXTUAL_HDRS + TOOLS + [
+            "**/*test.c",
+            "**/*_spd.c",
+            "**/*speed.c",
+            "crypto/LPdir*.c",
+            "crypto/aes/aes_core.c",
+            "crypto/aes/aes_misc.c",
+            "crypto/armcap.c",
+            "crypto/bf/bf_opts.c",
+            "crypto/bio/bss_rtcp.c",
+            "crypto/bn/exp.c",
+            "crypto/bn/vms-helper.c",
+            "crypto/camellia/camellia.c",
+            "crypto/camellia/cmll_cbc.c",
+            "crypto/conf/cnf_save.c",
+            "crypto/des/read_pwd.c",
+            "crypto/dh/p*.c",
+            "crypto/dsa/dsagen.c",
+            "crypto/evp/e_dsa.c",
+            "crypto/mem_clr.c",
+            "crypto/ppccap.c",
+            "crypto/rc2/tab.c",
+            "crypto/rc4/rc4.c",
+            "crypto/rc4/rc4_enc.c",
+            "crypto/rc4/rc4_skey.c",
+            "crypto/s390xcap.c",
+            "crypto/sparcv9cap.c",
+            "crypto/whrlpool/wp_block.c",
+            "crypto/x509v3/v3conf.c",
+            "crypto/x509v3/v3prin.c",
+            "ssl/ssl_task.c",
+        ],
+    ),
+    hdrs = [
+        "include/openssl/opensslconf.h",
+        ":copy_headers",
+    ],
+    copts = [
+        "-w",
+        "-DNO_WINDOWS_BRAINDEATH",
+        "-Iexternal/openssl",
+        "-Iexternal/openssl/crypto/evp",
+        "-Iexternal/openssl/crypto/modes",
+        "-Iexternal/openssl/crypto/asn1",
+        "-Iexternal/openssl/crypto",
+    ],
+    includes = ["include"],
+    visibility = ["//visibility:public"],
+    deps = [":textual_hdrs"],
+)

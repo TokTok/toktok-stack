@@ -1,0 +1,25 @@
+licenses(["notice"])
+
+exports_files(
+    srcs = [
+        "libs-x86_64-linux-gcc.mk",
+        "vpx_config.asm",
+        "vpx_config.h",
+        "vpx_version.h",
+    ],
+    visibility = ["@libvpx//:__pkg__"],
+)
+
+cc_library(
+    name = "vpx_config",
+    hdrs = ["vpx_config.h"],
+    includes = ["."],
+    visibility = ["@libvpx//:__pkg__"],
+)
+
+cc_library(
+    name = "vpx_version",
+    hdrs = ["vpx_version.h"],
+    includes = ["."],
+    visibility = ["@libvpx//:__pkg__"],
+)

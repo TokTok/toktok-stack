@@ -1,0 +1,169 @@
+genrule(
+    name = "regen_config",
+    srcs = glob([
+        "build-aux/*",
+        "**/*.in",
+    ]) + [
+        "configure",
+    ],
+    outs = [
+        "config.h",
+        "configure.out",
+        "lib/idn2.h",
+    ],
+    cmd = """
+        cd `dirname $(location configure)`
+        ./configure > configure.out
+        DIR=`pwd`
+        cd -
+        for i in $(OUTS); do
+          cp $$DIR/`echo $$i | sed -e 's|$(GENDIR)/external/libidn2/||'` $$i
+        done
+    """,
+)
+
+[genrule(
+    name = "copy_%s" % hdr,
+    srcs = ["unistring/%s.in.h" % hdr],
+    outs = ["unistring/%s.h" % hdr],
+    cmd = "cp $< $@",
+) for hdr in [
+    "uniconv",
+    "unictype",
+    "uninorm",
+    "unistr",
+    "unitypes",
+]]
+
+genrule(
+    name = "configmake",
+    outs = ["configmake.h"],
+    cmd = """
+    echo '#define LIBDIR "/usr/lib"' > $@
+    """,
+)
+
+cc_library(
+    name = "libunistring",
+    srcs = [
+        "config.h",
+        "configmake.h",
+        "unistring/array-mergesort.h",
+        "unistring/c-ctype.h",
+        "unistring/c-strcase.h",
+        "unistring/c-strcasecmp.c",
+        "unistring/c-strcaseeq.h",
+        "unistring/localcharset.c",
+        "unistring/localcharset.h",
+        "unistring/malloca.c",
+        "unistring/malloca.h",
+        "unistring/striconveh.c",
+        "unistring/striconveh.h",
+        "unistring/striconveha.c",
+        "unistring/uniconv/u-strconv-from-enc.h",
+        "unistring/uniconv/u8-conv-from-enc.c",
+        "unistring/uniconv/u8-strconv-from-enc.c",
+        "unistring/uniconv/u8-strconv-from-locale.c",
+        "unistring/unictype/bidi_of.c",
+        "unistring/unictype/bidi_of.h",
+        "unistring/unictype/bitmap.h",
+        "unistring/unictype/categ_M.c",
+        "unistring/unictype/categ_M.h",
+        "unistring/unictype/categ_none.c",
+        "unistring/unictype/categ_of.c",
+        "unistring/unictype/categ_of.h",
+        "unistring/unictype/categ_test.c",
+        "unistring/unictype/combiningclass.c",
+        "unistring/unictype/combiningclass.h",
+        "unistring/unictype/joiningtype_of.c",
+        "unistring/unictype/joiningtype_of.h",
+        "unistring/unictype/scripts.c",
+        "unistring/unictype/scripts.h",
+        "unistring/unictype/scripts_byname.h",
+        "unistring/uninorm/canonical-decomposition.c",
+        "unistring/uninorm/composition.c",
+        "unistring/uninorm/composition-table.h",
+        "unistring/uninorm/decompose-internal.c",
+        "unistring/uninorm/decompose-internal.h",
+        "unistring/uninorm/decomposition-table.c",
+        "unistring/uninorm/decomposition-table.h",
+        "unistring/uninorm/decomposition-table1.h",
+        "unistring/uninorm/decomposition-table2.h",
+        "unistring/uninorm/nfc.c",
+        "unistring/uninorm/nfd.c",
+        "unistring/uninorm/normalize-internal.h",
+        "unistring/uninorm/u-normalize-internal.h",
+        "unistring/uninorm/u32-normalize.c",
+        "unistring/unistr/u-cpy.h",
+        "unistring/unistr/u-strlen.h",
+        "unistring/unistr/u32-cpy.c",
+        "unistring/unistr/u32-strlen.c",
+        "unistring/unistr/u32-to-u8.c",
+        "unistring/unistr/u8-check.c",
+        "unistring/unistr/u8-mblen.c",
+        "unistring/unistr/u8-mbtouc-aux.c",
+        "unistring/unistr/u8-mbtouc-unsafe-aux.c",
+        "unistring/unistr/u8-mbtoucr.c",
+        "unistring/unistr/u8-prev.c",
+        "unistring/unistr/u8-strlen.c",
+        "unistring/unistr/u8-to-u32.c",
+        "unistring/unistr/u8-uctomb-aux.c",
+        "unistring/verify.h",
+        "unistring/xalloc-oversized.h",
+    ],
+    hdrs = [
+        "unistring/iconveh.h",
+        "unistring/localcharset.h",
+        "unistring/striconveha.h",
+        "unistring/uniconv.h",
+        "unistring/unictype.h",
+        "unistring/uninorm.h",
+        "unistring/unistr.h",
+        "unistring/unitypes.h",
+        "unistring/unused-parameter.h",
+    ],
+    copts = [
+        "-I$(GENDIR)/external/libidn2/unistring",
+        "-Iexternal/libidn2/unistring",
+        "-I$(GENDIR)/external/libidn2",
+        "-Wno-static-in-inline",
+    ],
+)
+
+cc_library(
+    name = "libidn2",
+    srcs = [
+        "config.h",
+        "lib/bidi.c",
+        "lib/bidi.h",
+        "lib/context.c",
+        "lib/context.h",
+        "lib/data.c",
+        "lib/data.h",
+        "lib/error.c",
+        "lib/free.c",
+        "lib/idna.c",
+        "lib/idna.h",
+        "lib/lookup.c",
+        "lib/puny_decode.c",
+        "lib/puny_encode.c",
+        "lib/punycode.h",
+        "lib/tables.c",
+        "lib/tables.h",
+        "lib/tr46map.c",
+        "lib/tr46map.h",
+        "lib/version.c",
+    ],
+    hdrs = ["lib/idn2.h"],
+    copts = [
+        "-I$(GENDIR)/external/libidn2/unistring",
+        "-Iexternal/libidn2/unistring",
+        "-I$(GENDIR)/external/libidn2",
+    ],
+    includes = ["lib"],
+    textual_hdrs = [
+        "lib/tr46map_data.c",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [":libunistring"],
+)

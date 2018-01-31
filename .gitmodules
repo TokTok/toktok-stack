@@ -70,9 +70,9 @@
 [submodule "toktok-android"]
 	path = toktok-android
 	url = https://github.com/TokTok/toktok-android
-[submodule "toxic"]
-	path = toxic
-	url = https://github.com/TokTok/toxic
 [submodule "website"]
 	path = website
 	url = https://github.com/TokTok/website
+[submodule "toxins"]
+	path = toxins
+	url = https://github.com/TokTok/toxins

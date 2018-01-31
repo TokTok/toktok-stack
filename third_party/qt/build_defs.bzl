@@ -106,7 +106,7 @@ def _qt_moc_impl(ctx):
       mnemonic = "CompileMoc",
       progress_message = "Generating Qt MOC source for " + src.basename,
   )
-  return DefaultInfo(files=depset([out]))
+  return DefaultInfo(files = depset([out]))
 
 _qt_moc = rule(
     attrs = {

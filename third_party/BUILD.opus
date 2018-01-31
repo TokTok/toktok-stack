@@ -73,6 +73,7 @@ cc_library(
         "silk",
         "silk/float",
     ],
+    linkopts = ["-lm"],
     visibility = ["//visibility:public"],
     deps = ["@toktok//third_party/opus:config"],
 )

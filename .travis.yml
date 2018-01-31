@@ -4,18 +4,12 @@ dist: trusty
 
 addons:
   apt:
-    sources:
-    - sourceline: 'ppa:beineri/opt-qt593-trusty'
     packages:
     - autopoint
     - libasound2-dev
-    - libconfig-dev
     - libcv-dev
     - libhighgui-dev
     - libopenal-dev
-    - qt59svg
-    - qt59tools
-    - yasm
 
 cache:
   directories:
@@ -30,7 +24,7 @@ before_install:
 - export PATH=$HOME/bin:$PATH
 
 install:
-- echo "build --jobs=10 --curses=no --verbose_failures" >> $HOME/.bazelrc
+- echo "build --jobs=4 --curses=no --verbose_failures" >> $HOME/.bazelrc
 - wget http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/ffmpeg/3.4.1-1.4/ffmpeg-3.4.1-1.4-linux-x86_64.jar -O third_party/javacpp/ffmpeg/jar/ffmpeg-3.4.1-1.4-linux-x86_64.jar
 - wget http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/3.4.0-1.4/opencv-3.4.0-1.4-linux-x86_64.jar -O third_party/javacpp/opencv/jar/opencv-3.4.0-1.4-linux-x86_64.jar
 
@@ -38,13 +32,13 @@ script:
 - TARGETS=""
 - TARGETS="$TARGETS //c-toxcore/..."
 #- TARGETS="$TARGETS //echobot-jvm/..."
-- TARGETS="$TARGETS //go-toxcore-c/..."
+#- TARGETS="$TARGETS //go-toxcore-c/..."
 #- TARGETS="$TARGETS //jtox/..."
 #- TARGETS="$TARGETS //jvm-macros/..."
 #- TARGETS="$TARGETS //jvm-toxcore-api/..."
 #- TARGETS="$TARGETS //jvm-toxcore-c/..."
-- TARGETS="$TARGETS //py_toxcore_c/..."
-- TARGETS="$TARGETS //qtox/..."
+#- TARGETS="$TARGETS //py_toxcore_c/..."
+#- TARGETS="$TARGETS //qtox/..."
 #- TARGETS="$TARGETS //streambot-jvm/..."
 #- TARGETS="$TARGETS //toxic/..."
 - bazel test $TARGETS || bazel build $TARGETS

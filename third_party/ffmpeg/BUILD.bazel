@@ -1,0 +1,18 @@
+licenses(["notice"])
+
+exports_files(
+    srcs = ["config.asm"],
+    visibility = ["@ffmpeg//:__pkg__"],
+)
+
+cc_library(
+    name = "config",
+    hdrs = [
+        "config.h",
+        "libavcodec/bsf_list.c",
+        "libavformat/protocol_list.c",
+        "libavutil/avconfig.h",
+    ],
+    includes = ["."],
+    visibility = ["@ffmpeg//:__pkg__"],
+)

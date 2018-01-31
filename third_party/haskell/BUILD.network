@@ -30,8 +30,8 @@ cc_library(
         "include/HsNet.h",
         "include/HsNetworkConfig.h",
     ],
-    includes = ["include"],
     defines = ["_GNU_SOURCE"],
+    includes = ["include"],
     deps = ["@my_ghc//:ffi"],
 )
 

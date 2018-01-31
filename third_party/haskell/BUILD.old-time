@@ -23,6 +23,7 @@ genrule(
 cc_library(
     name = "cbits",
     srcs = [
+        "cbits/timeUtils.c",
         "include/HsTime.h",
         ":config",
     ],

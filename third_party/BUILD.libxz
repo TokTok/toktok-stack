@@ -1,0 +1,46 @@
+genrule(
+    name = "config",
+    outs = ["dummy/config.h"],
+    cmd = "touch $@",
+)
+
+cc_library(
+    name = "libxz",
+    srcs = glob(
+        [
+            "src/common/*.c",
+            "src/common/*.h",
+            "src/liblzma/**/*.c",
+            "src/liblzma/**/*.h",
+        ],
+        exclude = [
+            "**/*_tablegen.c",
+            "src/liblzma/check/crc*_small.c",
+        ],
+    ) + ["dummy/config.h"],
+    hdrs = glob(["src/liblzma/api/**/*.h"]),
+    copts = [
+        "-DHAVE_CONFIG_H",
+        "-DHAVE_INTTYPES_H",
+        "-DHAVE_LIMITS_H",
+        "-DHAVE_MEMORY_H",
+        "-DHAVE_STDBOOL_H",
+        "-DHAVE_STDINT_H",
+        "-DHAVE_STRING_H",
+        "-DHAVE_VISIBILITY",
+        "-DMYTHREAD_POSIX",
+        "-I$(GENDIR)/external/libxz/dummy",
+        "-Iexternal/libxz/src/common",
+        "-Iexternal/libxz/src/liblzma/check",
+        "-Iexternal/libxz/src/liblzma/common",
+        "-Iexternal/libxz/src/liblzma/delta",
+        "-Iexternal/libxz/src/liblzma/lz",
+        "-Iexternal/libxz/src/liblzma/lzma",
+        "-Iexternal/libxz/src/liblzma/rangecoder",
+        "-Iexternal/libxz/src/liblzma/simple",
+        "-Wno-unused-function",
+    ],
+    includes = ["src/liblzma/api"],
+    linkopts = ["-lpthread"],
+    visibility = ["//visibility:public"],
+)
