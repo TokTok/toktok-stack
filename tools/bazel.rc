@@ -43,6 +43,7 @@ build --copt="-Werror"
 build --copt="-Wformat-security"
 build --copt="-Wthread-safety-analysis"
 build --copt="-Wno-error=thread-safety-analysis"
+build --copt="-Wno-error=unused-const-variable"
 
 build --copt="-funsigned-char"
 

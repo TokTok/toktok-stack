@@ -38,6 +38,7 @@ cc_library(
         "-Iexternal/libxz/src/liblzma/lzma",
         "-Iexternal/libxz/src/liblzma/rangecoder",
         "-Iexternal/libxz/src/liblzma/simple",
+        "-Wno-thread-safety-analysis",
         "-Wno-unused-function",
     ],
     includes = ["src/liblzma/api"],
