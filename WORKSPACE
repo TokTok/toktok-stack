@@ -208,8 +208,8 @@ http_archive(
 
 http_archive(
     name = "bazel_gazelle",
-    sha256 = "e3dadf036c769d1f40603b86ae1f0f90d11837116022d9b06e4cd88cae786676",
-    urls = ["https://github.com/bazelbuild/bazel-gazelle/releases/download/0.8/bazel-gazelle-0.8.tar.gz"],
+    sha256 = "0103991d994db55b3b5d7b06336f8ae355739635e0c2379dea16b8213ea5a223",
+    urls = ["https://github.com/bazelbuild/bazel-gazelle/releases/download/0.9/bazel-gazelle-0.9.tar.gz"],
 )
 
 load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains")
@@ -285,19 +285,11 @@ new_http_archive(
 )
 
 new_http_archive(
-    name = "check",
-    build_file = "third_party/BUILD.check",
-    sha256 = "464201098bee00e90f5c4bdfa94a5d3ead8d641f9025b560a27755a83b824234",
-    strip_prefix = "check-0.12.0",
-    urls = ["https://github.com/libcheck/check/releases/download/0.12.0/check-0.12.0.tar.gz"],
-)
-
-new_http_archive(
     name = "curl",
     build_file = "third_party/BUILD.curl",
-    sha256 = "c92fe31a348eae079121b73884065e600c533493eb50f1f6cee9c48a3f454826",
-    strip_prefix = "curl-7.57.0",
-    urls = ["https://github.com/curl/curl/releases/download/curl-7_57_0/curl-7.57.0.tar.bz2"],
+    sha256 = "cc245bf9a1a42a45df491501d97d5593392a03f7b4f07b952793518d97666115",
+    strip_prefix = "curl-7.58.0",
+    urls = ["https://github.com/curl/curl/releases/download/curl-7_58_0/curl-7.58.0.tar.gz"],
 )
 
 new_http_archive(
@@ -316,12 +308,11 @@ new_http_archive(
     urls = ["https://github.com/irungentoo/filter_audio/archive/v0.0.1.tar.gz"],
 )
 
-new_http_archive(
-    name = "gtest",
-    build_file = "third_party/BUILD.gtest",
-    sha256 = "58a6f4277ca2bc8565222b3bbd58a177609e9c488e8a72649359ba51450db7d8",
-    strip_prefix = "googletest-release-1.8.0",
-    urls = ["https://github.com/google/googletest/archive/release-1.8.0.tar.gz"],
+http_archive(
+    name = "com_google_googletest",
+    sha256 = "da3d22cc2e096456573939ec21a1d989aca5a60fa1c89037ae05205c00202e4a",
+    strip_prefix = "googletest-15392f1a38fa0b8c3f13a9732e94b209069efa1c",
+    urls = ["https://github.com/google/googletest/archive/15392f1a38fa0b8c3f13a9732e94b209069efa1c.tar.gz"],
 )
 
 new_http_archive(
@@ -383,9 +374,9 @@ new_http_archive(
 new_http_archive(
     name = "libvpx",
     build_file = "third_party/BUILD.libvpx",
-    sha256 = "cda8bb6f0e4848c018177d3a576fa83ed96d762554d7010fe4cfb9d70c22e588",
-    strip_prefix = "libvpx-1.6.1",
-    urls = ["https://github.com/webmproject/libvpx/archive/v1.6.1.tar.gz"],
+    sha256 = "1fec931eb5c94279ad219a5b6e0202358e94a93a90cfb1603578c326abfc1238",
+    strip_prefix = "libvpx-1.7.0",
+    urls = ["https://github.com/webmproject/libvpx/archive/v1.7.0.tar.gz"],
 )
 
 new_http_archive(
@@ -673,11 +664,11 @@ python_repository(
 # Node.js
 # =========================================================
 
-RULES_NODE_COMMIT = "cbff612b717b9a91b1c0375ae6b02e029e3d5273"
+RULES_NODE_COMMIT = "56eadbd6e7545411e740d97fe1741c56dab42285"
 
 http_archive(
     name = "org_pubref_rules_node",
-    sha256 = "cb3fa6b540133585426f283f3453cfe07309f0ccd437159a8dd7afbb88e71c52",
+    sha256 = "9ed54e5fda5154aeff7b5ed51b85b83cbb630f70178ca1a1798af671c6cf945c",
     strip_prefix = "rules_node-%s" % RULES_NODE_COMMIT,
     url = "https://github.com/pubref/rules_node/archive/%s.zip" % RULES_NODE_COMMIT,
 )
@@ -687,7 +678,11 @@ load("@org_pubref_rules_node//node:rules.bzl", "node_repositories", "yarn_module
 node_repositories()
 
 yarn_modules(
-    name = "js_toxcore_c_modules",
+    name = "yarn_modules",
+    install_tools = [
+        "sh",
+        "dirname",
+    ],
     package_json = "//js-toxcore-c:package.json",
 )
 

@@ -26,7 +26,7 @@ build --per_file_copt=".*-avx2\.c@-mavx2"
 #build --linkopt="-Wl,--warn-common"
 #build --linkopt="-Wl,--warn-execstack"
 
-build --strict_java_deps=ERROR
+build --strict_java_deps=error
 
 # Address sanitizer.
 build:asan --copt="-fsanitize=address"
@@ -43,6 +43,7 @@ build --copt="-Werror"
 build --copt="-Wformat-security"
 build --copt="-Wthread-safety-analysis"
 build --copt="-Wno-error=thread-safety-analysis"
+build --copt="-Wno-error=unused-const-variable"
 
 build --copt="-funsigned-char"
 

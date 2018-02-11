@@ -8,6 +8,7 @@ asm_library(
     ]),
     hdrs = [
         "third_party/x86inc/x86inc.asm",
+        "vpx_dsp/x86/bitdepth_conversion_sse2.asm",
         "vpx_ports/x86_abi_support.asm",
         "@toktok//third_party/libvpx:vpx_config.asm",
     ],
@@ -30,7 +31,7 @@ genrule(
     cmd = """
         export PATH=$$PWD/$$(dirname $(location @yasm)):$$PATH
         cd `dirname $(location configure)`
-        ./configure --enable-pic
+        ./configure --disable-avx512 --disable-webm-io --enable-pic --enable-shared --enable-vp9-temporal-denoising --enable-vp9-highbitdepth --enable-error-concealment --enable-internal-stats
         make vpx_version.h
         DIR=`pwd`
         cd -
@@ -49,7 +50,15 @@ genrule(
         defs,
     ],
     outs = ["%s_rtcd.h" % mod],
-    cmd = "$(location build/make/rtcd.pl) --arch=x86_64 --sym=%s_rtcd --config=$(location @toktok//third_party/libvpx:libs-x86_64-linux-gcc.mk) $(location %s) > $@" % (mod, defs),
+    cmd = " ".join([
+        "$(location build/make/rtcd.pl)",
+        "--arch=x86_64",
+        "--sym=%s_rtcd" % mod,
+        "--disable-avx512",
+        "--config=$(location @toktok//third_party/libvpx:libs-x86_64-linux-gcc.mk)",
+        "$(location %s)" % defs,
+        "> $@",
+    ]),
 ) for mod, defs in [
     ("vp8", "vp8/common/rtcd_defs.pl"),
     ("vp9", "vp9/common/vp9_rtcd_defs.pl"),
@@ -75,37 +84,34 @@ COMMON_SOURCES = glob(
     exclude = [
         "**/arm/**",
         "**/mips/**",
+        "**/ppc/**",
         "**/x86/*_avx2.c",
-        "vp8/decoder/error_concealment.c",
+        "**/x86/*_avx512.c",
         "vp8/encoder/mr_dissim.c",
-        "vp9/common/vp9_mfqe.c",
-        "vp9/encoder/vp9_denoiser.c",
         "vpx_ports/arm_cpudetect.c",
+        "vpx_ports/ppc_cpudetect.c",
     ],
 )
+
+COPTS = [
+    "-fvisibility=protected",
+    "-I$(GENDIR)/external/libvpx",
+    "-Iexternal/libvpx",
+]
 
 cc_library(
     name = "libvpx_avx2",
     srcs = glob(["**/x86/*_avx2.c"]),
-    copts = [
-        "-mavx2",
-        "-I$(GENDIR)/external/libvpx",
-        "-Iexternal/libvpx",
-    ],
+    copts = ["-mavx2"] + COPTS,
     deps = [":headers"],
 )
 
 cc_library(
     name = "libvpx",
     srcs = [":assemblies"] + COMMON_SOURCES,
-    copts = [
-        "-w",
-        "-I$(GENDIR)/external/libvpx",
-        "-Iexternal/libvpx",
-    ],
+    copts = COPTS,
     includes = ["."],
     linkopts = ["-lm"],
-    linkstatic = True,  # XXX Why can't build .so?
     visibility = ["//visibility:public"],
     deps = [
         ":headers",
