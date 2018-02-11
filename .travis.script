@@ -1,0 +1,44 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings FATAL => 'all';
+use utf8;
+
+# Timeout after 40 minutes, since cache setup/upload can take a while.
+use constant TIMEOUT => 40 * 60;
+
+my @targets = (
+   "//c-toxcore/...",
+   "//echobot-jvm/...",
+   #"//go-toxcore-c/...",
+   #"//jtox/...",
+   "//jvm-macros/...",
+   "//jvm-toxcore-api/...",
+   "//jvm-toxcore-c/...",
+   #"//py_toxcore_c/...",
+   #"//qtox/...",
+   "//streambot-jvm/...",
+   #"//toxic/...",
+   "//toxins/...",
+);
+
+alarm TIMEOUT;
+local $SIG{ALRM} = sub {
+   print STDERR "Timeout: interrupting process group\n";
+   kill 2, -$$;
+   waitpid -1, 0;  # Wait for bazel to terminate.
+   print STDERR "Process group successfully terminated\n";
+   exit 1
+};
+
+print "Running tests, ignoring their success\n";
+system "bazel", "test", @targets;
+
+# If the test exited with non-zero status, and the termination was not due to an
+# interrupt, we try to just build.
+if ($? != 0 and $? & 0x7f != 2) {
+   print "Running build, error if it fails\n";
+   # At this point, we just let bazel deal with the alarm, since we'll just be a
+   # single process.
+   exec "bazel", "build", @targets;
+}

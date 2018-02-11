@@ -3,6 +3,7 @@ licenses(["notice"])
 genrule(
     name = "config_asm",
     srcs = select({
+        "//tools/config:freebsd": ["freebsd/config.asm"],
         "//tools/config:linux": ["linux/config.asm"],
         "//tools/config:osx": ["osx/config.asm"],
     }),
@@ -18,10 +19,12 @@ cc_library(
         "libavformat/protocol_list.c",
         "libavutil/avconfig.h",
     ] + select({
+        "//tools/config:freebsd": ["freebsd/config.h"],
         "//tools/config:linux": ["linux/config.h"],
         "//tools/config:osx": ["osx/config.h"],
     }),
     includes = ["."] + select({
+        "//tools/config:freebsd": ["freebsd"],
         "//tools/config:linux": ["linux"],
         "//tools/config:osx": ["osx"],
     }),
