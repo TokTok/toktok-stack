@@ -36,7 +36,11 @@ genrule(
 
 genrule(
     name = "sodium_config",
-    srcs = ["@toktok//third_party/libsodium:sodium_config.h"],
+    srcs = select({
+        "@toktok//tools/config:freebsd": ["@toktok//third_party/libsodium:linux/sodium_config.h"],
+        "@toktok//tools/config:linux": ["@toktok//third_party/libsodium:linux/sodium_config.h"],
+        "@toktok//tools/config:osx": ["@toktok//third_party/libsodium:osx/sodium_config.h"],
+    }),
     outs = ["sodium_config.h"],
     cmd = "cp $< $@",
 )

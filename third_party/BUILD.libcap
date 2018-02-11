@@ -12,7 +12,9 @@ cc_binary(
     srcs = [
         "cap_names.list.h",
         "libcap/_makenames.c",
+        "libcap/include/sys/capability.h",
     ],
+    copts = ["-Iexternal/libcap/libcap/include"],
 )
 
 genrule(

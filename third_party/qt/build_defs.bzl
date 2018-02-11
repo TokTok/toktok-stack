@@ -164,3 +164,48 @@ def qt_moc(name, src, srcs=[], deps=[], mocopts=[]):
       mocopts = mocopts,
       deps = deps,
   )
+
+def qt_import(name, module):
+  native.objc_framework(
+      name = "Qt%s_framework" % module,
+      framework_imports = native.glob(["Frameworks/Qt%s.framework/**" % module]),
+  )
+
+  native.objc_library(
+      name = "Qt%s_osx" % module,
+      deps = ["Qt%s_framework" % module],
+  )
+
+  native.cc_library(
+      name = "Qt%s_elf" % module,
+      srcs = [
+          "lib/libQt5%s.so.5" % module,
+          "lib/libQt5%s.so" % module,
+      ],
+      linkopts = [
+          "-Wl,-rpath,external/qt/lib",
+          "-Lexternal/qt/lib",
+          "-lQt5%s" % module,
+      ],
+  )
+
+  native.cc_library(
+      name = name,
+      hdrs = native.glob(["include/Qt%s/**" % module]),
+      includes = [
+          "include",
+          "include/Qt%s" % module,
+      ],
+      linkopts = select({
+          "@toktok//tools/config:linux": [],
+          "@toktok//tools/config:osx": [
+              "-F/usr/local/opt/qt/Frameworks",
+              "-framework Qt%s" % module,
+          ],
+      }),
+      visibility = ["//visibility:public"],
+      deps = select({
+          "@toktok//tools/config:linux": [":Qt%s_elf" % module],
+          "@toktok//tools/config:osx": [":Qt%s_osx" % module],
+      }),
+  )

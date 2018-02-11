@@ -1,5 +1,8 @@
 java_import(
     name = "jar",
-    jars = ["ffmpeg-3.4.1-1.4-linux-x86_64.jar"],
+    jars = select({
+        "@toktok//tools/config:linux": ["ffmpeg-3.4.1-1.4-linux-x86_64.jar"],
+        "@toktok//tools/config:osx": ["ffmpeg-3.4.1-1.4-macosx-x86_64.jar"],
+    }),
     visibility = ["//visibility:public"],
 )

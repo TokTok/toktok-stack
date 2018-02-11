@@ -6,6 +6,8 @@ def _asm_library_impl(ctx):
   hdrs = [hdr for lbl in ctx.attr.hdrs for hdr in lbl.files]
   srcs = [src for lbl in ctx.attr.srcs for src in lbl.files]
 
+  asmopts = [ctx.expand_make_variables("cmd", opt, {}) for opt in ctx.attr.asmopts]
+
   outs = []
   for src in srcs:
     out = ctx.actions.declare_file(src.path[:-4] + ".o")
@@ -17,8 +19,8 @@ def _asm_library_impl(ctx):
             src,
         ],
         executable = yasm.path,
-        arguments = ctx.attr.asmopts + [
-            "-felf64",
+        arguments = asmopts + [
+            ctx.attr.execfmt,
             "-o",
             out.path,
             src.path,
@@ -29,11 +31,12 @@ def _asm_library_impl(ctx):
 
   return DefaultInfo(files = depset(outs))
 
-asm_library = rule(
+_asm_library = rule(
     attrs = {
         "srcs": attr.label_list(allow_files = [".asm"]),
         "hdrs": attr.label_list(allow_files = [".asm"]),
         "asmopts": attr.string_list(),
+        "execfmt": attr.string(),
         "_yasm": attr.label(
             default = Label("@yasm"),
             executable = True,
@@ -43,3 +46,16 @@ asm_library = rule(
     },
     implementation = _asm_library_impl,
 )
+
+def asm_library(name, srcs=[], hdrs=[], asmopts=[]):
+  _asm_library(
+      name = name,
+      srcs = srcs,
+      hdrs = hdrs,
+      asmopts = asmopts,
+      execfmt = select({
+          "@toktok//tools/config:freebsd": "-felf64",
+          "@toktok//tools/config:linux": "-felf64",
+          "@toktok//tools/config:osx": "-fmacho64",
+      }),
+  )

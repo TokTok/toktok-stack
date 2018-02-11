@@ -166,8 +166,8 @@ TOOLS = [
 [cc_binary(
     name = tool[:-2],
     srcs = [tool],
-    deps = [":openssl"],
     copts = ["-Iexternal/openssl/crypto"],
+    deps = [":openssl"],
 ) for tool in TOOLS]
 
 cc_library(

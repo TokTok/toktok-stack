@@ -16,11 +16,11 @@ http_archive(
 # Haskell
 # =========================================================
 
-RULES_HASKELL_COMMIT = "56e42a95c7957ff57c227ad55f01c95ea986cd3a"
+RULES_HASKELL_COMMIT = "d50d8814657e17d988dd24c6f794a020588c22bd"
 
 http_archive(
     name = "io_tweag_rules_haskell",
-    sha256 = "9307412861c7daabcd67467062da82ce818920689b5f1394fb9e7615af7a9272",
+    sha256 = "2c7ef1c9cd93faea4114b690d5d1207f950bf028895d8a0cdac28f7c557141bf",
     strip_prefix = "rules_haskell-%s" % RULES_HASKELL_COMMIT,
     urls = ["https://github.com/tweag/rules_haskell/archive/%s.tar.gz" % RULES_HASKELL_COMMIT],
 )
@@ -115,6 +115,14 @@ new_http_archive(
     sha256 = "776668b0a969d0d57ebabf78943cfc21a1aaf7e5e2ae6288322292125c9440f5",
     strip_prefix = "network-2.6.3.3",
     urls = ["https://hackage.haskell.org/package/network-2.6.3.3/network-2.6.3.3.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_old_locale",
+    build_file = "third_party/haskell/BUILD.old-locale",
+    sha256 = "dbaf8bf6b888fb98845705079296a23c3f40ee2f449df7312f7f7f1de18d7b50",
+    strip_prefix = "old-locale-1.0.0.7",
+    urls = ["https://hackage.haskell.org/package/old-locale-1.0.0.7/old-locale-1.0.0.7.tar.gz"],
 )
 
 new_http_archive(
@@ -257,6 +265,12 @@ new_local_repository(
 )
 
 new_local_repository(
+    name = "openal",
+    build_file = "third_party/BUILD.openal",
+    path = "/usr",
+)
+
+new_local_repository(
     name = "opencv",
     build_file = "third_party/BUILD.opencv",
     path = "/usr",
@@ -308,6 +322,14 @@ new_http_archive(
     sha256 = "58a6f4277ca2bc8565222b3bbd58a177609e9c488e8a72649359ba51450db7d8",
     strip_prefix = "googletest-release-1.8.0",
     urls = ["https://github.com/google/googletest/archive/release-1.8.0.tar.gz"],
+)
+
+new_http_archive(
+    name = "json",
+    build_file = "third_party/BUILD.json",
+    sha256 = "2b7234fca394d1e27b7e017117ed80b7518fafbb4f4c13a7c069624f6f924673",
+    strip_prefix = "include",
+    urls = ["https://github.com/nlohmann/json/releases/download/v3.1.0/include.zip"],
 )
 
 new_http_archive(
@@ -411,7 +433,7 @@ new_http_archive(
     build_file = "third_party/BUILD.libxz",
     sha256 = "71928b357d0a09a12a4b4c5fafca8c31c19b0e7d3b8ebb19622e96f26dbf28cb",
     strip_prefix = "xz-5.2.3",
-    urls = ["https://tukaani.org/xz/xz-5.2.3.tar.gz"],
+    urls = ["https://netix.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz"],
 )
 
 new_http_archive(
@@ -436,12 +458,12 @@ new_http_archive(
 load("@bazel_tools//tools/build_defs/repo:maven_rules.bzl", "maven_aar")
 
 local_repository(
-    name = "org_bytedeco_javacpp_presets_ffmpeg_linux_x86_64",
+    name = "org_bytedeco_javacpp_presets_ffmpeg_platform",
     path = "third_party/javacpp/ffmpeg",
 )
 
 local_repository(
-    name = "org_bytedeco_javacpp_presets_opencv_linux_x86_64",
+    name = "org_bytedeco_javacpp_presets_opencv_platform",
     path = "third_party/javacpp/opencv",
 )
 

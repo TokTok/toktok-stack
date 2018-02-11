@@ -33,11 +33,10 @@ cc_library(
 haskell_library(
     name = "old-time",
     srcs = glob(["System/Time.hsc"]),
-    prebuilt_dependencies = [
-        "base",
-        #"bytestring",
-        #"ghc-prim",
-    ],
+    prebuilt_dependencies = ["base"],
     visibility = ["//visibility:public"],
-    deps = [":cbits"],
+    deps = [
+        ":cbits",
+        "@haskell_old_locale//:old-locale",
+    ],
 )

@@ -1,0 +1,11 @@
+licenses(["notice"])
+
+cc_library(
+    name = "platform",
+    hdrs = select({
+        "//tools/config:freebsd": ["freebsd/platform.hpp"],
+        "//tools/config:linux": ["linux/platform.hpp"],
+        "//tools/config:osx": ["osx/platform.hpp"],
+    }),
+    visibility = ["@libzmq//:__pkg__"],
+)

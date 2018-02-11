@@ -1,18 +1,29 @@
 licenses(["notice"])
 
-exports_files(
-    srcs = ["config.asm"],
+genrule(
+    name = "config_asm",
+    srcs = select({
+        "//tools/config:linux": ["linux/config.asm"],
+        "//tools/config:osx": ["osx/config.asm"],
+    }),
+    outs = ["config.asm"],
+    cmd = "cp $< $@",
     visibility = ["@ffmpeg//:__pkg__"],
 )
 
 cc_library(
     name = "config",
     hdrs = [
-        "config.h",
         "libavcodec/bsf_list.c",
         "libavformat/protocol_list.c",
         "libavutil/avconfig.h",
-    ],
-    includes = ["."],
+    ] + select({
+        "//tools/config:linux": ["linux/config.h"],
+        "//tools/config:osx": ["osx/config.h"],
+    }),
+    includes = ["."] + select({
+        "//tools/config:linux": ["linux"],
+        "//tools/config:osx": ["osx"],
+    }),
     visibility = ["@ffmpeg//:__pkg__"],
 )

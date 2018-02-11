@@ -31,16 +31,17 @@ install:
 script:
 - TARGETS=""
 - TARGETS="$TARGETS //c-toxcore/..."
-#- TARGETS="$TARGETS //echobot-jvm/..."
+- TARGETS="$TARGETS //echobot-jvm/..."
 #- TARGETS="$TARGETS //go-toxcore-c/..."
 #- TARGETS="$TARGETS //jtox/..."
-#- TARGETS="$TARGETS //jvm-macros/..."
-#- TARGETS="$TARGETS //jvm-toxcore-api/..."
-#- TARGETS="$TARGETS //jvm-toxcore-c/..."
+- TARGETS="$TARGETS //jvm-macros/..."
+- TARGETS="$TARGETS //jvm-toxcore-api/..."
+- TARGETS="$TARGETS //jvm-toxcore-c/..."
 #- TARGETS="$TARGETS //py_toxcore_c/..."
 #- TARGETS="$TARGETS //qtox/..."
-#- TARGETS="$TARGETS //streambot-jvm/..."
+- TARGETS="$TARGETS //streambot-jvm/..."
 #- TARGETS="$TARGETS //toxic/..."
+- TARGETS="$TARGETS //toxins/..."
 - bazel test $TARGETS || bazel build $TARGETS
 
 git:

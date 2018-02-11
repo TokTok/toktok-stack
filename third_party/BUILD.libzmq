@@ -1,5 +1,5 @@
 genrule(
-    name = "config",
+    name = "regen_config",
     srcs = glob(["**"]),
     outs = ["platform.hpp"],
     cmd = """
@@ -23,13 +23,21 @@ cc_library(
             "src/*.hpp",
         ],
         exclude = ["test/*"],
-    ) + ["platform.hpp"],
+    ),
     hdrs = [
         "include/zmq.h",
         "include/zmq_utils.h",
     ],
+    copts = [
+        "-Iexternal/toktok/third_party/libzmq/freebsd",
+        "-Iexternal/toktok/third_party/libzmq/linux",
+        "-Iexternal/toktok/third_party/libzmq/osx",
+    ],
     includes = ["include"],
     linkopts = ["-lpthread"],
     visibility = ["//visibility:public"],
-    deps = ["@libsodium"],
+    deps = [
+        "@libsodium",
+        "@toktok//third_party/libzmq:platform",
+    ],
 )

@@ -1,5 +1,5 @@
 genrule(
-    name = "config",
+    name = "regen_config",
     srcs = glob([
         "**/*.am",
         "**/*.in",
@@ -27,18 +27,31 @@ genrule(
     """,
 )
 
+genrule(
+    name = "_stdint_h",
+    outs = ["libexif/_stdint.h"],
+    cmd = "echo '#include <stdint.h>' > $@",
+)
+
 cc_library(
     name = "libexif",
     srcs = glob([
         "libexif/**/*.c",
         "libexif/**/*.h",
-    ]) + ["config.h"],
-    hdrs = ["libexif/exif.h"],
+    ]),
+    hdrs = [
+        "libexif/_stdint.h",
+        "libexif/exif.h",
+    ],
     copts = [
         "-w",  # disable all warnings.
         "'-DLOCALEDIR=\"lib\"'",
         "'-DGETTEXT_PACKAGE=\"libexif\"'",
+        "-Iexternal/toktok/third_party/libexif",
+        "-Iexternal/toktok/third_party/libexif/linux",
+        "-Iexternal/toktok/third_party/libexif/osx",
     ],
     includes = ["."],
     visibility = ["//visibility:public"],
+    deps = ["@toktok//third_party/libexif:config"],
 )
