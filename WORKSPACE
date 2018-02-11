@@ -257,6 +257,12 @@ new_local_repository(
 )
 
 new_local_repository(
+    name = "openal",
+    build_file = "third_party/BUILD.openal",
+    path = "/usr",
+)
+
+new_local_repository(
     name = "opencv",
     build_file = "third_party/BUILD.opencv",
     path = "/usr",
@@ -411,7 +417,7 @@ new_http_archive(
     build_file = "third_party/BUILD.libxz",
     sha256 = "71928b357d0a09a12a4b4c5fafca8c31c19b0e7d3b8ebb19622e96f26dbf28cb",
     strip_prefix = "xz-5.2.3",
-    urls = ["https://tukaani.org/xz/xz-5.2.3.tar.gz"],
+    urls = ["https://netix.dl.sourceforge.net/project/lzmautils/xz-5.2.3.tar.gz"],
 )
 
 new_http_archive(
@@ -436,12 +442,12 @@ new_http_archive(
 load("@bazel_tools//tools/build_defs/repo:maven_rules.bzl", "maven_aar")
 
 local_repository(
-    name = "org_bytedeco_javacpp_presets_ffmpeg_linux_x86_64",
+    name = "org_bytedeco_javacpp_presets_ffmpeg_platform",
     path = "third_party/javacpp/ffmpeg",
 )
 
 local_repository(
-    name = "org_bytedeco_javacpp_presets_opencv_linux_x86_64",
+    name = "org_bytedeco_javacpp_presets_opencv_platform",
     path = "third_party/javacpp/opencv",
 )
 

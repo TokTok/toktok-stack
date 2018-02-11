@@ -105,7 +105,6 @@ cc_library(
     ],
     includes = ["."],
     linkopts = ["-lm"],
-    linkstatic = True,  # XXX Why can't build .so?
     visibility = ["//visibility:public"],
     deps = [
         ":headers",
