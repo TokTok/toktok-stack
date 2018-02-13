@@ -1,0 +1,25 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "resourcet",
+    srcs = glob([
+        "Control/**/*.*hs",
+        "Data/**/*.*hs",
+    ]),
+    prebuilt_dependencies = [
+        "base",
+        "containers",
+        "transformers",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_exceptions//:exceptions",
+        "@haskell_lifted_base//:lifted-base",
+        "@haskell_mmorph//:mmorph",
+        "@haskell_monad_control//:monad-control",
+        "@haskell_mtl//:mtl",
+        "@haskell_primitive//:primitive",
+        "@haskell_transformers_base//:transformers-base",
+        "@haskell_unliftio_core//:unliftio-core",
+    ],
+)

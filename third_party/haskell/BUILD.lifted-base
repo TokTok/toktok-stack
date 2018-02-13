@@ -1,0 +1,27 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+cc_library(
+    name = "cbits",
+    hdrs = ["include/inlinable.h"],
+    includes = ["include"],
+)
+
+haskell_library(
+    name = "lifted-base",
+    srcs = glob(
+        [
+            "Control/**/*.*hs",
+            "Data/**/*.*hs",
+            "Foreign/**/*.*hs",
+            "System/**/*.*hs",
+        ],
+        exclude = ["Control/Concurrent/SampleVar/Lifted.hs"],
+    ),
+    prebuilt_dependencies = ["base"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":cbits",
+        "@haskell_monad_control//:monad-control",
+        "@haskell_transformers_base//:transformers-base",
+    ],
+)

@@ -6,6 +6,7 @@ filegroup(
         "bin/gcc",
         "bin/ghc",
         "bin/ghc-pkg",
+        "bin/haddock",
         "bin/hsc2hs",
         "bin/ld",
         "bin/realpath",

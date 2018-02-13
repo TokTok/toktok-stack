@@ -1,0 +1,35 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "conduit-extra",
+    srcs = glob(
+        ["Data/**/*.*hs"],
+        exclude = [
+            "Data/Conduit/Lazy.hs",
+            "Data/Conduit/Attoparsec.hs",
+        ],
+    ),
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+        "directory",
+        "filepath",
+        "transformers",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_async//:async",
+        "@haskell_blaze_builder//:blaze-builder",
+        "@haskell_conduit//:conduit",
+        "@haskell_exceptions//:exceptions",
+        "@haskell_monad_control//:monad-control",
+        "@haskell_network//:network",
+        "@haskell_primitive//:primitive",
+        "@haskell_resourcet//:resourcet",
+        "@haskell_streaming_commons//:streaming-commons",
+        "@haskell_text//:text",
+        "@haskell_transformers_base//:transformers-base",
+        "@haskell_typed_process//:typed-process",
+        "@haskell_unliftio_core//:unliftio-core",
+    ],
+)

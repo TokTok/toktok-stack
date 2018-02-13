@@ -1,0 +1,12 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "binary-bits",
+    srcs = glob(["Data/**/*.hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "binary",
+        "bytestring",
+    ],
+    visibility = ["//visibility:public"],
+)

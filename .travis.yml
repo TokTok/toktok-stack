@@ -25,7 +25,7 @@ before_install:
 
 install:
 - echo 'build --jobs=4 --curses=no --verbose_failures' >> $HOME/.bazelrc
-- echo 'import %workspace%/tools/bazelrc.linux' >> $HOME/.bazelrc
+- echo 'import %workspace%/tools/bazelrc/linux-clang' >> $HOME/.bazelrc
 - wget http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/ffmpeg/3.4.1-1.4/ffmpeg-3.4.1-1.4-linux-x86_64.jar -O third_party/javacpp/ffmpeg/jar/ffmpeg-3.4.1-1.4-linux-x86_64.jar
 - wget http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/3.4.0-1.4/opencv-3.4.0-1.4-linux-x86_64.jar -O third_party/javacpp/opencv/jar/opencv-3.4.0-1.4-linux-x86_64.jar
 

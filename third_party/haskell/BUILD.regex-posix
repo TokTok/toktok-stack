@@ -1,0 +1,35 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+cc_library(
+    name = "cbits",
+    srcs = glob([
+        "c-finalizer/*.c",
+        "c-finalizer/*.h",
+    ]),
+    includes = ["c-finalizer"],
+)
+
+haskell_library(
+    name = "regex-posix",
+    srcs = glob(["Text/**/*.*hs*"]),
+    compiler_flags = [
+        "-DSPLIT_BASE",
+        "-XCPP",
+        "-XFlexibleContexts",
+        "-XFlexibleInstances",
+        "-XGeneralizedNewtypeDeriving",
+        "-XMultiParamTypeClasses",
+        "-XTypeSynonymInstances",
+    ],
+    prebuilt_dependencies = [
+        "array",
+        "base",
+        "bytestring",
+        "containers",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":cbits",
+        "@haskell_regex_base//:regex-base",
+    ],
+)

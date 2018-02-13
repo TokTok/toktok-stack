@@ -20,12 +20,6 @@ build --process_headers_in_dependencies
 
 build --per_file_copt=".*-avx2\.c@-mavx2"
 
-#build --linkopt="-Wl,-z,noexecstack"
-#build --linkopt="-Wl,--fatal-warnings"
-#build --linkopt="-Wl,--detect-odr-violations"
-#build --linkopt="-Wl,--warn-common"
-#build --linkopt="-Wl,--warn-execstack"
-
 build --strict_java_deps=error
 
 # Address sanitizer.
@@ -39,17 +33,13 @@ build:asan --linkopt="-fsanitize=address"
 build --per_file_copt=".*@-fdiagnostics-color=always"
 
 build --copt="-Wall"
-build --copt="-Werror"
 build --copt="-Wformat-security"
-build --copt="-Wthread-safety-analysis"
-build --copt="-Wno-error=thread-safety-analysis"
-build --copt="-Wno-error=unused-const-variable"
 
 build --copt="-funsigned-char"
 
-build --copt="-fno-exceptions"
-build --copt="-fno-rtti"
-build --copt="-DGOOGLE_PROTOBUF_NO_RTTI"
+build --cxxopt="-fno-exceptions"
+build --cxxopt="-fno-rtti"
+build --cxxopt="-DGOOGLE_PROTOBUF_NO_RTTI"
 
 # Use remote caching. This is disabled by default, because we can't actually
 # afford to host this continuously. It's been tested, and works really well, so

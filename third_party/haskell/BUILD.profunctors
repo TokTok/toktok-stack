@@ -1,0 +1,21 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "profunctors",
+    srcs = glob(["src/**/*.hs*"]),
+    compiler_flags = [
+        #"-XDeriveGeneric",
+        #"-XScopedTypeVariables",
+        #"-XViewPatterns",
+    ],
+    prebuilt_dependencies = [
+        "base",
+        #"bytestring",
+    ],
+    #src_strip_prefix = "src",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_bifunctors//:bifunctors",
+        "@haskell_comonad//:comonad",
+    ],
+)

@@ -1,0 +1,11 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "appar",
+    srcs = glob(["Text/**/*.hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+    ],
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,17 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "transformers-compat",
+    srcs = glob(["src/**/*.hs*"]),
+    prebuilt_dependencies = [
+        "base",
+        #"containers",
+        #"template-haskell",
+        "transformers",
+    ],
+    src_strip_prefix = "src",
+    visibility = ["//visibility:public"],
+    deps = [
+        #"@haskell_transformers_compat//:transformers-compat",
+    ],
+)

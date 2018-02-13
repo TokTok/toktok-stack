@@ -1,0 +1,4 @@
+build --copt="-Wthread-safety-analysis"
+build --copt="-Wno-error=thread-safety-analysis"
+
+# vim:ft=sh

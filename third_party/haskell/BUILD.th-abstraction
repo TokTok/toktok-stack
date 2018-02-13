@@ -1,0 +1,13 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "th-abstraction",
+    srcs = glob(["src/**/*.hs*"]),
+    prebuilt_dependencies = [
+        "base",
+        "containers",
+        "template-haskell",
+    ],
+    src_strip_prefix = "src",
+    visibility = ["//visibility:public"],
+)

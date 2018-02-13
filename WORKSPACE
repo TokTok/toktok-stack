@@ -16,11 +16,11 @@ http_archive(
 # Haskell
 # =========================================================
 
-RULES_HASKELL_COMMIT = "d50d8814657e17d988dd24c6f794a020588c22bd"
+RULES_HASKELL_COMMIT = "17e070bab304f0a075de42430415a27f3b8e13b9"
 
 http_archive(
     name = "io_tweag_rules_haskell",
-    sha256 = "2c7ef1c9cd93faea4114b690d5d1207f950bf028895d8a0cdac28f7c557141bf",
+    sha256 = "8c020e3ae251272dea25568baeddf6025211632e26a8bfa34c979e661c730ae3",
     strip_prefix = "rules_haskell-%s" % RULES_HASKELL_COMMIT,
     urls = ["https://github.com/tweag/rules_haskell/archive/%s.tar.gz" % RULES_HASKELL_COMMIT],
 )
@@ -46,6 +46,14 @@ new_http_archive(
 )
 
 new_http_archive(
+    name = "haskell_MonadRandom",
+    build_file = "third_party/haskell/BUILD.MonadRandom",
+    sha256 = "9e3f0f92807285302036dc504066ae6d968c8b0b4c25d9360888f31fe1730d87",
+    strip_prefix = "MonadRandom-0.5.1",
+    urls = ["https://hackage.haskell.org/package/MonadRandom-0.5.1/MonadRandom-0.5.1.tar.gz"],
+)
+
+new_http_archive(
     name = "haskell_QuickCheck",
     build_file = "third_party/haskell/BUILD.QuickCheck",
     sha256 = "488c5652139da0bac8b3e7d76f11320ded298549e62db530938bfee9ca981876",
@@ -54,11 +62,107 @@ new_http_archive(
 )
 
 new_http_archive(
+    name = "haskell_appar",
+    build_file = "third_party/haskell/BUILD.appar",
+    sha256 = "58ea66abe4dd502d2fc01eecdb0828d5e214704a3c1b33b1f8b33974644c4b26",
+    strip_prefix = "appar-0.1.4",
+    urls = ["https://hackage.haskell.org/package/appar-0.1.4/appar-0.1.4.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_async",
+    build_file = "third_party/haskell/BUILD.async",
+    sha256 = "8f0b86022a1319d3c1c68655790da4b7f98017982e27ec3f3dbfe01029d39027",
+    strip_prefix = "async-2.2.1",
+    urls = ["https://hackage.haskell.org/package/async-2.2.1/async-2.2.1.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_base_orphans",
+    build_file = "third_party/haskell/BUILD.base-orphans",
+    sha256 = "c7282aa7516652e6e4a78ccdfb654a99c9da683875748ad5898a3f200be7ad0e",
+    strip_prefix = "base-orphans-0.6",
+    urls = ["https://hackage.haskell.org/package/base-orphans-0.6/base-orphans-0.6.tar.gz"],
+)
+
+new_http_archive(
     name = "haskell_base16_bytestring",
     build_file = "third_party/haskell/BUILD.base16-bytestring",
     sha256 = "5afe65a152c5418f5f4e3579a5e0d5ca19c279dc9bf31c1a371ccbe84705c449",
     strip_prefix = "base16-bytestring-0.1.1.6",
     urls = ["https://hackage.haskell.org/package/base16-bytestring-0.1.1.6/base16-bytestring-0.1.1.6.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_bifunctors",
+    build_file = "third_party/haskell/BUILD.bifunctors",
+    sha256 = "332bb2ea19e77dac55282daff8046d89f69514ced5b987779d887e53b5d7cb11",
+    strip_prefix = "bifunctors-5.5.2",
+    urls = ["https://hackage.haskell.org/package/bifunctors-5.5.2/bifunctors-5.5.2.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_binary_bits",
+    build_file = "third_party/haskell/BUILD.binary-bits",
+    sha256 = "16534a018a4754d8d1eab051711c23fb741f41a0d141b289001c52824b5be794",
+    strip_prefix = "binary-bits-0.5",
+    urls = ["https://hackage.haskell.org/package/binary-bits-0.5/binary-bits-0.5.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_binary_conduit",
+    build_file = "third_party/haskell/BUILD.binary-conduit",
+    sha256 = "21d417aae0f9441ecd0e4f5aaac03bf9692fb9e85e48076c774d961567d14b1b",
+    strip_prefix = "binary-conduit-1.2.5",
+    urls = ["https://hackage.haskell.org/package/binary-conduit-1.2.5/binary-conduit-1.2.5.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_blaze_builder",
+    build_file = "third_party/haskell/BUILD.blaze-builder",
+    sha256 = "9ad3e4661bf5556d650fb9aa56a3ad6e6eec7575e87d472e8ab6d15eaef163d4",
+    strip_prefix = "blaze-builder-0.4.0.2",
+    urls = ["https://hackage.haskell.org/package/blaze-builder-0.4.0.2/blaze-builder-0.4.0.2.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_byteorder",
+    build_file = "third_party/haskell/BUILD.byteorder",
+    sha256 = "bd20bbb586947f99c38a4c93d9d0266f49f6fc581767b51ba568f6d5d52d2919",
+    strip_prefix = "byteorder-1.0.4",
+    urls = ["https://hackage.haskell.org/package/byteorder-1.0.4/byteorder-1.0.4.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_clock",
+    build_file = "third_party/haskell/BUILD.clock",
+    sha256 = "886601978898d3a91412fef895e864576a7125d661e1f8abc49a2a08840e691f",
+    strip_prefix = "clock-0.7.2",
+    urls = ["https://hackage.haskell.org/package/clock-0.7.2/clock-0.7.2.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_comonad",
+    build_file = "third_party/haskell/BUILD.comonad",
+    sha256 = "a7f4584d634051123c547f0d10f88eaf23d99229dbd01dfdcd98cddd41e54df6",
+    strip_prefix = "comonad-5.0.3",
+    urls = ["https://hackage.haskell.org/package/comonad-5.0.3/comonad-5.0.3.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_conduit",
+    build_file = "third_party/haskell/BUILD.conduit",
+    sha256 = "239d1bac614bc1085315ad8d15275471fc7c0eaef05950429d40a65bd73711ac",
+    strip_prefix = "conduit-1.2.13",
+    urls = ["https://hackage.haskell.org/package/conduit-1.2.13/conduit-1.2.13.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_conduit_extra",
+    build_file = "third_party/haskell/BUILD.conduit-extra",
+    sha256 = "1d5b66284703a4b9fb96a4c6a2213727208639871a675da9755e9a963fa230f6",
+    strip_prefix = "conduit-extra-1.2.3.2",
+    urls = ["https://hackage.haskell.org/package/conduit-extra-1.2.3.2/conduit-extra-1.2.3.2.tar.gz"],
 )
 
 new_http_archive(
@@ -78,6 +182,22 @@ new_http_archive(
 )
 
 new_http_archive(
+    name = "haskell_data_default_instances_base",
+    build_file = "third_party/haskell/BUILD.data-default-instances-base",
+    sha256 = "844fe453f674b6b0998da804465914abce8936c5e640d8bb8bff37ad07d7a17a",
+    strip_prefix = "data-default-instances-base-0.1.0.1",
+    urls = ["https://hackage.haskell.org/package/data-default-instances-base-0.1.0.1/data-default-instances-base-0.1.0.1.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_exceptions",
+    build_file = "third_party/haskell/BUILD.exceptions",
+    sha256 = "4d6ad97e8e3d5dc6ce9ae68a469dc2fd3f66e9d312bc6faa7ab162eddcef87be",
+    strip_prefix = "exceptions-0.8.3",
+    urls = ["https://hackage.haskell.org/package/exceptions-0.8.3/exceptions-0.8.3.tar.gz"],
+)
+
+new_http_archive(
     name = "haskell_hashable",
     build_file = "third_party/haskell/BUILD.hashable",
     sha256 = "94ca8789e13bc05c1582c46b709f3b0f5aeec2092be634b8606dbd9c5915bb7a",
@@ -94,11 +214,51 @@ new_http_archive(
 )
 
 new_http_archive(
+    name = "haskell_iproute",
+    build_file = "third_party/haskell/BUILD.iproute",
+    sha256 = "57b8d03ca8ce92f8ec1334564f3edff53a0621ccbc43c00ba02eaa5007ee3eee",
+    strip_prefix = "iproute-1.7.1",
+    urls = ["https://hackage.haskell.org/package/iproute-1.7.1/iproute-1.7.1.tar.gz"],
+)
+
+new_http_archive(
     name = "haskell_language_c",
     build_file = "third_party/haskell/BUILD.language-c",
     sha256 = "a7447123f9b3bec9319ee2a22b22d97f03acd6566b4f6caf5b9a1f71e4f7a9ca",
     strip_prefix = "language-c-0.7.1",
     urls = ["https://hackage.haskell.org/package/language-c-0.7.1/language-c-0.7.1.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_lifted_base",
+    build_file = "third_party/haskell/BUILD.lifted-base",
+    sha256 = "8ec47a9fce7cf5913766a5c53e1b2cf254be733fa9d62e6e2f3f24e538005aab",
+    strip_prefix = "lifted-base-0.2.3.11",
+    urls = ["https://hackage.haskell.org/package/lifted-base-0.2.3.11/lifted-base-0.2.3.11.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_mmorph",
+    build_file = "third_party/haskell/BUILD.mmorph",
+    sha256 = "c1bcb45560753203f5ce3952f3c8a100b7d5b37c91746372c1da4988c4db74de",
+    strip_prefix = "mmorph-1.1.0",
+    urls = ["https://hackage.haskell.org/package/mmorph-1.1.0/mmorph-1.1.0.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_monad_control",
+    build_file = "third_party/haskell/BUILD.monad-control",
+    sha256 = "1e34a21d123f2ed8bb2708e7f30343fa1d9d7f36881f9871cbcca4bb07e7e433",
+    strip_prefix = "monad-control-1.0.2.2",
+    urls = ["https://hackage.haskell.org/package/monad-control-1.0.2.2/monad-control-1.0.2.2.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_mono_traversable",
+    build_file = "third_party/haskell/BUILD.mono-traversable",
+    sha256 = "991290797bd77ce2f2e23dd5dea32fb159c6cb9310615f64a0703ea4c6373935",
+    strip_prefix = "mono-traversable-1.0.8.1",
+    urls = ["https://hackage.haskell.org/package/mono-traversable-1.0.8.1/mono-traversable-1.0.8.1.tar.gz"],
 )
 
 new_http_archive(
@@ -150,6 +310,14 @@ new_http_archive(
 )
 
 new_http_archive(
+    name = "haskell_profunctors",
+    build_file = "third_party/haskell/BUILD.profunctors",
+    sha256 = "e981e6a33ac99d38a947a749179bbea3c294ecf6bfde41660fe6d8d5a2e43768",
+    strip_prefix = "profunctors-5.2.2",
+    urls = ["https://hackage.haskell.org/package/profunctors-5.2.2/profunctors-5.2.2.tar.gz"],
+)
+
+new_http_archive(
     name = "haskell_random",
     build_file = "third_party/haskell/BUILD.random",
     sha256 = "b718a41057e25a3a71df693ab0fe2263d492e759679b3c2fea6ea33b171d3a5a",
@@ -158,11 +326,91 @@ new_http_archive(
 )
 
 new_http_archive(
+    name = "haskell_regex_base",
+    build_file = "third_party/haskell/BUILD.regex-base",
+    sha256 = "20dc5713a16f3d5e2e6d056b4beb9cfdc4368cd09fd56f47414c847705243278",
+    strip_prefix = "regex-base-0.93.2",
+    urls = ["https://hackage.haskell.org/package/regex-base-0.93.2/regex-base-0.93.2.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_regex_compat",
+    build_file = "third_party/haskell/BUILD.regex-compat",
+    sha256 = "d57cb1a5a4d66753b18eaa37a1621246f660472243b001894f970037548d953b",
+    strip_prefix = "regex-compat-0.95.1",
+    urls = ["https://hackage.haskell.org/package/regex-compat-0.95.1/regex-compat-0.95.1.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_regex_posix",
+    build_file = "third_party/haskell/BUILD.regex-posix",
+    sha256 = "56019921cd4a4c9682b81ec614236fea816ba8ed8785a1640cd66d8b24fc703e",
+    strip_prefix = "regex-posix-0.95.2",
+    urls = ["https://hackage.haskell.org/package/regex-posix-0.95.2/regex-posix-0.95.2.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_resourcet",
+    build_file = "third_party/haskell/BUILD.resourcet",
+    sha256 = "346ed5c3eca87e1b2df5ca97419bd896e27ad39d997b8eea5b62f67c98a824d9",
+    strip_prefix = "resourcet-1.1.11",
+    urls = ["https://hackage.haskell.org/package/resourcet-1.1.11/resourcet-1.1.11.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_saltine",
+    build_file = "third_party/haskell/BUILD.saltine",
+    sha256 = "a2bc34fb3b9485c300e4a9eac4e6d83ef584275016be845fe5e28aec08df6dc2",
+    strip_prefix = "saltine-0.1.0.0",
+    urls = ["https://hackage.haskell.org/package/saltine-0.1.0.0/saltine-0.1.0.0.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_semigroups",
+    build_file = "third_party/haskell/BUILD.semigroups",
+    sha256 = "589e3042329a6bcffb5c0e85834143586db22eb7a2aae094d492cd004f685d27",
+    strip_prefix = "semigroups-0.18.4",
+    urls = ["https://hackage.haskell.org/package/semigroups-0.18.4/semigroups-0.18.4.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_split",
+    build_file = "third_party/haskell/BUILD.split",
+    sha256 = "1dcd674f7c5f276f33300f5fd59e49d1ac6fc92ae949fd06a0f6d3e9d9ac1413",
+    strip_prefix = "split-0.2.3.3",
+    urls = ["https://hackage.haskell.org/package/split-0.2.3.3/split-0.2.3.3.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_stm",
+    build_file = "third_party/haskell/BUILD.stm",
+    sha256 = "31d7db183f13beed5c71409d12747a7f4cf3e145630553dc86336208540859a7",
+    strip_prefix = "stm-2.4.5.0",
+    urls = ["https://hackage.haskell.org/package/stm-2.4.5.0/stm-2.4.5.0.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_streaming_commons",
+    build_file = "third_party/haskell/BUILD.streaming-commons",
+    sha256 = "43fcae90df5548d9968b31371f13ec7271df86ac34a484c094616867ed4217a7",
+    strip_prefix = "streaming-commons-0.1.19",
+    urls = ["https://hackage.haskell.org/package/streaming-commons-0.1.19/streaming-commons-0.1.19.tar.gz"],
+)
+
+new_http_archive(
     name = "haskell_syb",
     build_file = "third_party/haskell/BUILD.syb",
     sha256 = "b8757dce5ab4045c49a0ae90407d575b87ee5523a7dd5dfa5c9d54fcceff42b5",
     strip_prefix = "syb-0.7",
     urls = ["https://hackage.haskell.org/package/syb-0.7/syb-0.7.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_tagged",
+    build_file = "third_party/haskell/BUILD.tagged",
+    sha256 = "e47c51c955ed77b0fa36897f652df990aa0a8c4eb278efaddcd604be00fc8d99",
+    strip_prefix = "tagged-0.8.5",
+    urls = ["https://hackage.haskell.org/package/tagged-0.8.5/tagged-0.8.5.tar.gz"],
 )
 
 new_http_archive(
@@ -182,6 +430,46 @@ new_http_archive(
 )
 
 new_http_archive(
+    name = "haskell_th_abstraction",
+    build_file = "third_party/haskell/BUILD.th-abstraction",
+    sha256 = "e52e289a547d68f203d65f2e63ec2d87a3c613007d2fe873615c0969b981823c",
+    strip_prefix = "th-abstraction-0.2.6.0",
+    urls = ["https://hackage.haskell.org/package/th-abstraction-0.2.6.0/th-abstraction-0.2.6.0.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_transformers_base",
+    build_file = "third_party/haskell/BUILD.transformers-base",
+    sha256 = "6aa3494fc70659342fbbb163035d5827ecfd8079e3c929e2372adf771fd52387",
+    strip_prefix = "transformers-base-0.4.4",
+    urls = ["https://hackage.haskell.org/package/transformers-base-0.4.4/transformers-base-0.4.4.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_transformers_compat",
+    build_file = "third_party/haskell/BUILD.transformers-compat",
+    sha256 = "d881ef4ec164b631591b222efe7ff555af6d5397c9d86475b309ba9402a8ca9f",
+    strip_prefix = "transformers-compat-0.5.1.4",
+    urls = ["https://hackage.haskell.org/package/transformers-compat-0.5.1.4/transformers-compat-0.5.1.4.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_typed_process",
+    build_file = "third_party/haskell/BUILD.typed-process",
+    sha256 = "d214d88575dc0fe919d23eacd91a212ed7bf5b1dbb4360038e99926ff9bcdcd0",
+    strip_prefix = "typed-process-0.2.1.0",
+    urls = ["https://hackage.haskell.org/package/typed-process-0.2.1.0/typed-process-0.2.1.0.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_unliftio_core",
+    build_file = "third_party/haskell/BUILD.unliftio-core",
+    sha256 = "7550b017d87af53ae3e0d3b8524e24a77faf739073f35e40663454a9e9752385",
+    strip_prefix = "unliftio-core-0.1.1.0",
+    urls = ["https://hackage.haskell.org/package/unliftio-core-0.1.1.0/unliftio-core-0.1.1.0.tar.gz"],
+)
+
+new_http_archive(
     name = "haskell_unordered_containers",
     build_file = "third_party/haskell/BUILD.unordered-containers",
     sha256 = "a4a188359ff28640359131061953f7dbb8258da8ecf0542db0d23f08bfa6eea8",
@@ -195,6 +483,22 @@ new_http_archive(
     sha256 = "b100ee79b9da2651276278cd3e0f08a3c152505cc52982beda507515af173d7b",
     strip_prefix = "vector-0.12.0.1",
     urls = ["https://hackage.haskell.org/package/vector-0.12.0.1/vector-0.12.0.1.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_vector_algorithms",
+    build_file = "third_party/haskell/BUILD.vector-algorithms",
+    sha256 = "ed460a41ca068f568bc2027579ab14185fbb72c7ac469b5179ae5f8a52719070",
+    strip_prefix = "vector-algorithms-0.7.0.1",
+    urls = ["https://hackage.haskell.org/package/vector-algorithms-0.7.0.1/vector-algorithms-0.7.0.1.tar.gz"],
+)
+
+new_http_archive(
+    name = "haskell_zlib",
+    build_file = "third_party/haskell/BUILD.zlib",
+    sha256 = "e4eb4e636caf07a16a9730ce469a00b65d5748f259f43edd904dd457b198a2bb",
+    strip_prefix = "zlib-0.6.1.2",
+    urls = ["https://hackage.haskell.org/package/zlib-0.6.1.2/zlib-0.6.1.2.tar.gz"],
 )
 
 # Go
@@ -626,6 +930,7 @@ android_sdk_repository(
     name = "androidsdk",
     api_level = 27,
     build_tools_version = "27.0.3",
+    path = "third_party/android/sdk",
 )
 
 # Qt5
@@ -634,7 +939,7 @@ android_sdk_repository(
 new_local_repository(
     name = "qt",
     build_file = "third_party/BUILD.qt",
-    path = "/opt/qt59",
+    path = "third_party/qt",
 )
 
 # Linux headers

@@ -1,0 +1,3 @@
+build --copt="-Wno-error"
+
+# vim:ft=sh
