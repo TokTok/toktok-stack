@@ -1,0 +1,23 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+cc_library(
+    name = "cbits",
+    hdrs = ["include/vector.h"],
+    includes = ["include"],
+)
+
+haskell_library(
+    name = "vector-algorithms",
+    srcs = glob(["src/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+        "primitive",
+    ],
+    src_strip_prefix = "src",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":cbits",
+        "@haskell_vector//:vector",
+    ],
+)

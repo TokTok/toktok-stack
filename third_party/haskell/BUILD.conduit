@@ -1,0 +1,35 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+cc_library(
+    name = "cbits",
+    hdrs = ["fusion-macros.h"],
+)
+
+haskell_library(
+    name = "conduit",
+    srcs = glob(["Data/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+        "directory",
+        "filepath",
+        "transformers",
+        "unix",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":cbits",
+        "@haskell_exceptions//:exceptions",
+        "@haskell_lifted_base//:lifted-base",
+        "@haskell_mmorph//:mmorph",
+        "@haskell_monad_control//:monad-control",
+        "@haskell_mono_traversable//:mono-traversable",
+        "@haskell_mtl//:mtl",
+        "@haskell_primitive//:primitive",
+        "@haskell_resourcet//:resourcet",
+        "@haskell_text//:text",
+        "@haskell_transformers_base//:transformers-base",
+        "@haskell_unliftio_core//:unliftio-core",
+        "@haskell_vector//:vector",
+    ],
+)

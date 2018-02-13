@@ -1,0 +1,13 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "clock",
+    srcs = ["System/Clock.hsc"],
+    compiler_flags = [
+        "-XDeriveGeneric",
+        "-XScopedTypeVariables",
+        "-XViewPatterns",
+    ],
+    prebuilt_dependencies = ["base"],
+    visibility = ["//visibility:public"],
+)

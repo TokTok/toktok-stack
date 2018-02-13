@@ -1,0 +1,12 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "async",
+    srcs = glob(["Control/**/*.*hs"]),
+    prebuilt_dependencies = ["base"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_hashable//:hashable",
+        "@haskell_stm//:stm",
+    ],
+)

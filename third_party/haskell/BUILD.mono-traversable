@@ -1,0 +1,22 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "mono-traversable",
+    srcs = glob(["src/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+        "containers",
+        "transformers",
+    ],
+    src_strip_prefix = "src",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_hashable//:hashable",
+        "@haskell_split//:split",
+        "@haskell_text//:text",
+        "@haskell_unordered_containers//:unordered-containers",
+        "@haskell_vector//:vector",
+        "@haskell_vector_algorithms//:vector-algorithms",
+    ],
+)

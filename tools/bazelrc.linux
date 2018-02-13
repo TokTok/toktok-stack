@@ -20,8 +20,8 @@ build --linkopt="-Wl,--warn-common"
 # libsodium and libvpx assembly code doesn't define noexecstack.
 #build --linkopt="-Wl,--warn-execstack"
 
-# Don't build tools twice. This prevents cross-compilation, which we currently
-# don't do anyway.
-build --distinct_host_configuration=false
+build --copt="-Werror"
+build --copt="-Wthread-safety-analysis"
+build --copt="-Wno-error=thread-safety-analysis"
 
 # vim:ft=sh

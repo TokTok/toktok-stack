@@ -1,0 +1,18 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "monad-control",
+    srcs = glob(["Control/**/*.*hs"]),
+    compiler_flags = [
+        "-XCPP",
+    ],
+    prebuilt_dependencies = [
+        "base",
+        "transformers",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_stm//:stm",
+        "@haskell_transformers_base//:transformers-base",
+    ],
+)

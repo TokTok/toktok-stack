@@ -1,0 +1,18 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "regex-base",
+    srcs = glob(["Text/**/*.*hs"]),
+    compiler_flags = [
+        "-XFlexibleContexts",
+        "-XFlexibleInstances",
+        "-XTypeSynonymInstances",
+    ],
+    prebuilt_dependencies = [
+        "array",
+        "base",
+        "bytestring",
+        "containers",
+    ],
+    visibility = ["//visibility:public"],
+)
