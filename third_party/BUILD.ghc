@@ -8,6 +8,7 @@ filegroup(
         "bin/ghc-pkg",
         "bin/haddock",
         "bin/hsc2hs",
+        "bin/hspec-discover",
         "bin/ld",
         "bin/realpath",
     ],

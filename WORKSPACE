@@ -16,489 +16,478 @@ http_archive(
 # Haskell
 # =========================================================
 
-RULES_HASKELL_COMMIT = "17e070bab304f0a075de42430415a27f3b8e13b9"
+RULES_HASKELL_COMMIT = "485efdec6f30cdbbcc1631071e0bc39fa0721496"
 
 http_archive(
     name = "io_tweag_rules_haskell",
-    sha256 = "8c020e3ae251272dea25568baeddf6025211632e26a8bfa34c979e661c730ae3",
+    sha256 = "b3cc7b890f63bf6cc1de29e810181eac863a5259d4823ce40ccf1a279007bbfa",
     strip_prefix = "rules_haskell-%s" % RULES_HASKELL_COMMIT,
     urls = ["https://github.com/tweag/rules_haskell/archive/%s.tar.gz" % RULES_HASKELL_COMMIT],
 )
 
 load("@io_tweag_rules_haskell//haskell:repositories.bzl", "haskell_repositories")
+load("//third_party/haskell:haskell.bzl", "new_cabal_package")
 
 haskell_repositories()
 
 register_toolchains("//:ghc")
 
 new_local_repository(
-    name = "my_ghc",
+    name = "ghc",
     build_file = "third_party/BUILD.ghc",
     path = "/usr",  # Change path accordingly.
 )
 
-new_http_archive(
-    name = "haskell_MissingH",
-    build_file = "third_party/haskell/BUILD.MissingH",
+new_cabal_package(
+    package = "Diff-0.3.4",
+    sha256 = "77b7daec5a79ade779706748f11b4d9b8f805e57a68e7406c3b5a1dee16e0c2f",
+)
+
+new_cabal_package(
+    package = "HUnit-1.6.0.0",
+    sha256 = "7448e6b966e98e84b7627deba23f71b508e9a61e7bc571d74304a25d30e6d0de",
+)
+
+new_cabal_package(
+    package = "MissingH-1.4.0.1",
     sha256 = "283f2afd46625d98b4e29f77edadfa5e6009a227812ee2ece10091ad6a7e9b71",
-    strip_prefix = "MissingH-1.4.0.1",
-    urls = ["https://hackage.haskell.org/package/MissingH-1.4.0.1/MissingH-1.4.0.1.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_MonadRandom",
-    build_file = "third_party/haskell/BUILD.MonadRandom",
+new_cabal_package(
+    package = "MonadRandom-0.5.1",
     sha256 = "9e3f0f92807285302036dc504066ae6d968c8b0b4c25d9360888f31fe1730d87",
-    strip_prefix = "MonadRandom-0.5.1",
-    urls = ["https://hackage.haskell.org/package/MonadRandom-0.5.1/MonadRandom-0.5.1.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_QuickCheck",
-    build_file = "third_party/haskell/BUILD.QuickCheck",
+new_cabal_package(
+    package = "QuickCheck-2.11.3",
     sha256 = "488c5652139da0bac8b3e7d76f11320ded298549e62db530938bfee9ca981876",
-    strip_prefix = "QuickCheck-2.11.3",
-    urls = ["https://hackage.haskell.org/package/QuickCheck-2.11.3/QuickCheck-2.11.3.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_appar",
-    build_file = "third_party/haskell/BUILD.appar",
+new_cabal_package(
+    package = "aeson-1.2.4.0",
+    sha256 = "3401dba4fddb92c8a971f6645b38e2f8a1b286ef7061cd392a1a567640bbfc9b",
+)
+
+new_cabal_package(
+    package = "ansi-terminal-0.8.0.1",
+    sha256 = "1bd4355c176c48f85f9cd3728a8dbe45ad10111b71f5e2ffc606198b3d0f4659",
+)
+
+new_cabal_package(
+    package = "ansi-wl-pprint-0.6.8.2",
+    sha256 = "a630721bd57678c3bfeb6c703f8249e434cbf85f40daceec4660fb8c6725cb3e",
+)
+
+new_cabal_package(
+    package = "appar-0.1.4",
     sha256 = "58ea66abe4dd502d2fc01eecdb0828d5e214704a3c1b33b1f8b33974644c4b26",
-    strip_prefix = "appar-0.1.4",
-    urls = ["https://hackage.haskell.org/package/appar-0.1.4/appar-0.1.4.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_async",
-    build_file = "third_party/haskell/BUILD.async",
+new_cabal_package(
+    package = "async-2.2.1",
     sha256 = "8f0b86022a1319d3c1c68655790da4b7f98017982e27ec3f3dbfe01029d39027",
-    strip_prefix = "async-2.2.1",
-    urls = ["https://hackage.haskell.org/package/async-2.2.1/async-2.2.1.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_base_orphans",
-    build_file = "third_party/haskell/BUILD.base-orphans",
-    sha256 = "c7282aa7516652e6e4a78ccdfb654a99c9da683875748ad5898a3f200be7ad0e",
-    strip_prefix = "base-orphans-0.6",
-    urls = ["https://hackage.haskell.org/package/base-orphans-0.6/base-orphans-0.6.tar.gz"],
+new_cabal_package(
+    package = "attoparsec-0.13.2.2",
+    sha256 = "dd93471eb969172cc4408222a3842d867adda3dd7fb39ad8a4df1b121a67d848",
 )
 
-new_http_archive(
-    name = "haskell_base16_bytestring",
-    build_file = "third_party/haskell/BUILD.base16-bytestring",
+new_cabal_package(
+    package = "attoparsec-iso8601-1.0.0.0",
+    sha256 = "aa6c6d87587383e386cb85e7ffcc4a6317aa8dafb8ba9a104ecac365ce2a858a",
+)
+
+new_cabal_package(
+    package = "base16-bytestring-0.1.1.6",
     sha256 = "5afe65a152c5418f5f4e3579a5e0d5ca19c279dc9bf31c1a371ccbe84705c449",
-    strip_prefix = "base16-bytestring-0.1.1.6",
-    urls = ["https://hackage.haskell.org/package/base16-bytestring-0.1.1.6/base16-bytestring-0.1.1.6.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_bifunctors",
-    build_file = "third_party/haskell/BUILD.bifunctors",
+new_cabal_package(
+    package = "base64-bytestring-1.0.0.1",
+    sha256 = "ab25abf4b00a2f52b270bc3ed43f1d59f16c8eec9d7dffb14df1e9265b233b50",
+)
+
+new_cabal_package(
+    package = "base-compat-0.9.3",
+    sha256 = "7d602b0f0543fadbd598a090c738e9ce9b07a1896673dc27f1503ae3bea1a210",
+)
+
+new_cabal_package(
+    package = "base-orphans-0.6",
+    sha256 = "c7282aa7516652e6e4a78ccdfb654a99c9da683875748ad5898a3f200be7ad0e",
+)
+
+new_cabal_package(
+    package = "bifunctors-5.5.2",
     sha256 = "332bb2ea19e77dac55282daff8046d89f69514ced5b987779d887e53b5d7cb11",
-    strip_prefix = "bifunctors-5.5.2",
-    urls = ["https://hackage.haskell.org/package/bifunctors-5.5.2/bifunctors-5.5.2.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_binary_bits",
-    build_file = "third_party/haskell/BUILD.binary-bits",
+new_cabal_package(
+    package = "binary-bits-0.5",
     sha256 = "16534a018a4754d8d1eab051711c23fb741f41a0d141b289001c52824b5be794",
-    strip_prefix = "binary-bits-0.5",
-    urls = ["https://hackage.haskell.org/package/binary-bits-0.5/binary-bits-0.5.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_binary_conduit",
-    build_file = "third_party/haskell/BUILD.binary-conduit",
+new_cabal_package(
+    package = "binary-conduit-1.2.5",
     sha256 = "21d417aae0f9441ecd0e4f5aaac03bf9692fb9e85e48076c774d961567d14b1b",
-    strip_prefix = "binary-conduit-1.2.5",
-    urls = ["https://hackage.haskell.org/package/binary-conduit-1.2.5/binary-conduit-1.2.5.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_blaze_builder",
-    build_file = "third_party/haskell/BUILD.blaze-builder",
+new_cabal_package(
+    package = "blaze-builder-0.4.0.2",
     sha256 = "9ad3e4661bf5556d650fb9aa56a3ad6e6eec7575e87d472e8ab6d15eaef163d4",
-    strip_prefix = "blaze-builder-0.4.0.2",
-    urls = ["https://hackage.haskell.org/package/blaze-builder-0.4.0.2/blaze-builder-0.4.0.2.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_byteorder",
-    build_file = "third_party/haskell/BUILD.byteorder",
+new_cabal_package(
+    package = "byteorder-1.0.4",
     sha256 = "bd20bbb586947f99c38a4c93d9d0266f49f6fc581767b51ba568f6d5d52d2919",
-    strip_prefix = "byteorder-1.0.4",
-    urls = ["https://hackage.haskell.org/package/byteorder-1.0.4/byteorder-1.0.4.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_clock",
-    build_file = "third_party/haskell/BUILD.clock",
+new_cabal_package(
+    package = "call-stack-0.1.0",
+    sha256 = "f25f5e0992a39371079cc25c2a14b5abb872fa7d868a32753aac3a258b83b1e2",
+)
+
+new_cabal_package(
+    package = "case-insensitive-1.2.0.10",
+    sha256 = "66321c40fffb35f3a3188ba508753b74aada53fb51c822a9752614b03765306c",
+)
+
+new_cabal_package(
+    package = "clock-0.7.2",
     sha256 = "886601978898d3a91412fef895e864576a7125d661e1f8abc49a2a08840e691f",
-    strip_prefix = "clock-0.7.2",
-    urls = ["https://hackage.haskell.org/package/clock-0.7.2/clock-0.7.2.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_comonad",
-    build_file = "third_party/haskell/BUILD.comonad",
+new_cabal_package(
+    package = "colour-2.3.4",
+    sha256 = "0f439f00b322ce3d551f28a4dd1520aa2c91d699de4cdc6d485b9b04be0dc5eb",
+)
+
+new_cabal_package(
+    package = "comonad-5.0.3",
     sha256 = "a7f4584d634051123c547f0d10f88eaf23d99229dbd01dfdcd98cddd41e54df6",
-    strip_prefix = "comonad-5.0.3",
-    urls = ["https://hackage.haskell.org/package/comonad-5.0.3/comonad-5.0.3.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_conduit",
-    build_file = "third_party/haskell/BUILD.conduit",
+new_cabal_package(
+    package = "conduit-1.2.13",
     sha256 = "239d1bac614bc1085315ad8d15275471fc7c0eaef05950429d40a65bd73711ac",
-    strip_prefix = "conduit-1.2.13",
-    urls = ["https://hackage.haskell.org/package/conduit-1.2.13/conduit-1.2.13.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_conduit_extra",
-    build_file = "third_party/haskell/BUILD.conduit-extra",
+new_cabal_package(
+    package = "conduit-extra-1.2.3.2",
     sha256 = "1d5b66284703a4b9fb96a4c6a2213727208639871a675da9755e9a963fa230f6",
-    strip_prefix = "conduit-extra-1.2.3.2",
-    urls = ["https://hackage.haskell.org/package/conduit-extra-1.2.3.2/conduit-extra-1.2.3.2.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_data_binary_ieee754",
-    build_file = "third_party/haskell/BUILD.data-binary-ieee754",
+new_cabal_package(
+    package = "cookie-0.4.3",
+    sha256 = "fbfb0c4fcebe6cb85cb6b84572287a57ee7e3a380f2fe51c4885bfb460f3ed62",
+)
+
+new_cabal_package(
+    package = "data-binary-ieee754-0.4.4",
     sha256 = "59975abed8f4caa602f0780c10a9b2493479e6feb71ad189bb10c3ac5678df0a",
-    strip_prefix = "data-binary-ieee754-0.4.4",
-    urls = ["https://hackage.haskell.org/package/data-binary-ieee754-0.4.4/data-binary-ieee754-0.4.4.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_data_default_class",
-    build_file = "third_party/haskell/BUILD.data-default-class",
+new_cabal_package(
+    package = "data-default-class-0.1.2.0",
     sha256 = "4f01b423f000c3e069aaf52a348564a6536797f31498bb85c3db4bd2d0973e56",
-    strip_prefix = "data-default-class-0.1.2.0",
-    urls = ["https://hackage.haskell.org/package/data-default-class-0.1.2.0/data-default-class-0.1.2.0.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_data_default_instances_base",
-    build_file = "third_party/haskell/BUILD.data-default-instances-base",
+new_cabal_package(
+    package = "data-default-instances-base-0.1.0.1",
     sha256 = "844fe453f674b6b0998da804465914abce8936c5e640d8bb8bff37ad07d7a17a",
-    strip_prefix = "data-default-instances-base-0.1.0.1",
-    urls = ["https://hackage.haskell.org/package/data-default-instances-base-0.1.0.1/data-default-instances-base-0.1.0.1.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_exceptions",
-    build_file = "third_party/haskell/BUILD.exceptions",
+new_cabal_package(
+    package = "dlist-0.8.0.4",
+    sha256 = "acf1867b80cdd618b8d904e89eea33be60d3c4c3aeb80d61f29229a301cc397a",
+)
+
+new_cabal_package(
+    package = "exceptions-0.8.3",
     sha256 = "4d6ad97e8e3d5dc6ce9ae68a469dc2fd3f66e9d312bc6faa7ab162eddcef87be",
-    strip_prefix = "exceptions-0.8.3",
-    urls = ["https://hackage.haskell.org/package/exceptions-0.8.3/exceptions-0.8.3.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_hashable",
-    build_file = "third_party/haskell/BUILD.hashable",
+new_cabal_package(
+    package = "github-0.19",
+    sha256 = "7a7e35616fe0b3cc5f6db6ba4892b7f66ff5291cf584df275a36f18acec7bfa3",
+    strip_prefix = "github-prepare-0.19",
+    url = "https://github.com/phadej/github/archive/prepare-0.19.zip",
+)
+
+new_cabal_package(
+    package = "hashable-1.2.6.1",
     sha256 = "94ca8789e13bc05c1582c46b709f3b0f5aeec2092be634b8606dbd9c5915bb7a",
-    strip_prefix = "hashable-1.2.6.1",
-    urls = ["https://hackage.haskell.org/package/hashable-1.2.6.1/hashable-1.2.6.1.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_hslogger",
-    build_file = "third_party/haskell/BUILD.hslogger",
+new_cabal_package(
+    package = "hslogger-1.2.10",
     sha256 = "d7ca6e94a4aacb47a8dc30e3960ab8deff482d2ec9dca9a87b225e03e97e452b",
-    strip_prefix = "hslogger-1.2.10",
-    urls = ["https://hackage.haskell.org/package/hslogger-1.2.10/hslogger-1.2.10.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_iproute",
-    build_file = "third_party/haskell/BUILD.iproute",
+new_cabal_package(
+    package = "hspec-2.4.8",
+    sha256 = "94d4e0d688db1c62791c33b35cffc7b17f5a2d43387e1bb20d2b18f3dd6ceda2",
+)
+
+new_cabal_package(
+    package = "hspec-core-2.4.8",
+    sha256 = "24ca82ca29cf9379c24133f510decc5dd1dbe447c3a9bc82dbcc365c8f35f90b",
+)
+
+new_cabal_package(
+    package = "hspec-expectations-0.8.2",
+    sha256 = "819607ea1faf35ce5be34be61c6f50f3389ea43892d56fb28c57a9f5d54fb4ef",
+)
+
+new_cabal_package(
+    package = "http-client-0.5.10",
+    sha256 = "f5f9696ed632f945f113ff23c98656aec4bcc77ed3653286c72f567d9286bac2",
+)
+
+new_cabal_package(
+    package = "http-types-0.12.1",
+    sha256 = "3fa7715428f375b6aa4998ef17822871d7bfe1b55ebd9329efbacd4dad9969f3",
+)
+
+new_cabal_package(
+    package = "hostname-1.0",
+    sha256 = "9b43dab1b6da521f35685b20555da00738c8e136eb972458c786242406a9cf5c",
+)
+
+new_cabal_package(
+    package = "integer-logarithms-1.0.2",
+    sha256 = "31069ccbff489baf6c4a93cb7475640aabea9366eb0b583236f10714a682b570",
+)
+
+new_cabal_package(
+    package = "iproute-1.7.1",
     sha256 = "57b8d03ca8ce92f8ec1334564f3edff53a0621ccbc43c00ba02eaa5007ee3eee",
-    strip_prefix = "iproute-1.7.1",
-    urls = ["https://hackage.haskell.org/package/iproute-1.7.1/iproute-1.7.1.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_language_c",
-    build_file = "third_party/haskell/BUILD.language-c",
+new_cabal_package(
+    package = "language-c-0.7.1",
     sha256 = "a7447123f9b3bec9319ee2a22b22d97f03acd6566b4f6caf5b9a1f71e4f7a9ca",
-    strip_prefix = "language-c-0.7.1",
-    urls = ["https://hackage.haskell.org/package/language-c-0.7.1/language-c-0.7.1.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_lifted_base",
-    build_file = "third_party/haskell/BUILD.lifted-base",
+new_cabal_package(
+    package = "lifted-base-0.2.3.11",
     sha256 = "8ec47a9fce7cf5913766a5c53e1b2cf254be733fa9d62e6e2f3f24e538005aab",
-    strip_prefix = "lifted-base-0.2.3.11",
-    urls = ["https://hackage.haskell.org/package/lifted-base-0.2.3.11/lifted-base-0.2.3.11.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_mmorph",
-    build_file = "third_party/haskell/BUILD.mmorph",
+new_cabal_package(
+    package = "mime-types-0.1.0.7",
+    sha256 = "83164a24963a7ef37543349df095155b30116c208e602a159a5cd3722f66e9b9",
+)
+
+new_cabal_package(
+    package = "mmorph-1.1.0",
     sha256 = "c1bcb45560753203f5ce3952f3c8a100b7d5b37c91746372c1da4988c4db74de",
-    strip_prefix = "mmorph-1.1.0",
-    urls = ["https://hackage.haskell.org/package/mmorph-1.1.0/mmorph-1.1.0.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_monad_control",
-    build_file = "third_party/haskell/BUILD.monad-control",
+new_cabal_package(
+    package = "monad-control-1.0.2.2",
     sha256 = "1e34a21d123f2ed8bb2708e7f30343fa1d9d7f36881f9871cbcca4bb07e7e433",
-    strip_prefix = "monad-control-1.0.2.2",
-    urls = ["https://hackage.haskell.org/package/monad-control-1.0.2.2/monad-control-1.0.2.2.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_mono_traversable",
-    build_file = "third_party/haskell/BUILD.mono-traversable",
+new_cabal_package(
+    package = "mono-traversable-1.0.8.1",
     sha256 = "991290797bd77ce2f2e23dd5dea32fb159c6cb9310615f64a0703ea4c6373935",
-    strip_prefix = "mono-traversable-1.0.8.1",
-    urls = ["https://hackage.haskell.org/package/mono-traversable-1.0.8.1/mono-traversable-1.0.8.1.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_mtl",
-    build_file = "third_party/haskell/BUILD.mtl",
+new_cabal_package(
+    package = "mtl-2.2.1",
     sha256 = "cae59d79f3a16f8e9f3c9adc1010c7c6cdddc73e8a97ff4305f6439d855c8dc5",
-    strip_prefix = "mtl-2.2.1",
-    urls = ["https://hackage.haskell.org/package/mtl-2.2.1/mtl-2.2.1.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_network",
-    build_file = "third_party/haskell/BUILD.network",
+new_cabal_package(
+    package = "network-2.6.3.3",
     sha256 = "776668b0a969d0d57ebabf78943cfc21a1aaf7e5e2ae6288322292125c9440f5",
-    strip_prefix = "network-2.6.3.3",
-    urls = ["https://hackage.haskell.org/package/network-2.6.3.3/network-2.6.3.3.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_old_locale",
-    build_file = "third_party/haskell/BUILD.old-locale",
+new_cabal_package(
+    package = "network-uri-2.6.1.0",
+    sha256 = "423e0a2351236f3fcfd24e39cdbc38050ec2910f82245e69ca72a661f7fc47f0",
+)
+
+new_cabal_package(
+    package = "old-locale-1.0.0.7",
     sha256 = "dbaf8bf6b888fb98845705079296a23c3f40ee2f449df7312f7f7f1de18d7b50",
-    strip_prefix = "old-locale-1.0.0.7",
-    urls = ["https://hackage.haskell.org/package/old-locale-1.0.0.7/old-locale-1.0.0.7.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_old_time",
-    build_file = "third_party/haskell/BUILD.old-time",
+new_cabal_package(
+    package = "old-time-1.1.0.3",
     sha256 = "1ccb158b0f7851715d36b757c523b026ca1541e2030d02239802ba39b4112bc1",
-    strip_prefix = "old-time-1.1.0.3",
-    urls = ["https://hackage.haskell.org/package/old-time-1.1.0.3/old-time-1.1.0.3.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_parsec",
-    build_file = "third_party/haskell/BUILD.parsec",
+new_cabal_package(
+    package = "parsec-3.1.11",
     sha256 = "6f87251cb1d11505e621274dec15972de924a9074f07f7430a18892064c2676e",
-    strip_prefix = "parsec-3.1.11",
-    urls = ["https://hackage.haskell.org/package/parsec-3.1.11/parsec-3.1.11.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_primitive",
-    build_file = "third_party/haskell/BUILD.primitive",
+new_cabal_package(
+    package = "primitive-0.6.2.0",
     sha256 = "b8e8d70213e22b3fab0e0d11525c02627489618988fdc636052ca0adce282ae1",
-    strip_prefix = "primitive-0.6.2.0",
-    urls = ["https://hackage.haskell.org/package/primitive-0.6.2.0/primitive-0.6.2.0.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_profunctors",
-    build_file = "third_party/haskell/BUILD.profunctors",
+new_cabal_package(
+    package = "profunctors-5.2.2",
     sha256 = "e981e6a33ac99d38a947a749179bbea3c294ecf6bfde41660fe6d8d5a2e43768",
-    strip_prefix = "profunctors-5.2.2",
-    urls = ["https://hackage.haskell.org/package/profunctors-5.2.2/profunctors-5.2.2.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_random",
-    build_file = "third_party/haskell/BUILD.random",
+new_cabal_package(
+    package = "quickcheck-io-0.2.0",
+    sha256 = "fb779119d79fe08ff4d502fb6869a70c9a8d5fd8ae0959f605c3c937efd96422",
+)
+
+new_cabal_package(
+    package = "random-1.1",
     sha256 = "b718a41057e25a3a71df693ab0fe2263d492e759679b3c2fea6ea33b171d3a5a",
-    strip_prefix = "random-1.1",
-    urls = ["https://hackage.haskell.org/package/random-1.1/random-1.1.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_regex_base",
-    build_file = "third_party/haskell/BUILD.regex-base",
+new_cabal_package(
+    package = "regex-base-0.93.2",
     sha256 = "20dc5713a16f3d5e2e6d056b4beb9cfdc4368cd09fd56f47414c847705243278",
-    strip_prefix = "regex-base-0.93.2",
-    urls = ["https://hackage.haskell.org/package/regex-base-0.93.2/regex-base-0.93.2.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_regex_compat",
-    build_file = "third_party/haskell/BUILD.regex-compat",
+new_cabal_package(
+    package = "regex-compat-0.95.1",
     sha256 = "d57cb1a5a4d66753b18eaa37a1621246f660472243b001894f970037548d953b",
-    strip_prefix = "regex-compat-0.95.1",
-    urls = ["https://hackage.haskell.org/package/regex-compat-0.95.1/regex-compat-0.95.1.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_regex_posix",
-    build_file = "third_party/haskell/BUILD.regex-posix",
+new_cabal_package(
+    package = "regex-posix-0.95.2",
     sha256 = "56019921cd4a4c9682b81ec614236fea816ba8ed8785a1640cd66d8b24fc703e",
-    strip_prefix = "regex-posix-0.95.2",
-    urls = ["https://hackage.haskell.org/package/regex-posix-0.95.2/regex-posix-0.95.2.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_resourcet",
-    build_file = "third_party/haskell/BUILD.resourcet",
+new_cabal_package(
+    package = "resourcet-1.1.11",
     sha256 = "346ed5c3eca87e1b2df5ca97419bd896e27ad39d997b8eea5b62f67c98a824d9",
-    strip_prefix = "resourcet-1.1.11",
-    urls = ["https://hackage.haskell.org/package/resourcet-1.1.11/resourcet-1.1.11.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_saltine",
-    build_file = "third_party/haskell/BUILD.saltine",
+new_cabal_package(
+    package = "saltine-0.1.0.0",
     sha256 = "a2bc34fb3b9485c300e4a9eac4e6d83ef584275016be845fe5e28aec08df6dc2",
-    strip_prefix = "saltine-0.1.0.0",
-    urls = ["https://hackage.haskell.org/package/saltine-0.1.0.0/saltine-0.1.0.0.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_semigroups",
-    build_file = "third_party/haskell/BUILD.semigroups",
+new_cabal_package(
+    package = "scientific-0.3.5.2",
+    sha256 = "5ce479ff95482fb907267516bd0f8fff450bdeea546bbd1267fe035acf975657",
+)
+
+new_cabal_package(
+    package = "semigroups-0.18.4",
     sha256 = "589e3042329a6bcffb5c0e85834143586db22eb7a2aae094d492cd004f685d27",
-    strip_prefix = "semigroups-0.18.4",
-    urls = ["https://hackage.haskell.org/package/semigroups-0.18.4/semigroups-0.18.4.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_split",
-    build_file = "third_party/haskell/BUILD.split",
+new_cabal_package(
+    package = "setenv-0.1.1.3",
+    sha256 = "e358df39afc03d5a39e2ec650652d845c85c80cc98fe331654deafb4767ecb32",
+)
+
+new_cabal_package(
+    package = "split-0.2.3.3",
     sha256 = "1dcd674f7c5f276f33300f5fd59e49d1ac6fc92ae949fd06a0f6d3e9d9ac1413",
-    strip_prefix = "split-0.2.3.3",
-    urls = ["https://hackage.haskell.org/package/split-0.2.3.3/split-0.2.3.3.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_stm",
-    build_file = "third_party/haskell/BUILD.stm",
+new_cabal_package(
+    package = "stm-2.4.5.0",
     sha256 = "31d7db183f13beed5c71409d12747a7f4cf3e145630553dc86336208540859a7",
-    strip_prefix = "stm-2.4.5.0",
-    urls = ["https://hackage.haskell.org/package/stm-2.4.5.0/stm-2.4.5.0.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_streaming_commons",
-    build_file = "third_party/haskell/BUILD.streaming-commons",
+new_cabal_package(
+    package = "streaming-commons-0.1.19",
     sha256 = "43fcae90df5548d9968b31371f13ec7271df86ac34a484c094616867ed4217a7",
-    strip_prefix = "streaming-commons-0.1.19",
-    urls = ["https://hackage.haskell.org/package/streaming-commons-0.1.19/streaming-commons-0.1.19.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_syb",
-    build_file = "third_party/haskell/BUILD.syb",
+new_cabal_package(
+    package = "syb-0.7",
     sha256 = "b8757dce5ab4045c49a0ae90407d575b87ee5523a7dd5dfa5c9d54fcceff42b5",
-    strip_prefix = "syb-0.7",
-    urls = ["https://hackage.haskell.org/package/syb-0.7/syb-0.7.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_tagged",
-    build_file = "third_party/haskell/BUILD.tagged",
+new_cabal_package(
+    package = "tagged-0.8.5",
     sha256 = "e47c51c955ed77b0fa36897f652df990aa0a8c4eb278efaddcd604be00fc8d99",
-    strip_prefix = "tagged-0.8.5",
-    urls = ["https://hackage.haskell.org/package/tagged-0.8.5/tagged-0.8.5.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_text",
-    build_file = "third_party/haskell/BUILD.text",
+new_cabal_package(
+    package = "test-framework-0.8.2.0",
+    sha256 = "f5aec7a15dbcb39e951bcf6502606fd99d751197b5510f41706899aa7e660ac2",
+)
+
+new_cabal_package(
+    package = "test-framework-hunit-0.3.0.2",
+    sha256 = "95cb8ee02a850b164bfdabdf4dbc839d621361f3ac770ad21ea43a8bde360bf8",
+)
+
+new_cabal_package(
+    package = "text-1.2.3.0",
     sha256 = "20e0b1627f613b32cc7f2d2e8dcc48a4a61938b24f3d14fb77cee694f0c9311a",
-    strip_prefix = "text-1.2.3.0",
-    urls = ["https://hackage.haskell.org/package/text-1.2.3.0/text-1.2.3.0.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_tf_random",
-    build_file = "third_party/haskell/BUILD.tf-random",
+new_cabal_package(
+    package = "tf-random-0.5",
     sha256 = "2e30cec027b313c9e1794d326635d8fc5f79b6bf6e7580ab4b00186dadc88510",
-    strip_prefix = "tf-random-0.5",
-    urls = ["https://hackage.haskell.org/package/tf-random-0.5/tf-random-0.5.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_th_abstraction",
-    build_file = "third_party/haskell/BUILD.th-abstraction",
+new_cabal_package(
+    package = "th-abstraction-0.2.6.0",
     sha256 = "e52e289a547d68f203d65f2e63ec2d87a3c613007d2fe873615c0969b981823c",
-    strip_prefix = "th-abstraction-0.2.6.0",
-    urls = ["https://hackage.haskell.org/package/th-abstraction-0.2.6.0/th-abstraction-0.2.6.0.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_transformers_base",
-    build_file = "third_party/haskell/BUILD.transformers-base",
+new_cabal_package(
+    package = "time-locale-compat-0.1.1.3",
+    sha256 = "9144bf68b47791a2ac73f45aeadbc5910be2da9ad174909e1a10a70b4576aced",
+)
+
+new_cabal_package(
+    package = "transformers-base-0.4.4",
     sha256 = "6aa3494fc70659342fbbb163035d5827ecfd8079e3c929e2372adf771fd52387",
-    strip_prefix = "transformers-base-0.4.4",
-    urls = ["https://hackage.haskell.org/package/transformers-base-0.4.4/transformers-base-0.4.4.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_transformers_compat",
-    build_file = "third_party/haskell/BUILD.transformers-compat",
+new_cabal_package(
+    package = "transformers-compat-0.5.1.4",
     sha256 = "d881ef4ec164b631591b222efe7ff555af6d5397c9d86475b309ba9402a8ca9f",
-    strip_prefix = "transformers-compat-0.5.1.4",
-    urls = ["https://hackage.haskell.org/package/transformers-compat-0.5.1.4/transformers-compat-0.5.1.4.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_typed_process",
-    build_file = "third_party/haskell/BUILD.typed-process",
+new_cabal_package(
+    package = "typed-process-0.2.1.0",
     sha256 = "d214d88575dc0fe919d23eacd91a212ed7bf5b1dbb4360038e99926ff9bcdcd0",
-    strip_prefix = "typed-process-0.2.1.0",
-    urls = ["https://hackage.haskell.org/package/typed-process-0.2.1.0/typed-process-0.2.1.0.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_unliftio_core",
-    build_file = "third_party/haskell/BUILD.unliftio-core",
+new_cabal_package(
+    package = "unliftio-core-0.1.1.0",
     sha256 = "7550b017d87af53ae3e0d3b8524e24a77faf739073f35e40663454a9e9752385",
-    strip_prefix = "unliftio-core-0.1.1.0",
-    urls = ["https://hackage.haskell.org/package/unliftio-core-0.1.1.0/unliftio-core-0.1.1.0.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_unordered_containers",
-    build_file = "third_party/haskell/BUILD.unordered-containers",
+new_cabal_package(
+    package = "unordered-containers-0.2.8.0",
     sha256 = "a4a188359ff28640359131061953f7dbb8258da8ecf0542db0d23f08bfa6eea8",
-    strip_prefix = "unordered-containers-0.2.8.0",
-    urls = ["https://hackage.haskell.org/package/unordered-containers-0.2.8.0/unordered-containers-0.2.8.0.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_vector",
-    build_file = "third_party/haskell/BUILD.vector",
+new_cabal_package(
+    package = "uuid-types-1.0.3",
+    sha256 = "9276517ab24a9b06f39d6e3c33c6c2b4ace1fc2126dbc1cd9806866a6551b3fd",
+)
+
+new_cabal_package(
+    package = "vector-0.12.0.1",
     sha256 = "b100ee79b9da2651276278cd3e0f08a3c152505cc52982beda507515af173d7b",
-    strip_prefix = "vector-0.12.0.1",
-    urls = ["https://hackage.haskell.org/package/vector-0.12.0.1/vector-0.12.0.1.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_vector_algorithms",
-    build_file = "third_party/haskell/BUILD.vector-algorithms",
+new_cabal_package(
+    package = "vector-algorithms-0.7.0.1",
     sha256 = "ed460a41ca068f568bc2027579ab14185fbb72c7ac469b5179ae5f8a52719070",
-    strip_prefix = "vector-algorithms-0.7.0.1",
-    urls = ["https://hackage.haskell.org/package/vector-algorithms-0.7.0.1/vector-algorithms-0.7.0.1.tar.gz"],
 )
 
-new_http_archive(
-    name = "haskell_zlib",
-    build_file = "third_party/haskell/BUILD.zlib",
+new_cabal_package(
+    package = "xml-1.3.14",
+    sha256 = "32d1a1a9f21a59176d84697f96ae3a13a0198420e3e4f1c48abbab7d2425013d",
+)
+
+new_cabal_package(
+    package = "zlib-0.6.1.2",
     sha256 = "e4eb4e636caf07a16a9730ce469a00b65d5748f259f43edd904dd457b198a2bb",
-    strip_prefix = "zlib-0.6.1.2",
-    urls = ["https://hackage.haskell.org/package/zlib-0.6.1.2/zlib-0.6.1.2.tar.gz"],
 )
 
 # Go
@@ -897,11 +886,11 @@ maven_jar(
 # Scala toolchain
 # =========================================================
 
-rules_scala_version = "7522c866450cf7810eda443e91ff44d2a2286ba1"
+rules_scala_version = "1d31d255e5f1e5d40bb27c8b3cf71f3741d69be3"
 
 http_archive(
     name = "io_bazel_rules_scala",
-    sha256 = "66eb5e124d5542bbcab646aab34515bcb636004dd6dcb67cf8fa3f67f3f31f05",
+    sha256 = "2402bf9a4624d8557f7fd8e457e65d677e900345759f719a24d27241767623d5",
     strip_prefix = "rules_scala-%s" % rules_scala_version,
     urls = ["https://github.com/bazelbuild/rules_scala/archive/%s.zip" % rules_scala_version],
 )

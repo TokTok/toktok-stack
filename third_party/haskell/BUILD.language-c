@@ -18,6 +18,7 @@ haskell_library(
         "process",
     ],
     src_strip_prefix = "src",
+    version = "0.7.1",
     visibility = ["//visibility:public"],
     deps = ["@haskell_syb//:syb"],
 )

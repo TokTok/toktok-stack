@@ -1,0 +1,17 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "case-insensitive",
+    srcs = glob(["Data/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+        "deepseq",
+    ],
+    version = "1.2.0.10",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_text//:text",
+        "@haskell_hashable//:hashable",
+    ],
+)

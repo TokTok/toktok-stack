@@ -1,5 +1,14 @@
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 
+cc_library(
+    name = "cbits",
+    srcs = glob([
+        "cbits/*.h",
+        "cbits/*.c",
+    ]),
+    deps = ["@ghc//:ffi"],
+)
+
 haskell_library(
     name = "primitive",
     srcs = glob([
@@ -11,5 +20,7 @@ haskell_library(
         "ghc-prim",
         "transformers",
     ],
+    version = "0.6.2.0",
     visibility = ["//visibility:public"],
+    deps = [":cbits"],
 )

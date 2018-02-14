@@ -8,5 +8,6 @@ haskell_library(
         "binary",
         "bytestring",
     ],
+    version = "0.5",
     visibility = ["//visibility:public"],
 )

@@ -9,6 +9,7 @@ haskell_library(
         "process",
     ],
     src_strip_prefix = "src",
+    version = "0.2.1.0",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_async//:async",

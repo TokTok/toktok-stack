@@ -8,6 +8,7 @@ haskell_library(
         "binary",
         "bytestring",
     ],
+    version = "1.2.5",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_conduit//:conduit",

@@ -1,0 +1,29 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+cc_library(
+    name = "cbits",
+    hdrs = glob(["includes/*.hs"]),
+)
+
+haskell_library(
+    name = "ansi-terminal",
+    srcs = glob(
+        ["System/**/*.*hs"],
+        exclude = [
+            "**/Example.hs",
+            "**/Windows/**",
+            "**/Windows.hs",
+        ],
+    ),
+    compiler_flags = [
+        "-DUNIX",
+        "-XCPP",
+    ],
+    prebuilt_dependencies = ["base"],
+    version = "0.8.0.1",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":cbits",
+        "@haskell_colour//:colour",
+    ],
+)

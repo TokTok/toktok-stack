@@ -1,0 +1,26 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library", "haskell_test")
+
+haskell_library(
+    name = "dlist",
+    srcs = glob(["Data/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "deepseq",
+    ],
+    version = "0.8.0.4",
+    visibility = ["//visibility:public"],
+)
+
+haskell_test(
+    name = "test",
+    srcs = [
+        "tests/Main.hs",
+        "tests/OverloadedStrings.hs",
+    ],
+    prebuilt_dependencies = ["base"],
+    src_strip_prefix = "tests",
+    deps = [
+        ":dlist",
+        "@haskell_QuickCheck//:QuickCheck",
+    ],
+)

@@ -8,5 +8,6 @@ haskell_library(
         "base",
         "time",
     ],
+    version = "1.1",
     visibility = ["//visibility:public"],
 )

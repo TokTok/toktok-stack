@@ -13,6 +13,7 @@ haskell_library(
         "bytestring",
     ],
     src_strip_prefix = "src",
+    version = "0.1.0.0",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_profunctors//:profunctors",

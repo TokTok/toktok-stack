@@ -12,6 +12,6 @@ gazelle(
 
 haskell_toolchain(
     name = "ghc",
-    tools = "@my_ghc//:bin",
+    tools = "@ghc//:bin",
     version = "8.0.1",
 )

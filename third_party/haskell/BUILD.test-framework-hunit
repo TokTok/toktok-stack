@@ -1,0 +1,17 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "test-framework-hunit",
+    srcs = glob(["Test/**/*.hs"]),
+    compiler_flags = [
+        "-XMultiParamTypeClasses",
+        "-XTypeOperators",
+    ],
+    prebuilt_dependencies = ["base"],
+    version = "0.3.0.2",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_HUnit//:HUnit",
+        "@haskell_test_framework//:test-framework",
+    ],
+)

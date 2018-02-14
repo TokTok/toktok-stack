@@ -11,6 +11,7 @@ haskell_library(
         "containers",
         "transformers",
     ],
+    version = "1.1.11",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_exceptions//:exceptions",

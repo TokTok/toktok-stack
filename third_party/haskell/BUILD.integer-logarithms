@@ -1,0 +1,14 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "integer-logarithms",
+    srcs = glob(["src/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "array",
+        "base",
+        "integer-gmp",
+    ],
+    src_strip_prefix = "src",
+    version = "1.0.2",
+    visibility = ["//visibility:public"],
+)

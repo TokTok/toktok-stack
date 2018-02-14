@@ -24,6 +24,7 @@ haskell_library(
         "unix",
     ],
     src_strip_prefix = "src",
+    version = "1.4.0.1",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_hslogger//:hslogger",

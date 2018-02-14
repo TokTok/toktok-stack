@@ -7,5 +7,6 @@ haskell_library(
         "array",
         "base",
     ],
+    version = "2.4.5.0",
     visibility = ["//visibility:public"],
 )

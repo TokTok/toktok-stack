@@ -32,7 +32,7 @@ cc_library(
     ],
     defines = ["_GNU_SOURCE"],
     includes = ["include"],
-    deps = ["@my_ghc//:ffi"],
+    deps = ["@ghc//:ffi"],
 )
 
 haskell_library(
@@ -59,6 +59,7 @@ haskell_library(
         "base",
         "bytestring",
     ],
+    version = "2.6.3.3",
     visibility = ["//visibility:public"],
     deps = [":cbits"],
 )

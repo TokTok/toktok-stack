@@ -29,6 +29,7 @@ haskell_library(
         "integer-gmp",
         "array",
     ],
+    version = "1.2.3.0",
     visibility = ["//visibility:public"],
     deps = [":cbits"],
 )

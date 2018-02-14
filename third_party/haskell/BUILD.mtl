@@ -12,5 +12,6 @@ haskell_library(
         "base",
         "transformers",
     ],
+    version = "2.2.1",
     visibility = ["//visibility:public"],
 )

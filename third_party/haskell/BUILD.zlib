@@ -7,5 +7,6 @@ haskell_library(
         "base",
         "bytestring",
     ],
+    version = "0.6.1.2",
     visibility = ["//visibility:public"],
 )

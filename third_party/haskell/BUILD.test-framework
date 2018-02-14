@@ -1,0 +1,34 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library", "haskell_test")
+
+haskell_library(
+    name = "test-framework",
+    srcs = glob(
+        ["Test/**/*.hs"],
+        exclude = ["Test/Framework/Tests.hs"],
+    ),
+    compiler_flags = [
+        "-XCPP",
+        "-XExistentialQuantification",
+        "-XFlexibleInstances",
+        "-XFunctionalDependencies",
+        "-XMultiParamTypeClasses",
+        "-XTypeOperators",
+    ],
+    prebuilt_dependencies = [
+        "base",
+        "containers",
+        "time",
+    ],
+    version = "0.8.2.0",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_HUnit//:HUnit",
+        "@haskell_QuickCheck//:QuickCheck",
+        "@haskell_xml//:xml",
+        "@haskell_hostname//:hostname",
+        "@haskell_random//:random",
+        "@haskell_regex_posix//:regex-posix",
+        "@haskell_ansi_terminal//:ansi-terminal",
+        "@haskell_ansi_wl_pprint//:ansi-wl-pprint",
+    ],
+)

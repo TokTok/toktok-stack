@@ -9,5 +9,6 @@ haskell_library(
         "-XViewPatterns",
     ],
     prebuilt_dependencies = ["base"],
+    version = "0.7.2",
     visibility = ["//visibility:public"],
 )

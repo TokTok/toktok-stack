@@ -9,5 +9,6 @@ haskell_library(
         "template-haskell",
     ],
     src_strip_prefix = "src",
+    version = "0.2.6.0",
     visibility = ["//visibility:public"],
 )

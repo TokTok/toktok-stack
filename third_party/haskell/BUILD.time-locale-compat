@@ -1,0 +1,14 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "time-locale-compat",
+    srcs = glob(["src/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "deepseq",
+        "time",
+    ],
+    src_strip_prefix = "src",
+    version = "0.1.1.3",
+    visibility = ["//visibility:public"],
+)

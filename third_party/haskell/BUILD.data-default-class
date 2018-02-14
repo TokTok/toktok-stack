@@ -4,5 +4,6 @@ haskell_library(
     name = "data-default-class",
     srcs = glob(["Data/**/*.*hs"]),
     prebuilt_dependencies = ["base"],
+    version = "0.1.2.0",
     visibility = ["//visibility:public"],
 )

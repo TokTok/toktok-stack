@@ -5,13 +5,9 @@ haskell_library(
     srcs = glob(["src/**/*.hs*"]),
     prebuilt_dependencies = [
         "base",
-        #"containers",
-        #"template-haskell",
         "transformers",
     ],
     src_strip_prefix = "src",
+    version = "0.5.1.4",
     visibility = ["//visibility:public"],
-    deps = [
-        #"@haskell_transformers_compat//:transformers-compat",
-    ],
 )

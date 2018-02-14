@@ -11,6 +11,7 @@ haskell_library(
         "transformers",
     ],
     src_strip_prefix = "old-src/ghc801",
+    version = "5.5.2",
     deps = [
         "@haskell_base_orphans//:base-orphans",
         "@haskell_transformers_compat//:transformers-compat",
@@ -26,6 +27,7 @@ haskell_library(
         "template-haskell",
     ],
     src_strip_prefix = "src",
+    version = "5.5.2",
     visibility = ["//visibility:public"],
     deps = [
         ":bifunctors-compat",

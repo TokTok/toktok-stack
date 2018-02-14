@@ -14,6 +14,7 @@ haskell_library(
         "unix",
     ],
     src_strip_prefix = "src",
+    version = "1.2.10",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_mtl//:mtl",

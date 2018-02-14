@@ -1,12 +1,27 @@
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library", "haskell_test")
 
 haskell_library(
     name = "async",
     srcs = glob(["Control/**/*.*hs"]),
     prebuilt_dependencies = ["base"],
+    version = "2.2.1",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_hashable//:hashable",
         "@haskell_stm//:stm",
     ],
+)
+
+haskell_test(
+    name = "test",
+    srcs = ["test/test-async.hs"],
+    main_file = "test/test-async.hs",
+    deps = [
+        ":async",
+        "@haskell_test_framework//:test-framework",
+        "@haskell_test_framework_hunit//:test-framework-hunit",
+        "@haskell_stm//:stm",
+        "@haskell_HUnit//:HUnit",
+    ],
+    prebuilt_dependencies = ["base"],
 )

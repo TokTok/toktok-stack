@@ -27,6 +27,7 @@ haskell_library(
         "bytestring",
         "containers",
     ],
+    version = "0.95.2",
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",

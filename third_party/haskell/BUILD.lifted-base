@@ -18,6 +18,7 @@ haskell_library(
         exclude = ["Control/Concurrent/SampleVar/Lifted.hs"],
     ),
     prebuilt_dependencies = ["base"],
+    version = "0.2.3.11",
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",

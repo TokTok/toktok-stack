@@ -10,6 +10,7 @@ haskell_library(
         "template-haskell",
         "transformers",
     ],
+    version = "2.11.3",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_random//:random",

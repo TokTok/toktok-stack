@@ -1,0 +1,14 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "hspec-expectations",
+    srcs = glob(["src/**/*.*hs"]),
+    prebuilt_dependencies = ["base"],
+    src_strip_prefix = "src",
+    version = "0.8.2",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_HUnit//:HUnit",
+        "@haskell_call_stack//:call-stack",
+    ],
+)

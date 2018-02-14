@@ -8,6 +8,7 @@ haskell_library(
         "transformers",
     ],
     src_strip_prefix = "src",
+    version = "5.0.3",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_semigroups//:semigroups",

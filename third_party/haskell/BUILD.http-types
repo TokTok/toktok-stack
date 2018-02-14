@@ -1,0 +1,17 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "http-types",
+    srcs = glob(["Network/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "array",
+        "base",
+        "bytestring",
+    ],
+    version = "0.12.1",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_case_insensitive//:case-insensitive",
+        "@haskell_text//:text",
+    ],
+)

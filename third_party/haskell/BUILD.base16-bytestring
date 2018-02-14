@@ -8,5 +8,6 @@ haskell_library(
         "bytestring",
         "ghc-prim",
     ],
+    version = "0.1.1.6",
     visibility = ["//visibility:public"],
 )

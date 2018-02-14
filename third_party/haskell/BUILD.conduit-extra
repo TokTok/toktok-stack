@@ -16,6 +16,7 @@ haskell_library(
         "filepath",
         "transformers",
     ],
+    version = "1.2.3.2",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_async//:async",

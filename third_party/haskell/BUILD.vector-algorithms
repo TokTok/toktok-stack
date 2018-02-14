@@ -15,6 +15,7 @@ haskell_library(
         "primitive",
     ],
     src_strip_prefix = "src",
+    version = "0.7.0.1",
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",

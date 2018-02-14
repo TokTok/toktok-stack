@@ -1,0 +1,41 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "Diff",
+    srcs = ["vendor/Data/Algorithm/Diff.hs"],
+    prebuilt_dependencies = [
+        "array",
+        "base",
+    ],
+    src_strip_prefix = "vendor",
+    visibility = ["//visibility:public"],
+)
+
+haskell_library(
+    name = "hspec-core",
+    srcs = glob(["src/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "deepseq",
+        "directory",
+        "filepath",
+        "transformers",
+        "time",
+    ],
+    src_strip_prefix = "src",
+    version = "2.4.8",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":Diff",
+        "@haskell_HUnit//:HUnit",
+        "@haskell_QuickCheck//:QuickCheck",
+        "@haskell_ansi_terminal//:ansi-terminal",
+        "@haskell_async//:async",
+        "@haskell_call_stack//:call-stack",
+        "@haskell_hspec_expectations//:hspec-expectations",
+        "@haskell_quickcheck_io//:quickcheck-io",
+        "@haskell_random//:random",
+        "@haskell_setenv//:setenv",
+        "@haskell_tf_random//:tf-random",
+    ],
+)

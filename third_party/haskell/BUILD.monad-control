@@ -10,6 +10,7 @@ haskell_library(
         "base",
         "transformers",
     ],
+    version = "1.0.2.2",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_stm//:stm",

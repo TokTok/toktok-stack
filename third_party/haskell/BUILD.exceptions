@@ -9,6 +9,7 @@ haskell_library(
         "transformers",
     ],
     src_strip_prefix = "src",
+    version = "0.8.3",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_mtl//:mtl",

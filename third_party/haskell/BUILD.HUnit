@@ -1,0 +1,14 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "HUnit",
+    srcs = glob(["src/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "deepseq",
+    ],
+    src_strip_prefix = "src",
+    version = "1.6.0.0",
+    visibility = ["//visibility:public"],
+    deps = ["@haskell_call_stack//:call-stack"],
+)

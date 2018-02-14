@@ -1,0 +1,12 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "base64-bytestring",
+    srcs = glob(["Data/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+    ],
+    version = "1.0.0.1",
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,19 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "network-uri",
+    srcs = glob(["Network/**/*.*hs"]),
+    compiler_flags = [
+        "-XDeriveDataTypeable",
+        "-XDeriveGeneric",
+    ],
+    prebuilt_dependencies = [
+        "base",
+        "deepseq",
+    ],
+    version = "2.6.1.0",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_parsec//:parsec",
+    ],
+)

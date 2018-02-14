@@ -1,0 +1,14 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "Diff",
+    srcs = glob(["src/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "array",
+        "base",
+        "pretty",
+    ],
+    src_strip_prefix = "src",
+    version = "0.3.4",
+    visibility = ["//visibility:public"],
+)

@@ -7,6 +7,7 @@ haskell_library(
         "array",
         "base",
     ],
+    version = "0.95.1",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_regex_base//:regex-base",

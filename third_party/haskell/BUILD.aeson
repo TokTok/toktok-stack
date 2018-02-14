@@ -1,0 +1,55 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+cc_library(
+    name = "cbits",
+    hdrs = glob(["include/*.h"]),
+)
+
+haskell_library(
+    name = "aeson-pure",
+    srcs = glob(["pure/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+        "containers",
+    ],
+    src_strip_prefix = "pure",
+    version = "1.2.4.0",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_text//:text",
+    ],
+)
+
+haskell_library(
+    name = "aeson",
+    srcs = glob(["Data/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+        "containers",
+        "deepseq",
+        "ghc-prim",
+        "template-haskell",
+        "time",
+    ],
+    version = "1.2.4.0",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":aeson-pure",
+        ":cbits",
+        "@haskell_attoparsec//:attoparsec",
+        "@haskell_attoparsec_iso8601//:attoparsec-iso8601",
+        "@haskell_base_compat//:base-compat",
+        "@haskell_dlist//:dlist",
+        "@haskell_hashable//:hashable",
+        "@haskell_scientific//:scientific",
+        "@haskell_tagged//:tagged",
+        "@haskell_text//:text",
+        "@haskell_th_abstraction//:th-abstraction",
+        "@haskell_time_locale_compat//:time-locale-compat",
+        "@haskell_unordered_containers//:unordered-containers",
+        "@haskell_uuid_types//:uuid-types",
+        "@haskell_vector//:vector",
+    ],
+)

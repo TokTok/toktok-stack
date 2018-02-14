@@ -14,5 +14,6 @@ haskell_library(
         "bytestring",
         "containers",
     ],
+    version = "0.93.2",
     visibility = ["//visibility:public"],
 )

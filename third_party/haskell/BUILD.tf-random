@@ -8,6 +8,7 @@ haskell_library(
         "time",
     ],
     src_strip_prefix = "src",
+    version = "0.5",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_primitive//:primitive",
