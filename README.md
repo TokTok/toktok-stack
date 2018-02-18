@@ -2,6 +2,12 @@
 
 ## Building
 
+After installing prerequisites (instructions below), run:
+
+```sh
+$ bazel build //...
+```
+
 ### Installing prerequisites
 
 To build the stack, first you need to install some software. This guide
@@ -127,4 +133,28 @@ $ sudo apt install libopenal-dev libsqlite3-dev libasound2-dev libxss-dev
 For `//c-toxcore/testing:av_test`:
 ```sh
 $ sudo apt install libcv-dev libhighgui-dev
+```
+
+## Building native code for Android
+
+After installing prerequisites (instructions below), run:
+
+```sh
+$ bazel build \
+    //c-toxcore/auto_tests/... \
+    --crosstool_top=//external:android/crosstool \
+    --cpu=armeabi-v7a \
+    --host_crosstool_top=@bazel_tools//tools/cpp:toolchain \
+    --verbose_failures
+```
+
+WARNING: This build mode does not work at all, yet. Patches welcome!
+
+### Installing prerequisites
+
+#### NDK
+
+```sh
+$ wget https://dl.google.com/android/repository/android-ndk-r14b-linux-x86_64.zip
+$ unzip android-ndk-r14b-linux-x86_64.zip -d third_party/android
 ```

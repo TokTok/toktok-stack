@@ -79,3 +79,9 @@
 [submodule "cedar"]
 	path = cedar
 	url = https://github.com/TokTok/cedar
+[submodule "toxic"]
+	path = toxic
+	url = https://github.com/TokTok/toxic
+[submodule "spec"]
+	path = spec
+	url = https://github.com/TokTok/spec

@@ -16,11 +16,11 @@ http_archive(
 # Haskell
 # =========================================================
 
-RULES_HASKELL_COMMIT = "485efdec6f30cdbbcc1631071e0bc39fa0721496"
+RULES_HASKELL_COMMIT = "91874d042d87f1f0681f9bc18642662bc7e37419"
 
 http_archive(
     name = "io_tweag_rules_haskell",
-    sha256 = "b3cc7b890f63bf6cc1de29e810181eac863a5259d4823ce40ccf1a279007bbfa",
+    sha256 = "005c1e000af084ecc4a2ee23907160d73d903da6746211478d809480a51182a8",
     strip_prefix = "rules_haskell-%s" % RULES_HASKELL_COMMIT,
     urls = ["https://github.com/tweag/rules_haskell/archive/%s.tar.gz" % RULES_HASKELL_COMMIT],
 )
@@ -66,6 +66,11 @@ new_cabal_package(
 new_cabal_package(
     package = "aeson-1.2.4.0",
     sha256 = "3401dba4fddb92c8a971f6645b38e2f8a1b286ef7061cd392a1a567640bbfc9b",
+)
+
+new_cabal_package(
+    package = "aeson-compat-0.3.7.1",
+    sha256 = "59740dc1e37b08e60abb47f38b87de5b9805611a1b468cd18294d5982a1dcacb",
 )
 
 new_cabal_package(
@@ -131,6 +136,11 @@ new_cabal_package(
 new_cabal_package(
     package = "binary-conduit-1.2.5",
     sha256 = "21d417aae0f9441ecd0e4f5aaac03bf9692fb9e85e48076c774d961567d14b1b",
+)
+
+new_cabal_package(
+    package = "binary-orphans-0.1.8.0",
+    sha256 = "f17557ccd98931df2bea038f25e7f835f38019ea7d53bd763f71fe64f931c0cc",
 )
 
 new_cabal_package(
@@ -210,9 +220,7 @@ new_cabal_package(
 
 new_cabal_package(
     package = "github-0.19",
-    sha256 = "7a7e35616fe0b3cc5f6db6ba4892b7f66ff5291cf584df275a36f18acec7bfa3",
-    strip_prefix = "github-prepare-0.19",
-    url = "https://github.com/phadej/github/archive/prepare-0.19.zip",
+    sha256 = "f0ea9b57cd21645bba40e37e5e7c83ad78469cc3e32526b15e9a4bb2b3b84394",
 )
 
 new_cabal_package(
@@ -481,6 +489,11 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "vector-binary-instances-0.2.4",
+    sha256 = "2b2f783e414dcf2e7dc34ad14264e5af83e5cd4784d5a0a64e4b4571963443f8",
+)
+
+new_cabal_package(
     package = "xml-1.3.14",
     sha256 = "32d1a1a9f21a59176d84697f96ae3a13a0198420e3e4f1c48abbab7d2425013d",
 )
@@ -577,6 +590,20 @@ new_http_archive(
     urls = ["http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz"],
 )
 
+http_archive(
+    name = "com_google_absl",
+    sha256 = "c57ccd72d9445628178945745a112f119ae19be5cc2e3c7b99f1186f248b3d15",
+    strip_prefix = "abseil-cpp-03c1513538584f4a04d666be5eb469e3979febba",
+    urls = ["https://github.com/abseil/abseil-cpp/archive/03c1513538584f4a04d666be5eb469e3979febba.zip"],
+)
+
+http_archive(
+    name = "com_google_googletest",
+    sha256 = "da3d22cc2e096456573939ec21a1d989aca5a60fa1c89037ae05205c00202e4a",
+    strip_prefix = "googletest-15392f1a38fa0b8c3f13a9732e94b209069efa1c",
+    urls = ["https://github.com/google/googletest/archive/15392f1a38fa0b8c3f13a9732e94b209069efa1c.tar.gz"],
+)
+
 new_http_archive(
     name = "curl",
     build_file = "third_party/BUILD.curl",
@@ -599,13 +626,6 @@ new_http_archive(
     sha256 = "fb135592c5133c3b4b664da18f988f58609db912f204059abe16277df044a366",
     strip_prefix = "filter_audio-0.0.1",
     urls = ["https://github.com/irungentoo/filter_audio/archive/v0.0.1.tar.gz"],
-)
-
-http_archive(
-    name = "com_google_googletest",
-    sha256 = "da3d22cc2e096456573939ec21a1d989aca5a60fa1c89037ae05205c00202e4a",
-    strip_prefix = "googletest-15392f1a38fa0b8c3f13a9732e94b209069efa1c",
-    urls = ["https://github.com/google/googletest/archive/15392f1a38fa0b8c3f13a9732e94b209069efa1c.tar.gz"],
 )
 
 new_http_archive(
@@ -920,6 +940,12 @@ android_sdk_repository(
     api_level = 27,
     build_tools_version = "27.0.3",
     path = "third_party/android/sdk",
+)
+
+android_ndk_repository(
+    name = "androidndk",
+    api_level = 25,
+    path = "third_party/android/android-ndk-r14b",
 )
 
 # Qt5

@@ -56,8 +56,12 @@ cc_library(
     copts = [
         "-I$(GENDIR)/external/libsodium/include/sodium",
         "-include $(location sodium_config.h)",
-        "-w",  # no warnings
+        "-Wno-unknown-pragmas",
+        "-Wno-unused",
+        "-maes",
+        "-mpclmul",
         "-mrdrnd",
+        "-mssse3",
     ],
     includes = ["include"],
     textual_hdrs = glob([

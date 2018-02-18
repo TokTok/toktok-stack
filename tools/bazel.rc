@@ -18,13 +18,22 @@ build --features=parse_headers
 build --features=cc_include_scanning
 build --process_headers_in_dependencies
 
-build --per_file_copt=".*-avx2\.c@-mavx2"
+build --per_file_copt=".*[-_]avx\.c@-mavx"
+build --per_file_copt=".*[-_]avx2\.c@-mavx2"
+build --per_file_copt=".*[-_]sse\.c@-mssse3,-msse4"
+build --per_file_copt=".*[-_]sse4\.c@-msse4"
+build --per_file_copt=".*[-_]sse41\.c@-msse4.1"
+build --per_file_copt=".*[-_]ssse3\.c@-mssse3"
 
 build --strict_java_deps=error
 
 # Address sanitizer.
 build:asan --copt="-fsanitize=address"
 build:asan --linkopt="-fsanitize=address"
+
+# Link-time optimization.
+build:lto --copt="-flto"
+build:lto --linkopt="-flto"
 
 # XXX: Workaround for Go, because it can't deal with colours when compiling the
 # stdlib. It doesn't look at per_file_copt, so we can't disable colours for the
@@ -45,16 +54,16 @@ build --cxxopt="-DGOOGLE_PROTOBUF_NO_RTTI"
 # afford to host this continuously. It's been tested, and works really well, so
 # if you have your own remote cache, enable it here.
 #startup --host_jvm_args=-Dbazel.DigestFunction=sha256
-#build --spawn_strategy=remote
-#build --strategy=Javac=remote
-#build --strategy=Scalac=remote
-#build --genrule_strategy=remote
-#build --remote_rest_cache=https://bazel.herokuapp.com
+build:remote --spawn_strategy=remote
+build:remote --strategy=Javac=remote
+build:remote --strategy=Scalac=remote
+build:remote --genrule_strategy=remote
+build:remote --remote_rest_cache=https://bazel.herokuapp.com
 
 # Use musl instead of glibc.
-#build --copt="-nostdinc"
-#build --copt="-nostdlib"
-#build --copt="-isystem/usr/include/x86_64-linux-musl"
-#build --copt="-isystem/usr/include/clang/3.8/include"
+build:musl --copt="-nostdinc"
+build:musl --copt="-nostdlib"
+build:musl --copt="-isystem/usr/include/x86_64-linux-musl"
+build:musl --copt="-isystem/usr/include/clang/3.8/include"
 
 test --test_output=errors

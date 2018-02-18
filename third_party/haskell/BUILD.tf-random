@@ -1,5 +1,13 @@
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 
+cc_library(
+    name = "cbits",
+    srcs = glob([
+        "cbits/*.h",
+        "cbits/*.c",
+    ]),
+)
+
 haskell_library(
     name = "tf-random",
     srcs = glob(["src/**/*.*hs"]),
@@ -11,6 +19,7 @@ haskell_library(
     version = "0.5",
     visibility = ["//visibility:public"],
     deps = [
+        ":cbits",
         "@haskell_primitive//:primitive",
         "@haskell_random//:random",
     ],

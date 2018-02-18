@@ -1,0 +1,28 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "vector-binary-instances",
+    srcs = glob(["Data/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "binary",
+        #"time",
+    ],
+    #src_strip_prefix = "src",
+    version = "0.2.4",
+    visibility = ["//visibility:public"],
+    deps = [
+        #"@haskell_aeson//:aeson",
+        #"@haskell_base_compat//:base-compat",
+        #"@haskell_hashable//:hashable",
+        #"@haskell_http_client//:http-client",
+        #"@haskell_mtl//:mtl",
+        #"@haskell_text//:text",
+        #"@haskell_unordered_containers//:unordered-containers",
+        "@haskell_vector//:vector",
+        #"@haskell_case_insensitive//:case-insensitive",
+        #"@haskell_tagged//:tagged",
+        #"@haskell_scientific//:scientific",
+        #"@haskell_binary_orphans//:binary-orphans",
+    ],
+)
