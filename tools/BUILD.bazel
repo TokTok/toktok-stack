@@ -1,3 +1,5 @@
+exports_files(srcs = ["license_test.sh"])
+
 cc_library(
     name = "empty_main",
     srcs = ["empty_main.c"],

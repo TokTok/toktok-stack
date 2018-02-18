@@ -1,6 +1,8 @@
 load("@bazel_gazelle//:def.bzl", "gazelle")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_toolchain")
 
+exports_files(srcs = ["LICENSE.md"])
+
 # gazelle:prefix github.com/TokTok
 # gazelle:exclude go-toxcore-c/tools
 # gazelle:exclude jvm-toxcore-c
