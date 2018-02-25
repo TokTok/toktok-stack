@@ -32,5 +32,6 @@ haskell_library(
     deps = [
         ":bifunctors-compat",
         "@haskell_th_abstraction//:th-abstraction",
+        "@haskell_comonad//:comonad",
     ],
 )

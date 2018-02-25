@@ -22,6 +22,7 @@ haskell_library(
         "@haskell_text//:text",
         "@haskell_unordered_containers//:unordered-containers",
         "@haskell_vector//:vector",
+        "@haskell_vector_instances//:vector-instances",
         "@haskell_binary_orphans//:binary-orphans",
     ],
 )

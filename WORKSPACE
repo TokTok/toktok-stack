@@ -8,21 +8,21 @@ workspace(name = "toktok")
 # This statement defines the @com_google_protobuf repo.
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "0cc6607e2daa675101e9b7398a436f09167dffb8ca0489b0307ff7260498c13c",
-    strip_prefix = "protobuf-3.5.0",
-    urls = ["https://github.com/google/protobuf/archive/v3.5.0.tar.gz"],
+    sha256 = "826425182ee43990731217b917c5c3ea7190cfda141af4869e6d4ad9085a740f",
+    strip_prefix = "protobuf-3.5.1",
+    urls = ["https://github.com/google/protobuf/archive/v3.5.1.tar.gz"],
 )
 
 # Haskell
 # =========================================================
 
-RULES_HASKELL_COMMIT = "91874d042d87f1f0681f9bc18642662bc7e37419"
+RULES_HASKELL_VERSION = "546c698cb782fd0749a3c91eb41e1f9a19c65646"
 
 http_archive(
     name = "io_tweag_rules_haskell",
-    sha256 = "005c1e000af084ecc4a2ee23907160d73d903da6746211478d809480a51182a8",
-    strip_prefix = "rules_haskell-%s" % RULES_HASKELL_COMMIT,
-    urls = ["https://github.com/tweag/rules_haskell/archive/%s.tar.gz" % RULES_HASKELL_COMMIT],
+    sha256 = "3f3527dbed8295d9ae5d9acc5ba19310fbd9307fbaeba2413db641c316c774ab",
+    strip_prefix = "rules_haskell-%s" % RULES_HASKELL_VERSION,
+    urls = ["https://github.com/iphydf/rules_haskell/archive/%s.tar.gz" % RULES_HASKELL_VERSION],
 )
 
 load("@io_tweag_rules_haskell//haskell:repositories.bzl", "haskell_repositories")
@@ -119,6 +119,11 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "basement-0.0.7",
+    sha256 = "b501b9b378f35b80c60321031dbbf9ed7af46c66353f072e00f00abdd2244f70",
+)
+
+new_cabal_package(
     package = "base-orphans-0.6",
     sha256 = "c7282aa7516652e6e4a78ccdfb654a99c9da683875748ad5898a3f200be7ad0e",
 )
@@ -149,8 +154,18 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "byteable-0.1.1",
+    sha256 = "243b34a1b5b64b39e39fe58f75c18f6cad5b668b10cabcd86816cbde27783fe2",
+)
+
+new_cabal_package(
     package = "byteorder-1.0.4",
     sha256 = "bd20bbb586947f99c38a4c93d9d0266f49f6fc581767b51ba568f6d5d52d2919",
+)
+
+new_cabal_package(
+    package = "bytestring-arbitrary-0.1.1",
+    sha256 = "bbe78d37e9788ecf6fc4d64633047579b66e71ffcab70cbc8be100a722056efd",
 )
 
 new_cabal_package(
@@ -189,8 +204,23 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "contravariant-1.4.1",
+    sha256 = "c93d3d619fa378f3fdf92c53bb8b04b8f47963b88aba7cfa54b57656189ad0ed",
+)
+
+new_cabal_package(
     package = "cookie-0.4.3",
     sha256 = "fbfb0c4fcebe6cb85cb6b84572287a57ee7e3a380f2fe51c4885bfb460f3ed62",
+)
+
+new_cabal_package(
+    package = "cryptohash-0.11.9",
+    sha256 = "c28f847fc1fcd65b6eea2e74a100300af940919f04bb21d391f6a773968f22fb",
+)
+
+new_cabal_package(
+    package = "cryptonite-0.25",
+    sha256 = "89be1a18af8730a7bfe4d718d7d5f6ce858e9df93a411566d15bf992db5a3c8c",
 )
 
 new_cabal_package(
@@ -209,6 +239,11 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "distributive-0.5.3",
+    sha256 = "9173805b9c941bda1f37e5aeb68ae30f57a12df9b17bd2aa86db3b7d5236a678",
+)
+
+new_cabal_package(
     package = "dlist-0.8.0.4",
     sha256 = "acf1867b80cdd618b8d904e89eea33be60d3c4c3aeb80d61f29229a301cc397a",
 )
@@ -219,6 +254,11 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "foundation-0.0.20",
+    sha256 = "ba6ae63a9ce0846bf942af2c3ace56600f051c61e83a0b55dd625de23a78e42d",
+)
+
+new_cabal_package(
     package = "github-0.19",
     sha256 = "f0ea9b57cd21645bba40e37e5e7c83ad78469cc3e32526b15e9a4bb2b3b84394",
 )
@@ -226,6 +266,11 @@ new_cabal_package(
 new_cabal_package(
     package = "hashable-1.2.6.1",
     sha256 = "94ca8789e13bc05c1582c46b709f3b0f5aeec2092be634b8606dbd9c5915bb7a",
+)
+
+new_cabal_package(
+    package = "hostname-1.0",
+    sha256 = "9b43dab1b6da521f35685b20555da00738c8e136eb972458c786242406a9cf5c",
 )
 
 new_cabal_package(
@@ -259,11 +304,6 @@ new_cabal_package(
 )
 
 new_cabal_package(
-    package = "hostname-1.0",
-    sha256 = "9b43dab1b6da521f35685b20555da00738c8e136eb972458c786242406a9cf5c",
-)
-
-new_cabal_package(
     package = "integer-logarithms-1.0.2",
     sha256 = "31069ccbff489baf6c4a93cb7475640aabea9366eb0b583236f10714a682b570",
 )
@@ -281,6 +321,11 @@ new_cabal_package(
 new_cabal_package(
     package = "lifted-base-0.2.3.11",
     sha256 = "8ec47a9fce7cf5913766a5c53e1b2cf254be733fa9d62e6e2f3f24e538005aab",
+)
+
+new_cabal_package(
+    package = "memory-0.14.16",
+    sha256 = "7bb0834ab28ce1248f3be09df211d49d20d703cdcda3ed16cde99356e2d72b0f",
 )
 
 new_cabal_package(
@@ -384,6 +429,11 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "semigroupoids-5.2.2",
+    sha256 = "e4def54834cda65ac1e74e6f12a435410e19c1348e820434a30c491c8937299e",
+)
+
+new_cabal_package(
     package = "semigroups-0.18.4",
     sha256 = "589e3042329a6bcffb5c0e85834143586db22eb7a2aae094d492cd004f685d27",
 )
@@ -454,8 +504,8 @@ new_cabal_package(
 )
 
 new_cabal_package(
-    package = "transformers-compat-0.5.1.4",
-    sha256 = "d881ef4ec164b631591b222efe7ff555af6d5397c9d86475b309ba9402a8ca9f",
+    package = "transformers-compat-0.6.0.6",
+    sha256 = "fa29cffc94bba1d102176ef441d68b99696e643caf3a6fc7a554906a3162b639",
 )
 
 new_cabal_package(
@@ -491,6 +541,11 @@ new_cabal_package(
 new_cabal_package(
     package = "vector-binary-instances-0.2.4",
     sha256 = "2b2f783e414dcf2e7dc34ad14264e5af83e5cd4784d5a0a64e4b4571963443f8",
+)
+
+new_cabal_package(
+    package = "vector-instances-3.4",
+    sha256 = "1b0246ef0cf8372d61d5c7840d857f49299af2304b5107510377255ed4dd5381",
 )
 
 new_cabal_package(
@@ -906,13 +961,13 @@ maven_jar(
 # Scala toolchain
 # =========================================================
 
-rules_scala_version = "1d31d255e5f1e5d40bb27c8b3cf71f3741d69be3"
+RULES_SCALA_VERSION = "1d31d255e5f1e5d40bb27c8b3cf71f3741d69be3"
 
 http_archive(
     name = "io_bazel_rules_scala",
     sha256 = "2402bf9a4624d8557f7fd8e457e65d677e900345759f719a24d27241767623d5",
-    strip_prefix = "rules_scala-%s" % rules_scala_version,
-    urls = ["https://github.com/bazelbuild/rules_scala/archive/%s.zip" % rules_scala_version],
+    strip_prefix = "rules_scala-%s" % RULES_SCALA_VERSION,
+    urls = ["https://github.com/bazelbuild/rules_scala/archive/%s.zip" % RULES_SCALA_VERSION],
 )
 
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories")
@@ -984,13 +1039,13 @@ python_repository(
 # Node.js
 # =========================================================
 
-RULES_NODE_COMMIT = "56eadbd6e7545411e740d97fe1741c56dab42285"
+RULES_NODE_VERSION = "56eadbd6e7545411e740d97fe1741c56dab42285"
 
 http_archive(
     name = "org_pubref_rules_node",
     sha256 = "9ed54e5fda5154aeff7b5ed51b85b83cbb630f70178ca1a1798af671c6cf945c",
-    strip_prefix = "rules_node-%s" % RULES_NODE_COMMIT,
-    url = "https://github.com/pubref/rules_node/archive/%s.zip" % RULES_NODE_COMMIT,
+    strip_prefix = "rules_node-%s" % RULES_NODE_VERSION,
+    url = "https://github.com/pubref/rules_node/archive/%s.zip" % RULES_NODE_VERSION,
 )
 
 load("@org_pubref_rules_node//node:rules.bzl", "node_repositories", "yarn_modules")
@@ -1003,7 +1058,26 @@ yarn_modules(
         "sh",
         "dirname",
     ],
-    package_json = "//js-toxcore-c:package.json",
+    deps = {
+        "ansi-to-html": "0.6.4",
+        "async": "2.6.0",
+        "buffertools": "2.1.6",
+        "ffi": "2.2.0",
+        "firebase": "3.9.0",
+        "firepad": "1.4.0",
+        "grunt": "1.0.1",
+        "grunt-jsdoc": "2.2.1",
+        "grunt-shell": "2.1.0",
+        "ink-docstrap": "1.3.2",
+        "jsdoc": "3.5.5",
+        "mktemp": "0.4.0",
+        "mocha": "3.5.3",
+        "ref": "1.3.5",
+        "ref-array": "1.2.0",
+        "ref-struct": "1.1.0",
+        "should": "13.2.1",
+        "underscore": "1.8.3",
+    },
 )
 
 yarn_modules(

@@ -24,6 +24,7 @@ haskell_library(
 haskell_library(
     name = "aeson",
     srcs = glob(["Data/**/*.*hs"]),
+    hidden_modules = ["Data.Aeson.Compat"],
     prebuilt_dependencies = [
         "base",
         "bytestring",

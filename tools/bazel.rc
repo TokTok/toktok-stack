@@ -8,6 +8,10 @@ build --copt="-march=native"
 build --color=yes
 build --show_progress_rate_limit=0.5
 
+# https://docs.bazel.build/versions/master/skylark/backward-compatibility.html
+# Disabled due to https://github.com/bazelbuild/bazel/issues/4718.
+#build --all_incompatible_changes
+
 build --features=public_proto_imports
 build --features=pie
 build --features=module_maps
@@ -40,6 +44,9 @@ build:lto --linkopt="-flto"
 # Go stdlib, but we can enable it for everything else.
 #build --copt="-fdiagnostics-color=always"
 build --per_file_copt=".*@-fdiagnostics-color=always"
+
+# Enable trace logging for toxcore.
+build --per_file_copt="c-toxcore/.*@-DMIN_LOGGER_LEVEL=LOG_TRACE"
 
 build --copt="-Wall"
 build --copt="-Wformat-security"
