@@ -16,6 +16,7 @@ haskell_library(
     version = "0.1.0.0",
     visibility = ["//visibility:public"],
     deps = [
+    "@libsodium",
         "@haskell_profunctors//:profunctors",
     ],
 )

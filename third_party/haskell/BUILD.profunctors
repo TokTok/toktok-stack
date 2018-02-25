@@ -3,11 +3,16 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "profunctors",
     srcs = glob(["src/**/*.hs*"]),
+    src_strip_prefix = "src",
     prebuilt_dependencies = ["base"],
     version = "5.2.2",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_bifunctors//:bifunctors",
         "@haskell_comonad//:comonad",
+        "@haskell_contravariant//:contravariant",
+        "@haskell_distributive//:distributive",
+        "@haskell_base_orphans//:base-orphans",
+        "@haskell_tagged//:tagged",
     ],
 )
