@@ -1,0 +1,14 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "parallel",
+    srcs = glob(["Control/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "array",
+        "base",
+        "containers",
+        "deepseq",
+    ],
+    version = "3.2.1.1",
+    visibility = ["//visibility:public"],
+)

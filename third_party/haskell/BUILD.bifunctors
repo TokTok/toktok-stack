@@ -12,8 +12,10 @@ haskell_library(
     ],
     src_strip_prefix = "old-src/ghc801",
     version = "5.5.2",
+    visibility = ["//visibility:public"],
     deps = [
         "@haskell_base_orphans//:base-orphans",
+        "@haskell_tagged//:tagged",
         "@haskell_transformers_compat//:transformers-compat",
     ],
 )
@@ -31,7 +33,7 @@ haskell_library(
     visibility = ["//visibility:public"],
     deps = [
         ":bifunctors-compat",
-        "@haskell_th_abstraction//:th-abstraction",
         "@haskell_comonad//:comonad",
+        "@haskell_th_abstraction//:th-abstraction",
     ],
 )

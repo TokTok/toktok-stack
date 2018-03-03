@@ -1,46 +1,27 @@
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 
 cc_library(
-name="cbits",
-copts=["-Wno-unused-variable"],
-srcs=glob(["cbits/*.c","cbits/*.h"]),
+    name = "cbits",
+    srcs = glob([
+        "cbits/*.c",
+        "cbits/*.h",
+    ]),
+    copts = ["-Wno-unused-variable"],
 )
 
 haskell_library(
     name = "cryptohash",
     srcs = glob(["Crypto/**/*.*hs"]),
     prebuilt_dependencies = [
-        #"array",
         "base",
-        #"binary",
         "bytestring",
-        #"time",
     ],
-    #src_strip_prefix = "src",
     version = "0.11.9",
     visibility = ["//visibility:public"],
     deps = [
-    ":cbits",
-        #"@haskell_QuickCheck//:QuickCheck",
-        #"@haskell_aeson//:aeson",
-        "@haskell_memory//:memory",
-        "@haskell_cryptonite//:cryptonite",
-        #"@haskell_base_compat//:base-compat",
-        #"@haskell_bifunctors//:bifunctors",
-        #"@haskell_base_orphans//:base-orphans",
-        #"@haskell_hashable//:hashable",
-        #"@haskell_http_client//:http-client",
-        #"@haskell_mtl//:mtl",
-        #"@haskell_text//:text",
-        #"@haskell_unordered_containers//:unordered-containers",
-        #"@haskell_vector//:vector",
-        #"@haskell_transformers_compat//:transformers-compat",
-        #"@haskell_semigroups//:semigroups",
-        #"@haskell_comonad//:comonad",
-        #"@haskell_case_insensitive//:case-insensitive",
-        #"@haskell_tagged//:tagged",
-        #"@haskell_scientific//:scientific",
-        #"@haskell_binary_orphans//:binary-orphans",
+        ":cbits",
         "@haskell_byteable//:byteable",
+        "@haskell_cryptonite//:cryptonite",
+        "@haskell_memory//:memory",
     ],
 )

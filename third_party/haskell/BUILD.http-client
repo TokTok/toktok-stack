@@ -12,14 +12,17 @@ haskell_library(
     version = "0.5.10",
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_text//:text",
         "@haskell_blaze_builder//:blaze-builder",
+        "@haskell_text//:text",
     ],
 )
 
 haskell_library(
     name = "http-client",
-    srcs = glob(["Data/**/*.*hs","Network/**/*.*hs"]),
+    srcs = glob([
+        "Data/**/*.*hs",
+        "Network/**/*.*hs",
+    ]),
     prebuilt_dependencies = [
         "array",
         "base",
@@ -33,18 +36,18 @@ haskell_library(
     visibility = ["//visibility:public"],
     deps = [
         ":http-client-publicsuffixlist",
-        "@haskell_random//:random",
-        "@haskell_mime_types//:mime-types",
-        "@haskell_streaming_commons//:streaming-commons",
-        "@haskell_text//:text",
+        "@haskell_base64_bytestring//:base64-bytestring",
         "@haskell_blaze_builder//:blaze-builder",
-        "@haskell_cookie//:cookie",
         "@haskell_case_insensitive//:case-insensitive",
+        "@haskell_cookie//:cookie",
+        "@haskell_exceptions//:exceptions",
+        "@haskell_http_types//:http-types",
+        "@haskell_mime_types//:mime-types",
         "@haskell_network//:network",
         "@haskell_network_uri//:network-uri",
+        "@haskell_random//:random",
         "@haskell_stm//:stm",
-        "@haskell_http_types//:http-types",
-        "@haskell_base64_bytestring//:base64-bytestring",
-        "@haskell_exceptions//:exceptions",
+        "@haskell_streaming_commons//:streaming-commons",
+        "@haskell_text//:text",
     ],
 )

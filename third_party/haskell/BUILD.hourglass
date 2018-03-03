@@ -1,0 +1,19 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "hourglass",
+    srcs = glob(
+        [
+            "Data/**/*.hs",
+            "System/**/*.hs",
+            "Time/**/*.hs",
+        ],
+        exclude = ["Data/Hourglass/Internal/Win.hs"],
+    ),
+    prebuilt_dependencies = [
+        "base",
+        "deepseq",
+    ],
+    version = "0.2.11",
+    visibility = ["//visibility:public"],
+)

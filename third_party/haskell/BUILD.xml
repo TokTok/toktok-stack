@@ -3,16 +3,12 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library", "haskell
 haskell_library(
     name = "xml",
     srcs = glob(["Text/**/*.hs"]),
-    compiler_flags = [
-        "-XFlexibleInstances",
-    ],
+    compiler_flags = ["-XFlexibleInstances"],
     prebuilt_dependencies = [
         "base",
         "bytestring",
     ],
     version = "1.3.14",
     visibility = ["//visibility:public"],
-    deps = [
-        "@haskell_text//:text",
-    ],
+    deps = ["@haskell_text//:text"],
 )

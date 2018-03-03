@@ -1,0 +1,13 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "monad-parallel",
+    srcs = glob(["Control/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "transformers",
+    ],
+    version = "0.7.2.3",
+    visibility = ["//visibility:public"],
+    deps = ["@haskell_parallel//:parallel"],
+)

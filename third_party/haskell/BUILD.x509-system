@@ -1,0 +1,19 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "x509-system",
+    srcs = glob(
+        ["System/**/*.hs"],
+        exclude = [
+            "System/X509/MacOS.hs",
+            "System/X509/Win32.hs",
+        ],
+    ),
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+    ],
+    version = "1.6.6",
+    visibility = ["//visibility:public"],
+    deps = ["@haskell_x509_store//:x509-store"],
+)

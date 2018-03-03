@@ -1,0 +1,21 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "http-link-header",
+    srcs = glob(["library/**/*.hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+    ],
+    src_strip_prefix = "library",
+    version = "1.0.3",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_attoparsec//:attoparsec",
+        "@haskell_bytestring_conversion//:bytestring-conversion",
+        "@haskell_errors//:errors",
+        "@haskell_http_api_data//:http-api-data",
+        "@haskell_network_uri//:network-uri",
+        "@haskell_text//:text",
+    ],
+)

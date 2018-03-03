@@ -24,11 +24,11 @@ haskell_library(
     deps = [
         "@haskell_HUnit//:HUnit",
         "@haskell_QuickCheck//:QuickCheck",
-        "@haskell_xml//:xml",
+        "@haskell_ansi_terminal//:ansi-terminal",
+        "@haskell_ansi_wl_pprint//:ansi-wl-pprint",
         "@haskell_hostname//:hostname",
         "@haskell_random//:random",
         "@haskell_regex_posix//:regex-posix",
-        "@haskell_ansi_terminal//:ansi-terminal",
-        "@haskell_ansi_wl_pprint//:ansi-wl-pprint",
+        "@haskell_xml//:xml",
     ],
 )

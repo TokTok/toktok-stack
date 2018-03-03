@@ -1,0 +1,17 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+cc_library(
+    name = "cbits",
+    srcs = glob(["cbits/*.h"]),
+    hdrs = glob(["cbits/*.h"]),
+)
+
+haskell_library(
+    name = "network-info",
+    srcs = ["src/Network/Info.hsc"],
+    prebuilt_dependencies = ["base"],
+    src_strip_prefix = "src",
+    version = "0.2.0.9",
+    visibility = ["//visibility:public"],
+    deps = [":cbits"],
+)

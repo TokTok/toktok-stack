@@ -1,0 +1,27 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "http-client-tls",
+    srcs = glob(["Network/**/*.hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+        "containers",
+    ],
+    version = "0.3.5.3",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_case_insensitive//:case-insensitive",
+        "@haskell_connection//:connection",
+        "@haskell_cryptonite//:cryptonite",
+        "@haskell_data_default_class//:data-default-class",
+        "@haskell_exceptions//:exceptions",
+        "@haskell_http_client//:http-client",
+        "@haskell_http_types//:http-types",
+        "@haskell_memory//:memory",
+        "@haskell_network//:network",
+        "@haskell_network_uri//:network-uri",
+        "@haskell_text//:text",
+        "@haskell_tls//:tls",
+    ],
+)

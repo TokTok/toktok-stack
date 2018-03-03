@@ -1,0 +1,22 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "x509",
+    srcs = glob(["Data/**/*.hs"]),
+    compiler_flags = ["-XDatatypeContexts"],
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+    ],
+    version = "1.7.3",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_asn1_encoding//:asn1-encoding",
+        "@haskell_asn1_parse//:asn1-parse",
+        "@haskell_asn1_types//:asn1-types",
+        "@haskell_cryptonite//:cryptonite",
+        "@haskell_hourglass//:hourglass",
+        "@haskell_memory//:memory",
+        "@haskell_mtl//:mtl",
+    ],
+)

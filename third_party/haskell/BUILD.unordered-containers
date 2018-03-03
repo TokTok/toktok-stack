@@ -9,7 +9,5 @@ haskell_library(
     ],
     version = "0.2.8.0",
     visibility = ["//visibility:public"],
-    deps = [
-        "@haskell_hashable//:hashable",
-    ],
+    deps = ["@haskell_hashable//:hashable"],
 )

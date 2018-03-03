@@ -3,7 +3,7 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "base-compat",
     srcs = glob(["src/**/*.*hs"]),
-    prebuilt_dependencies = [        "base",    ],
+    prebuilt_dependencies = ["base"],
     src_strip_prefix = "src",
     version = "0.9.3",
     visibility = ["//visibility:public"],

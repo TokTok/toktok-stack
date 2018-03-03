@@ -12,8 +12,8 @@ haskell_library(
     version = "0.4.3",
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_text//:text",
-        "@haskell_data_default_class//:data-default-class",
         "@haskell_blaze_builder//:blaze-builder",
+        "@haskell_data_default_class//:data-default-class",
+        "@haskell_text//:text",
     ],
 )

@@ -10,7 +10,5 @@ haskell_library(
     ],
     version = "0.1.0.7",
     visibility = ["//visibility:public"],
-    deps = [
-        "@haskell_text//:text",
-    ],
+    deps = ["@haskell_text//:text"],
 )

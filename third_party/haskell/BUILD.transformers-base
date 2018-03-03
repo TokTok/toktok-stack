@@ -10,7 +10,5 @@ haskell_library(
     src_strip_prefix = "src",
     version = "0.4.4",
     visibility = ["//visibility:public"],
-    deps = [
-        "@haskell_stm//:stm",
-    ],
+    deps = ["@haskell_stm//:stm"],
 )
