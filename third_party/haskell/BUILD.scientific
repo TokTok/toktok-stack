@@ -15,9 +15,9 @@ haskell_library(
     version = "0.3.5.2",
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_text//:text",
+        "@haskell_hashable//:hashable",
         "@haskell_integer_logarithms//:integer-logarithms",
         "@haskell_primitive//:primitive",
-        "@haskell_hashable//:hashable",
+        "@haskell_text//:text",
     ],
 )

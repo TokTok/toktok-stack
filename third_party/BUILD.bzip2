@@ -15,3 +15,24 @@ cc_library(
     includes = ["."],
     visibility = ["//visibility:public"],
 )
+
+cc_binary(
+    name = "bzip2_prog",
+    srcs = ["bzip2.c"],
+    deps = [":bzip2"],
+)
+
+filegroup(
+    name = "sample_data",
+    srcs = glob(["sample*.*"]),
+)
+
+sh_test(
+    name = "test",
+    srcs = ["@toktok//third_party/bzip2:test_prog.sh"],
+    args = ["$(location :bzip2_prog)"],
+    data = [
+        ":bzip2_prog",
+        ":sample_data",
+    ],
+)

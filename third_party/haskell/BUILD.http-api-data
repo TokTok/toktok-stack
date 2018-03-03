@@ -1,0 +1,32 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+cc_library(
+    name = "cbits",
+    hdrs = ["include/overlapping-compat.h"],
+)
+
+haskell_library(
+    name = "http-api-data",
+    srcs = glob(["src/**/*.hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+        "containers",
+        "time",
+    ],
+    src_strip_prefix = "src",
+    version = "0.3.7.2",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":cbits",
+        "@haskell_attoparsec//:attoparsec",
+        "@haskell_attoparsec_iso8601//:attoparsec-iso8601",
+        "@haskell_hashable//:hashable",
+        "@haskell_http_types//:http-types",
+        "@haskell_text//:text",
+        "@haskell_time_locale_compat//:time-locale-compat",
+        "@haskell_unordered_containers//:unordered-containers",
+        "@haskell_uri_bytestring//:uri-bytestring",
+        "@haskell_uuid_types//:uuid-types",
+    ],
+)

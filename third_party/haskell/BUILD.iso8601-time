@@ -1,0 +1,13 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "iso8601-time",
+    srcs = glob(["src/**/*.hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "time",
+    ],
+    src_strip_prefix = "src",
+    version = "0.1.4",
+    visibility = ["//visibility:public"],
+)

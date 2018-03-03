@@ -4,7 +4,7 @@ cc_library(
     name = "cbits",
     srcs = glob(["cbits/*.c"]),
     copts = ["-Wno-unused-label"],
-    deps = ["@ghc//:ffi"],
+    deps = ["@ghc//:threaded-rts"],
 )
 
 haskell_library(

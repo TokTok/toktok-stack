@@ -1,0 +1,13 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "asn1-parse",
+    srcs = glob(["Data/**/*.hs"]),
+    prebuilt_dependencies = ["base"],
+    version = "0.9.4",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_asn1_encoding//:asn1-encoding",
+        "@haskell_asn1_types//:asn1-types",
+    ],
+)

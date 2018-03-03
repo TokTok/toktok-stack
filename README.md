@@ -82,17 +82,6 @@ build.
 $ sudo apt install python2.7-dev
 ```
 
-#### Haskell
-
-To build our Haskell software, you need to install GHC:
-
-```sh
-$ sudo apt install ghc
-```
-
-The build assumes version 8.0.1. No other packages need to be installed, as
-all cabal packages will be built by Bazel.
-
 #### Make
 
 For `//js-toxcore-c`, you will need a `make` program in your `$PATH`:

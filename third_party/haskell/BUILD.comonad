@@ -5,6 +5,7 @@ haskell_library(
     srcs = glob(["src/**/*.hs*"]),
     prebuilt_dependencies = [
         "base",
+        "containers",
         "transformers",
     ],
     src_strip_prefix = "src",

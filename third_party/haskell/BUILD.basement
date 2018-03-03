@@ -1,10 +1,10 @@
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 
 cc_library(
-name="cbits",
-srcs=glob(["cbits/*.c"]),
-hdrs = glob(["cbits/*.h"]),
-deps=["@ghc//:ffi"],
+    name = "cbits",
+    srcs = glob(["cbits/*.c"]),
+    hdrs = glob(["cbits/*.h"]),
+    deps = ["@ghc//:threaded-rts"],
 )
 
 haskell_library(
@@ -19,36 +19,10 @@ haskell_library(
         "-XDeriveDataTypeable",
     ],
     prebuilt_dependencies = [
-        #"array",
         "base",
         "ghc-prim",
-        #"binary",
-        #"bytestring",
-        #"time",
     ],
-    #src_strip_prefix = "src",
     version = "0.0.7",
     visibility = ["//visibility:public"],
-    deps = [
-    ":cbits",
-        #"@haskell_QuickCheck//:QuickCheck",
-        #"@haskell_aeson//:aeson",
-        #"@haskell_basement//:basement",
-        #"@haskell_base_compat//:base-compat",
-        #"@haskell_bifunctors//:bifunctors",
-        #"@haskell_base_orphans//:base-orphans",
-        #"@haskell_hashable//:hashable",
-        #"@haskell_http_client//:http-client",
-        #"@haskell_mtl//:mtl",
-        #"@haskell_text//:text",
-        #"@haskell_unordered_containers//:unordered-containers",
-        #"@haskell_vector//:vector",
-        #"@haskell_transformers_compat//:transformers-compat",
-        #"@haskell_semigroups//:semigroups",
-        #"@haskell_comonad//:comonad",
-        #"@haskell_case_insensitive//:case-insensitive",
-        #"@haskell_tagged//:tagged",
-        #"@haskell_scientific//:scientific",
-        #"@haskell_binary_orphans//:binary-orphans",
-    ],
+    deps = [":cbits"],
 )

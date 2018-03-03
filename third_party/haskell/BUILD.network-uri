@@ -13,7 +13,5 @@ haskell_library(
     ],
     version = "2.6.1.0",
     visibility = ["//visibility:public"],
-    deps = [
-        "@haskell_parsec//:parsec",
-    ],
+    deps = ["@haskell_parsec//:parsec"],
 )

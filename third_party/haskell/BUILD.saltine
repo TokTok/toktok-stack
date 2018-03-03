@@ -3,11 +3,6 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "saltine",
     srcs = glob(["src/**/*.hs*"]),
-    compiler_flags = [
-        #"-XDeriveGeneric",
-        #"-XScopedTypeVariables",
-        #"-XViewPatterns",
-    ],
     prebuilt_dependencies = [
         "base",
         "bytestring",
@@ -16,7 +11,7 @@ haskell_library(
     version = "0.1.0.0",
     visibility = ["//visibility:public"],
     deps = [
-    "@libsodium",
         "@haskell_profunctors//:profunctors",
+        "@libsodium",
     ],
 )

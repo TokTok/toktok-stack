@@ -26,17 +26,19 @@ http_archive(
 )
 
 load("@io_tweag_rules_haskell//haskell:repositories.bzl", "haskell_repositories")
-load("//third_party/haskell:haskell.bzl", "new_cabal_package")
 
 haskell_repositories()
 
-register_toolchains("//:ghc")
+load("@io_tweag_rules_haskell//haskell:ghc_bindist.bzl", "ghc_bindist")
+load("//third_party/haskell:haskell.bzl", "new_cabal_package")
 
-new_local_repository(
-    name = "ghc",
-    build_file = "third_party/BUILD.ghc",
-    path = "/usr",  # Change path accordingly.
+# This repository rule creates @ghc repository.
+ghc_bindist(
+  name    = "ghc",
+  version = "8.2.2",
 )
+
+register_toolchains("//:ghc")
 
 new_cabal_package(
     package = "Diff-0.3.4",
@@ -86,6 +88,21 @@ new_cabal_package(
 new_cabal_package(
     package = "appar-0.1.4",
     sha256 = "58ea66abe4dd502d2fc01eecdb0828d5e214704a3c1b33b1f8b33974644c4b26",
+)
+
+new_cabal_package(
+    package = "asn1-encoding-0.9.5",
+    sha256 = "1e863bfd363f6c3760cc80f2c0d422e17845a9f79fe006030db202ecab5aaf29",
+)
+
+new_cabal_package(
+    package = "asn1-parse-0.9.4",
+    sha256 = "c6a328f570c69db73f8d2416f9251e8a03753f90d5d19e76cbe69509a3ceb708",
+)
+
+new_cabal_package(
+    package = "asn1-types-0.3.2",
+    sha256 = "0c571fff4a10559c6a630d4851ba3cdf1d558185ce3dcfca1136f9883d647217",
 )
 
 new_cabal_package(
@@ -169,6 +186,11 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "bytestring-conversion-0.3.1",
+    sha256 = "13b7ea48737dc7a7fd4c894ff1fb9344cf8d9ef8f4201e813d578b613e874ef8",
+)
+
+new_cabal_package(
     package = "call-stack-0.1.0",
     sha256 = "f25f5e0992a39371079cc25c2a14b5abb872fa7d868a32753aac3a258b83b1e2",
 )
@@ -176,6 +198,11 @@ new_cabal_package(
 new_cabal_package(
     package = "case-insensitive-1.2.0.10",
     sha256 = "66321c40fffb35f3a3188ba508753b74aada53fb51c822a9752614b03765306c",
+)
+
+new_cabal_package(
+    package = "cereal-0.5.5.0",
+    sha256 = "0b97320ffbfa6df2e5679022215dbd0fe6e3b5ae8428c2ff4310d9e1acf16822",
 )
 
 new_cabal_package(
@@ -201,6 +228,11 @@ new_cabal_package(
 new_cabal_package(
     package = "conduit-extra-1.2.3.2",
     sha256 = "1d5b66284703a4b9fb96a4c6a2213727208639871a675da9755e9a963fa230f6",
+)
+
+new_cabal_package(
+    package = "connection-0.2.8",
+    sha256 = "70b1f44e8786320c18b26fc5d4ec115fc8ac016ba1f852fa8137f55d785a93eb",
 )
 
 new_cabal_package(
@@ -239,6 +271,11 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "deepseq-generics-0.2.0.0",
+    sha256 = "b0b3ef5546c0768ef9194519a90c629f8f2ba0348487e620bb89d512187c7c9d",
+)
+
+new_cabal_package(
     package = "distributive-0.5.3",
     sha256 = "9173805b9c941bda1f37e5aeb68ae30f57a12df9b17bd2aa86db3b7d5236a678",
 )
@@ -249,6 +286,21 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "double-conversion-2.0.2.0",
+    sha256 = "44cde172395401169e844d6791b6eb0ef2c2e55a08de8dda96551cfe029ba26b",
+)
+
+new_cabal_package(
+    package = "entropy-0.4",
+    sha256 = "8ca7c6b5131f68d844555c11dcebfbe63e076ff99921d4096ed1a919f3651141",
+)
+
+new_cabal_package(
+    package = "errors-2.2.4",
+    sha256 = "ea38f78cb346661df51a53d80b3268df19df7c7cd73817aad09e8f69a06cb26c",
+)
+
+new_cabal_package(
     package = "exceptions-0.8.3",
     sha256 = "4d6ad97e8e3d5dc6ce9ae68a469dc2fd3f66e9d312bc6faa7ab162eddcef87be",
 )
@@ -256,6 +308,11 @@ new_cabal_package(
 new_cabal_package(
     package = "foundation-0.0.20",
     sha256 = "ba6ae63a9ce0846bf942af2c3ace56600f051c61e83a0b55dd625de23a78e42d",
+)
+
+new_cabal_package(
+    package = "free-5",
+    sha256 = "87916bda2ae9766c1b1b35d4fe3ed3c1bcb587e61f783776af4c5b4a2adf8ae8",
 )
 
 new_cabal_package(
@@ -271,6 +328,11 @@ new_cabal_package(
 new_cabal_package(
     package = "hostname-1.0",
     sha256 = "9b43dab1b6da521f35685b20555da00738c8e136eb972458c786242406a9cf5c",
+)
+
+new_cabal_package(
+    package = "hourglass-0.2.11",
+    sha256 = "18a6bb303fc055275cca45aaffc17b6a04b2e9d7509aa5aa5bb9d9239f4e4f51",
 )
 
 new_cabal_package(
@@ -294,8 +356,28 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "html-1.0.1.2",
+    sha256 = "0c35495ea33d65e69c69bc7441ec8e1af69fbb43433c2aa3406c0a13a3ab3061",
+)
+
+new_cabal_package(
+    package = "http-api-data-0.3.7.2",
+    sha256 = "68516edab1c01d083a9f08baa9cb78adb60cb3f6e645f1096d02879a68bf6c82",
+)
+
+new_cabal_package(
     package = "http-client-0.5.10",
     sha256 = "f5f9696ed632f945f113ff23c98656aec4bcc77ed3653286c72f567d9286bac2",
+)
+
+new_cabal_package(
+    package = "http-client-tls-0.3.5.3",
+    sha256 = "471abf8f29a909f40b21eab26a410c0e120ae12ce337512a61dae9f52ebb4362",
+)
+
+new_cabal_package(
+    package = "http-link-header-1.0.3",
+    sha256 = "59bd2db4e7d14b6f7ce86848af5e38b4bd2e9963e9ffe5068c7b1a710dbdd7fe",
 )
 
 new_cabal_package(
@@ -311,6 +393,16 @@ new_cabal_package(
 new_cabal_package(
     package = "iproute-1.7.1",
     sha256 = "57b8d03ca8ce92f8ec1334564f3edff53a0621ccbc43c00ba02eaa5007ee3eee",
+)
+
+new_cabal_package(
+    package = "iso8601-time-0.1.4",
+    sha256 = "761d737ea0841ee8fd3660cfe20041e9458be8ab424de8b3b661bb249b930126",
+)
+
+new_cabal_package(
+    package = "keys-3.12",
+    sha256 = "d4bfa78ff9df50224f1722925ae148279377193d04277a7dad224a47b34d5e55",
 )
 
 new_cabal_package(
@@ -344,6 +436,11 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "monad-parallel-0.7.2.3",
+    sha256 = "128fb8c36be717f82aa3146d855303f48d04c56ba025078e6cd35d6050b45089",
+)
+
+new_cabal_package(
     package = "mono-traversable-1.0.8.1",
     sha256 = "991290797bd77ce2f2e23dd5dea32fb159c6cb9310615f64a0703ea4c6373935",
 )
@@ -356,6 +453,11 @@ new_cabal_package(
 new_cabal_package(
     package = "network-2.6.3.3",
     sha256 = "776668b0a969d0d57ebabf78943cfc21a1aaf7e5e2ae6288322292125c9440f5",
+)
+
+new_cabal_package(
+    package = "network-info-0.2.0.9",
+    sha256 = "632939efc095b8dd01a813243e8cb14f4ffd1b9052a26523b9c04dc81993aa66",
 )
 
 new_cabal_package(
@@ -374,8 +476,23 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "parallel-3.2.1.1",
+    sha256 = "323bb9bc9e36fb9bfb08e68a772411302b1599bfffbc6de20fa3437ce1473c17",
+)
+
+new_cabal_package(
     package = "parsec-3.1.11",
     sha256 = "6f87251cb1d11505e621274dec15972de924a9074f07f7430a18892064c2676e",
+)
+
+new_cabal_package(
+    package = "pem-0.2.4",
+    sha256 = "770c4c1b9cd24b3db7f511f8a48404a0d098999e28573c3743a8a296bb96f8d4",
+)
+
+new_cabal_package(
+    package = "pointed-5.0.1",
+    sha256 = "b94635a5c8779238501a9156015422ce2fb4d5efd45d68999e8cbe2ecc5121dd",
 )
 
 new_cabal_package(
@@ -391,6 +508,11 @@ new_cabal_package(
 new_cabal_package(
     package = "quickcheck-io-0.2.0",
     sha256 = "fb779119d79fe08ff4d502fb6869a70c9a8d5fd8ae0959f605c3c937efd96422",
+)
+
+new_cabal_package(
+    package = "quickcheck-text-0.1.0.0",
+    sha256 = "e7c3185870f23473be63479f5bd18aa24c84a8efff24f0f7b649c2f486c9cbf9",
 )
 
 new_cabal_package(
@@ -419,6 +541,11 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "safe-0.3.16",
+    sha256 = "688ae558289256aeddd8f70ca4303c36de0bb37cb70b1094a0fd4731e0235975",
+)
+
+new_cabal_package(
     package = "saltine-0.1.0.0",
     sha256 = "a2bc34fb3b9485c300e4a9eac4e6d83ef584275016be845fe5e28aec08df6dc2",
 )
@@ -444,6 +571,11 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "socks-0.5.6",
+    sha256 = "fa63cd838025e18864c59755750c0cfc4ea76e140a542f07a5c682488ec78438",
+)
+
+new_cabal_package(
     package = "split-0.2.3.3",
     sha256 = "1dcd674f7c5f276f33300f5fd59e49d1ac6fc92ae949fd06a0f6d3e9d9ac1413",
 )
@@ -461,6 +593,11 @@ new_cabal_package(
 new_cabal_package(
     package = "syb-0.7",
     sha256 = "b8757dce5ab4045c49a0ae90407d575b87ee5523a7dd5dfa5c9d54fcceff42b5",
+)
+
+new_cabal_package(
+    package = "tabular-0.2.2.7",
+    sha256 = "13f8da12108dafcf3194eb6bf25febf0081c7e4734f66d2d4aeee899f3c14ffb",
 )
 
 new_cabal_package(
@@ -494,8 +631,23 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "th-lift-0.7.8",
+    sha256 = "2cf83385e848d9136a1d6e49ca845fd1d09935f2ff658c6f4e268d8ece02c12b",
+)
+
+new_cabal_package(
+    package = "th-lift-instances-0.1.11",
+    sha256 = "1da46afabdc73c86f279a0557d5a8f9af1296f9f6043264ba354b1c9cc65a6b8",
+)
+
+new_cabal_package(
     package = "time-locale-compat-0.1.1.3",
     sha256 = "9144bf68b47791a2ac73f45aeadbc5910be2da9ad174909e1a10a70b4576aced",
+)
+
+new_cabal_package(
+    package = "tls-1.4.1",
+    sha256 = "bbead1afc0b808bd5cff7bddaeae84ade37f18bbe72bd78d45a2fa4ac41908f8",
 )
 
 new_cabal_package(
@@ -514,6 +666,11 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "unexceptionalio-0.3.0",
+    sha256 = "927e2be6bb9ced73c1c17d79c981cadef4039d9ee45d2d3d6b4c133ff93ff0b8",
+)
+
+new_cabal_package(
     package = "unliftio-core-0.1.1.0",
     sha256 = "7550b017d87af53ae3e0d3b8524e24a77faf739073f35e40663454a9e9752385",
 )
@@ -521,6 +678,16 @@ new_cabal_package(
 new_cabal_package(
     package = "unordered-containers-0.2.8.0",
     sha256 = "a4a188359ff28640359131061953f7dbb8258da8ecf0542db0d23f08bfa6eea8",
+)
+
+new_cabal_package(
+    package = "uri-bytestring-0.3.1.1",
+    sha256 = "7f789452877d28799672c5bf9901fdcfdeaf4434d39a62849fd36cfc85e355fb",
+)
+
+new_cabal_package(
+    package = "uuid-1.3.13",
+    sha256 = "dfac808a7026217d018b408eab18facc6a85c6183be308d4ac7877e80599b027",
 )
 
 new_cabal_package(
@@ -546,6 +713,26 @@ new_cabal_package(
 new_cabal_package(
     package = "vector-instances-3.4",
     sha256 = "1b0246ef0cf8372d61d5c7840d857f49299af2304b5107510377255ed4dd5381",
+)
+
+new_cabal_package(
+    package = "x509-1.7.3",
+    sha256 = "41740f949bb773dc721d342a85587a512658c81ee8cd38f102473b315e127356",
+)
+
+new_cabal_package(
+    package = "x509-store-1.6.6",
+    sha256 = "6a276f595cf91c9688129cad4c9c6be9c349ffc0de22300eeb3dfa6a2b6e7635",
+)
+
+new_cabal_package(
+    package = "x509-system-1.6.6",
+    sha256 = "40dcdaae3ec67f38c08d96d4365b901eb8ac0c590bd7972eb429d37d58aa4419",
+)
+
+new_cabal_package(
+    package = "x509-validation-1.6.10",
+    sha256 = "761c9d77322528259b690508e829cb360feb1fc542951a99f3af51ae980e45d7",
 )
 
 new_cabal_package(
@@ -930,14 +1117,14 @@ maven_jar(
 
 maven_jar(
     name = "org_scalactic_scalactic",
-    artifact = "org.scalactic:scalactic_2.11:3.0.4",
-    sha1 = "a97b52d531f6010b424813af260ac6ce748e187e",
+    artifact = "org.scalactic:scalactic_2.11:3.0.5",
+    sha1 = "84f9454a7ceaa2b05a5ef36a15b9a332c5a1c697",
 )
 
 maven_jar(
     name = "org_scalatest_scalatest",
-    artifact = "org.scalatest:scalatest_2.11:3.0.4",
-    sha1 = "a0df09cc87bb681674b05a883462b121866784e5",
+    artifact = "org.scalatest:scalatest_2.11:3.0.5",
+    sha1 = "986921d9a4dafec38c0ba0a858f1e2a916cd2358",
 )
 
 maven_jar(

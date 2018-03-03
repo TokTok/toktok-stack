@@ -1,0 +1,21 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "connection",
+    srcs = glob(["Network/**/*.hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+        "containers",
+    ],
+    version = "0.2.8",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_data_default_class//:data-default-class",
+        "@haskell_network//:network",
+        "@haskell_socks//:socks",
+        "@haskell_tls//:tls",
+        "@haskell_x509_store//:x509-store",
+        "@haskell_x509_system//:x509-system",
+    ],
+)

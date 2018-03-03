@@ -1,0 +1,31 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+cc_library(
+    name = "cbits",
+    hdrs = ["include/free-common.h"],
+)
+
+haskell_library(
+    name = "free",
+    srcs = glob(["src/**/*.*hs"]),
+    compiler_flags = ["-XCPP"],
+    prebuilt_dependencies = [
+        "base",
+        "containers",
+        "template-haskell",
+        "transformers",
+    ],
+    src_strip_prefix = "src",
+    version = "5",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":cbits",
+        "@haskell_comonad//:comonad",
+        "@haskell_distributive//:distributive",
+        "@haskell_exceptions//:exceptions",
+        "@haskell_mtl//:mtl",
+        "@haskell_profunctors//:profunctors",
+        "@haskell_semigroupoids//:semigroupoids",
+        "@haskell_transformers_base//:transformers-base",
+    ],
+)

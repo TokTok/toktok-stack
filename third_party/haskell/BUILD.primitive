@@ -6,7 +6,7 @@ cc_library(
         "cbits/*.h",
         "cbits/*.c",
     ]),
-    deps = ["@ghc//:ffi"],
+    deps = ["@ghc//:threaded-rts"],
 )
 
 haskell_library(

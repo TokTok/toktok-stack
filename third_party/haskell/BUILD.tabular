@@ -1,0 +1,16 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "tabular",
+    srcs = glob(
+        ["Text/**/*.*hs"],
+        exclude = ["Text/Tabular/Csv.hs"],
+    ),
+    prebuilt_dependencies = ["base"],
+    version = "0.2.2.7",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_html//:html",
+        "@haskell_mtl//:mtl",
+    ],
+)

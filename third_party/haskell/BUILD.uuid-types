@@ -12,8 +12,8 @@ haskell_library(
     version = "1.0.3",
     visibility = ["//visibility:public"],
     deps = [
+        "@haskell_hashable//:hashable",
         "@haskell_random//:random",
         "@haskell_text//:text",
-        "@haskell_hashable//:hashable",
     ],
 )

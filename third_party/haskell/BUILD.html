@@ -1,0 +1,9 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "html",
+    srcs = glob(["Text/**/*.*hs"]),
+    prebuilt_dependencies = ["base"],
+    version = "1.0.1.2",
+    visibility = ["//visibility:public"],
+)

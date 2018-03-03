@@ -1,24 +1,6 @@
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 
 haskell_library(
-    name = "bifunctors-compat",
-    srcs = [
-        "old-src/ghc801/Data/Bifoldable.hs",
-        "old-src/ghc801/Data/Bitraversable.hs",
-    ],
-    prebuilt_dependencies = [
-        "base",
-        "transformers",
-    ],
-    src_strip_prefix = "old-src/ghc801",
-    version = "5.5.2",
-    deps = [
-        "@haskell_base_orphans//:base-orphans",
-        "@haskell_transformers_compat//:transformers-compat",
-    ],
-)
-
-haskell_library(
     name = "bifunctors",
     srcs = glob(["src/**/*.hs*"]),
     prebuilt_dependencies = [
@@ -30,8 +12,7 @@ haskell_library(
     version = "5.5.2",
     visibility = ["//visibility:public"],
     deps = [
-        ":bifunctors-compat",
-        "@haskell_th_abstraction//:th-abstraction",
         "@haskell_comonad//:comonad",
+        "@haskell_th_abstraction//:th-abstraction",
     ],
 )

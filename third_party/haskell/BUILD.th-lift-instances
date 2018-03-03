@@ -1,0 +1,20 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "th-lift-instances",
+    srcs = glob(["src/**/*.hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "bytestring",
+        "containers",
+        "template-haskell",
+    ],
+    src_strip_prefix = "src",
+    version = "0.1.11",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_text//:text",
+        "@haskell_th_lift//:th-lift",
+        "@haskell_vector//:vector",
+    ],
+)

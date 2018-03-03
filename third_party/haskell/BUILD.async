@@ -16,12 +16,12 @@ haskell_test(
     name = "test",
     srcs = ["test/test-async.hs"],
     main_file = "test/test-async.hs",
+    prebuilt_dependencies = ["base"],
     deps = [
         ":async",
+        "@haskell_HUnit//:HUnit",
+        "@haskell_stm//:stm",
         "@haskell_test_framework//:test-framework",
         "@haskell_test_framework_hunit//:test-framework-hunit",
-        "@haskell_stm//:stm",
-        "@haskell_HUnit//:HUnit",
     ],
-    prebuilt_dependencies = ["base"],
 )
