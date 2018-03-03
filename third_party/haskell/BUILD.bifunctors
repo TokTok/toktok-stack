@@ -2,6 +2,7 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 
 haskell_library(
     name = "bifunctors-compat",
+    visibility = ["//visibility:public"],
     srcs = [
         "old-src/ghc801/Data/Bifoldable.hs",
         "old-src/ghc801/Data/Bitraversable.hs",
@@ -15,6 +16,7 @@ haskell_library(
     deps = [
         "@haskell_base_orphans//:base-orphans",
         "@haskell_transformers_compat//:transformers-compat",
+        "@haskell_tagged//:tagged",
     ],
 )
 

@@ -99,6 +99,11 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "keys-3.12",
+    sha256 = "d4bfa78ff9df50224f1722925ae148279377193d04277a7dad224a47b34d5e55",
+)
+
+new_cabal_package(
     package = "attoparsec-iso8601-1.0.0.0",
     sha256 = "aa6c6d87587383e386cb85e7ffcc4a6317aa8dafb8ba9a104ecac365ce2a858a",
 )
@@ -186,6 +191,26 @@ new_cabal_package(
 new_cabal_package(
     package = "colour-2.3.4",
     sha256 = "0f439f00b322ce3d551f28a4dd1520aa2c91d699de4cdc6d485b9b04be0dc5eb",
+)
+
+new_cabal_package(
+    package = "iso8601-time-0.1.4",
+    sha256 = "761d737ea0841ee8fd3660cfe20041e9458be8ab424de8b3b661bb249b930126",
+)
+
+new_cabal_package(
+    package = "deepseq-generics-0.2.0.0",
+    sha256 = "b0b3ef5546c0768ef9194519a90c629f8f2ba0348487e620bb89d512187c7c9d",
+)
+
+new_cabal_package(
+    package = "pointed-5.0.1",
+    sha256 = "b94635a5c8779238501a9156015422ce2fb4d5efd45d68999e8cbe2ecc5121dd",
+)
+
+new_cabal_package(
+    package = "free-5",
+    sha256 = "87916bda2ae9766c1b1b35d4fe3ed3c1bcb587e61f783776af4c5b4a2adf8ae8",
 )
 
 new_cabal_package(
