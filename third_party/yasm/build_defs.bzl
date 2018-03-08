@@ -3,8 +3,8 @@
 def _asm_library_impl(ctx):
   yasm = ctx.executable._yasm
 
-  hdrs = [hdr for lbl in ctx.attr.hdrs for hdr in lbl.files]
-  srcs = [src for lbl in ctx.attr.srcs for src in lbl.files]
+  hdrs = [hdr for lbl in ctx.attr.hdrs for hdr in lbl.files.to_list()]
+  srcs = [src for lbl in ctx.attr.srcs for src in lbl.files.to_list()]
 
   asmopts = [ctx.expand_make_variables("cmd", opt, {}) for opt in ctx.attr.asmopts]
 

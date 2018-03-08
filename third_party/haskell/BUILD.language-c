@@ -1,14 +1,29 @@
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 
+#genrule(
+#    name = "Lexer",
+#    srcs = ["src/Language/C/Parser/Lexer.x"],
+#    outs = ["src/Language/C/Parser/Lexer.hs"],
+#    cmd = "alex -o $@ $<",
+#)
+
+#genrule(
+#    name = "Parser",
+#    srcs = ["src/Language/C/Parser/Parser.y"],
+#    outs = ["src/Language/C/Parser/Parser.hs"],
+#    cmd = "happy -agc -o $@ $<",
+#)
+
 # TODO(iphydf): Enable once https://github.com/tweag/rules_haskell/issues/101 is solved.
 haskell_library(
     name = "language-c",
     srcs = glob([
-        "src/**/*.*hs",
+        "src/**/*.hs*",
         #"src/**/*.x",
         #"src/**/*.y",
     ]),
     prebuilt_dependencies = [
+        "array",
         "base",
         "bytestring",
         "containers",

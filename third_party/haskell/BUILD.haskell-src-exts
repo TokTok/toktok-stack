@@ -1,0 +1,19 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "haskell-src-exts",
+    srcs = glob(["src/**/*.*hs"]),
+    compiler_flags = ["-j10"],
+    prebuilt_dependencies = [
+        "array",
+        "base",
+        "ghc-prim",
+        "pretty",
+    ],
+    src_strip_prefix = "src",
+    version = "1.20.2",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_cpphs//:cpphs",
+    ],
+)

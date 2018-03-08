@@ -49,6 +49,7 @@ build --per_file_copt=".*@-fdiagnostics-color=always"
 build --per_file_copt="c-toxcore/.*@-DMIN_LOGGER_LEVEL=LOG_TRACE"
 
 build --copt="-Wall"
+build --copt="-Wformat"
 build --copt="-Wformat-security"
 
 build --copt="-funsigned-char"
@@ -74,3 +75,13 @@ build:musl --copt="-isystem/usr/include/x86_64-linux-musl"
 build:musl --copt="-isystem/usr/include/clang/3.8/include"
 
 test --test_output=errors
+
+build --all_incompatible_changes
+build --incompatible_disallow_filetype=false
+build --incompatible_disallow_legacy_javainfo=false
+build --incompatible_package_name_is_a_function=false
+build --incompatible_new_actions_api=false
+build --incompatible_disallow_old_style_args_add=false
+build --incompatible_depset_union=false
+build --incompatible_depset_is_not_iterable=false
+build --incompatible_remove_native_http_archive=false

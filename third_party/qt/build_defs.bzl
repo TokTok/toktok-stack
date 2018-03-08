@@ -88,7 +88,7 @@ def _qt_moc_impl(ctx):
   inputs.extend([
       extra_src_file
       for extra_src in ctx.attr.srcs
-      for extra_src_file in extra_src.files
+      for extra_src_file in extra_src.files.to_list()
   ])
   # Also add all transitive headers from deps to the environment.
   inputs.extend([

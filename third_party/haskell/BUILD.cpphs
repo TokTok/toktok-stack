@@ -1,0 +1,17 @@
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "cpphs",
+    srcs = glob(["Language/**/*.*hs"]),
+    prebuilt_dependencies = [
+        "base",
+        "directory",
+    ],
+    version = "1.20.8",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@haskell_old_locale//:old-locale",
+        "@haskell_old_time//:old-time",
+        "@haskell_polyparse//:polyparse",
+    ],
+)
