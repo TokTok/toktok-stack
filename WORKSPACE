@@ -411,6 +411,16 @@ new_cabal_package(
 )
 
 new_cabal_package(
+    package = "lens-family-1.2.2",
+    sha256 = "dda24de579550daa56c49d2d4fbe59deac18e5fbcbbe6a9b0196ba0a1b27433b",
+)
+
+new_cabal_package(
+    package = "lens-family-core-1.2.2",
+    sha256 = "95fe891b61f2d2a7c9ff86f56e40866534a947f87ccf2fcaa5e727ccdfca4628",
+)
+
+new_cabal_package(
     package = "lifted-base-0.2.3.11",
     sha256 = "8ec47a9fce7cf5913766a5c53e1b2cf254be733fa9d62e6e2f3f24e538005aab",
 )
