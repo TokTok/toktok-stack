@@ -485,7 +485,7 @@
 #define HAVE_OPENSSL_CRYPTO_H 1
 
 /* Define to 1 if you have the <openssl/engine.h> header file. */
-#define HAVE_OPENSSL_ENGINE_H 1
+/* #undef HAVE_OPENSSL_ENGINE_H */
 
 /* Define to 1 if you have the <openssl/err.h> header file. */
 #define HAVE_OPENSSL_ERR_H 1
@@ -854,7 +854,7 @@
 #define RETSIGTYPE void
 
 /* Define to the type qualifier of arg 5 for select. */
-#define SELECT_QUAL_ARG5 
+#define SELECT_QUAL_ARG5
 
 /* Define to the type of arg 1 for select. */
 #define SELECT_TYPE_ARG1 int
@@ -980,7 +980,7 @@
 /* #undef USE_THREADS_WIN32 */
 
 /* Use TLS-SRP authentication */
-#define USE_TLS_SRP 1
+/* #undef USE_TLS_SRP */
 
 /* Use Unix domain sockets */
 #define USE_UNIX_SOCKETS 1

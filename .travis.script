@@ -36,7 +36,7 @@ system "bazel", "test", @targets;
 
 # If the test exited with non-zero status, and the termination was not due to an
 # interrupt, we try to just build.
-if ($? != 0 and $? & 0x7f != 2) {
+if ($? != 0 and ($? & 0x7f) != 2) {
    print "Running build, error if it fails\n";
    # At this point, we just let bazel deal with the alarm, since we'll just be a
    # single process.

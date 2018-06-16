@@ -45,8 +45,8 @@ cc_library(
     linkopts = ["-lpthread"],
     visibility = ["//visibility:public"],
     deps = [
+        "@boringssl//:ssl",
         "@libidn2",
-        "@openssl",
         "@toktok//third_party/curl:curl_config",
         "@zlib",
     ],

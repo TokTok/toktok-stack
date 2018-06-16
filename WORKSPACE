@@ -19,11 +19,11 @@ http_archive(
 # Haskell
 # =========================================================
 
-RULES_HASKELL_VERSION = "a931763f6f06966402458cad3005b98c0814766f"
+RULES_HASKELL_VERSION = "e815451984e78279cd20c84e3e1990617c60740f"
 
 http_archive(
     name = "io_tweag_rules_haskell",
-    sha256 = "71065d52aa93c119bef3ee5ab3adb03cb15bd6a722f491071c5683a413fbe9cb",
+    sha256 = "a6a3ca731bd15a232c33d2912097501649279ddffe03d809fe691ad28eaf5d51",
     strip_prefix = "rules_haskell-%s" % RULES_HASKELL_VERSION,
     urls = ["https://github.com/tweag/rules_haskell/archive/%s.tar.gz" % RULES_HASKELL_VERSION],
 )
@@ -856,6 +856,12 @@ new_local_repository(
     path = "/usr",
 )
 
+http_archive(
+    name = "boringssl",
+    #sha256 = "39b512b2a7afb87bb054e16031f9142d5ca9bd1ceebed864b0978c264e11566b",
+    urls = ["https://boringssl.googlesource.com/boringssl/+archive/master-with-bazel.tar.gz"],
+)
+
 new_http_archive(
     name = "bzip2",
     build_file = "third_party/BUILD.bzip2",
@@ -972,14 +978,6 @@ new_http_archive(
     sha256 = "f33807105ce47f684c26751ce4e27a708a83ce120cbabbc614c8df21252b238c",
     strip_prefix = "libzmq-4.2.5",
     urls = ["https://github.com/zeromq/libzmq/archive/v4.2.5.tar.gz"],
-)
-
-new_http_archive(
-    name = "openssl",
-    build_file = "third_party/BUILD.openssl",
-    sha256 = "4f4bc907caff1fee6ff8593729e5729891adcee412049153a3bb4db7625e8364",
-    strip_prefix = "openssl-OpenSSL_1_0_2n",
-    urls = ["https://github.com/openssl/openssl/archive/OpenSSL_1_0_2n.tar.gz"],
 )
 
 new_http_archive(
@@ -1143,8 +1141,8 @@ maven_jar(
 
 maven_jar(
     name = "org_scalacheck_scalacheck",
-    artifact = "org.scalacheck:scalacheck_2.11:1.13.4",
-    sha1 = "7845816647d5a80d30e5a71862b31f3fee894549",
+    artifact = "org.scalacheck:scalacheck_2.11:1.12.5",
+    sha1 = "dc2f59c89d01dc115172a1caeb35db178301147c",
 )
 
 maven_jar(
