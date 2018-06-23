@@ -8,7 +8,7 @@ cc_library(
 haskell_library(
     name = "free",
     srcs = glob(["src/**/*.*hs"]),
-    compiler_flags = ["-XCPP"],
+    compiler_flags = ["-XCPP", "-Iexternal/haskell_free/include"],
     prebuilt_dependencies = [
         "base",
         "containers",

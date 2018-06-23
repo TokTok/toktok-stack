@@ -31,5 +31,5 @@ haskell_library(
     ],
     version = "1.2.3.0",
     visibility = ["//visibility:public"],
-    deps = [":cbits"],
+    deps = [":text_cbits"],
 )

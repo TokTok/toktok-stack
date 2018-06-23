@@ -5,6 +5,7 @@ and correctness of the license text.
 """
 
 def project(name):
+  """Adds some checks to make sure the project is uniform."""
   pkg = native.package_name()
   pkg = pkg.replace("_", "-")
 

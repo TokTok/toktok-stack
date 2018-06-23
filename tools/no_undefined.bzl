@@ -4,20 +4,27 @@ This to ensure completeness of linkopts and dependencies for libraries. The
 empty binary will fail to link if there are any undefined references.
 """
 
-def cc_library(name, hdrs=[], srcs=[], deps=[], visibility=None, **kwargs):
+def cc_library(name, hdrs=[], srcs=[], linkopts=[], visibility=None, **kwargs):
   native.cc_library(
       name = name,
       srcs = srcs,
       hdrs = hdrs,
-      deps = deps,
+      linkopts = linkopts,
       visibility = visibility,
       **kwargs
   )
 
+  native.genrule(
+      name = "%s_empty_main" % name,
+      outs = ["%s_empty_main.c" % name],
+      cmd = "echo 'int main(void) { return 0; }' > $@",
+      #cmd = "touch $@",
+  )
+
   native.cc_binary(
       name = "%s_bin" % name,
-      srcs = hdrs + srcs,
+      srcs = hdrs + srcs + [":%s_empty_main.c" % name],
       linkstatic = True,
-      deps = deps + ["@toktok//tools:empty_main"],
+      linkopts = linkopts,
       **kwargs
   )

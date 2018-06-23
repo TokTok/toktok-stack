@@ -1,3 +1,5 @@
+"""Workspace rules for importing Haskell packages."""
+
 def new_cabal_package(package, sha256, url=None, strip_prefix=None):
   url = url or "https://hackage.haskell.org/package/%s/%s.tar.gz" % (package, package)
   strip_prefix = strip_prefix or package
