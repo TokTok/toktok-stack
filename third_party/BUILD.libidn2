@@ -127,6 +127,10 @@ cc_library(
         "-Iexternal/libidn2/unistring",
         "-I$(GENDIR)/external/libidn2",
         "-Wno-static-in-inline",
+        # We must always optimise this program, because otherwise GCC won't
+        # inline c_tolower but also not emit it out of line, resulting in
+        # undefined reference errors.
+        "-O1",
     ],
 )
 

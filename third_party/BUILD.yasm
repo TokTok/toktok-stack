@@ -96,7 +96,7 @@ genrule(
         "x86insn_nasm.gperf",
         "x86insn_gas.gperf",
     ],
-    cmd = "python $< && mv x86insns.c x86insn_gas.gperf x86insn_nasm.gperf $$(dirname $(location x86insns.c))/",
+    cmd = "python3 $< && mv x86insns.c x86insn_gas.gperf x86insn_nasm.gperf $$(dirname $(location x86insns.c))/",
 )
 
 cc_binary(

@@ -1,8 +1,18 @@
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 
+genrule(
+    name = "InternalParser",
+    srcs = ["src/Language/Haskell/Exts/InternalParser.ly"],
+    outs = ["src/Language/Haskell/Exts/InternalParser.hs"],
+    cmd = "happy -agc -o $@ $<",
+)
+
 haskell_library(
     name = "haskell-src-exts",
-    srcs = glob(["src/**/*.*hs"]),
+    srcs = glob(
+        ["src/**/*.*hs"],
+        exclude = ["src/Language/Haskell/Exts/InternalParser.hs"],
+    ) + [":InternalParser"],
     compiler_flags = ["-j10"],
     prebuilt_dependencies = [
         "array",

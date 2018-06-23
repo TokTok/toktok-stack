@@ -85,3 +85,6 @@
 [submodule "spec"]
 	path = spec
 	url = https://github.com/TokTok/spec
+[submodule "hs-tools"]
+	path = hs-tools
+	url = https://github.com/TokTok/hs-tools

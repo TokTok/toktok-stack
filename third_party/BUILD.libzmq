@@ -29,9 +29,12 @@ cc_library(
         "include/zmq_utils.h",
     ],
     copts = [
+        "-DZMQ_IOTHREAD_POLLER_USE_EPOLL",
+        "-DZMQ_POLL_BASED_ON_POLL",
         "-Iexternal/toktok/third_party/libzmq/freebsd",
         "-Iexternal/toktok/third_party/libzmq/linux",
         "-Iexternal/toktok/third_party/libzmq/osx",
+        "-fexceptions",  # Needed to catch std::bad_alloc.
     ],
     includes = ["include"],
     linkopts = ["-lpthread"],

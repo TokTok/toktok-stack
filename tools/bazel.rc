@@ -1,9 +1,11 @@
 # Global bazel options for toktok-stack.
 
+build --config asan
+
 #build -c dbg
 #build -c opt
-build --copt="-O3"
-build --copt="-march=native"
+#build --copt="-O3"
+#build --copt="-march=native"
 
 build --color=yes
 build --show_progress_rate_limit=0.5
@@ -27,12 +29,15 @@ build --per_file_copt=".*[-_]avx2\.c@-mavx2"
 build --per_file_copt=".*[-_]sse\.c@-mssse3,-msse4"
 build --per_file_copt=".*[-_]sse4\.c@-msse4"
 build --per_file_copt=".*[-_]sse41\.c@-msse4.1"
+build --per_file_copt=".*[-_]sse4_1\.c@-msse4.1"
 build --per_file_copt=".*[-_]ssse3\.c@-mssse3"
 
 build --strict_java_deps=error
 
 # Address sanitizer.
-build:asan --copt="-fsanitize=address"
+build:asan -c dbg
+build:asan --per_file_copt="c-toxcore/.*@-fsanitize=address,-g"
+build:asan --per_file_copt="toxins/.*@-fsanitize=address,-g"
 build:asan --linkopt="-fsanitize=address"
 
 # Link-time optimization.
@@ -46,7 +51,7 @@ build:lto --linkopt="-flto"
 build --per_file_copt=".*@-fdiagnostics-color=always"
 
 # Enable trace logging for toxcore.
-build --per_file_copt="c-toxcore/.*@-DMIN_LOGGER_LEVEL=LOG_TRACE"
+build --per_file_copt="c-toxcore/.*@-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_TRACE,-DLOGGER_LEVEL_TRACE=LOG_TRACE"
 
 build --copt="-Wall"
 build --copt="-Wformat"
@@ -75,6 +80,8 @@ build:musl --copt="-isystem/usr/include/x86_64-linux-musl"
 build:musl --copt="-isystem/usr/include/clang/3.8/include"
 
 test --test_output=errors
+
+#build --distinct_host_configuration=false
 
 #build --all_incompatible_changes
 #build --incompatible_disallow_filetype=false

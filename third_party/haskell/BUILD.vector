@@ -11,6 +11,10 @@ cc_library(
 haskell_library(
     name = "vector",
     srcs = glob(["Data/**/*.*hs"]),
+    compiler_flags = [
+        "-Iexternal/haskell_vector/include",
+        "-Iexternal/haskell_vector/internal",
+    ],
     prebuilt_dependencies = [
         "base",
         "deepseq",

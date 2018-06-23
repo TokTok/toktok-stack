@@ -10,7 +10,7 @@ haskell_library(
     ],
     version = "0.1.2.1",
     visibility = ["//visibility:public"],
-    deps=[
-    "@haskell_haskell_src_exts//:haskell-src-exts",
+    deps = [
+        "@haskell_haskell_src_exts//:haskell-src-exts",
     ],
 )
