@@ -3,12 +3,12 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "double-conversion",
     srcs = glob(["Data/**/*.hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-        "ghc-prim",
-    ],
     version = "2.0.2.0",
     visibility = ["//visibility:public"],
-    deps = ["@haskell_text//:text"],
+    deps = [
+        "@haskell_text//:text",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:ghc-prim",
+    ],
 )

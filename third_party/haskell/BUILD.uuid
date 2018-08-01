@@ -3,12 +3,6 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "uuid",
     srcs = glob(["Data/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "binary",
-        "bytestring",
-        "time",
-    ],
     version = "1.3.13",
     visibility = ["//visibility:public"],
     deps = [
@@ -17,5 +11,9 @@ haskell_library(
         "@haskell_network_info//:network-info",
         "@haskell_random//:random",
         "@haskell_uuid_types//:uuid-types",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:binary",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:time",
     ],
 )

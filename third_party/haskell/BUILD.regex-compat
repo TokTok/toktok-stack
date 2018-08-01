@@ -3,14 +3,12 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "regex-compat",
     srcs = glob(["Text/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "array",
-        "base",
-    ],
     version = "0.95.1",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_regex_base//:regex-base",
         "@haskell_regex_posix//:regex-posix",
+        "@toktok//third_party/haskell:array",
+        "@toktok//third_party/haskell:base",
     ],
 )

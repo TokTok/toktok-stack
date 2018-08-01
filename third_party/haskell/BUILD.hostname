@@ -4,7 +4,7 @@ haskell_library(
     name = "hostname",
     srcs = ["Network/HostName.hs"],
     compiler_flags = ["-XCPP"],
-    prebuilt_dependencies = ["base"],
     version = "1.0",
     visibility = ["//visibility:public"],
+    deps = ["@toktok//third_party/haskell:base"],
 )

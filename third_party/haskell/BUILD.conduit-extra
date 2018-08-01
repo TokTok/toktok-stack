@@ -9,13 +9,6 @@ haskell_library(
             "Data/Conduit/Attoparsec.hs",
         ],
     ),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-        "directory",
-        "filepath",
-        "transformers",
-    ],
     version = "1.2.3.2",
     visibility = ["//visibility:public"],
     deps = [
@@ -32,5 +25,10 @@ haskell_library(
         "@haskell_transformers_base//:transformers-base",
         "@haskell_typed_process//:typed-process",
         "@haskell_unliftio_core//:unliftio-core",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:directory",
+        "@toktok//third_party/haskell:filepath",
+        "@toktok//third_party/haskell:transformers",
     ],
 )

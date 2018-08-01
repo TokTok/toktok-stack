@@ -3,7 +3,7 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "old-locale",
     srcs = glob(["System/**/*.*hs"]),
-    prebuilt_dependencies = ["base"],
     version = "1.0.0.7",
     visibility = ["//visibility:public"],
+    deps = ["@toktok//third_party/haskell:base"],
 )

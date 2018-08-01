@@ -9,16 +9,14 @@ cc_library(
 haskell_library(
     name = "vector-algorithms",
     srcs = glob(["src/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-        "primitive",
-    ],
     src_strip_prefix = "src",
     version = "0.7.0.1",
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
         "@haskell_vector//:vector",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:primitive",
     ],
 )

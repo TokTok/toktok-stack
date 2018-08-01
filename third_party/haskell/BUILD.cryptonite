@@ -6,15 +6,13 @@ haskell_library(
         ["Crypto/**/*.hs*"],
         exclude = ["Crypto/Random/Entropy/Windows.hs"],
     ),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-        "ghc-prim",
-    ],
     version = "0.25",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_basement//:basement",
         "@haskell_memory//:memory",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:ghc-prim",
     ],
 )

@@ -3,11 +3,11 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "unordered-containers",
     srcs = glob(["Data/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "deepseq",
-    ],
     version = "0.2.8.0",
     visibility = ["//visibility:public"],
-    deps = ["@haskell_hashable//:hashable"],
+    deps = [
+        "@haskell_hashable//:hashable",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:deepseq",
+    ],
 )

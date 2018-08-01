@@ -9,8 +9,8 @@ cc_library(
 
 haskell_cc_import(
     name = "haskell_cbits",
-    shared_library = ":cbits",
     hdrs = glob(["cbits/*.h"]),
+    shared_library = ":cbits",
     strip_include_prefix = "cbits",
 )
 
@@ -33,14 +33,12 @@ haskell_library(
         "-XTypeFamilies",
         "-XDeriveDataTypeable",
     ],
-    prebuilt_dependencies = [
-        "base",
-        "ghc-prim",
-    ],
     version = "0.0.20",
     visibility = ["//visibility:public"],
     deps = [
         ":haskell_cbits",
         "@haskell_basement//:basement",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:ghc-prim",
     ],
 )

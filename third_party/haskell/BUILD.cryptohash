@@ -12,10 +12,6 @@ cc_library(
 haskell_library(
     name = "cryptohash",
     srcs = glob(["Crypto/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-    ],
     version = "0.11.9",
     visibility = ["//visibility:public"],
     deps = [
@@ -23,5 +19,7 @@ haskell_library(
         "@haskell_byteable//:byteable",
         "@haskell_cryptonite//:cryptonite",
         "@haskell_memory//:memory",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
     ],
 )

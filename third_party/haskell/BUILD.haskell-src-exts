@@ -14,16 +14,14 @@ haskell_library(
         exclude = ["src/Language/Haskell/Exts/InternalParser.hs"],
     ) + [":InternalParser"],
     compiler_flags = ["-j10"],
-    prebuilt_dependencies = [
-        "array",
-        "base",
-        "ghc-prim",
-        "pretty",
-    ],
     src_strip_prefix = "src",
     version = "1.20.2",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_cpphs//:cpphs",
+        "@toktok//third_party/haskell:array",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:ghc-prim",
+        "@toktok//third_party/haskell:pretty",
     ],
 )

@@ -3,11 +3,11 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "unexceptionalio",
     srcs = ["UnexceptionalIO.hs"],
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-        "transformers",
-    ],
     version = "0.3.0",
     visibility = ["//visibility:public"],
+    deps = [
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:transformers",
+    ],
 )

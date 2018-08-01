@@ -1,4 +1,4 @@
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_cc_import", "haskell_library")
 
 genrule(
     name = "config",
@@ -27,17 +27,32 @@ cc_library(
         "include/HsTime.h",
         ":config",
     ],
+    copts = [
+        "-DHAVE_GETTIMEOFDAY",
+        "-DHAVE_GMTIME_R",
+        "-DHAVE_LOCALTIME_R",
+    ],
     includes = ["include"],
+)
+
+haskell_cc_import(
+    name = "cbits_import",
+    hdrs = [
+        "include/HsTime.h",
+        ":config",
+    ],
+    shared_library = ":cbits",
+    strip_include_prefix = "include",
 )
 
 haskell_library(
     name = "old-time",
     srcs = glob(["System/Time.hsc"]),
-    prebuilt_dependencies = ["base"],
     version = "1.1.0.3",
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
         "@haskell_old_locale//:old-locale",
+        "@toktok//third_party/haskell:base",
     ],
 )

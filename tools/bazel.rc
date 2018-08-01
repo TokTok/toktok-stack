@@ -1,6 +1,6 @@
 # Global bazel options for toktok-stack.
 
-build --config asan
+#build --config asan
 
 #build -c dbg
 #build -c opt

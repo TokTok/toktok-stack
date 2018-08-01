@@ -29,8 +29,8 @@ github_archive(
 github_archive(
     name = "io_tweag_rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "488c5e1717cd5b69a0dd790f0c051fc3462fd82504f5239d730515a4c9284fc2",
-    version = "d60628c66d0ffe9ea3e9d0f60df786c54a4cfa69",
+    sha256 = "55fdcea583fb3a425712aa108008686b41a47cb6943a7f9b7c55580b04590f54",
+    version = "5e7a77ff0d5615bc7374d1f3cdf2851f38d3993a",
 )
 
 load("@io_tweag_rules_haskell//haskell:ghc_bindist.bzl", "ghc_bindist")
@@ -379,8 +379,8 @@ new_cabal_package(
 )
 
 new_cabal_package(
-    package = "http-api-data-0.3.7.2",
-    sha256 = "68516edab1c01d083a9f08baa9cb78adb60cb3f6e645f1096d02879a68bf6c82",
+    package = "http-api-data-0.3.8.1",
+    sha256 = "6eeaba4b29a00407cb20b865825b17b8d884c26b09c5bbe7b6e673b4522106b3",
 )
 
 new_cabal_package(

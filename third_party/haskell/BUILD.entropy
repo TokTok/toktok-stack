@@ -9,11 +9,11 @@ haskell_library(
             "System/EntropyWindows.hs",
         ],
     ),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-        "unix",
-    ],
     version = "0.4",
     visibility = ["//visibility:public"],
+    deps = [
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:unix",
+    ],
 )

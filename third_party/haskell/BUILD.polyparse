@@ -4,12 +4,12 @@ haskell_library(
     name = "polyparse",
     srcs = glob(["src/**/*.*hs"]),
     compiler_flags = ["-XCPP"],
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-    ],
     src_strip_prefix = "src",
     version = "1.12",
     visibility = ["//visibility:public"],
-    deps = ["@haskell_text//:text"],
+    deps = [
+        "@haskell_text//:text",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+    ],
 )

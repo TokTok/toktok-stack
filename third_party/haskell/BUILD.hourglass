@@ -10,10 +10,10 @@ haskell_library(
         ],
         exclude = ["Data/Hourglass/Internal/Win.hs"],
     ),
-    prebuilt_dependencies = [
-        "base",
-        "deepseq",
-    ],
     version = "0.2.11",
     visibility = ["//visibility:public"],
+    deps = [
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:deepseq",
+    ],
 )
