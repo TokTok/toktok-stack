@@ -3,14 +3,6 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "scientific",
     srcs = glob(["src/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "binary",
-        "bytestring",
-        "containers",
-        "deepseq",
-        "integer-gmp",
-    ],
     src_strip_prefix = "src",
     version = "0.3.5.2",
     visibility = ["//visibility:public"],
@@ -19,5 +11,11 @@ haskell_library(
         "@haskell_integer_logarithms//:integer-logarithms",
         "@haskell_primitive//:primitive",
         "@haskell_text//:text",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:binary",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:containers",
+        "@toktok//third_party/haskell:deepseq",
+        "@toktok//third_party/haskell:integer-gmp",
     ],
 )

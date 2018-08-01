@@ -8,12 +8,12 @@ haskell_library(
         "-XFlexibleInstances",
         "-XTypeSynonymInstances",
     ],
-    prebuilt_dependencies = [
-        "array",
-        "base",
-        "bytestring",
-        "containers",
-    ],
     version = "0.93.2",
     visibility = ["//visibility:public"],
+    deps = [
+        "@toktok//third_party/haskell:array",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:containers",
+    ],
 )

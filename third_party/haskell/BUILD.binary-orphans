@@ -3,11 +3,6 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "binary-orphans",
     srcs = glob(["src/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "binary",
-        "time",
-    ],
     src_strip_prefix = "src",
     version = "0.1.8.0",
     visibility = ["//visibility:public"],
@@ -20,5 +15,8 @@ haskell_library(
         "@haskell_text//:text",
         "@haskell_unordered_containers//:unordered-containers",
         "@haskell_vector_binary_instances//:vector-binary-instances",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:binary",
+        "@toktok//third_party/haskell:time",
     ],
 )

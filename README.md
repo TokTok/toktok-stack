@@ -1,8 +1,17 @@
 # TokTok stack
 
+## Downloading
+
+To download the TokTok stack, use `git`:
+
+```sh
+$ git clone --recursive https://github.com/TokTok/toktok-stack
+```
+
 ## Building
 
-After installing prerequisites (instructions below), run:
+After installing prerequisites (instructions below), run the following command
+in the `toktok-stack` directory:
 
 ```sh
 $ bazel build //...
@@ -21,8 +30,8 @@ Install the latest version of
 [Bazel](https://github.com/bazelbuild/bazel/releases), e.g.:
 
 ```sh
-$ wget https://github.com/bazelbuild/bazel/releases/download/0.10.0/bazel_0.10.0-linux-x86_64.deb
-$ sudo dpkg -i bazel_0.10.0-linux-x86_64.deb
+$ wget https://github.com/bazelbuild/bazel/releases/download/0.16.0/bazel_0.16.0-linux-x86_64.deb
+$ sudo dpkg -i bazel_0.16.0-linux-x86_64.deb
 ```
 
 #### Maven
@@ -69,17 +78,20 @@ The build expects symlinks to the development files in `third_party/qt`:
 ```sh
 $ ln -s /usr/lib/x86_64-linux-gnu/qt5/bin third_party/qt/bin
 $ ln -s /usr/include/x86_64-linux-gnu/qt5 third_party/qt/include
-# ln -s /usr/lib/x86_64-linux-gnu third_party/qt/lib
+$ ln -s /usr/lib/x86_64-linux-gnu third_party/qt/lib
 ```
+
+You may need slightly different paths depending on where your Qt installation
+lives.
 
 #### Python
 
 To build `py-toxcore-c` and other programs using Python FFI, you need Python
 development headers. `py-toxcore-c` currently builds for Python 2 in the Bazel
-build.
+build, while `toxic` needs Python 3.
 
 ```sh
-$ sudo apt install python2.7-dev
+$ sudo apt install python2.7-dev python3.5-dev
 ```
 
 #### Make
@@ -118,6 +130,14 @@ For `//qtox`:
 ```sh
 $ sudo apt install libopenal-dev libsqlite3-dev libasound2-dev libxss-dev
 ```
+
+For `//toxic`:
+```sh
+$ sudo apt install libopenal-dev libncurses5-dev libxss-dev
+```
+
+Note that toxic also needs Python 3. See the section on Python for how to
+install its development files.
 
 For `//c-toxcore/testing:av_test`:
 ```sh

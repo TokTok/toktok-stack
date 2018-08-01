@@ -9,5 +9,6 @@ cc_library(
         "zlib.h",
     ],
     copts = ["-D_LARGEFILE64_SOURCE"],
+    includes = ["."],
     visibility = ["//visibility:public"],
 )

@@ -3,15 +3,13 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "bytestring-arbitrary",
     srcs = glob(["src/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-    ],
     src_strip_prefix = "src",
     version = "0.1.1",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_QuickCheck//:QuickCheck",
         "@haskell_cryptohash//:cryptohash",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
     ],
 )

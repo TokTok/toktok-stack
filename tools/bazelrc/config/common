@@ -1,4 +1,0 @@
-build --strategy=Scalac=worker
-test --strategy=Scalac=worker
-
-build --copt="-Werror"

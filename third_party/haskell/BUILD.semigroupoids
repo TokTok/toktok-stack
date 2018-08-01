@@ -3,12 +3,6 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "semigroupoids",
     srcs = glob(["src/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "containers",
-        "template-haskell",
-        "transformers",
-    ],
     src_strip_prefix = "src",
     version = "5.2.2",
     visibility = ["//visibility:public"],
@@ -19,5 +13,9 @@ haskell_library(
         "@haskell_semigroups//:semigroups",
         "@haskell_tagged//:tagged",
         "@haskell_transformers_compat//:transformers-compat",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:containers",
+        "@toktok//third_party/haskell:template-haskell",
+        "@toktok//third_party/haskell:transformers",
     ],
 )

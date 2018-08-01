@@ -1,14 +1,30 @@
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 
+cc_library(
+    name = "cbits",
+    srcs = glob([
+        "cbits/*.cc",
+        "double-conversion/src/*.cc",
+        "double-conversion/src/*.h",
+        "include/*.h",
+    ]),
+    copts = [
+        "-Iexternal/haskell_double_conversion/include",
+        "-Iexternal/haskell_double_conversion/double-conversion/src",
+        "-Wno-unused-function",
+    ],
+)
+
 haskell_library(
     name = "double-conversion",
     srcs = glob(["Data/**/*.hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-        "ghc-prim",
-    ],
     version = "2.0.2.0",
     visibility = ["//visibility:public"],
-    deps = ["@haskell_text//:text"],
+    deps = [
+        ":cbits",
+        "@haskell_text//:text",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:ghc-prim",
+    ],
 )

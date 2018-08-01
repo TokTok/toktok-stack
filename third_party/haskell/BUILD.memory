@@ -7,15 +7,13 @@ haskell_library(
         "-DWITH_BYTESTRING_SUPPORT",
         "-DWITH_FOUNDATION_SUPPORT",
     ],
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-        "ghc-prim",
-    ],
     version = "0.14.16",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_basement//:basement",
         "@haskell_foundation//:foundation",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:ghc-prim",
     ],
 )

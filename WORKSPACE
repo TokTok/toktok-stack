@@ -29,8 +29,8 @@ github_archive(
 github_archive(
     name = "io_tweag_rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "488c5e1717cd5b69a0dd790f0c051fc3462fd82504f5239d730515a4c9284fc2",
-    version = "d60628c66d0ffe9ea3e9d0f60df786c54a4cfa69",
+    sha256 = "cce733230c9867faed9ce39875a079eaf53d75456d9efc1093131d39c02bbdfe",
+    version = "4f83145e436da955a496b8ea8cc6615bd44170b0",
 )
 
 load("@io_tweag_rules_haskell//haskell:ghc_bindist.bzl", "ghc_bindist")
@@ -379,8 +379,8 @@ new_cabal_package(
 )
 
 new_cabal_package(
-    package = "http-api-data-0.3.7.2",
-    sha256 = "68516edab1c01d083a9f08baa9cb78adb60cb3f6e645f1096d02879a68bf6c82",
+    package = "http-api-data-0.3.8.1",
+    sha256 = "6eeaba4b29a00407cb20b865825b17b8d884c26b09c5bbe7b6e673b4522106b3",
 )
 
 new_cabal_package(
@@ -839,6 +839,12 @@ new_local_repository(
 )
 
 new_local_repository(
+    name = "ncurses",
+    build_file = "third_party/BUILD.ncurses",
+    path = "/usr",
+)
+
+new_local_repository(
     name = "openal",
     build_file = "third_party/BUILD.openal",
     path = "/usr",
@@ -847,6 +853,18 @@ new_local_repository(
 new_local_repository(
     name = "opencv",
     build_file = "third_party/BUILD.opencv",
+    path = "/usr",
+)
+
+new_local_repository(
+    name = "sqlite3",
+    build_file = "third_party/BUILD.sqlite3",
+    path = "/usr",
+)
+
+new_local_repository(
+    name = "x11",
+    build_file = "third_party/BUILD.x11",
     path = "/usr",
 )
 
@@ -1117,14 +1135,8 @@ maven_jar(
 
 maven_jar(
     name = "org_scalacheck_scalacheck",
-    artifact = "org.scalacheck:scalacheck_2.11:1.12.5",
-    sha1 = "dc2f59c89d01dc115172a1caeb35db178301147c",
-)
-
-maven_jar(
-    name = "org_scalactic_scalactic",
-    artifact = "org.scalactic:scalactic_2.11:2.2.6",
-    sha1 = "f7307ba050244832ae5751b221493cb923942984",
+    artifact = "org.scalacheck:scalacheck_2.11:1.14.0",
+    sha1 = "60087bb4b94537ad2b4955559a8ead7bac5c615d",
 )
 
 maven_jar(
@@ -1151,8 +1163,8 @@ maven_jar(
 github_archive(
     name = "io_bazel_rules_scala",
     repo = "bazelbuild/rules_scala",
-    sha256 = "6b7206e386cc4633f7b62a6bc72b1657eba71985e2eb4877f4ae3ee205c1faf1",
-    version = "93a2ad9e7b716b382aca71a8d79c60f71ae6e6e1",
+    sha256 = "9269724ce33734be23ee1aa27f86b17ce469a0160d23f1eb81da4595e94ebca1",
+    version = "b537bddc58a77318b34165812a0311ef52806318",
 )
 
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories")

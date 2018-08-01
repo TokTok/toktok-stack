@@ -3,16 +3,14 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "attoparsec",
     srcs = glob(["Data/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "array",
-        "base",
-        "bytestring",
-        "deepseq",
-    ],
     version = "0.13.2.2",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_scientific//:scientific",
         "@haskell_text//:text",
+        "@toktok//third_party/haskell:array",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:deepseq",
     ],
 )

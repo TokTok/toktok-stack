@@ -3,7 +3,7 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "safe",
     srcs = glob(["Safe/**/*.hs"]) + ["Safe.hs"],
-    prebuilt_dependencies = ["base"],
     version = "0.3.16",
     visibility = ["//visibility:public"],
+    deps = ["@toktok//third_party/haskell:base"],
 )

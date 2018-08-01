@@ -3,14 +3,12 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "asn1-encoding",
     srcs = glob(["Data/**/*.hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-    ],
     version = "0.9.5",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_asn1_types//:asn1-types",
         "@haskell_hourglass//:hourglass",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
     ],
 )

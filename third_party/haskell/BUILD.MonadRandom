@@ -3,15 +3,13 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "MonadRandom",
     srcs = glob(["Control/**/*.hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "transformers",
-    ],
     version = "0.5.1",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_mtl//:mtl",
         "@haskell_primitive//:primitive",
         "@haskell_random//:random",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:transformers",
     ],
 )

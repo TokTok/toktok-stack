@@ -1,5 +1,0 @@
-import %workspace%/tools/bazelrc/config/common
-import %workspace%/tools/bazelrc/config/freebsd
-import %workspace%/tools/bazelrc/config/gcc
-
-# vim:ft=sh

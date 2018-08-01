@@ -1,0 +1,15 @@
+cc_library(
+    name = "X11",
+    linkopts = [
+        "-lX11",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "Xss",
+    linkopts = [
+        "-lXss",
+    ],
+    visibility = ["//visibility:public"],
+)

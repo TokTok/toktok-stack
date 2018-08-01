@@ -3,6 +3,7 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 cc_library(
     name = "cbits",
     hdrs = glob(["includes/*.hs"]),
+    includes = ["includes"],
 )
 
 haskell_library(
@@ -19,11 +20,11 @@ haskell_library(
         "-DUNIX",
         "-XCPP",
     ],
-    prebuilt_dependencies = ["base"],
     version = "0.8.0.1",
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
         "@haskell_colour//:colour",
+        "@toktok//third_party/haskell:base",
     ],
 )

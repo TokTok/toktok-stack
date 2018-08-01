@@ -3,10 +3,11 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "zlib",
     srcs = glob(["Codec/**/*.*hs*"]),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-    ],
     version = "0.6.1.2",
     visibility = ["//visibility:public"],
+    deps = [
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@zlib",
+    ],
 )

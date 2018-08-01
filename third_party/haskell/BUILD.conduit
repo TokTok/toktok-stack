@@ -8,14 +8,6 @@ cc_library(
 haskell_library(
     name = "conduit",
     srcs = glob(["Data/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-        "directory",
-        "filepath",
-        "transformers",
-        "unix",
-    ],
     version = "1.2.13",
     visibility = ["//visibility:public"],
     deps = [
@@ -32,5 +24,11 @@ haskell_library(
         "@haskell_transformers_base//:transformers-base",
         "@haskell_unliftio_core//:unliftio-core",
         "@haskell_vector//:vector",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:directory",
+        "@toktok//third_party/haskell:filepath",
+        "@toktok//third_party/haskell:transformers",
+        "@toktok//third_party/haskell:unix",
     ],
 )

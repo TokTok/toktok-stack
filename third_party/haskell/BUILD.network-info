@@ -1,17 +1,32 @@
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library", "haskell_test")
 
 cc_library(
     name = "cbits",
-    srcs = glob(["cbits/*.h"]),
+    srcs = ["cbits/network-unix.c"],
     hdrs = glob(["cbits/*.h"]),
+    # Needed for inline functions.
+    copts = ["-O1"],
+    includes = ["cbits"],
 )
 
 haskell_library(
     name = "network-info",
     srcs = ["src/Network/Info.hsc"],
-    prebuilt_dependencies = ["base"],
     src_strip_prefix = "src",
     version = "0.2.0.9",
     visibility = ["//visibility:public"],
-    deps = [":cbits"],
+    deps = [
+        ":cbits",
+        "@toktok//third_party/haskell:base",
+    ],
+)
+
+haskell_test(
+    name = "test",
+    srcs = ["test/src/Main.hs"],
+    src_strip_prefix = "test/src",
+    deps = [
+        ":network-info",
+        "@toktok//third_party/haskell:base",
+    ],
 )

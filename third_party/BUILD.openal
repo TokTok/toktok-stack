@@ -1,0 +1,8 @@
+cc_library(
+    name = "openal",
+    hdrs = ["include/AL/al.h"],
+    linkopts = [
+        "-lopenal",
+    ],
+    visibility = ["//visibility:public"],
+)
