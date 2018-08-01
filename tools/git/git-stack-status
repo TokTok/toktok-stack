@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Shows all the submodules that are not in their master branch, i.e. need to
+# have something merged before the stack PR can be merged.
+
+git submodule foreach --recursive --quiet \
+  'echo "$(git rev-parse --abbrev-ref HEAD): $path"' \
+  | grep -v master

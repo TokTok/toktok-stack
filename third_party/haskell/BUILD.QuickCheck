@@ -3,17 +3,15 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "QuickCheck",
     srcs = glob(["Test/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "containers",
-        "deepseq",
-        "template-haskell",
-        "transformers",
-    ],
     version = "2.11.3",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_random//:random",
         "@haskell_tf_random//:tf-random",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:containers",
+        "@toktok//third_party/haskell:deepseq",
+        "@toktok//third_party/haskell:template-haskell",
+        "@toktok//third_party/haskell:transformers",
     ],
 )

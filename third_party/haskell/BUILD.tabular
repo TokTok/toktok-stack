@@ -6,11 +6,11 @@ haskell_library(
         ["Text/**/*.*hs"],
         exclude = ["Text/Tabular/Csv.hs"],
     ),
-    prebuilt_dependencies = ["base"],
     version = "0.2.2.7",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_html//:html",
         "@haskell_mtl//:mtl",
+        "@toktok//third_party/haskell:base",
     ],
 )

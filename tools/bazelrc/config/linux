@@ -1,9 +1,0 @@
-build --linkopt="-Wl,-z,noexecstack"
-build --linkopt="-Wl,--fatal-warnings"
-build --linkopt="-Wl,--detect-odr-violations"
-build --linkopt="-Wl,--warn-common"
-# Not enabled, because (at least - I gave up when trying to fix libvpx)
-# libsodium and libvpx assembly code doesn't define noexecstack.
-#build --linkopt="-Wl,--warn-execstack"
-
-# vim:ft=sh

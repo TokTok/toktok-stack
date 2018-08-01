@@ -2,22 +2,15 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 
 cc_library(
     name = "cbits",
+    srcs = glob(["cbits/*.c"]),
     hdrs = glob(["include/*.h"]),
+    copts = ["-Wno-pointer-sign"],
     includes = ["include"],
 )
 
 haskell_library(
     name = "streaming-commons",
     srcs = glob(["Data/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "array",
-        "base",
-        "bytestring",
-        "directory",
-        "process",
-        "transformers",
-        "unix",
-    ],
     version = "0.1.19",
     visibility = ["//visibility:public"],
     deps = [
@@ -28,5 +21,12 @@ haskell_library(
         "@haskell_stm//:stm",
         "@haskell_text//:text",
         "@haskell_zlib//:zlib",
+        "@toktok//third_party/haskell:array",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:directory",
+        "@toktok//third_party/haskell:process",
+        "@toktok//third_party/haskell:transformers",
+        "@toktok//third_party/haskell:unix",
     ],
 )

@@ -3,12 +3,12 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "transformers-base",
     srcs = glob(["src/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "transformers",
-    ],
     src_strip_prefix = "src",
     version = "0.4.4",
     visibility = ["//visibility:public"],
-    deps = ["@haskell_stm//:stm"],
+    deps = [
+        "@haskell_stm//:stm",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:transformers",
+    ],
 )

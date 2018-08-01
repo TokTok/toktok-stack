@@ -3,13 +3,13 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "cereal",
     srcs = glob(["src/**/*.hs"]),
-    prebuilt_dependencies = [
-        "array",
-        "base",
-        "bytestring",
-        "containers",
-    ],
     src_strip_prefix = "src",
     version = "0.5.5.0",
     visibility = ["//visibility:public"],
+    deps = [
+        "@toktok//third_party/haskell:array",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:containers",
+    ],
 )

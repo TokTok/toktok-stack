@@ -1,0 +1,8 @@
+# TODO(iphydf): Build ncurses in bazel.
+cc_library(
+    name = "ncurses",
+    linkopts = [
+        "-lncurses",
+    ],
+    visibility = ["//visibility:public"],
+)

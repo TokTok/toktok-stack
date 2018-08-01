@@ -1,0 +1,15 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@io_bazel_rules_scala//scala:scala_import.bzl", "scala_import")
+
+licenses(["notice"])
+
+scala_import(
+    name = "com_typesafe_scala_logging_scala_logging",
+    jars = ["@com_typesafe_scala_logging_scala_logging//jar:file"],
+)
+
+scala_import(
+    name = "com_chuusai_shapeless",
+    jars = ["@com_chuusai_shapeless//jar:file"],
+)

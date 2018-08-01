@@ -3,21 +3,20 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 cc_library(
     name = "cbits",
     hdrs = glob(["include/*.h"]),
+    includes = ["include"],
 )
 
 haskell_library(
     name = "aeson-pure",
     srcs = glob(["pure/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-        "containers",
-    ],
     src_strip_prefix = "pure",
     version = "1.2.4.0",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_text//:text",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:containers",
     ],
 )
 
@@ -25,15 +24,6 @@ haskell_library(
     name = "aeson",
     srcs = glob(["Data/**/*.*hs"]),
     hidden_modules = ["Data.Aeson.Compat"],
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-        "containers",
-        "deepseq",
-        "ghc-prim",
-        "template-haskell",
-        "time",
-    ],
     version = "1.2.4.0",
     visibility = ["//visibility:public"],
     deps = [
@@ -52,5 +42,12 @@ haskell_library(
         "@haskell_unordered_containers//:unordered-containers",
         "@haskell_uuid_types//:uuid-types",
         "@haskell_vector//:vector",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:containers",
+        "@toktok//third_party/haskell:deepseq",
+        "@toktok//third_party/haskell:ghc-prim",
+        "@toktok//third_party/haskell:template-haskell",
+        "@toktok//third_party/haskell:time",
     ],
 )

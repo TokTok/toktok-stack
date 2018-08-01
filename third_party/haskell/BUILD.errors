@@ -6,11 +6,6 @@ haskell_library(
         "Control/**/*.hs",
         "Data/**/*.hs",
     ]),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-        "transformers",
-    ],
     version = "2.2.4",
     visibility = ["//visibility:public"],
     deps = [
@@ -18,5 +13,8 @@ haskell_library(
         "@haskell_safe//:safe",
         "@haskell_text//:text",
         "@haskell_unexceptionalio//:unexceptionalio",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:transformers",
     ],
 )

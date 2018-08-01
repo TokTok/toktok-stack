@@ -1,6 +1,6 @@
 # Global bazel options for toktok-stack.
 
-build --config asan
+#build --config=asan
 
 #build -c dbg
 #build -c opt
@@ -33,6 +33,11 @@ build --per_file_copt=".*[-_]sse4_1\.c@-msse4.1"
 build --per_file_copt=".*[-_]ssse3\.c@-mssse3"
 
 build --strict_java_deps=error
+
+build --strategy=Scalac=worker
+test --strategy=Scalac=worker
+
+build --copt="-Werror"
 
 # Address sanitizer.
 build:asan -c dbg
@@ -75,9 +80,11 @@ build:remote --remote_rest_cache=https://bazel.herokuapp.com
 
 # Use musl instead of glibc.
 build:musl --copt="-nostdinc"
-build:musl --copt="-nostdlib"
+build:musl --copt="-isystem/usr/include/c++/6"
+build:musl --copt="-isystem/usr/include/x86_64-linux-gnu/c++/6"
 build:musl --copt="-isystem/usr/include/x86_64-linux-musl"
-build:musl --copt="-isystem/usr/include/clang/3.8/include"
+build:musl --copt="-isystem/usr/lib/gcc/x86_64-linux-gnu/6/include"
+#build:musl --copt="-isystem/usr/include/clang/3.8/include"
 
 test --test_output=errors
 
@@ -92,3 +99,31 @@ test --test_output=errors
 #build --incompatible_depset_union=false
 #build --incompatible_depset_is_not_iterable=false
 #build --incompatible_remove_native_http_archive=false
+
+##############################################################################
+#
+# :: System/compiler-specific optional flags.
+#
+##############################################################################
+
+# GCC warning flags.
+build:gcc --copt="-Wall"
+
+# Clang warning flags.
+build:clang --copt="-Wthread-safety-analysis"
+build:clang --copt="-Wno-error=thread-safety-analysis"
+
+# Linux-specific flags.
+build:linux --config=gnuld
+build:linux --linkopt="-Wl,--detect-odr-violations"
+
+# FreeBSD-specific flags.
+build:freebsd --config=gnuld
+
+# Flags for systems with GNU linker or compatible.
+build:gnuld --linkopt="-Wl,-z,noexecstack"
+build:gnuld --linkopt="-Wl,--fatal-warnings"
+build:gnuld --linkopt="-Wl,--warn-common"
+# Not enabled, because (at least - I gave up when trying to fix libvpx)
+# libsodium and libvpx assembly code doesn't define noexecstack.
+#build:gnuld --linkopt="-Wl,--warn-execstack"

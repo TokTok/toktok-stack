@@ -3,10 +3,6 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "aeson-compat",
     srcs = glob(["src/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-    ],
     src_strip_prefix = "src",
     version = "0.3.7.1",
     visibility = ["//visibility:public"],
@@ -17,5 +13,7 @@ haskell_library(
         "@haskell_scientific//:scientific",
         "@haskell_text//:text",
         "@haskell_unordered_containers//:unordered-containers",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
     ],
 )

@@ -3,11 +3,11 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "unliftio-core",
     srcs = glob(["src/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "transformers",
-    ],
     src_strip_prefix = "src",
     version = "0.1.1.0",
     visibility = ["//visibility:public"],
+    deps = [
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:transformers",
+    ],
 )

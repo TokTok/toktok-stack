@@ -3,12 +3,6 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "keys",
     srcs = glob(["src/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "array",
-        "base",
-        "containers",
-        "transformers",
-    ],
     src_strip_prefix = "src",
     version = "3.12",
     visibility = ["//visibility:public"],
@@ -19,5 +13,9 @@ haskell_library(
         "@haskell_semigroupoids//:semigroupoids",
         "@haskell_tagged//:tagged",
         "@haskell_unordered_containers//:unordered-containers",
+        "@toktok//third_party/haskell:array",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:containers",
+        "@toktok//third_party/haskell:transformers",
     ],
 )

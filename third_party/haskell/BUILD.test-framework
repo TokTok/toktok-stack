@@ -14,11 +14,6 @@ haskell_library(
         "-XMultiParamTypeClasses",
         "-XTypeOperators",
     ],
-    prebuilt_dependencies = [
-        "base",
-        "containers",
-        "time",
-    ],
     version = "0.8.2.0",
     visibility = ["//visibility:public"],
     deps = [
@@ -30,5 +25,8 @@ haskell_library(
         "@haskell_random//:random",
         "@haskell_regex_posix//:regex-posix",
         "@haskell_xml//:xml",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:containers",
+        "@toktok//third_party/haskell:time",
     ],
 )

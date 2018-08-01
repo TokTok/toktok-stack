@@ -4,6 +4,7 @@ cc_library(
     name = "cbits",
     srcs = glob(["cbits/*.c"]),
     hdrs = glob(["cbits/*.h"]),
+    includes = ["cbits"],
     deps = ["@ghc//:threaded-rts"],
 )
 
@@ -18,11 +19,11 @@ haskell_library(
         "-XTypeFamilies",
         "-XDeriveDataTypeable",
     ],
-    prebuilt_dependencies = [
-        "base",
-        "ghc-prim",
-    ],
     version = "0.0.7",
     visibility = ["//visibility:public"],
-    deps = [":cbits"],
+    deps = [
+        ":cbits",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:ghc-prim",
+    ],
 )

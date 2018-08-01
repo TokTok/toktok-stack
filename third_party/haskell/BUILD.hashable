@@ -11,17 +11,15 @@ haskell_library(
     name = "hashable",
     srcs = glob(["Data/**/*.*hs"]),
     compiler_flags = ["-DGENERICS"],
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-        "ghc-prim",
-        "integer-gmp",
-        "deepseq",
-    ],
     version = "1.2.6.1",
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
         "@haskell_text//:text",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:deepseq",
+        "@toktok//third_party/haskell:ghc-prim",
+        "@toktok//third_party/haskell:integer-gmp",
     ],
 )

@@ -1,0 +1,41 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_import")
+
+licenses(["notice"])
+
+haskell_import(name = "array")
+
+haskell_import(name = "base")
+
+haskell_import(name = "binary")
+
+haskell_import(name = "bytestring")
+
+haskell_import(name = "containers")
+
+haskell_import(name = "deepseq")
+
+haskell_import(name = "directory")
+
+haskell_import(name = "filepath")
+
+haskell_import(name = "ghc-prim")
+
+haskell_import(name = "integer-gmp")
+
+haskell_import(name = "pretty")
+
+haskell_import(name = "primitive")
+
+haskell_import(name = "process")
+
+haskell_import(name = "template-haskell")
+
+haskell_import(name = "tests")
+
+haskell_import(name = "time")
+
+haskell_import(name = "transformers")
+
+haskell_import(name = "unix")

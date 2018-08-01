@@ -8,12 +8,9 @@ cc_library(
 haskell_library(
     name = "free",
     srcs = glob(["src/**/*.*hs"]),
-    compiler_flags = ["-XCPP", "-Iexternal/haskell_free/include"],
-    prebuilt_dependencies = [
-        "base",
-        "containers",
-        "template-haskell",
-        "transformers",
+    compiler_flags = [
+        "-XCPP",
+        "-Iexternal/haskell_free/include",
     ],
     src_strip_prefix = "src",
     version = "5",
@@ -27,5 +24,9 @@ haskell_library(
         "@haskell_profunctors//:profunctors",
         "@haskell_semigroupoids//:semigroupoids",
         "@haskell_transformers_base//:transformers-base",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:containers",
+        "@toktok//third_party/haskell:template-haskell",
+        "@toktok//third_party/haskell:transformers",
     ],
 )

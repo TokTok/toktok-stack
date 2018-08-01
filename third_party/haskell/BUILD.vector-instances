@@ -3,7 +3,6 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "vector-instances",
     srcs = glob(["src/**/*.*hs"]),
-    prebuilt_dependencies = ["base"],
     src_strip_prefix = "src",
     version = "3.4",
     visibility = ["//visibility:public"],
@@ -12,5 +11,6 @@ haskell_library(
         "@haskell_pointed//:pointed",
         "@haskell_semigroupoids//:semigroupoids",
         "@haskell_vector//:vector",
+        "@toktok//third_party/haskell:base",
     ],
 )
