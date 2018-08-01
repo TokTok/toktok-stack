@@ -1,0 +1,11 @@
+# TODO(iphydf): Build xcb in bazel.
+cc_library(
+    name = "xcb",
+    linkopts = [
+        "-lxcb",
+        "-lxcb-shape",
+        "-lxcb-shm",
+        "-lxcb-xfixes",
+    ],
+    visibility = ["//visibility:public"],
+)

@@ -55,11 +55,11 @@ haskell_library(
         # XXX: Hack because for some reason it doesn't end up being defined.
         "-DCALLCONV=ccall",
     ],
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-    ],
     version = "2.6.3.3",
     visibility = ["//visibility:public"],
-    deps = [":cbits"],
+    deps = [
+        ":cbits",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+    ],
 )

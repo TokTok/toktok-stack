@@ -3,10 +3,6 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "hspec",
     srcs = glob(["src/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "transformers",
-    ],
     src_strip_prefix = "src",
     version = "2.4.8",
     visibility = ["//visibility:public"],
@@ -15,5 +11,7 @@ haskell_library(
         "@haskell_QuickCheck//:QuickCheck",
         "@haskell_hspec_core//:hspec-core",
         "@haskell_hspec_expectations//:hspec-expectations",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:transformers",
     ],
 )

@@ -17,12 +17,12 @@ haskell_library(
         ],
         exclude = ["Control/Concurrent/SampleVar/Lifted.hs"],
     ),
-    prebuilt_dependencies = ["base"],
     version = "0.2.3.11",
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
         "@haskell_monad_control//:monad-control",
         "@haskell_transformers_base//:transformers-base",
+        "@toktok//third_party/haskell:base",
     ],
 )

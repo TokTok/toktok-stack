@@ -3,12 +3,12 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library", "haskell
 haskell_library(
     name = "dlist",
     srcs = glob(["Data/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "deepseq",
-    ],
     version = "0.8.0.4",
     visibility = ["//visibility:public"],
+    deps = [
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:deepseq",
+    ],
 )
 
 haskell_test(
@@ -17,10 +17,10 @@ haskell_test(
         "tests/Main.hs",
         "tests/OverloadedStrings.hs",
     ],
-    prebuilt_dependencies = ["base"],
-    src_strip_prefix = "tests",
+    src_strip_prefix = "@toktok//third_party/haskell:tests",
     deps = [
         ":dlist",
         "@haskell_QuickCheck//:QuickCheck",
+        "@toktok//third_party/haskell:base",
     ],
 )

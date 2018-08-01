@@ -1,0 +1,8 @@
+# TODO(iphydf): Build xss in bazel.
+cc_library(
+    name = "xss",
+    linkopts = [
+        "-lXss",
+    ],
+    visibility = ["//visibility:public"],
+)

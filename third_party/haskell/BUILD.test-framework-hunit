@@ -7,11 +7,11 @@ haskell_library(
         "-XMultiParamTypeClasses",
         "-XTypeOperators",
     ],
-    prebuilt_dependencies = ["base"],
     version = "0.3.0.2",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_HUnit//:HUnit",
         "@haskell_test_framework//:test-framework",
+        "@toktok//third_party/haskell:base",
     ],
 )

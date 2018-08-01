@@ -1,17 +1,12 @@
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_cc_import", "haskell_library")
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 
 cc_library(
     name = "cbits",
     srcs = glob(["cbits/*.c"]),
     hdrs = glob(["cbits/*.h"]),
+    copts = ["-DFOUNDATION_BOUNDS_CHECK"],
+    includes = ["cbits"],
     deps = ["@ghc//:threaded-rts"],
-)
-
-haskell_cc_import(
-    name = "haskell_cbits",
-    shared_library = ":cbits",
-    hdrs = glob(["cbits/*.h"]),
-    strip_include_prefix = "cbits",
 )
 
 haskell_library(
@@ -33,14 +28,12 @@ haskell_library(
         "-XTypeFamilies",
         "-XDeriveDataTypeable",
     ],
-    prebuilt_dependencies = [
-        "base",
-        "ghc-prim",
-    ],
     version = "0.0.20",
     visibility = ["//visibility:public"],
     deps = [
-        ":haskell_cbits",
+        ":cbits",
         "@haskell_basement//:basement",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:ghc-prim",
     ],
 )

@@ -6,11 +6,6 @@ haskell_library(
         "Control/**/*.*hs",
         "Data/**/*.*hs",
     ]),
-    prebuilt_dependencies = [
-        "base",
-        "containers",
-        "transformers",
-    ],
     version = "1.1.11",
     visibility = ["//visibility:public"],
     deps = [
@@ -22,5 +17,8 @@ haskell_library(
         "@haskell_primitive//:primitive",
         "@haskell_transformers_base//:transformers-base",
         "@haskell_unliftio_core//:unliftio-core",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:containers",
+        "@toktok//third_party/haskell:transformers",
     ],
 )

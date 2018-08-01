@@ -3,10 +3,10 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "deepseq-generics",
     srcs = glob(["Control/**/*.hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "deepseq",
-    ],
     version = "0.2.0.0",
     visibility = ["//visibility:public"],
+    deps = [
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:deepseq",
+    ],
 )

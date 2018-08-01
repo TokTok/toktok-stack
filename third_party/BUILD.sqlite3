@@ -1,0 +1,8 @@
+# TODO(iphydf): Build sqlite3 in bazel.
+cc_library(
+    name = "sqlite3",
+    linkopts = [
+        "-lsqlite3",
+    ],
+    visibility = ["//visibility:public"],
+)

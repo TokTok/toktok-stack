@@ -12,8 +12,38 @@ gazelle(
     prefix = "github.com/TokTok",
 )
 
+genrule(
+    name = "toolchain_as",
+    outs = ["as"],
+    cmd = "ln -s /usr/bin/as $@",
+)
+
+genrule(
+    name = "toolchain_ld",
+    outs = ["ld"],
+    cmd = "ln -s /usr/bin/ld $@",
+)
+
+genrule(
+    name = "toolchain_touch",
+    outs = ["touch"],
+    cmd = "ln -s /usr/bin/touch $@",
+)
+
+genrule(
+    name = "hspec_discover",
+    outs = ["hspec-discover"],
+    cmd = "ln -s /home/pippijn/.local/bin/hspec-discover $@",
+)
+
 haskell_toolchain(
     name = "ghc",
+    extra_binaries = [
+        ":hspec_discover",
+        ":toolchain_as",
+        ":toolchain_ld",
+        ":toolchain_touch",
+    ],
     tools = "@ghc//:bin",
     version = "8.4.1",
 )

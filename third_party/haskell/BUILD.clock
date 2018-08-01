@@ -8,7 +8,7 @@ haskell_library(
         "-XScopedTypeVariables",
         "-XViewPatterns",
     ],
-    prebuilt_dependencies = ["base"],
     version = "0.7.2",
     visibility = ["//visibility:public"],
+    deps = ["@toktok//third_party/haskell:base"],
 )

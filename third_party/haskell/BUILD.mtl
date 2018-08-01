@@ -8,10 +8,10 @@ haskell_library(
         "-XFunctionalDependencies",
         "-XFlexibleInstances",
     ],
-    prebuilt_dependencies = [
-        "base",
-        "transformers",
-    ],
     version = "2.2.1",
     visibility = ["//visibility:public"],
+    deps = [
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:transformers",
+    ],
 )

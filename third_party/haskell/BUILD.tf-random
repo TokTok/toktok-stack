@@ -11,10 +11,6 @@ cc_library(
 haskell_library(
     name = "tf-random",
     srcs = glob(["src/**/*.*hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "time",
-    ],
     src_strip_prefix = "src",
     version = "0.5",
     visibility = ["//visibility:public"],
@@ -22,5 +18,7 @@ haskell_library(
         ":cbits",
         "@haskell_primitive//:primitive",
         "@haskell_random//:random",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:time",
     ],
 )

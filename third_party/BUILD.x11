@@ -1,0 +1,8 @@
+# TODO(iphydf): Build x11 in bazel.
+cc_library(
+    name = "x11",
+    linkopts = [
+        "-lX11",
+    ],
+    visibility = ["//visibility:public"],
+)

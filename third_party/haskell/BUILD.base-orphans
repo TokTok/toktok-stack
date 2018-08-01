@@ -3,8 +3,8 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "base-orphans",
     srcs = glob(["src/**/*.hs*"]),
-    prebuilt_dependencies = ["base"],
     src_strip_prefix = "src",
     version = "0.6",
     visibility = ["//visibility:public"],
+    deps = ["@toktok//third_party/haskell:base"],
 )

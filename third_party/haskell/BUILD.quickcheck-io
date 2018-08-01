@@ -3,12 +3,12 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "quickcheck-io",
     srcs = ["src/Test/QuickCheck/IO.hs"],
-    prebuilt_dependencies = ["base"],
     src_strip_prefix = "src",
     version = "0.2.0",
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_HUnit//:HUnit",
         "@haskell_QuickCheck//:QuickCheck",
+        "@toktok//third_party/haskell:base",
     ],
 )

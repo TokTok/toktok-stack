@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -eu
+
+BRANCH=$1
+
+git checkout "$BRANCH"
+git push upstream "$BRANCH:master"
+git checkout master
+git merge upstream/master
+git push
+git branch -d "$BRANCH"
+git push origin ":$BRANCH"

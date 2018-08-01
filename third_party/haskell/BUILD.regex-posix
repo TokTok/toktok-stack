@@ -21,16 +21,14 @@ haskell_library(
         "-XMultiParamTypeClasses",
         "-XTypeSynonymInstances",
     ],
-    prebuilt_dependencies = [
-        "array",
-        "base",
-        "bytestring",
-        "containers",
-    ],
     version = "0.95.2",
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
         "@haskell_regex_base//:regex-base",
+        "@toktok//third_party/haskell:array",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:containers",
     ],
 )

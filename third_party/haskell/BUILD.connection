@@ -3,11 +3,6 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "connection",
     srcs = glob(["Network/**/*.hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-        "containers",
-    ],
     version = "0.2.8",
     visibility = ["//visibility:public"],
     deps = [
@@ -17,5 +12,8 @@ haskell_library(
         "@haskell_tls//:tls",
         "@haskell_x509_store//:x509-store",
         "@haskell_x509_system//:x509-system",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:containers",
     ],
 )

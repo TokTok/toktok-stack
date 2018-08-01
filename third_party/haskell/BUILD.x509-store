@@ -3,13 +3,6 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "x509-store",
     srcs = glob(["Data/**/*.hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-        "containers",
-        "directory",
-        "filepath",
-    ],
     version = "1.6.6",
     visibility = ["//visibility:public"],
     deps = [
@@ -18,5 +11,10 @@ haskell_library(
         "@haskell_cryptonite//:cryptonite",
         "@haskell_pem//:pem",
         "@haskell_x509//:x509",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:containers",
+        "@toktok//third_party/haskell:directory",
+        "@toktok//third_party/haskell:filepath",
     ],
 )

@@ -15,12 +15,12 @@ haskell_library(
         "Control/**/*.*hs",
         "Data/**/*.*hs",
     ]),
-    prebuilt_dependencies = [
-        "base",
-        "ghc-prim",
-        "transformers",
-    ],
     version = "0.6.2.0",
     visibility = ["//visibility:public"],
-    deps = [":cbits"],
+    deps = [
+        ":cbits",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:ghc-prim",
+        "@toktok//third_party/haskell:transformers",
+    ],
 )

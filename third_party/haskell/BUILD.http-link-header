@@ -3,10 +3,6 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "http-link-header",
     srcs = glob(["library/**/*.hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-    ],
     src_strip_prefix = "library",
     version = "1.0.3",
     visibility = ["//visibility:public"],
@@ -17,5 +13,7 @@ haskell_library(
         "@haskell_http_api_data//:http-api-data",
         "@haskell_network_uri//:network-uri",
         "@haskell_text//:text",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
     ],
 )

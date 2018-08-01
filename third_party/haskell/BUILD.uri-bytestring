@@ -3,12 +3,6 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "uri-bytestring",
     srcs = glob(["src/**/*.hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-        "containers",
-        "template-haskell",
-    ],
     src_strip_prefix = "src",
     version = "0.3.1.1",
     visibility = ["//visibility:public"],
@@ -17,5 +11,9 @@ haskell_library(
         "@haskell_blaze_builder//:blaze-builder",
         "@haskell_th_lift//:th-lift",
         "@haskell_th_lift_instances//:th-lift-instances",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:containers",
+        "@toktok//third_party/haskell:template-haskell",
     ],
 )

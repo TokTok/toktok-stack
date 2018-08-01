@@ -3,10 +3,6 @@ load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 haskell_library(
     name = "x509-validation",
     srcs = glob(["Data/**/*.hs"]),
-    prebuilt_dependencies = [
-        "base",
-        "bytestring",
-    ],
     version = "1.6.10",
     visibility = ["//visibility:public"],
     deps = [
@@ -18,5 +14,7 @@ haskell_library(
         "@haskell_memory//:memory",
         "@haskell_x509//:x509",
         "@haskell_x509_store//:x509-store",
+        "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:bytestring",
     ],
 )
