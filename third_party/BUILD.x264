@@ -1,0 +1,23 @@
+cc_library(
+    name = "x264",
+    hdrs = glob([
+        "include/x264.h",
+        "include/x264_config.h",
+    ]),
+    includes = ["include"],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "core",
+    srcs = glob(["lib/x86_64-linux-gnu/libx264.so*"]),
+    visibility = ["//visibility:public"],
+    deps = [":x264"],
+)
+
+cc_library(
+    name = "10bit",
+    srcs = glob(["lib/x86_64-linux-gnu/x264-10bit/libx264.so*"]),
+    visibility = ["//visibility:public"],
+    deps = [":x264"],
+)

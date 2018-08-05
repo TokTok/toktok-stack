@@ -1197,6 +1197,15 @@ new_local_repository(
     path = "third_party/qt",
 )
 
+# x264
+# =========================================================
+
+new_local_repository(
+    name = "x264",
+    build_file = "third_party/BUILD.x264",
+    path = "/usr",
+)
+
 # Linux headers
 # =========================================================
 
