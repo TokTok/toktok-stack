@@ -1,0 +1,15 @@
+cc_library(
+    name = "xdmcp",
+    srcs = glob([
+        "*.c",
+        "*.h",
+    ]),
+    hdrs = ["include/X11/Xdmcp.h"],
+    copts = [
+        "-DHASXDMAUTH",
+        "-DHAVE_LRAND48",
+        "-DHAVE_SRAND48",
+    ],
+    includes = ["include"],
+    visibility = ["//visibility:public"],
+)

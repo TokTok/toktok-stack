@@ -29,8 +29,8 @@ github_archive(
 github_archive(
     name = "io_tweag_rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "0d60456f378b532d71cf547d5dd1fd079fdc2158fa31acb83d892bf10156cc68",
-    version = "cc040711fe796f1db734ba203b3e00e7972b2a5a",
+    sha256 = "854099bec683161b2b6da7e84f29d5f19d095b44fb936332664dcf7b6e9517f1",
+    version = "35195f2005226b76e65bed31f1dd815810f94634",
 )
 
 load("@io_tweag_rules_haskell//haskell:ghc_bindist.bzl", "ghc_bindist")
@@ -862,18 +862,6 @@ new_local_repository(
     path = "/usr",
 )
 
-new_local_repository(
-    name = "x11",
-    build_file = "third_party/BUILD.x11",
-    path = "/usr",
-)
-
-new_local_repository(
-    name = "xss",
-    build_file = "third_party/BUILD.xss",
-    path = "/usr",
-)
-
 http_archive(
     name = "boringssl",
     #sha256 = "39b512b2a7afb87bb054e16031f9142d5ca9bd1ceebed864b0978c264e11566b",
@@ -1015,11 +1003,59 @@ new_http_archive(
 )
 
 new_http_archive(
+    name = "x11",
+    build_file = "third_party/BUILD.x11",
+    sha256 = "3abce972ba62620611fab5b404dafb852da3da54e7c287831c30863011d28fb3",
+    strip_prefix = "libX11-1.6.5",
+    urls = ["https://www.x.org/archive//individual/lib/libX11-1.6.5.tar.gz"],
+)
+
+new_http_archive(
+    name = "xau",
+    build_file = "third_party/BUILD.xau",
+    sha256 = "c343b4ef66d66a6b3e0e27aa46b37ad5cab0f11a5c565eafb4a1c7590bc71d7b",
+    strip_prefix = "libXau-1.0.8",
+    urls = ["https://www.x.org/archive//individual/lib/libXau-1.0.8.tar.gz"],
+)
+
+new_http_archive(
     name = "xcb",
     build_file = "third_party/BUILD.xcb",
     sha256 = "0bb3cfd46dbd90066bf4d7de3cad73ec1024c7325a4a0cbf5f4a0d4fa91155fb",
     strip_prefix = "libxcb-1.13",
     urls = ["https://xcb.freedesktop.org/dist/libxcb-1.13.tar.gz"],
+)
+
+new_http_archive(
+    name = "xcb_proto",
+    build_file = "third_party/BUILD.xcb_proto",
+    sha256 = "0698e8f596e4c0dbad71d3dc754d95eb0edbb42df5464e0f782621216fa33ba7",
+    strip_prefix = "xcb-proto-1.13",
+    urls = ["https://xcb.freedesktop.org/dist/xcb-proto-1.13.tar.gz"],
+)
+
+new_http_archive(
+    name = "xdmcp",
+    build_file = "third_party/BUILD.xdmcp",
+    sha256 = "6f7c7e491a23035a26284d247779174dedc67e34e93cc3548b648ffdb6fc57c0",
+    strip_prefix = "libXdmcp-1.1.2",
+    urls = ["https://www.x.org/archive//individual/lib/libXdmcp-1.1.2.tar.gz"],
+)
+
+new_http_archive(
+    name = "xss",
+    build_file = "third_party/BUILD.xss",
+    sha256 = "4f74e7e412144591d8e0616db27f433cfc9f45aae6669c6c4bb03e6bf9be809a",
+    strip_prefix = "libXScrnSaver-1.2.3",
+    urls = ["https://www.x.org/archive//individual/lib/libXScrnSaver-1.2.3.tar.gz"],
+)
+
+new_http_archive(
+    name = "xorgproto",
+    build_file = "third_party/BUILD.xorgproto",
+    sha256 = "4b951e321ec089ce62ec8347e0fb512735763b315bf19a3467a75df7190435ff",
+    strip_prefix = "xorgproto-xorgproto-2018.4",
+    urls = ["https://gitlab.freedesktop.org/xorg/proto/xorgproto/-/archive/xorgproto-2018.4/xorgproto-xorgproto-2018.4.tar.gz"],
 )
 
 new_github_archive(
