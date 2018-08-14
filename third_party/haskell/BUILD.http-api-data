@@ -18,7 +18,6 @@ haskell_library(
         "@haskell_attoparsec_iso8601//:attoparsec-iso8601",
         "@haskell_hashable//:hashable",
         "@haskell_http_types//:http-types",
-        "@haskell_text//:text",
         "@haskell_time_locale_compat//:time-locale-compat",
         "@haskell_unordered_containers//:unordered-containers",
         "@haskell_uri_bytestring//:uri-bytestring",
@@ -26,6 +25,7 @@ haskell_library(
         "@toktok//third_party/haskell:base",
         "@toktok//third_party/haskell:bytestring",
         "@toktok//third_party/haskell:containers",
+        "@toktok//third_party/haskell:text",
         "@toktok//third_party/haskell:time",
     ],
 )

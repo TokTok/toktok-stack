@@ -10,8 +10,8 @@ haskell_library(
         "@haskell_attoparsec//:attoparsec",
         "@haskell_case_insensitive//:case-insensitive",
         "@haskell_double_conversion//:double-conversion",
-        "@haskell_text//:text",
         "@toktok//third_party/haskell:base",
         "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:text",
     ],
 )

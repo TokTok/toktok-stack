@@ -8,9 +8,9 @@ haskell_library(
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_async//:async",
-        "@haskell_stm//:stm",
         "@toktok//third_party/haskell:base",
         "@toktok//third_party/haskell:bytestring",
         "@toktok//third_party/haskell:process",
+        "@toktok//third_party/haskell:stm",
     ],
 )

@@ -22,9 +22,9 @@ haskell_library(
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
-        "@haskell_text//:text",
         "@toktok//third_party/haskell:base",
         "@toktok//third_party/haskell:bytestring",
         "@toktok//third_party/haskell:ghc-prim",
+        "@toktok//third_party/haskell:text",
     ],
 )

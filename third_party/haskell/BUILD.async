@@ -7,8 +7,8 @@ haskell_library(
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_hashable//:hashable",
-        "@haskell_stm//:stm",
         "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:stm",
     ],
 )
 
@@ -18,9 +18,9 @@ haskell_test(
     deps = [
         ":async",
         "@haskell_HUnit//:HUnit",
-        "@haskell_stm//:stm",
         "@haskell_test_framework//:test-framework",
         "@haskell_test_framework_hunit//:test-framework-hunit",
         "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:stm",
     ],
 )

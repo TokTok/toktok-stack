@@ -13,12 +13,12 @@ haskell_library(
         "@haskell_lifted_base//:lifted-base",
         "@haskell_mmorph//:mmorph",
         "@haskell_monad_control//:monad-control",
-        "@haskell_mtl//:mtl",
         "@haskell_primitive//:primitive",
         "@haskell_transformers_base//:transformers-base",
         "@haskell_unliftio_core//:unliftio-core",
         "@toktok//third_party/haskell:base",
         "@toktok//third_party/haskell:containers",
+        "@toktok//third_party/haskell:mtl",
         "@toktok//third_party/haskell:transformers",
     ],
 )

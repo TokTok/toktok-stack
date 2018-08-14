@@ -7,9 +7,9 @@ haskell_library(
     version = "0.8.3",
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_mtl//:mtl",
-        "@haskell_stm//:stm",
         "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:mtl",
+        "@toktok//third_party/haskell:stm",
         "@toktok//third_party/haskell:template-haskell",
         "@toktok//third_party/haskell:transformers",
     ],

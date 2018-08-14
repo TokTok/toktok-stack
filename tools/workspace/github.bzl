@@ -11,7 +11,7 @@ def github_archive(name, repo, version, sha256 = None):
     _http_archive(
         name = name,
         sha256 = sha256,
-        strip_prefix = "%s-%s" % (repo, version),
+        strip_prefix = "%s-%s" % (repo, version.replace("v", "")),
         urls = ["https://github.com/%s/%s/archive/%s.zip" % (owner, repo, version)],
     )
 

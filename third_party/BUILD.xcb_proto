@@ -1,0 +1,13 @@
+load("@toktok//third_party/xcb_proto:protos.bzl", "xcb_protos")
+
+py_library(
+    name = "xcbgen",
+    srcs = glob(["xcbgen/*.py"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "xcb_proto",
+    srcs = ["src/%s.xml" % p for p in xcb_protos],
+    visibility = ["//visibility:public"],
+)

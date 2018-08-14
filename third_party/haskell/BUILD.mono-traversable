@@ -9,13 +9,13 @@ haskell_library(
     deps = [
         "@haskell_hashable//:hashable",
         "@haskell_split//:split",
-        "@haskell_text//:text",
         "@haskell_unordered_containers//:unordered-containers",
         "@haskell_vector//:vector",
         "@haskell_vector_algorithms//:vector-algorithms",
         "@toktok//third_party/haskell:base",
         "@toktok//third_party/haskell:bytestring",
         "@toktok//third_party/haskell:containers",
+        "@toktok//third_party/haskell:text",
         "@toktok//third_party/haskell:transformers",
     ],
 )

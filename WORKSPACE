@@ -19,8 +19,8 @@ git_repository(
 github_archive(
     name = "com_google_protobuf",
     repo = "google/protobuf",
-    sha256 = "a5550089f9cb80f7b2e404b3d0afaffd38903b458363c394c898bbdde544d84a",
-    version = "fc243c15fb0a691d3fc0896803939c2a535b6a8c",
+    sha256 = "d7a221b3d4fb4f05b7473795ccea9e05dab3b8721f6286a95fffbffc2d926f8b",
+    version = "v3.6.1",
 )
 
 # Haskell
@@ -29,8 +29,8 @@ github_archive(
 github_archive(
     name = "io_tweag_rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "0d60456f378b532d71cf547d5dd1fd079fdc2158fa31acb83d892bf10156cc68",
-    version = "cc040711fe796f1db734ba203b3e00e7972b2a5a",
+    sha256 = "854099bec683161b2b6da7e84f29d5f19d095b44fb936332664dcf7b6e9517f1",
+    version = "35195f2005226b76e65bed31f1dd815810f94634",
 )
 
 load("@io_tweag_rules_haskell//haskell:ghc_bindist.bzl", "ghc_bindist")
@@ -474,11 +474,6 @@ new_cabal_package(
 )
 
 new_cabal_package(
-    package = "mtl-2.2.1",
-    sha256 = "cae59d79f3a16f8e9f3c9adc1010c7c6cdddc73e8a97ff4305f6439d855c8dc5",
-)
-
-new_cabal_package(
     package = "network-2.6.3.3",
     sha256 = "776668b0a969d0d57ebabf78943cfc21a1aaf7e5e2ae6288322292125c9440f5",
 )
@@ -506,11 +501,6 @@ new_cabal_package(
 new_cabal_package(
     package = "parallel-3.2.1.1",
     sha256 = "323bb9bc9e36fb9bfb08e68a772411302b1599bfffbc6de20fa3437ce1473c17",
-)
-
-new_cabal_package(
-    package = "parsec-3.1.11",
-    sha256 = "6f87251cb1d11505e621274dec15972de924a9074f07f7430a18892064c2676e",
 )
 
 new_cabal_package(
@@ -614,11 +604,6 @@ new_cabal_package(
 )
 
 new_cabal_package(
-    package = "stm-2.4.5.0",
-    sha256 = "31d7db183f13beed5c71409d12747a7f4cf3e145630553dc86336208540859a7",
-)
-
-new_cabal_package(
     package = "streaming-commons-0.1.19",
     sha256 = "43fcae90df5548d9968b31371f13ec7271df86ac34a484c094616867ed4217a7",
 )
@@ -646,11 +631,6 @@ new_cabal_package(
 new_cabal_package(
     package = "test-framework-hunit-0.3.0.2",
     sha256 = "95cb8ee02a850b164bfdabdf4dbc839d621361f3ac770ad21ea43a8bde360bf8",
-)
-
-new_cabal_package(
-    package = "text-1.2.3.0",
-    sha256 = "20e0b1627f613b32cc7f2d2e8dcc48a4a61938b24f3d14fb77cee694f0c9311a",
 )
 
 new_cabal_package(
@@ -784,20 +764,19 @@ new_cabal_package(
 github_archive(
     name = "io_bazel_rules_go",
     repo = "bazelbuild/rules_go",
-    sha256 = "48d8f5e7a72cacd8f26daae2e3332becbb61695349a11fa450e33d2742b6da84",
-    version = "0.13.0",
+    sha256 = "9bd7c2743f014e4e112b671098ba1da6aec036fe07093b10ca39a9f81ec5cc33",
+    version = "0.14.0",
 )
 
 github_archive(
     name = "bazel_gazelle",
     repo = "bazelbuild/bazel-gazelle",
-    sha256 = "d69b9048cac79fd82c79d32ac7f48098a88aab28c03fcc99b3e9146ed94c27a5",
-    version = "0.12.0",
+    sha256 = "d9cb7e3cbaea8efd7bd1c9e27d6aaed335acfbd27e4590bb344baa35032ec612",
+    version = "0.14.0",
 )
 
 load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains")
-load("@bazel_gazelle//:def.bzl", "go_repository")
-load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
+load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 
 go_rules_dependencies()
 
@@ -862,18 +841,6 @@ new_local_repository(
     path = "/usr",
 )
 
-new_local_repository(
-    name = "x11",
-    build_file = "third_party/BUILD.x11",
-    path = "/usr",
-)
-
-new_local_repository(
-    name = "xss",
-    build_file = "third_party/BUILD.xss",
-    path = "/usr",
-)
-
 http_archive(
     name = "boringssl",
     #sha256 = "39b512b2a7afb87bb054e16031f9142d5ca9bd1ceebed864b0978c264e11566b",
@@ -891,8 +858,8 @@ new_http_archive(
 github_archive(
     name = "com_google_googletest",
     repo = "google/googletest",
-    sha256 = "fab4b3ece0b73c5fdabca2fe455ba957785b1d55b4a073988f41fcb40d18c99d",
-    version = "2a151c93c180ac765c27c5f2e37af9366abd4d55",
+    sha256 = "2f80325a2922b0279e40b96c43adbdb332526620540fc0ba975ff3b59363479c",
+    version = "2172c08c9241ab0cc8857980bbe925fe1a55cf3c",
 )
 
 new_github_archive(
@@ -943,8 +910,8 @@ new_github_archive(
 new_github_archive(
     name = "libexif",
     repo = "libexif/libexif",
-    sha256 = "406c50e457e8a686fb4a70f93dcb24e622d575d7439c0d0491ac07584ba727dc",
-    version = "5c93e6b4f098eed7f43f7df2589d97b8d5d6050a",
+    sha256 = "c1d3e1aa8db233e06732b57316f4764657a1159df5839be85646ecd08a788fed",
+    version = "a3ec88bd2c7500cdb67fdd926532e426ba401b60",
 )
 
 new_http_archive(
@@ -958,8 +925,8 @@ new_http_archive(
 new_github_archive(
     name = "libqrencode",
     repo = "fukuchi/libqrencode",
-    sha256 = "dae6be64c79844d1242e05e5d03a24e5f09d3c997e0de977dd909ea203f9c68d",
-    version = "ccbcb77bd7e4107e51b37a82a5340409cbd85940",
+    sha256 = "8918db0e158a2f6cd26845b42c6d9d979d16907d65587b1a70c49b9df8dedd14",
+    version = "953a31e57b982f049e28dec652bdc2daa748d4c2",
 )
 
 new_github_archive(
@@ -972,22 +939,22 @@ new_github_archive(
 new_github_archive(
     name = "libvpx",
     repo = "webmproject/libvpx",
-    sha256 = "ed1469bbb526fa09c7797e744db947021d8a01fc426e81a34132ea0467a62792",
-    version = "c4f943d7d7bbd3953e8d7b7fbf75be5c66ccbece",
+    sha256 = "1f08b11ef3412f44ad269bf4e14a0b8a514e3e3b86d1642e75cfb542fea96775",
+    version = "557fab3678e11e54508bd984dee5673ec57d8da7",
 )
 
 new_github_archive(
     name = "libzmq",
     repo = "zeromq/libzmq",
-    sha256 = "93e46d0f0ca826ed7817081528cd85d3c18129170f676a2f3238f31846d7cb74",
-    version = "25f47ccbf8775534878f37eedee4a74fe9166d36",
+    sha256 = "79d3b5214d9c83639c13e4fd0df0f1fa4fdb60d9581bed834979212c17ad311f",
+    version = "2cdad3d0ced9f4ef4d9647cfd60cd697a04ca41a",
 )
 
 new_github_archive(
     name = "opus",
     repo = "xiph/opus",
-    sha256 = "a98b0731109e77a7d6a2adb821622a4137c146db517ed81bacaceb614641da01",
-    version = "c1c247d7e715100a50ca185948c7336bdd4dfdba",
+    sha256 = "3306052b378915f69a4b7b19c956b7b3c7ec1519fb4ebfbd5957921b861644c7",
+    version = "38fca4a203a6759f2c90b86c84c4db087982ca81",
 )
 
 new_http_archive(
@@ -1015,11 +982,67 @@ new_http_archive(
 )
 
 new_http_archive(
+    name = "x11",
+    build_file = "third_party/BUILD.x11",
+    sha256 = "3abce972ba62620611fab5b404dafb852da3da54e7c287831c30863011d28fb3",
+    strip_prefix = "libX11-1.6.5",
+    urls = ["https://www.x.org/archive/individual/lib/libX11-1.6.5.tar.gz"],
+)
+
+new_http_archive(
+    name = "xau",
+    build_file = "third_party/BUILD.xau",
+    sha256 = "c343b4ef66d66a6b3e0e27aa46b37ad5cab0f11a5c565eafb4a1c7590bc71d7b",
+    strip_prefix = "libXau-1.0.8",
+    urls = ["https://www.x.org/archive/individual/lib/libXau-1.0.8.tar.gz"],
+)
+
+new_http_archive(
     name = "xcb",
     build_file = "third_party/BUILD.xcb",
     sha256 = "0bb3cfd46dbd90066bf4d7de3cad73ec1024c7325a4a0cbf5f4a0d4fa91155fb",
     strip_prefix = "libxcb-1.13",
     urls = ["https://xcb.freedesktop.org/dist/libxcb-1.13.tar.gz"],
+)
+
+new_http_archive(
+    name = "xcb_proto",
+    build_file = "third_party/BUILD.xcb_proto",
+    sha256 = "0698e8f596e4c0dbad71d3dc754d95eb0edbb42df5464e0f782621216fa33ba7",
+    strip_prefix = "xcb-proto-1.13",
+    urls = ["https://xcb.freedesktop.org/dist/xcb-proto-1.13.tar.gz"],
+)
+
+new_http_archive(
+    name = "xdmcp",
+    build_file = "third_party/BUILD.xdmcp",
+    sha256 = "6f7c7e491a23035a26284d247779174dedc67e34e93cc3548b648ffdb6fc57c0",
+    strip_prefix = "libXdmcp-1.1.2",
+    urls = ["https://www.x.org/archive/individual/lib/libXdmcp-1.1.2.tar.gz"],
+)
+
+new_http_archive(
+    name = "xext",
+    build_file = "third_party/BUILD.xext",
+    sha256 = "eb0b88050491fef4716da4b06a4d92b4fc9e76f880d6310b2157df604342cfe5",
+    strip_prefix = "libXext-1.3.3",
+    urls = ["https://www.x.org/archive/individual/lib/libXext-1.3.3.tar.gz"],
+)
+
+new_http_archive(
+    name = "xss",
+    build_file = "third_party/BUILD.xss",
+    sha256 = "4f74e7e412144591d8e0616db27f433cfc9f45aae6669c6c4bb03e6bf9be809a",
+    strip_prefix = "libXScrnSaver-1.2.3",
+    urls = ["https://www.x.org/archive/individual/lib/libXScrnSaver-1.2.3.tar.gz"],
+)
+
+new_http_archive(
+    name = "xorgproto",
+    build_file = "third_party/BUILD.xorgproto",
+    sha256 = "4b951e321ec089ce62ec8347e0fb512735763b315bf19a3467a75df7190435ff",
+    strip_prefix = "xorgproto-xorgproto-2018.4",
+    urls = ["https://gitlab.freedesktop.org/xorg/proto/xorgproto/-/archive/xorgproto-2018.4/xorgproto-xorgproto-2018.4.tar.gz"],
 )
 
 new_github_archive(
@@ -1177,8 +1200,8 @@ maven_jar(
 github_archive(
     name = "io_bazel_rules_scala",
     repo = "bazelbuild/rules_scala",
-    sha256 = "9269724ce33734be23ee1aa27f86b17ce469a0160d23f1eb81da4595e94ebca1",
-    version = "b537bddc58a77318b34165812a0311ef52806318",
+    sha256 = "b16e0ce0fcdb8428024171a7cba1c555c17f5c2bfb6af9af4ff00219fa747ffd",
+    version = "3b9ab9be31ac217d3337c709cb6bfeb89c8dcbb1",
 )
 
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories")
@@ -1193,7 +1216,7 @@ scala_proto_repositories()
 
 git_repository(
     name = "gmaven_rules",
-    commit = "9f1ac198005a5b0970c857aebf6a5c7f275805ed",
+    commit = "e593e3a0baebadd7e95ddd70525201dfa6277d04",
     remote = "https://github.com/aj-michael/gmaven_rules",
 )
 

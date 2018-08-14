@@ -1,0 +1,8 @@
+cc_library(
+    name = "xext",
+    srcs = glob(["src/*.c"]),
+    hdrs = glob(["include/X11/extensions/*.h"]),
+    includes = ["include"],
+    visibility = ["//visibility:public"],
+    deps = ["@x11"],
+)

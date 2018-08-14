@@ -14,9 +14,9 @@ haskell_library(
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
+        "@haskell_primitive//:primitive",
         "@haskell_vector//:vector",
         "@toktok//third_party/haskell:base",
         "@toktok//third_party/haskell:bytestring",
-        "@toktok//third_party/haskell:primitive",
     ],
 )

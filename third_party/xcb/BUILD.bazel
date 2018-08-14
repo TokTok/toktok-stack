@@ -1,0 +1,11 @@
+licenses(["notice"])
+
+cc_library(
+    name = "config",
+    hdrs = select({
+        "//tools/config:freebsd": ["freebsd/config.h"],
+        "//tools/config:linux": ["linux/config.h"],
+        "//tools/config:osx": ["osx/config.h"],
+    }),
+    visibility = ["@xcb//:__pkg__"],
+)

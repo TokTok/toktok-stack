@@ -14,12 +14,12 @@ haskell_library(
         "@haskell_cryptonite//:cryptonite",
         "@haskell_data_default_class//:data-default-class",
         "@haskell_memory//:memory",
-        "@haskell_mtl//:mtl",
         "@haskell_network//:network",
         "@haskell_x509//:x509",
         "@haskell_x509_store//:x509-store",
         "@haskell_x509_validation//:x509-validation",
         "@toktok//third_party/haskell:base",
         "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:mtl",
     ],
 )
