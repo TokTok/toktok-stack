@@ -1,8 +1,12 @@
-# TODO(iphydf): Build xss in bazel.
 cc_library(
     name = "xss",
-    linkopts = [
-        "-lXss",
-    ],
+    srcs = ["src/XScrnSaver.c"],
+    hdrs = ["include/X11/extensions/scrnsaver.h"],
+    includes = ["include"],
     visibility = ["//visibility:public"],
+    deps = [
+        "@x11",
+        "@xext",
+        "@xorgproto",
+    ],
 )

@@ -11,10 +11,10 @@ haskell_library(
     deps = [
         "@haskell_exceptions//:exceptions",
         "@haskell_safe//:safe",
-        "@haskell_text//:text",
         "@haskell_unexceptionalio//:unexceptionalio",
         "@toktok//third_party/haskell:base",
         "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:text",
         "@toktok//third_party/haskell:transformers",
     ],
 )

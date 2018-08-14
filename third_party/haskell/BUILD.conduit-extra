@@ -21,7 +21,6 @@ haskell_library(
         "@haskell_primitive//:primitive",
         "@haskell_resourcet//:resourcet",
         "@haskell_streaming_commons//:streaming-commons",
-        "@haskell_text//:text",
         "@haskell_transformers_base//:transformers-base",
         "@haskell_typed_process//:typed-process",
         "@haskell_unliftio_core//:unliftio-core",
@@ -29,6 +28,7 @@ haskell_library(
         "@toktok//third_party/haskell:bytestring",
         "@toktok//third_party/haskell:directory",
         "@toktok//third_party/haskell:filepath",
+        "@toktok//third_party/haskell:text",
         "@toktok//third_party/haskell:transformers",
     ],
 )

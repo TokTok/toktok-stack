@@ -9,9 +9,9 @@ haskell_library(
     version = "1.0.2.2",
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_stm//:stm",
         "@haskell_transformers_base//:transformers-base",
         "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:stm",
         "@toktok//third_party/haskell:transformers",
     ],
 )

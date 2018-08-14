@@ -16,10 +16,10 @@ haskell_library(
         "@haskell_memory//:memory",
         "@haskell_network//:network",
         "@haskell_network_uri//:network-uri",
-        "@haskell_text//:text",
         "@haskell_tls//:tls",
         "@toktok//third_party/haskell:base",
         "@toktok//third_party/haskell:bytestring",
         "@toktok//third_party/haskell:containers",
+        "@toktok//third_party/haskell:text",
     ],
 )

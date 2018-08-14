@@ -8,8 +8,8 @@ haskell_library(
     deps = [
         "@haskell_attoparsec//:attoparsec",
         "@haskell_base_compat//:base-compat",
-        "@haskell_text//:text",
         "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:text",
         "@toktok//third_party/haskell:time",
     ],
 )

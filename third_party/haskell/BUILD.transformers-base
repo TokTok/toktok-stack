@@ -7,8 +7,8 @@ haskell_library(
     version = "0.4.4",
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_stm//:stm",
         "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:stm",
         "@toktok//third_party/haskell:transformers",
     ],
 )

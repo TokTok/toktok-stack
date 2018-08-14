@@ -1,11 +1,44 @@
-# TODO(iphydf): Build xcb in bazel.
+load("@toktok//third_party/xcb_proto:protos.bzl", "xcb_protos")
+
+py_binary(
+    name = "c_client",
+    srcs = ["src/c_client.py"],
+    deps = ["@xcb_proto//:xcbgen"],
+)
+
+genrule(
+    name = "xcb_proto",
+    srcs = ["@xcb_proto"],
+    outs = ["{}.c".format(p) for p in xcb_protos] + ["{}.h".format(p) for p in xcb_protos],
+    cmd = "".join([
+        "$(location :c_client) -c 'xcb' -l 'X Version 11' -s 3 external/xcb_proto/src/{}.xml;".format(p)
+        for p in xcb_protos
+    ] + [
+        "mv {0}.c {0}.h $$(dirname $(location {0}.c));".format(p)
+        for p in xcb_protos
+    ]),
+    tools = [":c_client"],
+)
+
 cc_library(
     name = "xcb",
-    linkopts = [
-        "-lxcb",
-        "-lxcb-shape",
-        "-lxcb-shm",
-        "-lxcb-xfixes",
-    ],
+    srcs = [":xcb_proto"] + glob([
+        "src/*.c",
+        "src/*.h",
+    ]),
+    copts = [
+        "-DHAVE_CONFIG_H",
+        "-Iexternal/xcb/src",
+    ] + select({
+        "@toktok//tools/config:freebsd": ["-Iexternal/toktok/third_party/xcb/freebsd"],
+        "@toktok//tools/config:linux": ["-Iexternal/toktok/third_party/xcb/linux"],
+        "@toktok//tools/config:osx": ["-Iexternal/toktok/third_party/xcb/osx"],
+    }),
+    includes = ["src"],
     visibility = ["//visibility:public"],
+    deps = [
+        "@toktok//third_party/xcb:config",
+        "@xau",
+        "@xdmcp",
+    ],
 )

@@ -8,9 +8,9 @@ haskell_library(
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_lens_family_core//:lens-family-core",
-        "@haskell_mtl//:mtl",
         "@toktok//third_party/haskell:base",
         "@toktok//third_party/haskell:containers",
+        "@toktok//third_party/haskell:mtl",
         "@toktok//third_party/haskell:transformers",
     ],
 )

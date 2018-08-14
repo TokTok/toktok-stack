@@ -10,7 +10,7 @@ haskell_library(
     visibility = ["//visibility:public"],
     deps = [
         "@haskell_html//:html",
-        "@haskell_mtl//:mtl",
         "@toktok//third_party/haskell:base",
+        "@toktok//third_party/haskell:mtl",
     ],
 )

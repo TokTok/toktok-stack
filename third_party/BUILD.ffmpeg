@@ -199,14 +199,16 @@ COPTS = [
     "-DPIC",
     "-DZLIB_CONST",
     "-DHAVE_AV_CONFIG_H",
+    "-Iexternal/toktok/third_party/ffmpeg",
 ] + select({
-    "@toktok//tools/config:freebsd": [],
+    "@toktok//tools/config:freebsd": ["-Iexternal/toktok/third_party/ffmpeg/freebsd"],
     "@toktok//tools/config:linux": [
         "-D_ISOC99_SOURCE",
         "-D_POSIX_C_SOURCE=200112",
         "-D_XOPEN_SOURCE=600",
+        "-Iexternal/toktok/third_party/ffmpeg/linux",
     ],
-    "@toktok//tools/config:osx": [],
+    "@toktok//tools/config:osx": ["-Iexternal/toktok/third_party/ffmpeg/osx"],
 })
 
 cc_library(

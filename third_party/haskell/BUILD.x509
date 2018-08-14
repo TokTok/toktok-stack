@@ -13,8 +13,8 @@ haskell_library(
         "@haskell_cryptonite//:cryptonite",
         "@haskell_hourglass//:hourglass",
         "@haskell_memory//:memory",
-        "@haskell_mtl//:mtl",
         "@toktok//third_party/haskell:base",
         "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:mtl",
     ],
 )

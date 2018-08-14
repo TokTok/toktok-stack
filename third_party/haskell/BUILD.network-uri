@@ -10,8 +10,8 @@ haskell_library(
     version = "2.6.1.0",
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_parsec//:parsec",
         "@toktok//third_party/haskell:base",
         "@toktok//third_party/haskell:deepseq",
+        "@toktok//third_party/haskell:parsec",
     ],
 )

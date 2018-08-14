@@ -23,10 +23,5 @@ cc_library(
         "//tools/config:linux": ["linux/config.h"],
         "//tools/config:osx": ["osx/config.h"],
     }),
-    includes = ["."] + select({
-        "//tools/config:freebsd": ["freebsd"],
-        "//tools/config:linux": ["linux"],
-        "//tools/config:osx": ["osx"],
-    }),
     visibility = ["@ffmpeg//:__pkg__"],
 )

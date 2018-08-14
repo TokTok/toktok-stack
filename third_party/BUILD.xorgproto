@@ -1,0 +1,9 @@
+cc_library(
+    name = "xorgproto",
+    hdrs = [
+        "include/X11/extensions/saver.h",
+        "include/X11/extensions/saverproto.h",
+    ],
+    includes = ["include"],
+    visibility = ["//visibility:public"],
+)

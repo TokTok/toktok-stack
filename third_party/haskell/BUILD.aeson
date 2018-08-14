@@ -13,10 +13,10 @@ haskell_library(
     version = "1.2.4.0",
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_text//:text",
         "@toktok//third_party/haskell:base",
         "@toktok//third_party/haskell:bytestring",
         "@toktok//third_party/haskell:containers",
+        "@toktok//third_party/haskell:text",
     ],
 )
 
@@ -36,7 +36,6 @@ haskell_library(
         "@haskell_hashable//:hashable",
         "@haskell_scientific//:scientific",
         "@haskell_tagged//:tagged",
-        "@haskell_text//:text",
         "@haskell_th_abstraction//:th-abstraction",
         "@haskell_time_locale_compat//:time-locale-compat",
         "@haskell_unordered_containers//:unordered-containers",
@@ -48,6 +47,7 @@ haskell_library(
         "@toktok//third_party/haskell:deepseq",
         "@toktok//third_party/haskell:ghc-prim",
         "@toktok//third_party/haskell:template-haskell",
+        "@toktok//third_party/haskell:text",
         "@toktok//third_party/haskell:time",
     ],
 )

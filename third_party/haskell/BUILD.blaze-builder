@@ -6,8 +6,8 @@ haskell_library(
     version = "0.4.0.2",
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_text//:text",
         "@toktok//third_party/haskell:base",
         "@toktok//third_party/haskell:bytestring",
+        "@toktok//third_party/haskell:text",
     ],
 )
