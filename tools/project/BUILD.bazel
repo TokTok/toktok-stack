@@ -1,4 +1,6 @@
 exports_files(srcs = [
     "license_test.sh",
     "readme_test.sh",
+    "yamllint.rc",
+    "yamllint_test.sh",
 ])
