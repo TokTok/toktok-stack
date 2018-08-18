@@ -1,0 +1,21 @@
+---
+extends: default
+
+# All warnings are either disabled or proper errors.
+rules:
+  comments:
+    level: error
+  # We like to put the "#" on the beginning of the line.
+  comments-indentation: disable
+  # We like to align multiple object values, e.g.
+  #   foo:   123
+  #   thing: 456
+  colons: disable
+  # "---" needed at the beginning.
+  document-start:
+    level: error
+  # Basically disabled, because encrypted values are very large.
+  line-length:
+    max: 1000
+  # "on" is a truthy value and used in Travis release automation config.
+  truthy: disable
