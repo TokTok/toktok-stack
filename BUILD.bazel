@@ -1,7 +1,44 @@
 load("@bazel_gazelle//:def.bzl", "gazelle")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_toolchain")
+load("//tools/project:build_defs.bzl", "workspace")
 
-exports_files(srcs = ["LICENSE.md"])
+workspace(projects = [
+    "apidsl",
+    "cedar",
+    "c-toxcore-hs",
+    "c-toxcore",
+    "dockerfiles",
+    "echobot-jvm",
+    "go-toxcore-c",
+    "hs-github-tools",
+    "hs-msgpack-rpc",
+    "hs-msgpack-types",
+    "hs-msgpack",
+    "hs-schema",
+    "hs-tokstyle",
+    "hs-tools",
+    "hs-toxcore-c",
+    "hs-toxcore",
+    "js-toxcore-c",
+    "jtox",
+    "jvm-macros",
+    "jvm-sbt-plugins",
+    "jvm-toxcore-api",
+    "jvm-toxcore-c",
+    "py_toxcore_c",
+    "qtox",
+    "spec",
+    "streambot-jvm",
+    "toktok-android",
+    "toxic",
+    "toxins",
+    "website",
+])
+
+exports_files(srcs = [
+    "LICENSE.gpl3",
+    "LICENSE.hs-msgpack",
+])
 
 # gazelle:prefix github.com/TokTok
 # gazelle:exclude go-toxcore-c/tools

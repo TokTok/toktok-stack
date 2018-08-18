@@ -1,3 +1,4 @@
+---
 language: cpp
 compiler: clang
 dist: trusty
@@ -5,30 +6,31 @@ dist: trusty
 addons:
   apt:
     packages:
-    - autopoint
-    - libasound2-dev
-    - libcv-dev
-    - libhighgui-dev
-    - libopenal-dev
+      - autopoint
+      - libasound2-dev
+      - libcv-dev
+      - libhighgui-dev
+      - libopenal-dev
 
 cache:
   directories:
-  - $HOME/.cache/bazel
+    - $HOME/.cache/bazel
 
 before_install:
-- rm -rf $HOME/.cache/bazel/_bazel_$USER/install
-- wget https://github.com/bazelbuild/bazel/releases/download/0.16.0/bazel-0.16.0-installer-linux-x86_64.sh
-- sha256sum -c tools/bazel-0.16.0-installer-linux-x86_64.sh.sha256
-- chmod +x bazel-0.16.0-installer-linux-x86_64.sh
-- ./bazel-0.16.0-installer-linux-x86_64.sh --user
-- export PATH=$HOME/bin:$PATH
+  - rm -rf $HOME/.cache/bazel/_bazel_$USER/install
+  - wget https://github.com/bazelbuild/bazel/releases/download/0.16.0/bazel-0.16.0-installer-linux-x86_64.sh
+  - sha256sum -c tools/bazel-0.16.0-installer-linux-x86_64.sh.sha256
+  - chmod +x bazel-0.16.0-installer-linux-x86_64.sh
+  - ./bazel-0.16.0-installer-linux-x86_64.sh --user
+  - export PATH=$HOME/bin:$PATH
 
 install:
-- echo 'build --jobs=4 --curses=no --verbose_failures' >> $HOME/.bazelrc
-- echo "build --config=linux" >> $HOME/.bazelrc
-- echo "build --config=$CC" >> $HOME/.bazelrc
-- wget http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/ffmpeg/3.4.1-1.4/ffmpeg-3.4.1-1.4-linux-x86_64.jar -O third_party/javacpp/ffmpeg/jar/ffmpeg-3.4.1-1.4-linux-x86_64.jar
-- wget http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/3.4.0-1.4/opencv-3.4.0-1.4-linux-x86_64.jar -O third_party/javacpp/opencv/jar/opencv-3.4.0-1.4-linux-x86_64.jar
+  - echo 'build --jobs=4 --curses=no --verbose_failures' >> $HOME/.bazelrc
+  - echo "build --config=linux" >> $HOME/.bazelrc
+  - echo "build --config=$CC" >> $HOME/.bazelrc
+  - wget http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/ffmpeg/3.4.1-1.4/ffmpeg-3.4.1-1.4-linux-x86_64.jar -O third_party/javacpp/ffmpeg/jar/ffmpeg-3.4.1-1.4-linux-x86_64.jar
+  - wget http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/3.4.0-1.4/opencv-3.4.0-1.4-linux-x86_64.jar -O third_party/javacpp/opencv/jar/opencv-3.4.0-1.4-linux-x86_64.jar
+  - pip install --user yamllint
 
 script: ./.travis.script
 
