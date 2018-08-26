@@ -20,19 +20,17 @@ def _qt_uic_impl(ctx):
         hdr = ctx.actions.declare_file("ui_%s.h" % basename)
         outs.append(hdr)
         ctx.actions.run(
-            outputs = [hdr],
-            inputs = [
-                src,
-                uic,
-            ],
-            executable = uic.path,
             arguments = [
                 src.path,
                 "-o",
                 hdr.path,
             ],
+            executable = uic.path,
+            inputs = [src],
             mnemonic = "CompileUIC",
+            outputs = [hdr],
             progress_message = "Generating Qt UI header for " + src.basename,
+            tools = [uic],
         )
 
     return DefaultInfo(files = depset(outs))
@@ -66,15 +64,16 @@ def _qt_rcc_impl(ctx):
     rcc_cpp = ctx.actions.declare_file("rcc_%s.cpp" % ctx.attr.name)
 
     ctx.actions.run(
-        outputs = [rcc_cpp],
-        inputs = srcs + data + [rcc],
-        executable = rcc.path,
         arguments = [src.path for src in srcs] + [
             "-o",
             rcc_cpp.path,
         ],
+        executable = rcc.path,
+        inputs = srcs + data,
         mnemonic = "CompileRCC",
+        outputs = [rcc_cpp],
         progress_message = "Generating Qt resource file " + rcc_cpp.path,
+        tools = [rcc],
     )
 
     return DefaultInfo(files = depset([rcc_cpp]))
@@ -161,8 +160,8 @@ def _qt_moc_impl(ctx):
         # moc $src -o $out
         arguments.extend([src.path, "-o", out.path])
 
-        # Inputs: the moc binary and the primary source file.
-        inputs = [moc, src]
+        # Inputs: the primary source file.
+        inputs = [src]
 
         # Make sure all files listed as srcs are in the execution environment.
         inputs.extend(hdrs)
@@ -172,12 +171,13 @@ def _qt_moc_impl(ctx):
 
         # Execute moc.
         ctx.actions.run(
-            outputs = [out],
-            inputs = inputs,
-            executable = moc.path,
             arguments = arguments,
+            executable = moc.path,
+            inputs = inputs,
             mnemonic = "CompileMoc",
+            outputs = [out],
             progress_message = "Generating Qt MOC source for " + src.basename,
+            tools = [moc],
         )
 
     return DefaultInfo(files = depset(outs))

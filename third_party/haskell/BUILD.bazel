@@ -1,32 +1,8 @@
 package(default_visibility = ["//visibility:public"])
 
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_import")
+load("@toktok//third_party/haskell:packages.bzl", "core_packages")
 
 licenses(["notice"])
 
-[haskell_import(name = name) for name in [
-    "Cabal",
-    "array",
-    "base",
-    "binary",
-    "bytestring",
-    "containers",
-    "deepseq",
-    "directory",
-    "filepath",
-    "ghc-prim",
-    "haskeline",
-    "integer-gmp",
-    "mtl",
-    "parsec",
-    "pretty",
-    "process",
-    "stm",
-    "template-haskell",
-    "terminfo",
-    "text",
-    "time",
-    "transformers",
-    "unix",
-    "xhtml-3000",
-]]
+[haskell_import(name = name) for name in core_packages.keys()]

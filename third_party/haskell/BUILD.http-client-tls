@@ -1,25 +1,27 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "http-client-tls",
     srcs = glob(["Network/**/*.hs"]),
-    version = "0.3.5.3",
+    version = packages["http-client-tls"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_case_insensitive//:case-insensitive",
-        "@haskell_connection//:connection",
-        "@haskell_cryptonite//:cryptonite",
-        "@haskell_data_default_class//:data-default-class",
-        "@haskell_exceptions//:exceptions",
-        "@haskell_http_client//:http-client",
-        "@haskell_http_types//:http-types",
-        "@haskell_memory//:memory",
-        "@haskell_network//:network",
-        "@haskell_network_uri//:network-uri",
-        "@haskell_tls//:tls",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:bytestring",
-        "@toktok//third_party/haskell:containers",
-        "@toktok//third_party/haskell:text",
+        hazel_library("base"),
+        hazel_library("bytestring"),
+        hazel_library("case-insensitive"),
+        hazel_library("connection"),
+        hazel_library("containers"),
+        hazel_library("cryptonite"),
+        hazel_library("data-default-class"),
+        hazel_library("exceptions"),
+        hazel_library("http-client"),
+        hazel_library("http-types"),
+        hazel_library("memory"),
+        hazel_library("network"),
+        hazel_library("network-uri"),
+        hazel_library("text"),
+        hazel_library("tls"),
     ],
 )

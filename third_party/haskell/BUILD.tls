@@ -1,25 +1,27 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "tls",
     srcs = glob(["Network/**/*.hs"]),
     compiler_flags = ["-DINCLUDE_NETWORK"],
-    version = "1.4.1",
+    version = packages["tls"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_asn1_encoding//:asn1-encoding",
-        "@haskell_asn1_types//:asn1-types",
-        "@haskell_async//:async",
-        "@haskell_cereal//:cereal",
-        "@haskell_cryptonite//:cryptonite",
-        "@haskell_data_default_class//:data-default-class",
-        "@haskell_memory//:memory",
-        "@haskell_network//:network",
-        "@haskell_x509//:x509",
-        "@haskell_x509_store//:x509-store",
-        "@haskell_x509_validation//:x509-validation",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:bytestring",
-        "@toktok//third_party/haskell:mtl",
+        hazel_library("asn1-encoding"),
+        hazel_library("asn1-types"),
+        hazel_library("async"),
+        hazel_library("base"),
+        hazel_library("bytestring"),
+        hazel_library("cereal"),
+        hazel_library("cryptonite"),
+        hazel_library("data-default-class"),
+        hazel_library("memory"),
+        hazel_library("mtl"),
+        hazel_library("network"),
+        hazel_library("x509"),
+        hazel_library("x509-store"),
+        hazel_library("x509-validation"),
     ],
 )

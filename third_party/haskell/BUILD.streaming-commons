@@ -1,4 +1,6 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 cc_library(
     name = "cbits",
@@ -11,22 +13,22 @@ cc_library(
 haskell_library(
     name = "streaming-commons",
     srcs = glob(["Data/**/*.*hs"]),
-    version = "0.1.19",
+    version = packages["streaming-commons"].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
-        "@haskell_blaze_builder//:blaze-builder",
-        "@haskell_network//:network",
-        "@haskell_random//:random",
-        "@haskell_zlib//:zlib",
-        "@toktok//third_party/haskell:array",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:bytestring",
-        "@toktok//third_party/haskell:directory",
-        "@toktok//third_party/haskell:process",
-        "@toktok//third_party/haskell:stm",
-        "@toktok//third_party/haskell:text",
-        "@toktok//third_party/haskell:transformers",
-        "@toktok//third_party/haskell:unix",
+        hazel_library("array"),
+        hazel_library("base"),
+        hazel_library("blaze-builder"),
+        hazel_library("bytestring"),
+        hazel_library("directory"),
+        hazel_library("network"),
+        hazel_library("process"),
+        hazel_library("random"),
+        hazel_library("stm"),
+        hazel_library("text"),
+        hazel_library("transformers"),
+        hazel_library("unix"),
+        hazel_library("zlib"),
     ],
 )

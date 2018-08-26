@@ -20,7 +20,7 @@ before_install:
   - export PATH=$HOME/bin:$PATH
 
 install:
-  - echo 'build --jobs=4 --curses=no --verbose_failures' >> $HOME/.bazelrc
+  - echo 'build --jobs=50 --curses=no --verbose_failures' >> $HOME/.bazelrc
   - echo 'build --config=linux' >> $HOME/.bazelrc
   - echo "build --config=$CC" >> $HOME/.bazelrc
   - echo 'build --config=remote' >> $HOME/.bazelrc

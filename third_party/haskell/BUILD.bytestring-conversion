@@ -1,17 +1,19 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "bytestring-conversion",
     srcs = glob(["src/**/*.hs"]),
     src_strip_prefix = "src",
-    version = "0.3.1",
+    version = packages["bytestring-conversion"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_attoparsec//:attoparsec",
-        "@haskell_case_insensitive//:case-insensitive",
-        "@haskell_double_conversion//:double-conversion",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:bytestring",
-        "@toktok//third_party/haskell:text",
+        hazel_library("attoparsec"),
+        hazel_library("base"),
+        hazel_library("bytestring"),
+        hazel_library("case-insensitive"),
+        hazel_library("double-conversion"),
+        hazel_library("text"),
     ],
 )

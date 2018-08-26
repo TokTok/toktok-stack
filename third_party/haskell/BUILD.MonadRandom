@@ -1,15 +1,17 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "MonadRandom",
     srcs = glob(["Control/**/*.hs"]),
-    version = "0.5.1",
+    version = packages["MonadRandom"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_primitive//:primitive",
-        "@haskell_random//:random",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:mtl",
-        "@toktok//third_party/haskell:transformers",
+        hazel_library("base"),
+        hazel_library("mtl"),
+        hazel_library("primitive"),
+        hazel_library("random"),
+        hazel_library("transformers"),
     ],
 )

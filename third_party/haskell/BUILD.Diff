@@ -1,14 +1,16 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "Diff",
     srcs = glob(["src/**/*.*hs"]),
     src_strip_prefix = "src",
-    version = "0.3.4",
+    version = packages["Diff"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@toktok//third_party/haskell:array",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:pretty",
+        hazel_library("array"),
+        hazel_library("base"),
+        hazel_library("pretty"),
     ],
 )

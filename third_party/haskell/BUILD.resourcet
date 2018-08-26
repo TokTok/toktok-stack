@@ -1,4 +1,6 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "resourcet",
@@ -6,19 +8,19 @@ haskell_library(
         "Control/**/*.*hs",
         "Data/**/*.*hs",
     ]),
-    version = "1.1.11",
+    version = packages["resourcet"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_exceptions//:exceptions",
-        "@haskell_lifted_base//:lifted-base",
-        "@haskell_mmorph//:mmorph",
-        "@haskell_monad_control//:monad-control",
-        "@haskell_primitive//:primitive",
-        "@haskell_transformers_base//:transformers-base",
-        "@haskell_unliftio_core//:unliftio-core",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:containers",
-        "@toktok//third_party/haskell:mtl",
-        "@toktok//third_party/haskell:transformers",
+        hazel_library("base"),
+        hazel_library("containers"),
+        hazel_library("exceptions"),
+        hazel_library("lifted-base"),
+        hazel_library("mmorph"),
+        hazel_library("monad-control"),
+        hazel_library("mtl"),
+        hazel_library("primitive"),
+        hazel_library("transformers"),
+        hazel_library("transformers-base"),
+        hazel_library("unliftio-core"),
     ],
 )

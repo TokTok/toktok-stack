@@ -1,4 +1,6 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "hslogger",
@@ -8,14 +10,14 @@ haskell_library(
         "-XExistentialQuantification",
     ],
     src_strip_prefix = "src",
-    version = "1.2.10",
+    version = packages["hslogger"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_network//:network",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:containers",
-        "@toktok//third_party/haskell:mtl",
-        "@toktok//third_party/haskell:time",
-        "@toktok//third_party/haskell:unix",
+        hazel_library("base"),
+        hazel_library("containers"),
+        hazel_library("mtl"),
+        hazel_library("network"),
+        hazel_library("time"),
+        hazel_library("unix"),
     ],
 )

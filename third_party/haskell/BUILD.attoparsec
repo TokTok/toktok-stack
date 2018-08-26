@@ -1,16 +1,18 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "attoparsec",
     srcs = glob(["Data/**/*.*hs"]),
-    version = "0.13.2.2",
+    version = packages["attoparsec"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_scientific//:scientific",
-        "@toktok//third_party/haskell:array",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:bytestring",
-        "@toktok//third_party/haskell:deepseq",
-        "@toktok//third_party/haskell:text",
+        hazel_library("array"),
+        hazel_library("base"),
+        hazel_library("bytestring"),
+        hazel_library("deepseq"),
+        hazel_library("scientific"),
+        hazel_library("text"),
     ],
 )

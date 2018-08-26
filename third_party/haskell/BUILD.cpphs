@@ -1,15 +1,17 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "cpphs",
     srcs = glob(["Language/**/*.*hs"]),
-    version = "1.20.8",
+    version = packages["cpphs"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_old_locale//:old-locale",
-        "@haskell_old_time//:old-time",
-        "@haskell_polyparse//:polyparse",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:directory",
+        hazel_library("base"),
+        hazel_library("directory"),
+        hazel_library("old-locale"),
+        hazel_library("old-time"),
+        hazel_library("polyparse"),
     ],
 )

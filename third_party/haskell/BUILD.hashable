@@ -1,4 +1,6 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 cc_library(
     name = "cbits",
@@ -11,15 +13,15 @@ haskell_library(
     name = "hashable",
     srcs = glob(["Data/**/*.*hs"]),
     compiler_flags = ["-DGENERICS"],
-    version = "1.2.6.1",
+    version = packages["hashable"].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:bytestring",
-        "@toktok//third_party/haskell:deepseq",
-        "@toktok//third_party/haskell:ghc-prim",
-        "@toktok//third_party/haskell:integer-gmp",
-        "@toktok//third_party/haskell:text",
+        hazel_library("base"),
+        hazel_library("bytestring"),
+        hazel_library("deepseq"),
+        hazel_library("ghc-prim"),
+        hazel_library("integer-gmp"),
+        hazel_library("text"),
     ],
 )

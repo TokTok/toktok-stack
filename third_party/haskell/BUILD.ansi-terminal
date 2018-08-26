@@ -1,30 +1,34 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 cc_library(
     name = "cbits",
-    hdrs = glob(["includes/*.hs"]),
-    includes = ["includes"],
+    hdrs = glob(["src/includes/*.hs"]),
+    includes = ["src/includes"],
 )
 
 haskell_library(
     name = "ansi-terminal",
     srcs = glob(
-        ["System/**/*.*hs"],
+        ["src/System/**/*.*hs"],
         exclude = [
-            "**/Example.hs",
-            "**/Windows/**",
-            "**/Windows.hs",
+            "src/**/Example.hs",
+            "src/**/Win32/**",
+            "src/**/Windows/**",
+            "src/**/Windows.hs",
         ],
     ),
     compiler_flags = [
         "-DUNIX",
         "-XCPP",
     ],
-    version = "0.8.0.1",
+    src_strip_prefix = "src",
+    version = packages["ansi-terminal"].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
-        "@haskell_colour//:colour",
-        "@toktok//third_party/haskell:base",
+        hazel_library("base"),
+        hazel_library("colour"),
     ],
 )

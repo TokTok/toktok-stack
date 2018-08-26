@@ -1,13 +1,15 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library", "haskell_test")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "dlist",
     srcs = glob(["Data/**/*.*hs"]),
-    version = "0.8.0.4",
+    version = packages["dlist"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:deepseq",
+        hazel_library("base"),
+        hazel_library("deepseq"),
     ],
 )
 
@@ -17,10 +19,10 @@ haskell_test(
         "tests/Main.hs",
         "tests/OverloadedStrings.hs",
     ],
-    src_strip_prefix = "@toktok//third_party/haskell:tests",
+    src_strip_prefix = "tests",
     deps = [
         ":dlist",
-        "@haskell_QuickCheck//:QuickCheck",
-        "@toktok//third_party/haskell:base",
+        hazel_library("QuickCheck"),
+        hazel_library("base"),
     ],
 )

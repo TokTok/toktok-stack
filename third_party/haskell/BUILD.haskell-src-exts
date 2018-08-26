@@ -1,4 +1,6 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 genrule(
     name = "InternalParser",
@@ -15,13 +17,13 @@ haskell_library(
     ) + [":InternalParser"],
     compiler_flags = ["-j10"],
     src_strip_prefix = "src",
-    version = "1.20.2",
+    version = packages["haskell-src-exts"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_cpphs//:cpphs",
-        "@toktok//third_party/haskell:array",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:ghc-prim",
-        "@toktok//third_party/haskell:pretty",
+        hazel_library("array"),
+        hazel_library("base"),
+        hazel_library("cpphs"),
+        hazel_library("ghc-prim"),
+        hazel_library("pretty"),
     ],
 )

@@ -1,4 +1,6 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 cc_library(
     name = "cbits",
@@ -17,12 +19,12 @@ haskell_library(
         ],
         exclude = ["Control/Concurrent/SampleVar/Lifted.hs"],
     ),
-    version = "0.2.3.11",
+    version = packages["lifted-base"].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
-        "@haskell_monad_control//:monad-control",
-        "@haskell_transformers_base//:transformers-base",
-        "@toktok//third_party/haskell:base",
+        hazel_library("base"),
+        hazel_library("monad-control"),
+        hazel_library("transformers-base"),
     ],
 )

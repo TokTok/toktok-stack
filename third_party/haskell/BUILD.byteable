@@ -1,12 +1,14 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "byteable",
     srcs = glob(["Data/**/*.*hs"]),
-    version = "0.1.1",
+    version = packages["byteable"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:bytestring",
+        hazel_library("base"),
+        hazel_library("bytestring"),
     ],
 )

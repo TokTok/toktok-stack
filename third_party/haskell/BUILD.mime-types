@@ -1,14 +1,16 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "mime-types",
     srcs = glob(["Network/**/*.*hs"]),
-    version = "0.1.0.7",
+    version = packages["mime-types"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:bytestring",
-        "@toktok//third_party/haskell:containers",
-        "@toktok//third_party/haskell:text",
+        hazel_library("base"),
+        hazel_library("bytestring"),
+        hazel_library("containers"),
+        hazel_library("text"),
     ],
 )

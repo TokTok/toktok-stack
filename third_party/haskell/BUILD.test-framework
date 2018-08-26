@@ -1,4 +1,6 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library", "haskell_test")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "test-framework",
@@ -14,19 +16,19 @@ haskell_library(
         "-XMultiParamTypeClasses",
         "-XTypeOperators",
     ],
-    version = "0.8.2.0",
+    version = packages["test-framework"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_HUnit//:HUnit",
-        "@haskell_QuickCheck//:QuickCheck",
-        "@haskell_ansi_terminal//:ansi-terminal",
-        "@haskell_ansi_wl_pprint//:ansi-wl-pprint",
-        "@haskell_hostname//:hostname",
-        "@haskell_random//:random",
-        "@haskell_regex_posix//:regex-posix",
-        "@haskell_xml//:xml",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:containers",
-        "@toktok//third_party/haskell:time",
+        hazel_library("HUnit"),
+        hazel_library("QuickCheck"),
+        hazel_library("ansi-terminal"),
+        hazel_library("ansi-wl-pprint"),
+        hazel_library("base"),
+        hazel_library("containers"),
+        hazel_library("hostname"),
+        hazel_library("random"),
+        hazel_library("regex-posix"),
+        hazel_library("time"),
+        hazel_library("xml"),
     ],
 )

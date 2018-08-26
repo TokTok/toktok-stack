@@ -1,13 +1,15 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "monad-parallel",
     srcs = glob(["Control/**/*.*hs"]),
-    version = "0.7.2.3",
+    version = packages["monad-parallel"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_parallel//:parallel",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:transformers",
+        hazel_library("base"),
+        hazel_library("parallel"),
+        hazel_library("transformers"),
     ],
 )

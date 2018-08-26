@@ -1,10 +1,12 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library", "haskell_test")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "hostname",
     srcs = ["Network/HostName.hs"],
     compiler_flags = ["-XCPP"],
-    version = "1.0",
+    version = packages["hostname"].version,
     visibility = ["//visibility:public"],
-    deps = ["@toktok//third_party/haskell:base"],
+    deps = [hazel_library("base")],
 )

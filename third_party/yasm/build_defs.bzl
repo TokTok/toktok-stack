@@ -13,20 +13,18 @@ def _asm_library_impl(ctx):
         out = ctx.actions.declare_file(src.path[:-4] + ".o")
         outs.append(out)
         ctx.actions.run(
-            outputs = [out],
-            inputs = hdrs + [
-                yasm,
-                src,
-            ],
-            executable = yasm.path,
             arguments = asmopts + [
                 ctx.attr.execfmt,
                 "-o",
                 out.path,
                 src.path,
             ],
+            executable = yasm.path,
+            inputs = hdrs + [src],
             mnemonic = "Assemble",
+            outputs = [out],
             progress_message = "Assembling " + src.path,
+            tools = [yasm],
         )
 
     return DefaultInfo(files = depset(outs))

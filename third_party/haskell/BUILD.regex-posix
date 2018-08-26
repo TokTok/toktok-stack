@@ -1,4 +1,6 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 cc_library(
     name = "cbits",
@@ -21,14 +23,14 @@ haskell_library(
         "-XMultiParamTypeClasses",
         "-XTypeSynonymInstances",
     ],
-    version = "0.95.2",
+    version = packages["regex-posix"].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
-        "@haskell_regex_base//:regex-base",
-        "@toktok//third_party/haskell:array",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:bytestring",
-        "@toktok//third_party/haskell:containers",
+        hazel_library("array"),
+        hazel_library("base"),
+        hazel_library("bytestring"),
+        hazel_library("containers"),
+        hazel_library("regex-base"),
     ],
 )

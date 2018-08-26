@@ -1,4 +1,6 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 cc_library(
     name = "cbits",
@@ -15,13 +17,13 @@ haskell_library(
         "-Iexternal/haskell_vector/include",
         "-Iexternal/haskell_vector/internal",
     ],
-    version = "0.12.0.1",
+    version = packages["vector"].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
-        "@haskell_primitive//:primitive",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:deepseq",
-        "@toktok//third_party/haskell:ghc-prim",
+        hazel_library("base"),
+        hazel_library("deepseq"),
+        hazel_library("ghc-prim"),
+        hazel_library("primitive"),
     ],
 )

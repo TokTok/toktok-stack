@@ -1,14 +1,16 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library", "haskell_test")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "async",
     srcs = glob(["Control/**/*.*hs"]),
-    version = "2.2.1",
+    version = packages["async"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_hashable//:hashable",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:stm",
+        hazel_library("base"),
+        hazel_library("hashable"),
+        hazel_library("stm"),
     ],
 )
 
@@ -17,10 +19,10 @@ haskell_test(
     srcs = ["test/test-async.hs"],
     deps = [
         ":async",
-        "@haskell_HUnit//:HUnit",
-        "@haskell_test_framework//:test-framework",
-        "@haskell_test_framework_hunit//:test-framework-hunit",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:stm",
+        hazel_library("HUnit"),
+        hazel_library("base"),
+        hazel_library("stm"),
+        hazel_library("test-framework"),
+        hazel_library("test-framework-hunit"),
     ],
 )

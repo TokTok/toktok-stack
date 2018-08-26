@@ -1,4 +1,6 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "Diff",
@@ -6,8 +8,8 @@ haskell_library(
     src_strip_prefix = "vendor",
     visibility = ["//visibility:public"],
     deps = [
-        "@toktok//third_party/haskell:array",
-        "@toktok//third_party/haskell:base",
+        hazel_library("array"),
+        hazel_library("base"),
     ],
 )
 
@@ -15,25 +17,26 @@ haskell_library(
     name = "hspec-core",
     srcs = glob(["src/**/*.*hs"]),
     src_strip_prefix = "src",
-    version = "2.4.8",
+    version = packages["Diff"].version,
     visibility = ["//visibility:public"],
     deps = [
         ":Diff",
-        "@haskell_HUnit//:HUnit",
-        "@haskell_QuickCheck//:QuickCheck",
-        "@haskell_ansi_terminal//:ansi-terminal",
-        "@haskell_async//:async",
-        "@haskell_call_stack//:call-stack",
-        "@haskell_hspec_expectations//:hspec-expectations",
-        "@haskell_quickcheck_io//:quickcheck-io",
-        "@haskell_random//:random",
-        "@haskell_setenv//:setenv",
-        "@haskell_tf_random//:tf-random",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:deepseq",
-        "@toktok//third_party/haskell:directory",
-        "@toktok//third_party/haskell:filepath",
-        "@toktok//third_party/haskell:time",
-        "@toktok//third_party/haskell:transformers",
+        hazel_library("HUnit"),
+        hazel_library("QuickCheck"),
+        hazel_library("ansi-terminal"),
+        hazel_library("async"),
+        hazel_library("base"),
+        hazel_library("call-stack"),
+        hazel_library("clock"),
+        hazel_library("deepseq"),
+        hazel_library("directory"),
+        hazel_library("filepath"),
+        hazel_library("hspec-expectations"),
+        hazel_library("quickcheck-io"),
+        hazel_library("random"),
+        hazel_library("setenv"),
+        hazel_library("tf-random"),
+        hazel_library("time"),
+        hazel_library("transformers"),
     ],
 )

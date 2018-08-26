@@ -39,7 +39,6 @@ cc_library(
         "-Iexternal/toktok/third_party/curl",
         "-I$(GENDIR)/external/curl/lib",
         "-Iexternal/curl/lib",
-        "-w",  # Disable all warnings.
     ],
     includes = ["include"],
     linkopts = ["-lpthread"],

@@ -1,13 +1,15 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "asn1-parse",
     srcs = glob(["Data/**/*.hs"]),
-    version = "0.9.4",
+    version = packages["asn1-parse"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_asn1_encoding//:asn1-encoding",
-        "@haskell_asn1_types//:asn1-types",
-        "@toktok//third_party/haskell:base",
+        hazel_library("asn1-encoding"),
+        hazel_library("asn1-types"),
+        hazel_library("base"),
     ],
 )

@@ -1,20 +1,22 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "x509-validation",
     srcs = glob(["Data/**/*.hs"]),
-    version = "1.6.10",
+    version = packages["x509-validation"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_asn1_encoding//:asn1-encoding",
-        "@haskell_asn1_types//:asn1-types",
-        "@haskell_cryptonite//:cryptonite",
-        "@haskell_data_default_class//:data-default-class",
-        "@haskell_hourglass//:hourglass",
-        "@haskell_memory//:memory",
-        "@haskell_x509//:x509",
-        "@haskell_x509_store//:x509-store",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:bytestring",
+        hazel_library("asn1-encoding"),
+        hazel_library("asn1-types"),
+        hazel_library("base"),
+        hazel_library("bytestring"),
+        hazel_library("cryptonite"),
+        hazel_library("data-default-class"),
+        hazel_library("hourglass"),
+        hazel_library("memory"),
+        hazel_library("x509"),
+        hazel_library("x509-store"),
     ],
 )

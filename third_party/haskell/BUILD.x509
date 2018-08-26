@@ -1,20 +1,22 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "x509",
     srcs = glob(["Data/**/*.hs"]),
     compiler_flags = ["-XDatatypeContexts"],
-    version = "1.7.3",
+    version = packages["x509"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_asn1_encoding//:asn1-encoding",
-        "@haskell_asn1_parse//:asn1-parse",
-        "@haskell_asn1_types//:asn1-types",
-        "@haskell_cryptonite//:cryptonite",
-        "@haskell_hourglass//:hourglass",
-        "@haskell_memory//:memory",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:bytestring",
-        "@toktok//third_party/haskell:mtl",
+        hazel_library("asn1-encoding"),
+        hazel_library("asn1-parse"),
+        hazel_library("asn1-types"),
+        hazel_library("base"),
+        hazel_library("bytestring"),
+        hazel_library("cryptonite"),
+        hazel_library("hourglass"),
+        hazel_library("memory"),
+        hazel_library("mtl"),
     ],
 )

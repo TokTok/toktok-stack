@@ -1,4 +1,6 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 genrule(
     name = "config",
@@ -55,11 +57,11 @@ haskell_library(
         # XXX: Hack because for some reason it doesn't end up being defined.
         "-DCALLCONV=ccall",
     ],
-    version = "2.6.3.3",
+    version = packages["network"].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:bytestring",
+        hazel_library("base"),
+        hazel_library("bytestring"),
     ],
 )

@@ -1,14 +1,16 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "quickcheck-io",
     srcs = ["src/Test/QuickCheck/IO.hs"],
     src_strip_prefix = "src",
-    version = "0.2.0",
+    version = packages["quickcheck-io"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_HUnit//:HUnit",
-        "@haskell_QuickCheck//:QuickCheck",
-        "@toktok//third_party/haskell:base",
+        hazel_library("HUnit"),
+        hazel_library("QuickCheck"),
+        hazel_library("base"),
     ],
 )

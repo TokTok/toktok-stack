@@ -1,20 +1,22 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "x509-store",
     srcs = glob(["Data/**/*.hs"]),
-    version = "1.6.6",
+    version = packages["x509-store"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_asn1_encoding//:asn1-encoding",
-        "@haskell_asn1_types//:asn1-types",
-        "@haskell_cryptonite//:cryptonite",
-        "@haskell_pem//:pem",
-        "@haskell_x509//:x509",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:bytestring",
-        "@toktok//third_party/haskell:containers",
-        "@toktok//third_party/haskell:directory",
-        "@toktok//third_party/haskell:filepath",
+        hazel_library("asn1-encoding"),
+        hazel_library("asn1-types"),
+        hazel_library("base"),
+        hazel_library("bytestring"),
+        hazel_library("containers"),
+        hazel_library("cryptonite"),
+        hazel_library("directory"),
+        hazel_library("filepath"),
+        hazel_library("pem"),
+        hazel_library("x509"),
     ],
 )

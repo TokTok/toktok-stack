@@ -1,14 +1,16 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "distributive",
     srcs = glob(["src/**/*.*hs"]),
     src_strip_prefix = "src",
-    version = "0.5.3",
+    version = packages["distributive"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_base_orphans//:base-orphans",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:transformers",
+        hazel_library("base"),
+        hazel_library("base-orphans"),
+        hazel_library("transformers"),
     ],
 )

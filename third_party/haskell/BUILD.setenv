@@ -1,10 +1,12 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "setenv",
     srcs = glob(["src/**/*.*hs"]),
     src_strip_prefix = "src",
-    version = "0.1.1.3",
+    version = packages["setenv"].version,
     visibility = ["//visibility:public"],
-    deps = ["@toktok//third_party/haskell:base"],
+    deps = [hazel_library("base")],
 )

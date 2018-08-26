@@ -1,4 +1,6 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 cc_library(
     name = "cbits",
@@ -15,12 +17,12 @@ haskell_library(
         "Control/**/*.*hs",
         "Data/**/*.*hs",
     ]),
-    version = "0.6.2.0",
+    version = packages["primitive"].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:ghc-prim",
-        "@toktok//third_party/haskell:transformers",
+        hazel_library("base"),
+        hazel_library("ghc-prim"),
+        hazel_library("transformers"),
     ],
 )

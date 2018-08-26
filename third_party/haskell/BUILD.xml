@@ -1,14 +1,16 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library", "haskell_test")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "xml",
     srcs = glob(["Text/**/*.hs"]),
     compiler_flags = ["-XFlexibleInstances"],
-    version = "1.3.14",
+    version = packages["xml"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:bytestring",
-        "@toktok//third_party/haskell:text",
+        hazel_library("base"),
+        hazel_library("bytestring"),
+        hazel_library("text"),
     ],
 )

@@ -24,20 +24,18 @@ build --features=parse_headers
 build --features=cc_include_scanning
 build --process_headers_in_dependencies
 
-build --per_file_copt=".*[-_]avx\.c@-mavx"
-build --per_file_copt=".*[-_]avx2\.c@-mavx2"
-build --per_file_copt=".*[-_]sse\.c@-mssse3,-msse4"
-build --per_file_copt=".*[-_]sse4\.c@-msse4"
-build --per_file_copt=".*[-_]sse41\.c@-msse4.1"
-build --per_file_copt=".*[-_]sse4_1\.c@-msse4.1"
-build --per_file_copt=".*[-_]ssse3\.c@-mssse3"
+build --per_file_copt=".*[-_]avx\\.c@-mavx"
+build --per_file_copt=".*[-_]avx2\\.c@-mavx2"
+build --per_file_copt=".*[-_]sse\\.c@-mssse3,-msse4"
+build --per_file_copt=".*[-_]sse4\\.c@-msse4"
+build --per_file_copt=".*[-_]sse41\\.c@-msse4.1"
+build --per_file_copt=".*[-_]sse4_1\\.c@-msse4.1"
+build --per_file_copt=".*[-_]ssse3\\.c@-mssse3"
 
 build --strict_java_deps=error
 
 build --strategy=Scalac=worker
 test --strategy=Scalac=worker
-
-build --copt="-Werror"
 
 # Address sanitizer.
 build:asan -c dbg
@@ -56,9 +54,10 @@ build:lto --linkopt="-flto"
 build --per_file_copt=".*@-fdiagnostics-color=always"
 
 # Enable trace logging for toxcore.
-build --per_file_copt="c-toxcore/.*@-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_TRACE,-DLOGGER_LEVEL_TRACE=LOG_TRACE"
+build --per_file_copt="c-toxcore/.*@-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_TRACE"
 
 build --copt="-Wall"
+build --copt="-Werror"
 build --copt="-Wformat"
 build --copt="-Wformat-security"
 
@@ -68,10 +67,12 @@ build --cxxopt="-fno-exceptions"
 build --cxxopt="-fno-rtti"
 build --cxxopt="-DGOOGLE_PROTOBUF_NO_RTTI"
 
+#build --cxxopt="-std=c++11"
+#build --per_file_copt=".*\\.c$@-std=c99"
+
 # Use remote caching. This is disabled by default, because we can't actually
 # afford to host this continuously. It's been tested, and works really well, so
 # if you have your own remote cache, enable it here.
-#startup --host_jvm_args=-Dbazel.DigestFunction=sha256
 build:remote --remote_http_cache=https://code.tox.chat/bazel
 
 # Use musl instead of glibc.
@@ -86,15 +87,18 @@ test --test_output=errors
 
 #build --distinct_host_configuration=false
 
-#build --all_incompatible_changes
-#build --incompatible_disallow_filetype=false
-#build --incompatible_disallow_legacy_javainfo=false
-#build --incompatible_package_name_is_a_function=false
-#build --incompatible_new_actions_api=false
-#build --incompatible_disallow_old_style_args_add=false
-#build --incompatible_depset_union=false
-#build --incompatible_depset_is_not_iterable=false
-#build --incompatible_remove_native_http_archive=false
+build --all_incompatible_changes
+build --incompatible_depset_is_not_iterable=false
+build --incompatible_depset_union=false
+build --incompatible_disallow_data_transition=false
+build --incompatible_disallow_dict_plus=false
+build --incompatible_disallow_filetype=false
+build --incompatible_disallow_legacy_javainfo=false
+build --incompatible_disallow_old_style_args_add=false
+build --incompatible_new_actions_api=false
+build --incompatible_no_support_tools_in_action_inputs=false
+build --incompatible_package_name_is_a_function=false
+build --incompatible_remove_native_http_archive=false
 
 ##############################################################################
 #

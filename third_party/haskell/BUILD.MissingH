@@ -1,4 +1,6 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "MissingH",
@@ -14,23 +16,23 @@ haskell_library(
         "-XScopedTypeVariables",
     ],
     src_strip_prefix = "src",
-    version = "1.4.0.1",
+    version = packages["MissingH"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_hslogger//:hslogger",
-        "@haskell_network//:network",
-        "@haskell_old_locale//:old-locale",
-        "@haskell_old_time//:old-time",
-        "@haskell_regex_compat//:regex-compat",
-        "@toktok//third_party/haskell:array",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:containers",
-        "@toktok//third_party/haskell:directory",
-        "@toktok//third_party/haskell:filepath",
-        "@toktok//third_party/haskell:mtl",
-        "@toktok//third_party/haskell:parsec",
-        "@toktok//third_party/haskell:process",
-        "@toktok//third_party/haskell:time",
-        "@toktok//third_party/haskell:unix",
+        hazel_library("array"),
+        hazel_library("base"),
+        hazel_library("containers"),
+        hazel_library("directory"),
+        hazel_library("filepath"),
+        hazel_library("hslogger"),
+        hazel_library("mtl"),
+        hazel_library("network"),
+        hazel_library("old-locale"),
+        hazel_library("old-time"),
+        hazel_library("parsec"),
+        hazel_library("process"),
+        hazel_library("regex-compat"),
+        hazel_library("time"),
+        hazel_library("unix"),
     ],
 )

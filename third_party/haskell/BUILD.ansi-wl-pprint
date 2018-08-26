@@ -1,12 +1,14 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library", "haskell_test")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "ansi-wl-pprint",
     srcs = glob(["Text/**/*.*hs"]),
-    version = "0.6.8.2",
+    version = packages["ansi-wl-pprint"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_ansi_terminal//:ansi-terminal",
-        "@toktok//third_party/haskell:base",
+        hazel_library("ansi-terminal"),
+        hazel_library("base"),
     ],
 )

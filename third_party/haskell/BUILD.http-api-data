@@ -1,4 +1,6 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 cc_library(
     name = "cbits",
@@ -10,22 +12,22 @@ haskell_library(
     name = "http-api-data",
     srcs = glob(["src/**/*.hs"]),
     src_strip_prefix = "src",
-    version = "0.3.8.1",
+    version = packages["http-api-data"].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
-        "@haskell_attoparsec//:attoparsec",
-        "@haskell_attoparsec_iso8601//:attoparsec-iso8601",
-        "@haskell_hashable//:hashable",
-        "@haskell_http_types//:http-types",
-        "@haskell_time_locale_compat//:time-locale-compat",
-        "@haskell_unordered_containers//:unordered-containers",
-        "@haskell_uri_bytestring//:uri-bytestring",
-        "@haskell_uuid_types//:uuid-types",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:bytestring",
-        "@toktok//third_party/haskell:containers",
-        "@toktok//third_party/haskell:text",
-        "@toktok//third_party/haskell:time",
+        hazel_library("attoparsec"),
+        hazel_library("attoparsec-iso8601"),
+        hazel_library("base"),
+        hazel_library("bytestring"),
+        hazel_library("containers"),
+        hazel_library("hashable"),
+        hazel_library("http-types"),
+        hazel_library("text"),
+        hazel_library("time"),
+        hazel_library("time-locale-compat"),
+        hazel_library("unordered-containers"),
+        hazel_library("uri-bytestring"),
+        hazel_library("uuid-types"),
     ],
 )

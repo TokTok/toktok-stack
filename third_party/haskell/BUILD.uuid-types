@@ -1,17 +1,19 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "uuid-types",
     srcs = glob(["Data/**/*.*hs"]),
-    version = "1.0.3",
+    version = packages["uuid-types"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_hashable//:hashable",
-        "@haskell_random//:random",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:binary",
-        "@toktok//third_party/haskell:bytestring",
-        "@toktok//third_party/haskell:deepseq",
-        "@toktok//third_party/haskell:text",
+        hazel_library("base"),
+        hazel_library("binary"),
+        hazel_library("bytestring"),
+        hazel_library("deepseq"),
+        hazel_library("hashable"),
+        hazel_library("random"),
+        hazel_library("text"),
     ],
 )

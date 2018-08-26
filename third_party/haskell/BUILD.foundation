@@ -1,4 +1,6 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 cc_library(
     name = "cbits",
@@ -28,12 +30,12 @@ haskell_library(
         "-XTypeFamilies",
         "-XDeriveDataTypeable",
     ],
-    version = "0.0.20",
+    version = packages["foundation"].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
-        "@haskell_basement//:basement",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:ghc-prim",
+        hazel_library("base"),
+        hazel_library("basement"),
+        hazel_library("ghc-prim"),
     ],
 )

@@ -1,4 +1,6 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 cc_library(
     name = "cbits",
@@ -52,6 +54,7 @@ cc_library(
         "cbits/cryptonite_rdrand.c",
     ],
     copts = [
+        "-Dasm=__asm__",
         "-Iexternal/haskell_cryptonite/cbits",
         "-Iexternal/haskell_cryptonite/cbits/ed25519",
         "-Iexternal/haskell_cryptonite/cbits/decaf/include",
@@ -86,14 +89,14 @@ haskell_library(
         "-DWITH_ASSERT_ALIGNMENT",
         "-DWITH_PCLMUL",
     ],
-    version = "0.25",
+    version = packages["cryptonite"].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
-        "@haskell_basement//:basement",
-        "@haskell_memory//:memory",
-        "@toktok//third_party/haskell:base",
-        "@toktok//third_party/haskell:bytestring",
-        "@toktok//third_party/haskell:ghc-prim",
+        hazel_library("base"),
+        hazel_library("basement"),
+        hazel_library("bytestring"),
+        hazel_library("ghc-prim"),
+        hazel_library("memory"),
     ],
 )

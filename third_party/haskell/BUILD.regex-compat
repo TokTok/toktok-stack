@@ -1,14 +1,16 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 haskell_library(
     name = "regex-compat",
     srcs = glob(["Text/**/*.*hs"]),
-    version = "0.95.1",
+    version = packages["regex-compat"].version,
     visibility = ["//visibility:public"],
     deps = [
-        "@haskell_regex_base//:regex-base",
-        "@haskell_regex_posix//:regex-posix",
-        "@toktok//third_party/haskell:array",
-        "@toktok//third_party/haskell:base",
+        hazel_library("array"),
+        hazel_library("base"),
+        hazel_library("regex-base"),
+        hazel_library("regex-posix"),
     ],
 )

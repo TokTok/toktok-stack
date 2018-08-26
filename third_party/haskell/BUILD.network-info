@@ -1,9 +1,14 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library", "haskell_test")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 cc_library(
     name = "cbits",
     srcs = ["cbits/network-unix.c"],
-    hdrs = glob(["cbits/*.h"]),
+    hdrs = glob([
+        "cbits/*.inc",
+        "cbits/*.h",
+    ]),
     # Needed for inline functions.
     copts = ["-O1"],
     includes = ["cbits"],
@@ -13,11 +18,11 @@ haskell_library(
     name = "network-info",
     srcs = ["src/Network/Info.hsc"],
     src_strip_prefix = "src",
-    version = "0.2.0.9",
+    version = packages["network-info"].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
-        "@toktok//third_party/haskell:base",
+        hazel_library("base"),
     ],
 )
 
@@ -27,6 +32,6 @@ haskell_test(
     src_strip_prefix = "test/src",
     deps = [
         ":network-info",
-        "@toktok//third_party/haskell:base",
+        hazel_library("base"),
     ],
 )
