@@ -16,10 +16,10 @@ haskell_library(
     compiler_flags = [
         "-DARCH_IS_LITTLE_ENDIAN",
         "-XBangPatterns",
+        "-XDeriveDataTypeable",
         "-XNoImplicitPrelude",
         "-XRebindableSyntax",
         "-XTypeFamilies",
-        "-XDeriveDataTypeable",
     ],
     version = packages["basement"].version,
     visibility = ["//visibility:public"],

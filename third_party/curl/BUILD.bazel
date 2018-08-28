@@ -2,6 +2,10 @@ licenses(["notice"])
 
 cc_library(
     name = "curl_config",
-    hdrs = ["curl_config.h"],
+    hdrs = select({
+        "//tools/config:freebsd": ["linux/curl_config.h"],
+        "//tools/config:linux": ["linux/curl_config.h"],
+        "//tools/config:osx": ["osx/curl_config.h"],
+    }),
     visibility = ["@curl//:__pkg__"],
 )

@@ -2,6 +2,15 @@ load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
+cc_library(
+    name = "cbits",
+    hdrs = [
+        "cbits/hs_clock_darwin.c",
+        "cbits/hs_clock_win32.c",
+    ],
+    includes = ["cbits"],
+)
+
 haskell_library(
     name = "clock",
     srcs = ["System/Clock.hsc"],
@@ -12,5 +21,8 @@ haskell_library(
     ],
     version = packages["clock"].version,
     visibility = ["//visibility:public"],
-    deps = [hazel_library("base")],
+    deps = [
+        ":cbits",
+        hazel_library("base"),
+    ],
 )

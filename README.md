@@ -30,8 +30,8 @@ Install the latest version of
 [Bazel](https://github.com/bazelbuild/bazel/releases), e.g.:
 
 ```sh
-$ wget https://github.com/bazelbuild/bazel/releases/download/0.16.0/bazel_0.16.0-linux-x86_64.deb
-$ sudo dpkg -i bazel_0.16.0-linux-x86_64.deb
+$ wget https://github.com/bazelbuild/bazel/releases/download/0.16.1/bazel_0.16.1-linux-x86_64.deb
+$ sudo dpkg -i bazel_0.16.1-linux-x86_64.deb
 ```
 
 #### Maven
@@ -48,20 +48,20 @@ If you want to build Android apps such as `toktok-android`, you need the
 [Android SDK](https://developer.android.com/studio/index.html). E.g.:
 
 ```sh
-$ wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
-$ unzip -d third_party/android/sdk/ sdk-tools-linux-3859397.zip
-$ rm sdk-tools-linux-3859397.zip
+$ wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+$ unzip -d third_party/android/sdk/ sdk-tools-linux-4333796.zip
+$ rm sdk-tools-linux-4333796.zip
 ```
 
 You will need to install the latest build tools (`aapt` and friends) and
-platform 27 (targetted by our Android apps) using the SDK manager. Press "y"
+platform 28 (targeted by our Android apps) using the SDK manager. Press "y"
 to accept all the licenses as you are asked. Use `sdkmanager --list` to see
 the latest versions of each package after updating.
 
 ```sh
 $ third_party/android/sdk/tools/bin/sdkmanager --update
-$ third_party/android/sdk/tools/bin/sdkmanager 'build-tools;27.0.3'
-$ third_party/android/sdk/tools/bin/sdkmanager 'platforms;android-27'
+$ third_party/android/sdk/tools/bin/sdkmanager 'build-tools;28.0.2'
+$ third_party/android/sdk/tools/bin/sdkmanager 'platforms;android-28'
 ```
 
 #### Qt5
@@ -165,5 +165,5 @@ WARNING: This build mode does not work at all, yet. Patches welcome!
 
 ```sh
 $ wget https://dl.google.com/android/repository/android-ndk-r14b-linux-x86_64.zip
-$ unzip android-ndk-r14b-linux-x86_64.zip -d third_party/android
+$ unzip -d third_party/android/ android-ndk-r14b-linux-x86_64.zip
 ```
