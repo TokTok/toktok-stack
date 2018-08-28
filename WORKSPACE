@@ -43,8 +43,6 @@ skydoc_repositories()
 github_archive(
     name = "io_tweag_rules_haskell",
     repo = "tweag/rules_haskell",
-    #sha256 = "01d846970c213f5ff7feaca0184b32374e4f71a560791b65fcc6b0e409914b82",
-    #version = "ea52da0835a1ce28a8d7c141dcb7e3ef936fa54b",
     sha256 = "854099bec683161b2b6da7e84f29d5f19d095b44fb936332664dcf7b6e9517f1",
     version = "35195f2005226b76e65bed31f1dd815810f94634",
 )
@@ -69,6 +67,8 @@ github_archive(
 #load("@ai_formation_hazel//:hazel.bzl", "hazel_repositories")
 load("//third_party/haskell:packages.bzl", "core_packages", "packages")
 
+# TODO(iphydf): Enable this once hazel is good enough to do automatically what
+# we do manually in third_party/haskell.
 #hazel_repositories(
 #    core_packages = core_packages,
 #    packages = packages,
@@ -316,7 +316,7 @@ new_http_archive(
     build_file = "third_party/BUILD.x11",
     sha256 = "3abce972ba62620611fab5b404dafb852da3da54e7c287831c30863011d28fb3",
     strip_prefix = "libX11-1.6.5",
-    urls = ["https://www.x.org/archive/individual/lib/libX11-1.6.5.tar.gz"],
+    urls = ["https://x.org/archive/individual/lib/libX11-1.6.5.tar.gz"],
 )
 
 new_http_archive(
@@ -324,7 +324,7 @@ new_http_archive(
     build_file = "third_party/BUILD.xau",
     sha256 = "c343b4ef66d66a6b3e0e27aa46b37ad5cab0f11a5c565eafb4a1c7590bc71d7b",
     strip_prefix = "libXau-1.0.8",
-    urls = ["https://www.x.org/archive/individual/lib/libXau-1.0.8.tar.gz"],
+    urls = ["https://x.org/archive/individual/lib/libXau-1.0.8.tar.gz"],
 )
 
 new_http_archive(
@@ -348,7 +348,7 @@ new_http_archive(
     build_file = "third_party/BUILD.xdmcp",
     sha256 = "6f7c7e491a23035a26284d247779174dedc67e34e93cc3548b648ffdb6fc57c0",
     strip_prefix = "libXdmcp-1.1.2",
-    urls = ["https://www.x.org/archive/individual/lib/libXdmcp-1.1.2.tar.gz"],
+    urls = ["https://x.org/archive/individual/lib/libXdmcp-1.1.2.tar.gz"],
 )
 
 new_http_archive(
@@ -356,7 +356,7 @@ new_http_archive(
     build_file = "third_party/BUILD.xext",
     sha256 = "eb0b88050491fef4716da4b06a4d92b4fc9e76f880d6310b2157df604342cfe5",
     strip_prefix = "libXext-1.3.3",
-    urls = ["https://www.x.org/archive/individual/lib/libXext-1.3.3.tar.gz"],
+    urls = ["https://x.org/archive/individual/lib/libXext-1.3.3.tar.gz"],
 )
 
 new_http_archive(
@@ -364,7 +364,7 @@ new_http_archive(
     build_file = "third_party/BUILD.xss",
     sha256 = "4f74e7e412144591d8e0616db27f433cfc9f45aae6669c6c4bb03e6bf9be809a",
     strip_prefix = "libXScrnSaver-1.2.3",
-    urls = ["https://www.x.org/archive/individual/lib/libXScrnSaver-1.2.3.tar.gz"],
+    urls = ["https://x.org/archive/individual/lib/libXScrnSaver-1.2.3.tar.gz"],
 )
 
 new_http_archive(
@@ -556,8 +556,8 @@ gmaven_rules()
 
 android_sdk_repository(
     name = "androidsdk",
-    api_level = 27,
-    build_tools_version = "27.0.3",
+    api_level = 28,
+    build_tools_version = "28.0.2",
     path = "third_party/android/sdk",
 )
 

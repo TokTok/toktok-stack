@@ -1,21 +1,24 @@
 genrule(
     name = "config",
-    srcs = glob(["**/*.in"]) + [
-        "config.guess",
-        "config.sub",
-        "configure",
+    srcs = glob([
+        "**/*.am",
+        "**/*.in",
+        "m4/*",
+        "**/Makefile.inc",
+    ]) + [
+        "acinclude.m4",
+        "configure.ac",
         "include/curl/curlver.h",
-        "install-sh",
         "lib/urldata.h",
-        "ltmain.sh",
-        "missing",
     ],
     outs = ["lib/curl_config.h"],
     cmd = """
-        cd `dirname $(location configure)`
-        ./configure --disable-ldap
-        sed -i -e 's/SIZEOF_CURL_OFF_T 0/SIZEOF_CURL_OFF_T 8/' lib/curl_config.h
+        cd `dirname $(location configure.ac)`
+        autoreconf -fi
+        sed -i -e 's/curl_off_t/off_t/g' configure
+        ./configure --disable-ldap --with-ssl=/usr/local/Cellar/openssl/1.0.2p
         DIR=`pwd`
+        sed -i -e 's/SIZEOF_CURL_OFF_T 0/SIZEOF_CURL_OFF_T 8/' lib/curl_config.h
         cd -
         for i in $(OUTS); do
           cp $$DIR/`echo $$i | sed -e 's|$(GENDIR)/external/curl/||'` $$i
@@ -36,10 +39,13 @@ cc_library(
     copts = [
         "-DBUILDING_LIBCURL",
         "-DHAVE_CONFIG_H",
-        "-Iexternal/toktok/third_party/curl",
         "-I$(GENDIR)/external/curl/lib",
         "-Iexternal/curl/lib",
-    ],
+    ] + select({
+        "@toktok//tools/config:freebsd": ["-Iexternal/toktok/third_party/curl/linux"],
+        "@toktok//tools/config:linux": ["-Iexternal/toktok/third_party/curl/linux"],
+        "@toktok//tools/config:osx": ["-Iexternal/toktok/third_party/curl/osx"],
+    }),
     includes = ["include"],
     linkopts = ["-lpthread"],
     visibility = ["//visibility:public"],
@@ -59,9 +65,12 @@ cc_binary(
     ]),
     copts = [
         "-DHAVE_CONFIG_H",
-        "-Iexternal/toktok/third_party/curl",
         "-I$(GENDIR)/external/curl/lib",
         "-Iexternal/curl/lib",
-    ],
+    ] + select({
+        "@toktok//tools/config:freebsd": ["-Iexternal/toktok/third_party/curl/linux"],
+        "@toktok//tools/config:linux": ["-Iexternal/toktok/third_party/curl/linux"],
+        "@toktok//tools/config:osx": ["-Iexternal/toktok/third_party/curl/osx"],
+    }),
     deps = [":curl"],
 )

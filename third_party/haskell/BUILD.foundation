@@ -16,19 +16,24 @@ haskell_library(
     srcs = ["Foundation.hs"] + glob(
         ["Foundation/**/*.hs*"],
         exclude = [
+            "Foundation/System/Bindings/Linux.hsc",
             "Foundation/System/Bindings/Macos.hsc",
             "Foundation/System/Entropy/Windows.hs",
             "Foundation/Foreign/MemoryMap/Windows.hs",
         ],
-    ),
+    ) + select({
+        "@toktok//tools/config:freebsd": ["Foundation/System/Bindings/Linux.hsc"],
+        "@toktok//tools/config:linux": ["Foundation/System/Bindings/Linux.hsc"],
+        "@toktok//tools/config:osx": ["Foundation/System/Bindings/Macos.hsc"],
+    }),
     compiler_flags = [
-        "-Iexternal/haskell_foundation/cbits",
         "-DARCH_IS_LITTLE_ENDIAN",
+        "-Iexternal/haskell_foundation/cbits",
         "-XBangPatterns",
+        "-XDeriveDataTypeable",
         "-XNoImplicitPrelude",
         "-XRebindableSyntax",
         "-XTypeFamilies",
-        "-XDeriveDataTypeable",
     ],
     version = packages["foundation"].version,
     visibility = ["//visibility:public"],

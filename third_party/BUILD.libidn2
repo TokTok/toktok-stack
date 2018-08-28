@@ -1,19 +1,20 @@
 genrule(
     name = "regen_config",
     srcs = glob([
-        "build-aux/*",
-        "**/*.in",
-    ]) + [
-        "configure",
-    ],
+        # TODO(iphydf): Clean up, don't depend on *every* file.
+        #"build-aux/*",
+        #"**/*.in",
+        "**/*",
+    ], exclude = ["*.bazel"]),
     outs = [
         "config.h",
         "configure.out",
-        "lib/idn2.h",
+        "gl/string.h",
     ],
     cmd = """
         cd `dirname $(location configure)`
         ./configure > configure.out
+        (cd gl && make string.h)
         DIR=`pwd`
         cd -
         for i in $(OUTS); do
@@ -135,6 +136,20 @@ cc_library(
 )
 
 cc_library(
+    name = "gnulib",
+    srcs = [
+        "config.h",
+        "gl/strverscmp.c",
+    ],
+    hdrs = [
+        "gl/string.h",
+    ],
+    copts = [
+        "-I$(GENDIR)/external/libidn2",
+    ],
+)
+
+cc_library(
     name = "libidn2",
     srcs = [
         "config.h",
@@ -160,6 +175,8 @@ cc_library(
     ],
     hdrs = ["lib/idn2.h"],
     copts = [
+        "-I$(GENDIR)/external/libidn2/gl",
+        "-Iexternal/libidn2/gl",
         "-I$(GENDIR)/external/libidn2/unistring",
         "-Iexternal/libidn2/unistring",
         "-I$(GENDIR)/external/libidn2",
@@ -169,5 +186,8 @@ cc_library(
         "lib/tr46map_data.c",
     ],
     visibility = ["//visibility:public"],
-    deps = [":libunistring"],
+    deps = [
+        ":gnulib",
+        ":libunistring",
+    ],
 )

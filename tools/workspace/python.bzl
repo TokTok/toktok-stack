@@ -66,7 +66,7 @@ def _impl(repository_ctx):
 
     for i in reversed(range(len(linkopts))):
         if not linkopts[i].startswith("-"):
-            linkopts[i - 1] = " ".join(linkopts[i - 1], linkopts.pop(i))
+            linkopts[i - 1] = " ".join([linkopts[i - 1], linkopts.pop(i)])
 
     file_content = """
 cc_library(
