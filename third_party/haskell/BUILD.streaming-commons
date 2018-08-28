@@ -6,7 +6,10 @@ cc_library(
     name = "cbits",
     srcs = glob(["cbits/*.c"]),
     hdrs = glob(["include/*.h"]),
-    copts = ["-Wno-pointer-sign"],
+    copts = [
+        "-Wno-duplicate-decl-specifier",
+        "-Wno-pointer-sign",
+    ],
     includes = ["include"],
 )
 

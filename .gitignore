@@ -6,3 +6,6 @@
 
 # Work-in-progress directory.
 /wip
+
+# Editor temporary files.
+*.swp

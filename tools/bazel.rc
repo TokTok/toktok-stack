@@ -10,10 +10,6 @@
 build --color=yes
 build --show_progress_rate_limit=0.5
 
-# https://docs.bazel.build/versions/master/skylark/backward-compatibility.html
-# Disabled due to https://github.com/bazelbuild/bazel/issues/4718.
-#build --all_incompatible_changes
-
 build --features=public_proto_imports
 build --features=pie
 build --features=module_maps
@@ -87,18 +83,20 @@ test --test_output=errors
 
 #build --distinct_host_configuration=false
 
-build --all_incompatible_changes
-build --incompatible_depset_is_not_iterable=false
-build --incompatible_depset_union=false
-build --incompatible_disallow_data_transition=false
-build --incompatible_disallow_dict_plus=false
-build --incompatible_disallow_filetype=false
-build --incompatible_disallow_legacy_javainfo=false
-build --incompatible_disallow_old_style_args_add=false
-build --incompatible_new_actions_api=false
-build --incompatible_no_support_tools_in_action_inputs=false
-build --incompatible_package_name_is_a_function=false
-build --incompatible_remove_native_http_archive=false
+# https://docs.bazel.build/versions/master/skylark/backward-compatibility.html
+# Disabled due to https://github.com/bazelbuild/bazel/issues/4718.
+#build --all_incompatible_changes
+#build --incompatible_depset_is_not_iterable=false
+#build --incompatible_depset_union=false
+#build --incompatible_disallow_data_transition=false
+#build --incompatible_disallow_dict_plus=false
+#build --incompatible_disallow_filetype=false
+#build --incompatible_disallow_legacy_javainfo=false
+#build --incompatible_disallow_old_style_args_add=false
+#build --incompatible_new_actions_api=false
+#build --incompatible_no_support_tools_in_action_inputs=false
+#build --incompatible_package_name_is_a_function=false
+#build --incompatible_remove_native_http_archive=false
 
 ##############################################################################
 #
