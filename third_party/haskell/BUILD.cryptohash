@@ -10,6 +10,7 @@ cc_library(
     ]),
     copts = [
         "-Dasm=__asm__",
+        "-Wno-strict-aliasing",
         "-Wno-unused-variable",
     ],
 )

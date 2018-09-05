@@ -4,6 +4,13 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
 
+github_archive(
+    name = "bazel_toolchains",
+    repo = "iphydf/bazel-toolchains",
+    sha256 = "15cebc3c089e781b92af6d4d0bdf88b2470559ff4baf9fae8440d30552742885",
+    version = "6829197b24ba32db6d4c55dca20d530b7b247e6d",
+)
+
 git_repository(
     name = "bazel_skylib",
     remote = "https://github.com/bazelbuild/bazel-skylib.git",
@@ -94,8 +101,8 @@ load("//third_party/haskell:packages.bzl", "core_packages", "packages")
 github_archive(
     name = "io_bazel_rules_go",
     repo = "bazelbuild/rules_go",
-    sha256 = "9bd7c2743f014e4e112b671098ba1da6aec036fe07093b10ca39a9f81ec5cc33",
-    version = "0.14.0",
+    sha256 = "f00e32956446f6ee21441e857d96e3295bfb207000c857cf0cf693e1c2dff0fc",
+    version = "0.15.3",
 )
 
 github_archive(
@@ -583,15 +590,6 @@ new_local_repository(
     name = "x264",
     build_file = "third_party/BUILD.x264",
     path = "/usr",
-)
-
-# Linux headers
-# =========================================================
-
-new_local_repository(
-    name = "linux",
-    build_file = "third_party/BUILD.linux",
-    path = "/usr/include",
 )
 
 # Python

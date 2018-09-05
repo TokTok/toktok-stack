@@ -1,0 +1,30 @@
+licenses(["notice"])
+
+genrule(
+    name = "sndfile_h",
+    srcs = select({
+        "//tools/config:freebsd": ["freebsd/sndfile.h"],
+        "//tools/config:linux": ["linux/sndfile.h"],
+        "//tools/config:osx": ["osx/sndfile.h"],
+    }),
+    outs = ["src/sndfile.h"],
+    cmd = "mkdir -p $$(dirname $@) && cp $< $@",
+    visibility = ["@sndfile//:__pkg__"],
+)
+
+cc_library(
+    name = "sndfile",
+    hdrs = ["src/sndfile.h"],
+    includes = ["src"],
+    visibility = ["@sndfile//:__pkg__"],
+)
+
+cc_library(
+    name = "config",
+    hdrs = select({
+        "//tools/config:freebsd": ["freebsd/config.h"],
+        "//tools/config:linux": ["linux/config.h"],
+        "//tools/config:osx": ["osx/config.h"],
+    }),
+    visibility = ["@sndfile//:__pkg__"],
+)

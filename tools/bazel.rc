@@ -1,5 +1,14 @@
 # Global bazel options for toktok-stack.
 
+build:docker-sandbox --host_javabase=@bazel_toolchains//configs/ubuntu16_04_clang/1.0:jdk8
+build:docker-sandbox --javabase=@bazel_toolchains//configs/ubuntu16_04_clang/1.0:jdk8
+build:docker-sandbox --crosstool_top=@bazel_toolchains//configs/ubuntu16_04_clang/1.0/bazel_0.16.1/default:toolchain
+build:docker-sandbox --experimental_docker_image=toxchat/builder:latest
+build:docker-sandbox --spawn_strategy=docker --strategy=Javac=docker --genrule_strategy=docker
+build:docker-sandbox --define=EXECUTOR=remote
+build:docker-sandbox --experimental_docker_verbose
+build:docker-sandbox --experimental_enable_docker_sandbox
+
 #build --config=asan
 
 #build -c dbg

@@ -29,6 +29,8 @@ cc_library(
     copts = [
         "-DHAVE_CONFIG_H",
         "-Iexternal/xcb/src",
+        "-Wno-unused-but-set-variable",
+        "-Wno-unused-result",
     ] + select({
         "@toktok//tools/config:freebsd": ["-Iexternal/toktok/third_party/xcb/freebsd"],
         "@toktok//tools/config:linux": ["-Iexternal/toktok/third_party/xcb/linux"],

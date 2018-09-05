@@ -31,7 +31,10 @@ cc_library(
         "libcap/libcap.h",
     ],
     hdrs = glob(["libcap/include/**/*.h"]),
-    copts = ["-Wno-tautological-compare"],
+    copts = [
+        "-Wno-tautological-compare",
+        "-Wno-unused-result",
+    ],
     includes = ["libcap/include"],
     visibility = ["//visibility:public"],
 )

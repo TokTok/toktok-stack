@@ -1,9 +1,13 @@
 # TODO(iphydf): Build openal in bazel.
 cc_library(
     name = "openal",
-    hdrs = ["include/AL/al.h"],
-    linkopts = [
-        "-lopenal",
+    srcs = [
+        "lib/x86_64-linux-gnu/libopenal.so",
     ],
+    hdrs = [
+        "include/AL/al.h",
+        "include/AL/alc.h",
+    ],
+    includes = ["include"],
     visibility = ["//visibility:public"],
 )

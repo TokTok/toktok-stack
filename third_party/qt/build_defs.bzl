@@ -206,7 +206,7 @@ qt_moc = rule(
 # Qt test with MOC for the test .cpp file.
 # =========================================================
 
-def qt_test(name, src, deps):
+def qt_test(name, src, deps, copts=[]):
     qt_moc(
         name = "%s_moc_src" % name,
         srcs = [src],
@@ -220,7 +220,7 @@ def qt_test(name, src, deps):
     native.cc_test(
         name = name,
         srcs = [src],
-        copts = ["-I$(GENDIR)/%s/%s" % (native.package_name(), src[:src.rindex("/")])],
+        copts = copts + ["-I$(GENDIR)/%s/%s" % (native.package_name(), src[:src.rindex("/")])],
         deps = deps + [
             ":%s_moc" % name,
             "@qt//:qt_test",

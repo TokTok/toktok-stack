@@ -1,0 +1,10 @@
+licenses(["notice"])
+
+cc_library(
+    name = "config",
+    hdrs = [
+        "config.h",
+        "gl/string.h",
+    ],
+    visibility = ["@libidn2//:__pkg__"],
+)

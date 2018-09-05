@@ -2025,7 +2025,6 @@ cc_library(
         "@toktok//tools/config:freebsd": [],
         "@toktok//tools/config:linux": [
             "@asound",
-            "@linux",
             "@xcb",
         ],
         "@toktok//tools/config:osx": [":ffmpeg_osx"],
