@@ -21,6 +21,12 @@ cc_library(
     hdrs = glob(["src/liblzma/api/**/*.h"]),
     copts = [
         "-DHAVE_CONFIG_H",
+        "-DHAVE_DECODER_LZMA1",
+        "-DHAVE_DECODER_LZMA2",
+        "-DHAVE_DECODER_X86",
+        "-DHAVE_ENCODER_LZMA1",
+        "-DHAVE_ENCODER_LZMA2",
+        "-DHAVE_ENCODER_X86",
         "-DHAVE_INTTYPES_H",
         "-DHAVE_LIMITS_H",
         "-DHAVE_MEMORY_H",

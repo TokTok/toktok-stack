@@ -1,8 +1,15 @@
 # TODO(iphydf): Build ncurses in bazel.
 cc_library(
     name = "ncurses",
-    linkopts = [
-        "-lncurses",
+    srcs = [
+        "lib/x86_64-linux-gnu/libcurses.so",
+        "lib/x86_64-linux-gnu/libtinfo.so",
     ],
+    hdrs = [
+        "include/curses.h",
+        "include/ncurses_dll.h",
+        "include/unctrl.h",
+    ],
+    includes = ["include"],
     visibility = ["//visibility:public"],
 )

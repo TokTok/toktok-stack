@@ -8,6 +8,7 @@ cc_library(
     hdrs = glob(["include/*.h"]),
     copts = [
         "-Wno-duplicate-decl-specifier",
+        "-Wno-pointer-arith",
         "-Wno-pointer-sign",
     ],
     includes = ["include"],

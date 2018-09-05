@@ -1,11 +1,9 @@
 genrule(
     name = "regen_config",
-    srcs = glob([
-        # TODO(iphydf): Clean up, don't depend on *every* file.
-        #"build-aux/*",
-        #"**/*.in",
-        "**/*",
-    ], exclude = ["*.bazel"]),
+    srcs = glob(
+        ["**/*"],
+        exclude = ["*.bazel"],
+    ),
     outs = [
         "config.h",
         "configure.out",
@@ -47,7 +45,6 @@ genrule(
 cc_library(
     name = "libunistring",
     srcs = [
-        "config.h",
         "configmake.h",
         "unistring/array-mergesort.h",
         "unistring/c-ctype.h",
@@ -124,6 +121,7 @@ cc_library(
         "unistring/unused-parameter.h",
     ],
     copts = [
+        "-Iexternal/toktok/third_party/libidn2",
         "-I$(GENDIR)/external/libidn2/unistring",
         "-Iexternal/libidn2/unistring",
         "-I$(GENDIR)/external/libidn2",
@@ -131,28 +129,25 @@ cc_library(
         # We must always optimise this program, because otherwise GCC won't
         # inline c_tolower but also not emit it out of line, resulting in
         # undefined reference errors.
-        "-O1",
+        "-O2",
     ],
+    deps = ["@toktok//third_party/libidn2:config"],
 )
 
 cc_library(
     name = "gnulib",
     srcs = [
-        "config.h",
         "gl/strverscmp.c",
     ],
-    hdrs = [
-        "gl/string.h",
-    ],
     copts = [
-        "-I$(GENDIR)/external/libidn2",
+        "-Iexternal/toktok/third_party/libidn2",
     ],
+    deps = ["@toktok//third_party/libidn2:config"],
 )
 
 cc_library(
     name = "libidn2",
     srcs = [
-        "config.h",
         "lib/bidi.c",
         "lib/bidi.h",
         "lib/context.c",
@@ -175,11 +170,12 @@ cc_library(
     ],
     hdrs = ["lib/idn2.h"],
     copts = [
-        "-I$(GENDIR)/external/libidn2/gl",
         "-Iexternal/libidn2/gl",
-        "-I$(GENDIR)/external/libidn2/unistring",
         "-Iexternal/libidn2/unistring",
+        "-Iexternal/toktok/third_party/libidn2",
         "-I$(GENDIR)/external/libidn2",
+        "-I$(GENDIR)/external/libidn2/gl",
+        "-I$(GENDIR)/external/libidn2/unistring",
     ],
     includes = ["lib"],
     textual_hdrs = [

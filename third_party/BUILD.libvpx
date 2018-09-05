@@ -97,6 +97,7 @@ COPTS = [
     "-fvisibility=protected",
     "-I$(GENDIR)/external/libvpx",
     "-Iexternal/libvpx",
+    "-Wno-overflow",
 ]
 
 cc_library(

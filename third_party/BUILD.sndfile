@@ -23,11 +23,6 @@ genrule(
 )
 
 cc_library(
-    name = "config",
-    hdrs = ["src/config.h"],
-)
-
-cc_library(
     name = "sndfile",
     srcs = glob(
         [
@@ -36,12 +31,17 @@ cc_library(
         ],
         exclude = ["src/test_*.c"],
     ),
-    hdrs = ["src/sndfile.h"],
     copts = [
-        "-I$(GENDIR)/external/sndfile/src",
+        "-Iexternal/sndfile/src",
         "-w",  # disable all warnings
-    ],
-    includes = ["src"],
+    ] + select({
+        "@toktok//tools/config:freebsd": ["-Iexternal/toktok/third_party/sndfile/freebsd"],
+        "@toktok//tools/config:linux": ["-Iexternal/toktok/third_party/sndfile/linux"],
+        "@toktok//tools/config:osx": ["-Iexternal/toktok/third_party/sndfile/osx"],
+    }),
     visibility = ["//visibility:public"],
-    deps = [":config"],
+    deps = [
+        "@toktok//third_party/sndfile",
+        "@toktok//third_party/sndfile:config",
+    ],
 )

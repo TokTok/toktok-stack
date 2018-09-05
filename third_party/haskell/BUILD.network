@@ -32,6 +32,7 @@ cc_library(
         "include/HsNet.h",
         "include/HsNetworkConfig.h",
     ],
+    copts = ["-Wno-strict-aliasing"],
     defines = ["_GNU_SOURCE"],
     includes = ["include"],
     deps = ["@ghc//:threaded-rts"],

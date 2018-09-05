@@ -63,6 +63,7 @@ cc_library(
         "-Iexternal/haskell_cryptonite/cbits/decaf/p448/arch_ref64",
         "-Iexternal/haskell_cryptonite/cbits/blake2/ref",
         "-Iexternal/haskell_cryptonite/cbits/argon2",
+        "-Wno-strict-aliasing",
         "-Wno-unused-variable",
     ],
     textual_hdrs = [
