@@ -30,26 +30,56 @@ build --strategy=Scalac=worker
 
 # Use remote caching. This is disabled by default, because unless you have a
 # fairly fast connection (like on our CI systems), this is not very useful.
+#build:remote --remote_cache=code.tox.chat:8980
 build:remote --remote_http_cache=https://code.tox.chat/bazel
 
-# Use remote execution. Disabled by default, because it requires that a build
-# farm server is running on localhost.
-build:remote-exec --spawn_strategy=remote
+# Use remote execution. Disabled by default, because we don't want everyone to
+# use the remote executors (and they might be down sometimes).
+build:remote-exec --remote_executor=code.tox.chat:8980
+
 build:remote-exec --genrule_strategy=remote
+build:remote-exec --spawn_strategy=remote
 build:remote-exec --strategy=Javac=remote
-build:remote-exec --strategy=Closure=remote
-build:remote-exec --remote_executor=localhost:8980
 
 # Use local docker sandbox. This is a lot slower than linux-sandbox, but is more
 # hermetic and reproducible, so it is used on our CI.
-build:docker-sandbox --host_javabase=@bazel_toolchains//configs/ubuntu16_04_clang/1.0:jdk8
-build:docker-sandbox --javabase=@bazel_toolchains//configs/ubuntu16_04_clang/1.0:jdk8
-build:docker-sandbox --crosstool_top=@bazel_toolchains//configs/ubuntu16_04_clang/1.0/bazel_0.16.1/default:toolchain
 build:docker-sandbox --experimental_docker_image=toxchat/builder:latest
-build:docker-sandbox --spawn_strategy=docker --strategy=Javac=docker --genrule_strategy=docker
-build:docker-sandbox --define=EXECUTOR=remote
 build:docker-sandbox --experimental_docker_verbose
 build:docker-sandbox --experimental_enable_docker_sandbox
+build:docker-sandbox --define=EXECUTOR=remote
+
+build:docker-sandbox --crosstool_top=@bazel_toolchains//configs/ubuntu16_04_clang/1.0/bazel_0.16.1/default:toolchain
+build:docker-sandbox --host_javabase=@bazel_toolchains//configs/ubuntu16_04_clang/1.0:jdk8
+build:docker-sandbox --javabase=@bazel_toolchains//configs/ubuntu16_04_clang/1.0:jdk8
+
+build:docker-sandbox --genrule_strategy=docker
+build:docker-sandbox --spawn_strategy=docker
+build:docker-sandbox --strategy=Javac=docker
+
+##############################################################################
+#
+# :: Extra strictness in rule execution.
+#
+##############################################################################
+
+build --strict_java_deps=error
+build --experimental_guard_against_concurrent_changes
+build:remote-exec --experimental_strict_action_env
+
+# https://docs.bazel.build/versions/master/skylark/backward-compatibility.html
+# Disabled due to https://github.com/bazelbuild/bazel/issues/4718.
+#build --all_incompatible_changes
+#build --incompatible_depset_is_not_iterable=false
+#build --incompatible_depset_union=false
+#build --incompatible_disallow_data_transition=false
+#build --incompatible_disallow_dict_plus=false
+#build --incompatible_disallow_filetype=false
+#build --incompatible_disallow_legacy_javainfo=false
+#build --incompatible_disallow_old_style_args_add=false
+#build --incompatible_new_actions_api=false
+#build --incompatible_no_support_tools_in_action_inputs=false
+#build --incompatible_package_name_is_a_function=false
+#build --incompatible_remove_native_http_archive=false
 
 ##############################################################################
 #
@@ -71,8 +101,6 @@ build --per_file_copt='[-_]sse4\\.c$@-msse4'
 build --per_file_copt='[-_]sse41\\.c$@-msse4.1'
 build --per_file_copt='[-_]sse4_1\\.c$@-msse4.1'
 build --per_file_copt='[-_]ssse3\\.c$@-mssse3'
-
-build --strict_java_deps=error
 
 # Address sanitizer.
 build:asan -c dbg
@@ -110,21 +138,6 @@ build:musl --copt='-isystem/usr/lib/gcc/x86_64-linux-gnu/6/include'
 test --test_output=errors
 
 #build --distinct_host_configuration=false
-
-# https://docs.bazel.build/versions/master/skylark/backward-compatibility.html
-# Disabled due to https://github.com/bazelbuild/bazel/issues/4718.
-#build --all_incompatible_changes
-#build --incompatible_depset_is_not_iterable=false
-#build --incompatible_depset_union=false
-#build --incompatible_disallow_data_transition=false
-#build --incompatible_disallow_dict_plus=false
-#build --incompatible_disallow_filetype=false
-#build --incompatible_disallow_legacy_javainfo=false
-#build --incompatible_disallow_old_style_args_add=false
-#build --incompatible_new_actions_api=false
-#build --incompatible_no_support_tools_in_action_inputs=false
-#build --incompatible_package_name_is_a_function=false
-#build --incompatible_remove_native_http_archive=false
 
 ##############################################################################
 #
