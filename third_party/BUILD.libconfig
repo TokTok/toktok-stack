@@ -9,7 +9,6 @@ cc_library(
         "-DHAVE_NEWLOCALE",
         "-DHAVE_USELOCALE",
         "-DHAVE_FREELOCALE",
-        "-DHAVE_XLOCALE_H",
     ],
     includes = ["lib"],
     visibility = ["//visibility:public"],
