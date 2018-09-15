@@ -6,9 +6,9 @@ load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
 
 github_archive(
     name = "bazel_toolchains",
-    repo = "iphydf/bazel-toolchains",
-    sha256 = "15cebc3c089e781b92af6d4d0bdf88b2470559ff4baf9fae8440d30552742885",
-    version = "6829197b24ba32db6d4c55dca20d530b7b247e6d",
+    repo = "bazelbuild/bazel-toolchains",
+    sha256 = "71148dff099107f4c797eb529ab317e585c6b6624f10bbe9f47960afe0c3cc03",
+    version = "r340178",
 )
 
 git_repository(
