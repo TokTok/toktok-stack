@@ -64,7 +64,7 @@ build:docker-sandbox --strategy=Javac=docker
 
 build --strict_java_deps=error
 build --experimental_guard_against_concurrent_changes
-build:remote-exec --experimental_strict_action_env
+build --experimental_strict_action_env
 
 # https://docs.bazel.build/versions/master/skylark/backward-compatibility.html
 # Disabled due to https://github.com/bazelbuild/bazel/issues/4718.

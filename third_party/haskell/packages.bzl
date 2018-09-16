@@ -67,6 +67,11 @@ packages = (
             sha256 =
                 "71e4434abe630c48644ebfc38b4fa04d16600187a8af8921f23f88f9ee089b48",
         ),
+        "alex": struct(
+            version = "3.2.3",
+            sha256 =
+                "1a63791417b3e6e36e8b79849317beeaf9ea09efa21bea021c2347b49266212e",
+        ),
         "ansi-terminal": struct(
             version = "0.8.0.4",
             sha256 =
@@ -321,6 +326,11 @@ packages = (
             version = "0.1.2.1",
             sha256 =
                 "a6b4a4d3af1b26f63039f04bd4176493f8dd4f6a9ab281f0e33c0151c20de59d",
+        ),
+        "happy": struct(
+            version = "1.19.9",
+            sha256 =
+                "3e81a3e813acca3aae52721c412cde18b7b7c71ecbacfaeaa5c2f4b35abf1d8d",
         ),
         "hashable": struct(
             version = "1.2.7.0",

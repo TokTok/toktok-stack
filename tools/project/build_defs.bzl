@@ -28,20 +28,6 @@ def project(license = "gpl3"):
         ],
     )
 
-    native.sh_test(
-        name = "yamllint_test",
-        srcs = ["//tools/project:yamllint_test.sh"],
-        args = [
-            "-c",
-            "$(location //tools/project:yamllint.rc)",
-            "$(location :.travis.yml)",
-        ],
-        data = [
-            ":.travis.yml",
-            "//tools/project:yamllint.rc",
-        ],
-    )
-
 def workspace(projects):
     project()
 
@@ -56,15 +42,9 @@ def workspace(projects):
     )
 
     native.test_suite(
-        name = "yamllint_tests",
-        tests = [":yamllint_test"] + ["//%s:yamllint_test" % p for p in projects],
-    )
-
-    native.test_suite(
         name = "workspace_tests",
         tests = [
             ":license_tests",
             ":readme_tests",
-            ":yamllint_tests",
         ],
     )
