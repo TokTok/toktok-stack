@@ -1,12 +1,11 @@
 load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
+load("@toktok//third_party/haskell/happy:build_defs.bzl", "happy_parser")
 
-genrule(
+happy_parser(
     name = "InternalParser",
-    srcs = ["src/Language/Haskell/Exts/InternalParser.ly"],
-    outs = ["src/Language/Haskell/Exts/InternalParser.hs"],
-    cmd = "happy -agc -o $@ $<",
+    src = "src/Language/Haskell/Exts/InternalParser.ly",
 )
 
 haskell_library(

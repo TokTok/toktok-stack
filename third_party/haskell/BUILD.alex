@@ -1,0 +1,39 @@
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
+load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_binary")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+genrule(
+    name = "paths",
+    outs = ["Paths_alex.hs"],
+    cmd = """
+    cat > $@ <<EOF
+module Paths_alex where
+
+import Data.Version (Version, makeVersion)
+
+version :: Version
+version = makeVersion [3, 2, 3]
+
+getDataDir :: IO FilePath
+getDataDir = return ""
+EOF
+    """,
+)
+
+haskell_binary(
+    name = "alex",
+    srcs = glob(["src/**/*.hs"]) + [":paths"],
+    compiler_flags = [
+        "-XCPP",
+        "-XDatatypeContexts",
+    ],
+    src_strip_prefix = "src",
+    visibility = ["//visibility:public"],
+    deps = [
+        hazel_library("array"),
+        hazel_library("directory"),
+        hazel_library("base"),
+        hazel_library("containers"),
+        hazel_library("QuickCheck"),
+    ],
+)

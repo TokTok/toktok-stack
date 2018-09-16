@@ -1,19 +1,17 @@
 load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
+load("@toktok//third_party/haskell/alex:build_defs.bzl", "alex_lexer")
+load("@toktok//third_party/haskell/happy:build_defs.bzl", "happy_parser")
 
-genrule(
+alex_lexer(
     name = "Lexer",
-    srcs = ["src/Language/C/Parser/Lexer.x"],
-    outs = ["src/Language/C/Parser/Lexer.hs"],
-    cmd = "alex -o $@ $<",
+    src = "src/Language/C/Parser/Lexer.x",
 )
 
-genrule(
+happy_parser(
     name = "Parser",
-    srcs = ["src/Language/C/Parser/Parser.y"],
-    outs = ["src/Language/C/Parser/Parser.hs"],
-    cmd = "happy -agc -o $@ $<",
+    src = "src/Language/C/Parser/Parser.y",
 )
 
 haskell_library(

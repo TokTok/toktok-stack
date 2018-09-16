@@ -64,7 +64,7 @@ build:docker-sandbox --strategy=Javac=docker
 
 build --strict_java_deps=error
 build --experimental_guard_against_concurrent_changes
-build:remote-exec --experimental_strict_action_env
+build --experimental_strict_action_env
 
 # https://docs.bazel.build/versions/master/skylark/backward-compatibility.html
 # Disabled due to https://github.com/bazelbuild/bazel/issues/4718.
@@ -161,6 +161,7 @@ build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.c$@-Wol
 build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.(cc|cpp)$@-Wzero-as-null-pointer-constant'
 
 # TODO(iphydf): Fix these.
+build:gcc --per_file_copt='//toxins/tox_shell@-Wno-unused-result'
 build:gcc --per_file_copt='//toxins/toxvpn@-Wno-unused-result'
 
 # Clang warning flags.
