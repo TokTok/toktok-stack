@@ -22,6 +22,8 @@ cirrus-ci_task:
     - echo "build --config=remote" | sudo tee -a /etc/bazel.bazelrc
     - git submodule update --jobs=8 --init --depth=5 --recursive
   test_all_script:
+# TODO(iphydf): Enable once all yamllint PRs are merged.
+#   - yamllint -c tools/project/yamllint.rc .
     - bazel test -c opt -k
         //c-toxcore/...
         //echobot-jvm/...

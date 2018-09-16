@@ -1,0 +1,10 @@
+licenses(["notice"])
+
+filegroup(
+    name = "templates",
+    srcs = glob([
+        "GLR*",
+        "Happy*",
+    ]),
+    visibility = ["//visibility:public"],
+)

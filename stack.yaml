@@ -1,18 +1,19 @@
+---
 packages:
-- hs-msgpack/
-- hs-msgpack-rpc/
-- hs-msgpack-types/
-- hs-schema/
-- hs-toxcore/
-- hs-toxcore-c/
-- github-tools/
-- tokstyle/
+  - hs-msgpack/
+  - hs-msgpack-rpc/
+  - hs-msgpack-types/
+  - hs-schema/
+  - hs-toxcore/
+  - hs-toxcore-c/
+  - github-tools/
+  - tokstyle/
 extra-deps:
-- binary-conduit-1.2.5
-- bytestring-arbitrary-0.1.1
-- conduit-1.2.13
-- conduit-extra-1.2.3.2
-- data-default-instances-base-0.1.0.1
-- resourcet-1.1.11
-- saltine-0.0.1.0
+  - binary-conduit-1.2.5
+  - bytestring-arbitrary-0.1.1
+  - conduit-1.2.13
+  - conduit-extra-1.2.3.2
+  - data-default-instances-base-0.1.0.1
+  - resourcet-1.1.11
+  - saltine-0.0.1.0
 resolver: lts-11.1

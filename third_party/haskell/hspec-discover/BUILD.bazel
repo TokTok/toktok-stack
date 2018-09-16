@@ -1,0 +1,9 @@
+licenses(["notice"])
+
+# We place this binary directly into the repository, because it's needed for the
+# toolchain to work. There may be a way to avoid this, but I don't know it.
+exports_files(
+    srcs = [
+        "hspec-discover",
+    ],
+)
