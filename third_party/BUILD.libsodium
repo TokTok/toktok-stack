@@ -54,6 +54,7 @@ cc_library(
     ]) + ["sodium_config.h"],
     hdrs = [":copy_headers"],
     copts = [
+        "-DSODIUM_DLL_EXPORT",
         "-I$(GENDIR)/external/libsodium/include/sodium",
         "-include $(location sodium_config.h)",
         "-Wno-strict-aliasing",

@@ -1,0 +1,11 @@
+---
+install:
+  - choco install bazel
+  - refreshenv
+
+before_build:
+  - git submodule init
+  - git submodule update --depth=5 --recursive
+
+build_script:
+  - bazel query //...

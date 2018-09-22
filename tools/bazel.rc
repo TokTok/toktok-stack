@@ -17,7 +17,11 @@ build --features=use_header_modules
 build --features=layering_check
 build --features=parse_headers
 build --features=cc_include_scanning
+
+build --check_licenses=true
+build --experimental_import_deps_checking=warning
 build --process_headers_in_dependencies
+build --strict_filesets=true
 
 ##############################################################################
 #
@@ -91,16 +95,16 @@ build --experimental_strict_action_env
 
 #build -c dbg
 #build -c opt
-#build --copt='-O3'
-#build --copt='-march=native'
+#build:gnulike --copt='-O3'
+#build:gnulike --copt='-march=native'
 
-build --per_file_copt='[-_]avx\\.c$@-mavx'
-build --per_file_copt='[-_]avx2\\.c$@-mavx2'
-build --per_file_copt='[-_]sse\\.c$@-mssse3,-msse4'
-build --per_file_copt='[-_]sse4\\.c$@-msse4'
-build --per_file_copt='[-_]sse41\\.c$@-msse4.1'
-build --per_file_copt='[-_]sse4_1\\.c$@-msse4.1'
-build --per_file_copt='[-_]ssse3\\.c$@-mssse3'
+build:gnulike --per_file_copt='[-_]avx\\.c$@-mavx'
+build:gnulike --per_file_copt='[-_]avx2\\.c$@-mavx2'
+build:gnulike --per_file_copt='[-_]sse\\.c$@-mssse3,-msse4'
+build:gnulike --per_file_copt='[-_]sse4\\.c$@-msse4'
+build:gnulike --per_file_copt='[-_]sse41\\.c$@-msse4.1'
+build:gnulike --per_file_copt='[-_]sse4_1\\.c$@-msse4.1'
+build:gnulike --per_file_copt='[-_]ssse3\\.c$@-mssse3'
 
 # Address sanitizer.
 build:asan -c dbg
@@ -115,17 +119,14 @@ build:lto --linkopt='-flto'
 # XXX: Workaround for Go, because it can't deal with colours when compiling the
 # stdlib. It doesn't look at per_file_copt, so we can't disable colours for the
 # Go stdlib, but we can enable it for everything else.
-#build --copt='-fdiagnostics-color=always'
-build --per_file_copt='.*@-fdiagnostics-color=always'
+#build:gnulike --copt='-fdiagnostics-color=always'
+build:gnulike --per_file_copt='.*@-fdiagnostics-color=always'
 
-# Enable trace logging for toxcore.
-build --per_file_copt='^c-toxcore/.*@-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_TRACE'
+build:gnulike --copt='-funsigned-char'
 
-build --copt='-funsigned-char'
-
-build --cxxopt='-fno-exceptions'
-build --cxxopt='-fno-rtti'
-build --cxxopt='-DGOOGLE_PROTOBUF_NO_RTTI'
+build:gnulike --cxxopt='-fno-exceptions'
+build:gnulike --cxxopt='-fno-rtti'
+build:gnulike --cxxopt='-DGOOGLE_PROTOBUF_NO_RTTI'
 
 # Use musl instead of glibc.
 build:musl --copt='-nostdinc'
@@ -135,7 +136,11 @@ build:musl --copt='-isystem/usr/include/x86_64-linux-musl'
 build:musl --copt='-isystem/usr/lib/gcc/x86_64-linux-gnu/6/include'
 #build:musl --copt='-isystem/usr/include/clang/3.8/include'
 
+# Enable trace logging for toxcore.
+build --per_file_copt='^c-toxcore/.*@-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_TRACE'
+
 test --test_output=errors
+test --test_verbose_timeout_warnings=true
 
 #build --distinct_host_configuration=false
 
@@ -145,14 +150,14 @@ test --test_output=errors
 #
 ##############################################################################
 
-build --copt='-Wall'
-build --copt='-Werror'
-build --copt='-Wformat'
-build --copt='-Wformat-security'
+build:gnulike --copt='-Wall'
+build:gnulike --copt='-Werror'
+build:gnulike --copt='-Wformat'
+build:gnulike --copt='-Wformat-security'
 
-build --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-pedantic'
+build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-pedantic'
 
-#build --cxxopt='-std=c++17'
+#build:gnulike --cxxopt='-std=c++17'
 
 # GCC warning flags.
 #build:gcc --copt='-Wsuggest-attribute=const'
@@ -252,16 +257,19 @@ build:clang --per_file_copt='//toxic@-Wno-static-in-inline'
 build:clang --per_file_copt='//toxic@-Wno-strict-prototypes'
 
 # Ignore warnings for Go generated internal files and external libraries.
-build --per_file_copt='/go_default_library%@-w'
+build:gnulike --per_file_copt='/go_default_library%@-w'
 
 # Ignore warnings for protobuf generated files.
-build --per_file_copt='\\.pb\\.cc$@-w'
+build:gnulike --per_file_copt='\\.pb\\.cc$@-w'
 
 ##############################################################################
 #
 # :: System/compiler-specific optional flags.
 #
 ##############################################################################
+
+build:gcc --config=gnulike
+build:clang --config=gnulike
 
 # Linux-specific flags.
 build:linux --config=gnuld

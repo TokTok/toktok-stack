@@ -55,5 +55,6 @@ def asm_library(name, srcs = [], hdrs = [], asmopts = []):
             "@toktok//tools/config:freebsd": "-felf64",
             "@toktok//tools/config:linux": "-felf64",
             "@toktok//tools/config:osx": "-fmacho64",
+            "@toktok//tools/config:windows": "-fwin64",
         }),
     )
