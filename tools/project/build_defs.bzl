@@ -8,6 +8,7 @@ def project(license = "gpl3"):
     """Adds some checks to make sure the project is uniform."""
     native.sh_test(
         name = "license_test",
+        size = "small",
         srcs = ["//tools/project:license_test.sh"],
         args = [
             "$(location :LICENSE)",
@@ -21,6 +22,7 @@ def project(license = "gpl3"):
 
     native.sh_test(
         name = "readme_test",
+        size = "small",
         srcs = ["//tools/project:readme_test.sh"],
         args = ["$(location :README.md)"],
         data = [

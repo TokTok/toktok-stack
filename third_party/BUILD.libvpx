@@ -79,44 +79,31 @@ cc_library(
     ],
 )
 
-COMMON_SOURCES = glob(
-    ["vp*/**/*.c"],
-    exclude = [
-        "**/arm/**",
-        "**/mips/**",
-        "**/ppc/**",
-        "**/x86/*_avx2.c",
-        "**/x86/*_avx512.c",
-        "vp8/encoder/mr_dissim.c",
-        "vpx_ports/arm_cpudetect.c",
-        "vpx_ports/ppc_cpudetect.c",
-    ],
-)
-
-COPTS = [
-    "-fvisibility=protected",
-    "-I$(GENDIR)/external/libvpx",
-    "-Iexternal/libvpx",
-    "-Wno-overflow",
-]
-
-cc_library(
-    name = "libvpx_avx2",
-    srcs = glob(["**/x86/*_avx2.c"]),
-    copts = ["-mavx2"] + COPTS,
-    deps = [":headers"],
-)
-
 cc_library(
     name = "libvpx",
-    srcs = [":assemblies"] + COMMON_SOURCES,
-    copts = COPTS,
+    srcs = [":assemblies"] + glob(
+        ["vp*/**/*.c"],
+        exclude = [
+            "**/arm/**",
+            "**/mips/**",
+            "**/ppc/**",
+            "**/x86/*_avx512.c",
+            "vp8/encoder/mr_dissim.c",
+            "vpx_ports/arm_cpudetect.c",
+            "vpx_ports/ppc_cpudetect.c",
+        ],
+    ),
+    copts = [
+        "-I$(GENDIR)/external/libvpx",
+        "-Iexternal/libvpx",
+        "-fvisibility=protected",
+        "-Wno-overflow",
+    ],
     includes = ["."],
     linkopts = ["-lm"],
     visibility = ["//visibility:public"],
     deps = [
         ":headers",
-        ":libvpx_avx2",
         "@toktok//third_party/libvpx:vpx_config",
         "@toktok//third_party/libvpx:vpx_version",
     ],
