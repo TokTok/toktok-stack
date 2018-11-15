@@ -25,7 +25,7 @@ git_repository(
 # This statement defines the @com_google_protobuf repo.
 github_archive(
     name = "com_google_protobuf",
-    repo = "google/protobuf",
+    repo = "protocolbuffers/protobuf",
     sha256 = "d7a221b3d4fb4f05b7473795ccea9e05dab3b8721f6286a95fffbffc2d926f8b",
     version = "v3.6.1",
 )
@@ -67,8 +67,8 @@ register_toolchains("//:ghc")
 github_archive(
     name = "ai_formation_hazel",
     repo = "FormationAI/hazel",
-    sha256 = "3063c822c637f377016afc4a9bc4f263c81a32563a4e1bed539ef2bb493a2183",
-    version = "5f8f808402dcdc6570592d2f4c88c94e34a7e7a5",
+    sha256 = "69e262e464b6c442801e3fd3328b0fe264a7a73baf8f5bd39e8c9de62c03a728",
+    version = "925293994f88799ba550fd5cf3995104d1f2972c",
 )
 
 #load("@ai_formation_hazel//:hazel.bzl", "hazel_repositories")
@@ -101,15 +101,15 @@ load("//third_party/haskell:packages.bzl", "core_packages", "packages")
 github_archive(
     name = "io_bazel_rules_go",
     repo = "bazelbuild/rules_go",
-    sha256 = "f00e32956446f6ee21441e857d96e3295bfb207000c857cf0cf693e1c2dff0fc",
-    version = "0.15.3",
+    sha256 = "24e7ecca86906e9697fb5226292a5cc2b89c9f70858abe54a32949038e1dcf6f",
+    version = "0.16.1",
 )
 
 github_archive(
     name = "bazel_gazelle",
     repo = "bazelbuild/bazel-gazelle",
-    sha256 = "d9cb7e3cbaea8efd7bd1c9e27d6aaed335acfbd27e4590bb344baa35032ec612",
-    version = "0.14.0",
+    sha256 = "a52a6077736cbce53453b9cc26ec811bcaeafb90e887838a455cb7bb51dc8b56",
+    version = "0.15.0",
 )
 
 load("@io_bazel_rules_go//go:def.bzl", "go_register_toolchains", "go_rules_dependencies")
@@ -195,15 +195,15 @@ new_http_archive(
 github_archive(
     name = "com_google_googletest",
     repo = "google/googletest",
-    sha256 = "a8e3104c55f0694d4f5db5584286d8f34df00d1426c5dbe3ffd0ccc3ffde7cc5",
-    version = "cfe0ae867857dad6d14ff72a2f02808086021f35",
+    sha256 = "d4a578a32d9bd3c7097a97b3d8515905c71baaacc1b28debd7b319f428ac34f9",
+    version = "b9347b31c338851879d0105f0fe32d09007f0433",
 )
 
 new_github_archive(
     name = "curl",
     repo = "curl/curl",
-    sha256 = "42f934f3ee450b04fb3f702c4697ccce79b2a5925a9491c60c60ace044c8f46c",
-    version = "curl-7_61_0",
+    sha256 = "2b1cf218a1090556ad4437acbdca398e1d06bdac3091bc71b8a2a53a8026c776",
+    version = "curl-7_61_1",
 )
 
 new_http_archive(
@@ -224,9 +224,9 @@ new_github_archive(
 new_http_archive(
     name = "json",
     build_file = "third_party/BUILD.json",
-    sha256 = "495362ee1b9d03d9526ba9ccf1b4a9c37691abe3a642ddbced13e5778c16660c",
+    sha256 = "9588d63557333aaa485e92221ec38014a85a6134e7486fe3441e0541a5a89576",
     strip_prefix = "include",
-    urls = ["https://github.com/nlohmann/json/releases/download/v3.1.2/include.zip"],
+    urls = ["https://github.com/nlohmann/json/releases/download/v3.3.0/include.zip"],
 )
 
 new_http_archive(
@@ -247,8 +247,8 @@ new_github_archive(
 new_github_archive(
     name = "libexif",
     repo = "libexif/libexif",
-    sha256 = "c1d3e1aa8db233e06732b57316f4764657a1159df5839be85646ecd08a788fed",
-    version = "a3ec88bd2c7500cdb67fdd926532e426ba401b60",
+    sha256 = "a2b7f2f006c7f7e9aaef75b8846f9b4706efa41108a8138cb9299173c8829132",
+    version = "dbbef6a7e13b2c2cb530c77eb28fe272d9a5b665",
 )
 
 new_http_archive(
@@ -276,22 +276,22 @@ new_github_archive(
 new_github_archive(
     name = "libvpx",
     repo = "webmproject/libvpx",
-    sha256 = "1f08b11ef3412f44ad269bf4e14a0b8a514e3e3b86d1642e75cfb542fea96775",
-    version = "557fab3678e11e54508bd984dee5673ec57d8da7",
+    sha256 = "9032e21faf6e26dc298ed0cbbb2a5bec732b55c93effff6746c59a3afb356198",
+    version = "e20be1b2340dd3115cd445eafd9c1c717b621298",
 )
 
 new_github_archive(
     name = "libzmq",
     repo = "zeromq/libzmq",
-    sha256 = "79d3b5214d9c83639c13e4fd0df0f1fa4fdb60d9581bed834979212c17ad311f",
-    version = "2cdad3d0ced9f4ef4d9647cfd60cd697a04ca41a",
+    sha256 = "2d94b93dc1477dacb4334b72efff000c27a01c2d1bb37433a9aae6156ee3150c",
+    version = "3863c869cc37c73d7e158118943650f6475867c1",
 )
 
 new_github_archive(
     name = "opus",
     repo = "xiph/opus",
-    sha256 = "3306052b378915f69a4b7b19c956b7b3c7ec1519fb4ebfbd5957921b861644c7",
-    version = "38fca4a203a6759f2c90b86c84c4db087982ca81",
+    sha256 = "24ee6eb416b3bf15785e0c6a8d08b046f6a1d32e4c677908de314b5f841d2d6e",
+    version = "83d5155f151ca47c9d6274ded1a7481f746b9a43",
 )
 
 new_http_archive(
@@ -335,9 +335,9 @@ new_http_archive(
 new_http_archive(
     name = "x11",
     build_file = "third_party/BUILD.x11",
-    sha256 = "3abce972ba62620611fab5b404dafb852da3da54e7c287831c30863011d28fb3",
-    strip_prefix = "libX11-1.6.5",
-    urls = ["https://x.org/archive/individual/lib/libX11-1.6.5.tar.gz"],
+    sha256 = "f62ab88c2a87b55e1dc338726a55bb6ed8048084fe6a3294a7ae324ca45159d1",
+    strip_prefix = "libX11-1.6.7",
+    urls = ["https://x.org/archive/individual/lib/libX11-1.6.7.tar.gz"],
 )
 
 new_http_archive(
@@ -399,8 +399,8 @@ new_http_archive(
 new_github_archive(
     name = "yasm",
     repo = "yasm/yasm",
-    sha256 = "17a74037d2893c2327e00a263219a265f9e2a072445d44fd88c74d5a7e501d2a",
-    version = "e256985c4929f4e550d8f70cad5fb936f81b7b06",
+    sha256 = "25370c6e88fb1a65a5caa1ba88e746dfbcd3eb1032de696d30e0dc00aa867312",
+    version = "35af9720e36df19382a57be26643b0d6bb48a363",
 )
 
 new_github_archive(
@@ -551,8 +551,8 @@ maven_jar(
 github_archive(
     name = "io_bazel_rules_scala",
     repo = "bazelbuild/rules_scala",
-    sha256 = "070029464aa9ccf6b48efd691150757c026be85cebac54e04c2fcfd96754e004",
-    version = "9801202b2c82f6ad7da85b014a84f9354853f479",
+    sha256 = "10e8c318ef65ee4d28851d07649c6efb6431c034d8f703ab5cf569a5d01f087e",
+    version = "f3c127a16e51e733868eaf468d3ca77b7919d519",
 )
 
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories")
@@ -578,7 +578,7 @@ gmaven_rules()
 android_sdk_repository(
     name = "androidsdk",
     api_level = 28,
-    build_tools_version = "28.0.2",
+    build_tools_version = "28.0.3",
     path = "third_party/android/sdk",
 )
 

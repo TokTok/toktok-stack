@@ -30,8 +30,8 @@ Install the latest version of
 [Bazel](https://github.com/bazelbuild/bazel/releases), e.g.:
 
 ```sh
-$ wget https://github.com/bazelbuild/bazel/releases/download/0.16.1/bazel_0.16.1-linux-x86_64.deb
-$ sudo dpkg -i bazel_0.16.1-linux-x86_64.deb
+$ wget https://github.com/bazelbuild/bazel/releases/download/0.19.1/bazel_0.19.0-linux-x86_64.deb
+$ sudo dpkg -i bazel_0.19.0-linux-x86_64.deb
 ```
 
 #### Maven
@@ -60,7 +60,7 @@ the latest versions of each package after updating.
 
 ```sh
 $ third_party/android/sdk/tools/bin/sdkmanager --update
-$ third_party/android/sdk/tools/bin/sdkmanager 'build-tools;28.0.2'
+$ third_party/android/sdk/tools/bin/sdkmanager 'build-tools;28.0.3'
 $ third_party/android/sdk/tools/bin/sdkmanager 'platforms;android-28'
 ```
 

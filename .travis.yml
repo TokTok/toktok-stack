@@ -23,10 +23,10 @@ matrix:
             - python2.7-dev
             - python3.4-dev
       before_install: &before_install
-        - wget https://github.com/bazelbuild/bazel/releases/download/0.17.1/bazel-0.17.1-installer-linux-x86_64.sh
-        - sha256sum -c tools/bazel-0.17.1-installer-linux-x86_64.sh.sha256
-        - chmod +x bazel-0.17.1-installer-linux-x86_64.sh
-        - ./bazel-0.17.1-installer-linux-x86_64.sh --user
+        - wget https://github.com/bazelbuild/bazel/releases/download/0.19.0/bazel-0.19.0-installer-linux-x86_64.sh
+        - sha256sum -c tools/bazel-0.19.0-installer-linux-x86_64.sh.sha256
+        - chmod +x bazel-0.19.0-installer-linux-x86_64.sh
+        - ./bazel-0.19.0-installer-linux-x86_64.sh --user
         - export PATH=$HOME/bin:$PATH
       install: &install
         - echo 'build --jobs=50 --curses=no --verbose_failures' >> $HOME/.bazelrc
