@@ -10,6 +10,6 @@ haskell_library(
     deps = [
         hazel_library("base"),
         hazel_library("bytestring"),
-        "@zlib",
+        "@net_zlib//:zlib",
     ],
 )

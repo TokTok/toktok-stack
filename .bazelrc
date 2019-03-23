@@ -52,7 +52,7 @@ build:docker-sandbox --experimental_docker_verbose
 build:docker-sandbox --experimental_enable_docker_sandbox
 build:docker-sandbox --define=EXECUTOR=remote
 
-build:docker-sandbox --crosstool_top=@bazel_toolchains//configs/ubuntu16_04_clang/1.1/bazel_0.16.1/default:toolchain
+build:docker-sandbox --crosstool_top=@bazel_toolchains//configs/ubuntu16_04_clang/1.1/bazel_0.22.0/default:toolchain
 build:docker-sandbox --host_javabase=@bazel_toolchains//configs/ubuntu16_04_clang/1.1:jdk8
 build:docker-sandbox --javabase=@bazel_toolchains//configs/ubuntu16_04_clang/1.1:jdk8
 
@@ -82,8 +82,7 @@ build --experimental_strict_action_env
 #build --incompatible_disallow_old_style_args_add=false
 #build --incompatible_new_actions_api=false
 #build --incompatible_no_support_tools_in_action_inputs=false
-#build --incompatible_package_name_is_a_function=false
-#build --incompatible_remove_native_http_archive=false
+build --incompatible_remove_native_http_archive=false
 
 ##############################################################################
 #
@@ -172,6 +171,7 @@ build:gcc --per_file_copt='//toxins/toxvpn@-Wno-unused-result'
 # Clang warning flags.
 build:clang --copt='-Wthread-safety-analysis'
 build:clang --copt='-Wno-error=thread-safety-analysis'
+build:clang --copt='-Wno-error=inconsistent-missing-override'
 
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Weverything'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-c++98-compat'
@@ -276,7 +276,7 @@ build:freebsd --config=gnuld
 
 # Flags for systems with GNU linker or compatible.
 build:gnuld --linkopt='-Wl,-z,noexecstack'
-build:gnuld --linkopt='-Wl,--fatal-warnings'
+#build:gnuld --linkopt='-Wl,--fatal-warnings'
 build:gnuld --linkopt='-Wl,--warn-common'
 # Not enabled, because (at least - I gave up when trying to fix libvpx)
 # libsodium and libvpx assembly code doesn't define noexecstack.

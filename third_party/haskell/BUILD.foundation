@@ -8,7 +8,7 @@ cc_library(
     hdrs = glob(["cbits/*.h"]),
     copts = ["-DFOUNDATION_BOUNDS_CHECK"],
     includes = ["cbits"],
-    deps = ["@ghc//:threaded-rts"],
+    deps = ["@io_tweag_rules_haskell_ghc_linux_amd64//:threaded-rts"],
 )
 
 haskell_library(

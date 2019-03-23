@@ -52,8 +52,8 @@ cc_library(
     deps = [
         "@boringssl//:ssl",
         "@libidn2",
+        "@net_zlib//:zlib",
         "@toktok//third_party/curl:curl_config",
-        "@zlib",
     ],
 )
 

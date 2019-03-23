@@ -8,7 +8,7 @@ cc_library(
         "cbits/*.h",
         "cbits/*.c",
     ]),
-    deps = ["@ghc//:threaded-rts"],
+    deps = ["@io_tweag_rules_haskell_ghc_linux_amd64//:threaded-rts"],
 )
 
 haskell_library(

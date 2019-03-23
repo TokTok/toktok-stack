@@ -2019,8 +2019,8 @@ cc_library(
         ":headers",
         "@bzip2",
         "@libxz",
+        "@net_zlib//:zlib",
         "@toktok//third_party/ffmpeg:config",
-        "@zlib",
     ] + select({
         "@toktok//tools/config:freebsd": [],
         "@toktok//tools/config:linux": [
