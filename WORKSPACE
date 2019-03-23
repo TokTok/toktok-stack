@@ -7,14 +7,8 @@ load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
 github_archive(
     name = "bazel_toolchains",
     repo = "bazelbuild/bazel-toolchains",
-    sha256 = "71148dff099107f4c797eb529ab317e585c6b6624f10bbe9f47960afe0c3cc03",
-    version = "r340178",
-)
-
-git_repository(
-    name = "bazel_skylib",
-    remote = "https://github.com/bazelbuild/bazel-skylib.git",
-    tag = "0.5.0",
+    sha256 = "75a57078391a46409cd612fa2eaaf9086bc53a29ac0ef83d8063096cc9d8f0e3",
+    version = "e74ab3b",
 )
 
 # Protobuf
@@ -26,52 +20,50 @@ git_repository(
 github_archive(
     name = "com_google_protobuf",
     repo = "protocolbuffers/protobuf",
-    sha256 = "d7a221b3d4fb4f05b7473795ccea9e05dab3b8721f6286a95fffbffc2d926f8b",
-    version = "v3.6.1",
+    sha256 = "cca676364ea5900373d701cf1991c9a571dab3c14f0da72dc4085d15f91d1fc2",
+    version = "3a3956e8a258784461270961c6577341356bce52",
 )
 
-# Skydoc
-# =========================================================
+load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
-github_archive(
-    name = "io_bazel_skydoc",
-    repo = "bazelbuild/skydoc",
-    sha256 = "2885adbe581576b2b3ec906eeebc3692e45386651502411284c50979add0fa89",
-    version = "0.1.4",
-)
-
-load("@io_bazel_skydoc//skylark:skylark.bzl", "skydoc_repositories")
-
-skydoc_repositories()
+protobuf_deps()
 
 # Haskell
 # =========================================================
 
 github_archive(
+    name = "io_tweag_rules_nixpkgs",
+    repo = "tweag/rules_nixpkgs",
+    sha256 = "3a2d245e60d41c139cf5d1bb6f5a358c0c8a4d26325285af8ed092b078fb6b1d",
+    version = "v0.5.2",
+)
+
+github_archive(
     name = "io_tweag_rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "854099bec683161b2b6da7e84f29d5f19d095b44fb936332664dcf7b6e9517f1",
-    version = "35195f2005226b76e65bed31f1dd815810f94634",
+    sha256 = "41ae5d155e297a42a740a3a533ffa89afaf4f1f40d3261912b62c466f4ff2364",
+    version = "6495f68985a27884a941fe1f3c824d8f35887534",
 )
 
-load("@io_tweag_rules_haskell//haskell:ghc_bindist.bzl", "ghc_bindist")
+load("@io_tweag_rules_haskell//haskell:ghc_bindist.bzl", "haskell_register_ghc_bindists")
+load("@io_tweag_rules_haskell//haskell:repositories.bzl", "haskell_repositories")
 load("//third_party/haskell:haskell.bzl", "new_cabal_package")
 
-# This repository rule creates @ghc repository.
-ghc_bindist(
-    name = "ghc",
-)
+haskell_repositories()
 
-register_toolchains("//:ghc")
+# This repository rule creates @ghc repository.
+haskell_register_ghc_bindists(
+    version = "8.4.4",
+)
 
 github_archive(
     name = "ai_formation_hazel",
     repo = "FormationAI/hazel",
-    sha256 = "69e262e464b6c442801e3fd3328b0fe264a7a73baf8f5bd39e8c9de62c03a728",
-    version = "925293994f88799ba550fd5cf3995104d1f2972c",
+    sha256 = "605c83e0bf54c0517413096403ccb7799d6278fdeffdbe1555d11265e8165b17",
+    version = "ecf380e97cc2e2114f359c89e4d65cd9c6b0ca22",
 )
 
-#load("@ai_formation_hazel//:hazel.bzl", "hazel_repositories")
+load("@ai_formation_hazel//:hazel.bzl", "hazel_repositories")
 load("//third_party/haskell:packages.bzl", "core_packages", "packages")
 
 # TODO(iphydf): Enable this once hazel is good enough to do automatically what
@@ -95,21 +87,35 @@ load("//third_party/haskell:packages.bzl", "core_packages", "packages")
     sha256 = data.sha256,
 ) for pkg, data in packages.items()]
 
+# Skydoc
+# =========================================================
+
+github_archive(
+    name = "io_bazel_skydoc",
+    repo = "bazelbuild/skydoc",
+    sha256 = "6b9ab4cf5c781e467888ce14864e62f47adc4b6d0cb7a9838469440d25643a4b",
+    version = "0.2.0",
+)
+
+load("@io_bazel_skydoc//skylark:skylark.bzl", "skydoc_repositories")
+
+skydoc_repositories()
+
 # Go
 # =========================================================
 
 github_archive(
     name = "io_bazel_rules_go",
     repo = "bazelbuild/rules_go",
-    sha256 = "24e7ecca86906e9697fb5226292a5cc2b89c9f70858abe54a32949038e1dcf6f",
-    version = "0.16.1",
+    sha256 = "869ce867b583acccc8b9943688cd4b50818ff81926063e2e342fc7c5892f0638",
+    version = "0.16.5",
 )
 
 github_archive(
     name = "bazel_gazelle",
     repo = "bazelbuild/bazel-gazelle",
-    sha256 = "a52a6077736cbce53453b9cc26ec811bcaeafb90e887838a455cb7bb51dc8b56",
-    version = "0.15.0",
+    sha256 = "a5b329e3d929247279005ba3cfda0c092a220085c0ed0505de1dcdd68dfc53bc",
+    version = "0.16.0",
 )
 
 load("@io_bazel_rules_go//go:def.bzl", "go_register_toolchains", "go_rules_dependencies")
@@ -195,8 +201,8 @@ new_http_archive(
 github_archive(
     name = "com_google_googletest",
     repo = "google/googletest",
-    sha256 = "d4a578a32d9bd3c7097a97b3d8515905c71baaacc1b28debd7b319f428ac34f9",
-    version = "b9347b31c338851879d0105f0fe32d09007f0433",
+    sha256 = "55fc63da7baa58ced8165db0edd2d0d231414871ea1aa9d2c4a53f57849d26bf",
+    version = "827515f8a092050901d4eb9fdc1ddbb972f38442",
 )
 
 new_github_archive(
@@ -403,13 +409,6 @@ new_github_archive(
     version = "35af9720e36df19382a57be26643b0d6bb48a363",
 )
 
-new_github_archive(
-    name = "zlib",
-    repo = "madler/zlib",
-    sha256 = "f5cc4ab910db99b2bdbba39ebbdc225ffc2aa04b4057bc2817f1b94b6978cfc3",
-    version = "v1.2.11",
-)
-
 # Maven dependencies
 # =========================================================
 
@@ -551,8 +550,8 @@ maven_jar(
 github_archive(
     name = "io_bazel_rules_scala",
     repo = "bazelbuild/rules_scala",
-    sha256 = "10e8c318ef65ee4d28851d07649c6efb6431c034d8f703ab5cf569a5d01f087e",
-    version = "f3c127a16e51e733868eaf468d3ca77b7919d519",
+    sha256 = "60312e4ef03cdfea4db52b2c37a660f16e1a2afd665a872769925fcfd1509855",
+    version = "326b4ce252c36aeff2232e241ff4bfd8d6f6e071",
 )
 
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories")
@@ -567,7 +566,7 @@ scala_proto_repositories()
 
 git_repository(
     name = "gmaven_rules",
-    commit = "e593e3a0baebadd7e95ddd70525201dfa6277d04",
+    commit = "c0571d8370ece2b5485fea8806cffdf8a9c8ff6b",
     remote = "https://github.com/aj-michael/gmaven_rules",
 )
 
@@ -626,9 +625,11 @@ python_repository(
 
 github_archive(
     name = "org_pubref_rules_node",
-    repo = "pubref/rules_node",
-    sha256 = "3737c9bf90331c3b5b803f6d40c408fcb721a86a474f73f6a85de0fcf6e55bac",
-    version = "1c60708c599e6ebd5213f0987207a1d854f13e23",
+    # We use our own for now because pubref seems to no longer be maintained.
+    #repo = "pubref/rules_node",
+    repo = "iphydf/rules_node",
+    sha256 = "96102374ca25ba5112425f2a31acfb7848ff7d578a2911e14c631a8f99db71eb",
+    version = "3de4a224c6395a55ca80365b480f2494506e482c",
 )
 
 load("@org_pubref_rules_node//node:rules.bzl", "node_repositories", "yarn_modules")

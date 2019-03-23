@@ -1,5 +1,5 @@
 load("@bazel_gazelle//:def.bzl", "gazelle")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_toolchain")
+load("@io_tweag_rules_haskell//haskell:toolchain.bzl", "haskell_toolchain")
 load("//tools/project:build_defs.bzl", "workspace")
 
 workspace(projects = [
@@ -47,41 +47,4 @@ gazelle(
     name = "gazelle",
     command = "fix",
     prefix = "github.com/TokTok",
-)
-
-genrule(
-    name = "toolchain_as",
-    outs = ["as"],
-    cmd = "ln -s /usr/bin/as $@",
-)
-
-genrule(
-    name = "toolchain_ld",
-    outs = ["ld"],
-    cmd = "ln -s /usr/bin/ld $@",
-)
-
-genrule(
-    name = "toolchain_touch",
-    outs = ["touch"],
-    cmd = "ln -s /usr/bin/touch $@",
-)
-
-genrule(
-    name = "hspec_discover",
-    srcs = ["//third_party/haskell/hspec-discover"],
-    outs = ["hspec-discover"],
-    cmd = "cp $< $@",
-)
-
-haskell_toolchain(
-    name = "ghc",
-    extra_binaries = [
-        ":hspec_discover",
-        ":toolchain_as",
-        ":toolchain_ld",
-        ":toolchain_touch",
-    ],
-    tools = "@ghc//:bin",
-    version = "8.4.1",
 )

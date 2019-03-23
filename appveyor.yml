@@ -1,6 +1,6 @@
 ---
 install:
-  - choco install bazel
+  - choco install bazel --version=0.22.0
   - refreshenv
 
 before_build:
