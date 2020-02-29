@@ -1,8 +1,8 @@
-package(default_visibility = ["//visibility:public"])
-
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_import")
+load("@rules_haskell//haskell:defs.bzl", "haskell_toolchain_library")
 load("@toktok//third_party/haskell:packages.bzl", "core_packages")
+
+package(default_visibility = ["//visibility:public"])
 
 licenses(["notice"])
 
-[haskell_import(name = name) for name in core_packages.keys()]
+[haskell_toolchain_library(name = name) for name in core_packages.keys()]

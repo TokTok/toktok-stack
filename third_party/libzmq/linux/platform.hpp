@@ -1,12 +1,22 @@
 #ifndef __ZMQ_PLATFORM_HPP_INCLUDED__
 #define __ZMQ_PLATFORM_HPP_INCLUDED__
 
-/* #undef ZMQ_USE_KQUEUE */
-#define ZMQ_USE_EPOLL
-#define ZMQ_USE_EPOLL_CLOEXEC
-/* #undef ZMQ_USE_DEVPOLL */
-/* #undef ZMQ_USE_POLL */
-/* #undef ZMQ_USE_SELECT */
+#define ZMQ_USE_CV_IMPL_STL11
+/* #undef ZMQ_USE_CV_IMPL_WIN32API */
+/* #undef ZMQ_USE_CV_IMPL_PTHREADS */
+/* #undef ZMQ_USE_CV_IMPL_NONE */
+
+/* #undef ZMQ_IOTHREAD_POLLER_USE_KQUEUE */
+#define ZMQ_IOTHREAD_POLLER_USE_EPOLL
+#define ZMQ_IOTHREAD_POLLER_USE_EPOLL_CLOEXEC
+/* #undef ZMQ_IOTHREAD_POLLER_USE_DEVPOLL */
+/* #undef ZMQ_IOTHREAD_POLLER_USE_POLL */
+/* #undef ZMQ_IOTHREAD_POLLER_USE_SELECT */
+
+/* #undef ZMQ_POLL_BASED_ON_SELECT */
+#define ZMQ_POLL_BASED_ON_POLL
+
+#define ZMQ_CACHELINE_SIZE 64
 
 /* #undef ZMQ_FORCE_MUTEXES */
 
@@ -15,6 +25,8 @@
 /* #undef HAVE_GETHRTIME */
 #define HAVE_MKDTEMP
 #define ZMQ_HAVE_UIO
+
+#define ZMQ_HAVE_NOEXCEPT
 
 #define ZMQ_HAVE_EVENTFD
 #define ZMQ_HAVE_EVENTFD_CLOEXEC
@@ -37,6 +49,7 @@
 /* #undef ZMQ_HAVE_PTHREAD_SETNAME_3 */
 /* #undef ZMQ_HAVE_PTHREAD_SET_NAME */
 #define HAVE_ACCEPT4
+#define HAVE_STRNLEN
 
 /* #undef ZMQ_HAVE_OPENPGM */
 /* #undef ZMQ_MAKE_VALGRIND_HAPPY */
@@ -50,7 +63,7 @@
   #define ZMQ_HAVE_AIX
 #endif
 
-#if defined ANDROID
+#if defined __ANDROID__
   #define ZMQ_HAVE_ANDROID
 #endif
 

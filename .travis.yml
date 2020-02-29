@@ -1,9 +1,10 @@
 ---
 language: cpp
 compiler: clang
-dist: trusty
+dist: xenial
+os: linux
 
-matrix:
+jobs:
   include:
     - env: JOB=docker-build
       services: [docker]
@@ -17,24 +18,21 @@ matrix:
           packages:
             - autopoint
             - libasound2-dev
-            - libcv-dev
-            - libhighgui-dev
             - libopenal-dev
-            - python2.7-dev
-            - python3.4-dev
+            - python3.5-dev
       before_install: &before_install
-        - wget https://github.com/bazelbuild/bazel/releases/download/0.22.0/bazel-0.22.0-installer-linux-x86_64.sh
-        - sha256sum -c tools/bazel-0.22.0-installer-linux-x86_64.sh.sha256
-        - chmod +x bazel-0.22.0-installer-linux-x86_64.sh
-        - ./bazel-0.22.0-installer-linux-x86_64.sh --user
+        - wget https://github.com/bazelbuild/bazel/releases/download/2.2.0/bazel-2.2.0-installer-linux-x86_64.sh
+        - sha256sum -c tools/bazel-2.2.0-installer-linux-x86_64.sh.sha256
+        - chmod +x bazel-2.2.0-installer-linux-x86_64.sh
+        - ./bazel-2.2.0-installer-linux-x86_64.sh --user
         - export PATH=$HOME/bin:$PATH
       install: &install
         - echo 'build --jobs=50 --curses=no --verbose_failures' >> $HOME/.bazelrc
         - echo 'build --config=linux'                           >> $HOME/.bazelrc
         - echo "build --config=$CC"                             >> $HOME/.bazelrc
-        - echo 'build --config=remote'                          >> $HOME/.bazelrc
-        - wget http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/ffmpeg/3.4.1-1.4/ffmpeg-3.4.1-1.4-linux-x86_64.jar -O third_party/javacpp/ffmpeg/jar/ffmpeg-3.4.1-1.4-linux-x86_64.jar
-        - wget http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/3.4.0-1.4/opencv-3.4.0-1.4-linux-x86_64.jar -O third_party/javacpp/opencv/jar/opencv-3.4.0-1.4-linux-x86_64.jar
+#        - echo 'build --config=remote'                          >> $HOME/.bazelrc
+        - wget https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/ffmpeg/3.4.1-1.4/ffmpeg-3.4.1-1.4-linux-x86_64.jar -O third_party/javacpp/ffmpeg/jar/ffmpeg-3.4.1-1.4-linux-x86_64.jar
+        - wget https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/3.4.0-1.4/opencv-3.4.0-1.4-linux-x86_64.jar -O third_party/javacpp/opencv/jar/opencv-3.4.0-1.4-linux-x86_64.jar
       script:
         - echo 'build --config=docker-sandbox' >> $HOME/.bazelrc
         - bazel build

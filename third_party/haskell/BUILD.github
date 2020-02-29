@@ -1,10 +1,27 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
+PACKAGE_NAME = "github"
+
+genrule(
+    name = "paths",
+    outs = ["src/Paths_github.hs"],
+    cmd = """
+    cat > $@ <<EOF
+module Paths_github where
+
+import Data.Version (Version, makeVersion)
+
+version :: Version
+version = makeVersion [0, 25]
+EOF
+    """,
+)
+
 haskell_library(
-    name = "github",
-    srcs = glob(["src/**/*.*hs"]),
+    name = PACKAGE_NAME,
+    srcs = glob(["src/**/*.*hs"]) + [":paths"],
     compiler_flags = [
         "-j10",
         "-XDataKinds",
@@ -15,20 +32,18 @@ haskell_library(
         "-XScopedTypeVariables",
     ],
     src_strip_prefix = "src",
-    version = packages["github"].version,
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         hazel_library("aeson"),
-        hazel_library("aeson-compat"),
         hazel_library("base"),
         hazel_library("base-compat"),
         hazel_library("base16-bytestring"),
         hazel_library("binary"),
-        hazel_library("binary-orphans"),
-        hazel_library("byteable"),
+        hazel_library("binary-instances"),
         hazel_library("bytestring"),
         hazel_library("containers"),
-        hazel_library("cryptohash"),
+        hazel_library("cryptohash-sha1"),
         hazel_library("deepseq"),
         hazel_library("deepseq-generics"),
         hazel_library("exceptions"),
@@ -40,9 +55,13 @@ haskell_library(
         hazel_library("iso8601-time"),
         hazel_library("mtl"),
         hazel_library("network-uri"),
+        hazel_library("semigroups"),
+        hazel_library("tagged"),
         hazel_library("text"),
-        hazel_library("time"),
+        hazel_library("time-compat"),
+        hazel_library("tls"),
         hazel_library("transformers"),
+        hazel_library("transformers-compat"),
         hazel_library("unordered-containers"),
         hazel_library("vector"),
         hazel_library("vector-instances"),

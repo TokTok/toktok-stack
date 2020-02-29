@@ -1,9 +1,11 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
+PACKAGE_NAME = "x509-system"
+
 haskell_library(
-    name = "x509-system",
+    name = PACKAGE_NAME,
     srcs = glob(
         ["System/**/*.hs"],
         exclude = [
@@ -11,7 +13,7 @@ haskell_library(
             "System/X509/Win32.hs",
         ],
     ),
-    version = packages["x509-system"].version,
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         hazel_library("base"),

@@ -1,3 +1,5 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
 genrule(
     name = "autoreconf",
     srcs = glob([
@@ -64,7 +66,7 @@ cc_library(
     hdrs = glob(["include/*.h"]),
     copts = [
         "-DHAVE_CONFIG_H",
-        "-Iexternal/toktok/third_party/opus",
+        "-Ithird_party/opus",
     ],
     includes = [
         "celt",

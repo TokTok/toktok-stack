@@ -1,5 +1,6 @@
 # Build artifacts.
 /.stack-work
+/stack.yaml.lock
 /bazel-*
 /cov-analysis*
 *.jar

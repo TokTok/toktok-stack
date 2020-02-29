@@ -1,10 +1,10 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@toktok//third_party/yasm:build_defs.bzl", "asm_library")
 
 asm_library(
     name = "assemblies",
     srcs = glob([
         "vp*/**/x86/*.asm",
-        "vpx_ports/emms.asm",
     ]),
     hdrs = [
         "third_party/x86inc/x86inc.asm",
@@ -15,7 +15,7 @@ asm_library(
     asmopts = [
         "-I$(GENDIR)/external/libvpx",  # Generated headers.
         "-Iexternal/libvpx",
-        "-Iexternal/toktok/third_party/libvpx",
+        "-Ithird_party/libvpx",
     ],
 )
 

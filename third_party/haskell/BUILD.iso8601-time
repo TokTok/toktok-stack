@@ -1,12 +1,14 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
+PACKAGE_NAME = "iso8601-time"
+
 haskell_library(
-    name = "iso8601-time",
+    name = PACKAGE_NAME,
     srcs = glob(["src/**/*.hs"]),
     src_strip_prefix = "src",
-    version = packages["iso8601-time"].version,
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         hazel_library("base"),

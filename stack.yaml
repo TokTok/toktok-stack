@@ -1,19 +1,16 @@
 ---
 packages:
+  - hs-github-tools/
   - hs-msgpack/
   - hs-msgpack-rpc/
   - hs-msgpack-types/
   - hs-schema/
+  - hs-tokstyle/
   - hs-toxcore/
   - hs-toxcore-c/
-  - github-tools/
-  - tokstyle/
+resolver: lts-14.27
 extra-deps:
-  - binary-conduit-1.2.5
-  - bytestring-arbitrary-0.1.1
-  - conduit-1.2.13
-  - conduit-extra-1.2.3.2
-  - data-default-instances-base-0.1.0.1
-  - resourcet-1.1.11
-  - saltine-0.0.1.0
-resolver: lts-11.1
+  - binary-instances-1@sha256:b17565598b8df3241f9b46fa8e3a3368ecc8e3f2eb175d7c28f319042a6f5c79,2613
+  - bytestring-arbitrary-0.1.3@sha256:14db64d4fe126fbad2eb8d3601bfd80a693f3131e2db0e76891feffe44f10df8,1773
+  - data-default-instances-base-0.1.0.1@sha256:985a13d7103e45a65f06f277b735ef025636014f0d29dd6de998bc7628e09be9,509
+  - github-0.25@sha256:32e1ede86a04976e06740a5993fab5306c5dbfdd17e96d83b79e53b82195739e,7091

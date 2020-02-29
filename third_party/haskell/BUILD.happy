@@ -1,5 +1,5 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_binary")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_binary")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 genrule(
@@ -12,18 +12,19 @@ module Paths_happy where
 import Data.Version (Version, makeVersion)
 
 version :: Version
-version = makeVersion [1, 19, 9]
+version = makeVersion %s
 
 getDataDir :: IO FilePath
 getDataDir = return ""
 EOF
-    """,
+    """ % str([int(v) for v in packages["happy"].version.split(".")]),
 )
 
 haskell_binary(
-    name = "happy",
+    name = "happy_bin",
     srcs = glob(["src/**/*.*hs"]) + [":paths"],
     compiler_flags = [
+        "-DMIN_VERSION_base(a,b,c)=1",
         "-XCPP",
         "-XFlexibleContexts",
         "-XMagicHash",

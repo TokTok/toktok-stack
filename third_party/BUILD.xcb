@@ -1,3 +1,5 @@
+load("@rules_python//python:defs.bzl", "py_binary")
+load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@toktok//third_party/xcb_proto:protos.bzl", "xcb_protos")
 
 py_binary(
@@ -31,9 +33,9 @@ cc_library(
         "-Iexternal/xcb/src",
         "-Wno-unused-result",
     ] + select({
-        "@toktok//tools/config:freebsd": ["-Iexternal/toktok/third_party/xcb/freebsd"],
-        "@toktok//tools/config:linux": ["-Iexternal/toktok/third_party/xcb/linux"],
-        "@toktok//tools/config:osx": ["-Iexternal/toktok/third_party/xcb/osx"],
+        "@toktok//tools/config:freebsd": ["-Ithird_party/xcb/freebsd"],
+        "@toktok//tools/config:linux": ["-Ithird_party/xcb/linux"],
+        "@toktok//tools/config:osx": ["-Ithird_party/xcb/osx"],
     }),
     includes = ["src"],
     visibility = ["//visibility:public"],
