@@ -1,3 +1,4 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
 load("@toktok//third_party/yasm:build_defs.bzl", "asm_library")
 
 asm_library(
@@ -139,7 +140,7 @@ asm_library(
     ],
     asmopts = [
         "-Iexternal/ffmpeg",
-        "-I$(GENDIR)/external/toktok/third_party/ffmpeg",
+        "-I$(GENDIR)/third_party/ffmpeg",
         "-Pconfig.asm",
         "-DPIC",
     ] + select({
@@ -199,16 +200,16 @@ COPTS = [
     "-DPIC",
     "-DZLIB_CONST",
     "-DHAVE_AV_CONFIG_H",
-    "-Iexternal/toktok/third_party/ffmpeg",
+    "-Ithird_party/ffmpeg",
 ] + select({
-    "@toktok//tools/config:freebsd": ["-Iexternal/toktok/third_party/ffmpeg/freebsd"],
+    "@toktok//tools/config:freebsd": ["-Ithird_party/ffmpeg/freebsd"],
     "@toktok//tools/config:linux": [
         "-D_ISOC99_SOURCE",
         "-D_POSIX_C_SOURCE=200112",
         "-D_XOPEN_SOURCE=600",
-        "-Iexternal/toktok/third_party/ffmpeg/linux",
+        "-Ithird_party/ffmpeg/linux",
     ],
-    "@toktok//tools/config:osx": ["-Iexternal/toktok/third_party/ffmpeg/osx"],
+    "@toktok//tools/config:osx": ["-Ithird_party/ffmpeg/osx"],
 })
 
 cc_library(
@@ -2019,7 +2020,7 @@ cc_library(
         ":headers",
         "@bzip2",
         "@libxz",
-        "@net_zlib//:zlib",
+        "@zlib",
         "@toktok//third_party/ffmpeg:config",
     ] + select({
         "@toktok//tools/config:freebsd": [],

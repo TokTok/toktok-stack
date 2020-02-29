@@ -1,37 +1,18 @@
 ---
 cirrus-ci_task:
   container:
-    image: cirrusci/bazel:0.22.0
+    image: l.gcr.io/google/bazel:2.2.0
     cpu: 8
     memory: 12G
   configure_script:
-    - sudo apt update
-    - sudo apt install -y
-        autopoint
-        libasound2-dev
-        libcv-dev
-        libhighgui-dev
-        libopenal-dev
-        python-pip
-    - sudo pip install yamllint
-    - wget http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/ffmpeg/3.4.1-1.4/ffmpeg-3.4.1-1.4-linux-x86_64.jar -O third_party/javacpp/ffmpeg/jar/ffmpeg-3.4.1-1.4-linux-x86_64.jar
-    - wget http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/3.4.0-1.4/opencv-3.4.0-1.4-linux-x86_64.jar -O third_party/javacpp/opencv/jar/opencv-3.4.0-1.4-linux-x86_64.jar
-    - echo "build --jobs=50 --curses=no --verbose_failures" | sudo tee /etc/bazel.bazelrc
-    - echo "build --config=linux" | sudo tee -a /etc/bazel.bazelrc
-    - echo "build --config=gcc" | sudo tee -a /etc/bazel.bazelrc
-    - echo "build --config=remote" | sudo tee -a /etc/bazel.bazelrc
-    - git submodule update --jobs=8 --init --depth=5 --recursive
+    - wget https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/ffmpeg/3.4.1-1.4/ffmpeg-3.4.1-1.4-linux-x86_64.jar -O third_party/javacpp/ffmpeg/jar/ffmpeg-3.4.1-1.4-linux-x86_64.jar
+    - wget https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/3.4.0-1.4/opencv-3.4.0-1.4-linux-x86_64.jar -O third_party/javacpp/opencv/jar/opencv-3.4.0-1.4-linux-x86_64.jar
+    - git submodule update --init --depth=5 --recursive
+    - tools/setup-ci
   test_all_script:
-    - yamllint -c tools/project/yamllint.rc .
-    - bazel test -c opt -k
+    - RUN_TEST="bazel test --config=release -k
         //c-toxcore/...
-        //echobot-jvm/...
         //go-toxcore-c/...
-        //jtox/...
-        //jvm-macros/...
-        //jvm-toxcore-api/...
-        //jvm-toxcore-c/...
         //py_toxcore_c/...
-        //streambot-jvm/...
-        //third_party/...
-        //toxins/...
+        //toxins/..."
+    - $RUN_TEST || $RUN_TEST || $RUN_TEST

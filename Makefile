@@ -17,5 +17,10 @@ $(CURDIR)/%: $(CACHE)/%
 $(CACHE)/%:
 	mkdir -p $@
 
+export LD_LIBRARY_PATH := $(PWD)/bazel-bin/c-toxcore/toxcore
+
 haskell:
 	stack build --extra-lib-dirs=$(PWD)/bazel-bin/c-toxcore/toxcore
+
+check:
+	stack test --extra-lib-dirs=$(PWD)/bazel-bin/c-toxcore/toxcore

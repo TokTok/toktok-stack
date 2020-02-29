@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo 'build --jobs=50 --curses=no --verbose_failures' | tee ~/.bazelrc
+echo 'build --config=linux' | tee -a ~/.bazelrc
+echo 'build --config=clang' | tee -a ~/.bazelrc
+
+RESPONSE='resource name must be a SHA256 hash'
+
+if curl -s -m1 https://code.tox.chat/bazel/ | grep "$RESPONSE"; then
+  echo "build --config=remote" | tee -a ~/.bazelrc
+fi

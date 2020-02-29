@@ -54,7 +54,7 @@ def _impl(repository_ctx):
 
             if include not in includes:
                 repository_ctx.symlink(source, destination)
-                includes += [include]
+                includes.append(include)
 
     result = repository_ctx.execute([python_config, "--ldflags"])
 

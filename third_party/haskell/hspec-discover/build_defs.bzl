@@ -1,8 +1,15 @@
 """HSpec test rules."""
 
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library", "haskell_test")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library", "haskell_test")
 
 def hspec_library(name, src_strip_prefix, **kwargs):
+    """HSpec test library.
+
+    Args:
+      name: Rule name.
+      src_strip_prefix: Prefix to remove from source paths when constructing the module name.
+      **kwargs: Other arguments to pass to haskell_library.
+    """
     srcs = native.glob(["%s/*/**/*.*hs" % src_strip_prefix])
     relpath = "/".join([".." for _ in src_strip_prefix.split("/")])
     module_name = "ToxTestSuite"
@@ -29,6 +36,7 @@ def hspec_library(name, src_strip_prefix, **kwargs):
     )
 
 def hspec_test(name, **kwargs):
+    """HSpec test."""
     srcs = native.glob(["test/*/**/*.*hs"])
 
     native.genrule(

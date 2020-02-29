@@ -1,6 +1,9 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "regex-posix"
 
 cc_library(
     name = "cbits",
@@ -12,7 +15,7 @@ cc_library(
 )
 
 haskell_library(
-    name = "regex-posix",
+    name = PACKAGE_NAME,
     srcs = glob(["Text/**/*.*hs*"]),
     compiler_flags = [
         "-DSPLIT_BASE",
@@ -23,7 +26,7 @@ haskell_library(
         "-XMultiParamTypeClasses",
         "-XTypeSynonymInstances",
     ],
-    version = packages["regex-posix"].version,
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",

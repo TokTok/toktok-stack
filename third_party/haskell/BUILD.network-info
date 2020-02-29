@@ -1,6 +1,9 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library", "haskell_test")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library", "haskell_test")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "network-info"
 
 cc_library(
     name = "cbits",
@@ -15,10 +18,16 @@ cc_library(
 )
 
 haskell_library(
-    name = "network-info",
+    name = PACKAGE_NAME,
     srcs = ["src/Network/Info.hsc"],
+    compiler_flags = [
+        "-Wno-incomplete-patterns",
+        "-Wno-missing-methods",
+        "-Wno-name-shadowing",
+        "-Wno-unused-imports",
+    ],
     src_strip_prefix = "src",
-    version = packages["network-info"].version,
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",

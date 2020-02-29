@@ -1,244 +1,9 @@
 {-# LINE 1 "templates/GLR_Lib.hs" #-}
-{-# LINE 1 "templates/GLR_Lib.hs" #-}
-{-# LINE 1 "<built-in>" #-}
-{-# LINE 1 "<command-line>" #-}
-{-# LINE 9 "<command-line>" #-}
-# 1 "/usr/include/stdc-predef.h" 1 3 4
-
-# 17 "/usr/include/stdc-predef.h" 3 4
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{-# LINE 9 "<command-line>" #-}
-{-# LINE 1 "/ghc/lib/ghc-8.2.2/include/ghcversion.h" #-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{-# LINE 9 "<command-line>" #-}
-{-# LINE 1 "/tmp/ghc24951_0/ghc_2.h" #-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{-# LINE 9 "<command-line>" #-}
-{-# LINE 1 "templates/GLR_Lib.hs" #-}
 {-# LINE 1 "GLR_Lib.hs" #-}
 
 {-
    GLR_Lib.lhs
-   Id: GLR_Lib.lhs,v 1.5 2005/08/03 13:42:23 paulcc Exp 
+   $Id: GLR_Lib.lhs,v 1.5 2005/08/03 13:42:23 paulcc Exp $
 -}
 
  {-
@@ -305,7 +70,6 @@ fakeimport DATA
 
 
 
-{-# LINE 81 "templates/GLR_Lib.hs" #-}
 
 
 
@@ -313,7 +77,30 @@ fakeimport DATA
 
 
 
-{-# LINE 103 "templates/GLR_Lib.hs" #-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -406,8 +193,8 @@ doActions stks (tok:toks)
                              shiftAll tok_form stks'
                          | tok_form <- tok ]
         let new_stks = merge $ concat stkss
-        (happyTrace (unlines $ ("Stacks after R*/S pass" ++ show tok)                                 : map show new_stks) $ return ())
-
+        (happyTrace (unlines $ ("Stacks after R*/S pass" ++ show tok)
+                                : map show new_stks) $ return ())
         case new_stks of            -- did this token kill stacks?
           [] -> case toks of
                   []  -> return $ Right []         -- ok if no more tokens
@@ -435,11 +222,11 @@ reduceAll cyclic_names itok@(i,tok) (stk:stks)
                    ]
                    -- WARNING: incomplete if more than one Empty in a prod(!)
                    -- WARNING: can avoid by splitting emps/non-emps
-        (happyTrace (unlines $ ("Packing reds = " ++ show (length reds))                             : map show reds) $ return ())
-
+        (happyTrace (unlines $ ("Packing reds = " ++ show (length reds))
+                            : map show reds) $ return ())
         stks' <- foldM (pack i) stks reds
         let new_cyclic = [ m | (m,0,_) <- rs
-                             , (isTrue# (this_state ==#  goto this_state m))
+                             , (this_state ==# goto this_state m)
                              , m `notElem` cyclic_names ]
         reduceAll (cyclic_names ++ new_cyclic) itok $ merge stks'
 
@@ -462,35 +249,35 @@ pack
  :: Int -> [FStack] -> (Branch, FStack, GSymbol) -> PM [FStack]
 
 pack e_i stks (fids,stk,m)
- | (isTrue# (st <#  0#))
+ | (st <# 0#)
     = return stks
  | otherwise
     = do
        let s_i = endpoint stk
        let key = (s_i,e_i,m)
-       (happyTrace ( unlines                    $ ("Pack at " ++ show key ++ " " ++ show fids)                    : ("**" ++ show stk)                    : map show stks) $ return ())
-
-
-
+       (happyTrace (unlines
+                   $ ("Pack at " ++ show key ++ " " ++ show fids)
+                   : ("**" ++ show stk)
+                   : map show stks) $ return ())
 
        duplicate <- addBranch key fids
 
        let stack_matches = [ s | s <- stks
-                                , (isTrue# (top s ==#  st))
+                                , (top s ==# st)
                                , let (k,s') = case ts_tail s of x:_ -> x
                                 , stk == s'
                                 , k == key
                                 ]  -- look for first obvious packing site
        let appears_in = not $ null stack_matches
 
-       (happyTrace ( unlines                    $ ("Stack Matches: " ++ show (length stack_matches))                    : map show stack_matches) $ return ())
-
-
-       (happyTrace ( if not (duplicate && appears_in) then "" else                      unlines                    $ ("DROP:" ++ show ((I# (st)),key) ++ " -- " ++ show stk)                    : "*****"                    : map show stks) $ return ())
-
-
-
-
+       (happyTrace (unlines
+                   $ ("Stack Matches: " ++ show (length stack_matches))
+                   : map show stack_matches) $ return ())
+       (happyTrace (if not (duplicate && appears_in) then "" else
+                     unlines
+                   $ ("DROP:" ++ show ((I# (st)),key) ++ " -- " ++ show stk)
+                   : "*****"
+                   : map show stks) $ return ())
 
        if duplicate && appears_in
         then return stks       -- because already there
@@ -576,10 +363,10 @@ instance Show a => Show (TStack a) where
 -- id uniquely identifies a stack
 
 instance Eq (TStack a) where
-      s1 == s2 = (isTrue# (ts_id s1 ==#  ts_id s2))
+      s1 == s2 = (ts_id s1 ==# ts_id s2)
 
 --instance Ord (TStack a) where
---      s1 `compare` s2 = (I# (ts_id s1)) `compare` (I# (ts_id s2))
+--      s1 `compare` s2 = IBOX(ts_id s1) `compare` IBOX(ts_id s2)
 
 ---
 -- Nothing special done for insertion
@@ -600,7 +387,7 @@ push x@(s_i,e_i,m) st (I# (id)) stk
  = TS st id stoup [(x,stk)]
    where
         -- only fill stoup for cyclic states that don't consume input
-       stoup | s_i == e_i && (isTrue# (st ==#  goto st m)) = Just x
+       stoup | s_i == e_i && (st ==# goto st m) = Just x
              | otherwise                        = Nothing
 
 ---
@@ -633,9 +420,9 @@ merge :: (Eq a, Show a) => [TStack a] -> [TStack a]
 merge stks
  = [ TS st id ss (nub ch)
    | (I# (st)) <- nub (map (\s -> (I# (top s))) stks)
-   , let ch  = concat  [ x | TS st2 _ _ x <- stks, (isTrue# (st ==# st2)) ]
-         ss  = mkss    [ s | TS st2 _ s _ <- stks, (isTrue# (st ==# st2)) ]
-         (! (I# (id))) = head [ (I# (i)) | TS st2 i _ _ <- stks, (isTrue# (st ==# st2)) ]
+   , let ch  = concat  [ x | TS st2 _ _ x <- stks, (st ==# st2) ]
+         ss  = mkss    [ s | TS st2 _ s _ <- stks, (st ==# st2) ]
+         (! (I# (id))) = head [ (I# (i)) | TS st2 i _ _ <- stks, (st ==# st2) ]
           -- reuse of id is ok, since merge discards old stacks
    ]
    where

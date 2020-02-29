@@ -1,8 +1,10 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 load("@toktok//third_party/haskell/alex:build_defs.bzl", "alex_lexer")
 load("@toktok//third_party/haskell/happy:build_defs.bzl", "happy_parser")
+
+PACKAGE_NAME = "language-c"
 
 alex_lexer(
     name = "Lexer",
@@ -15,7 +17,7 @@ happy_parser(
 )
 
 haskell_library(
-    name = "language-c",
+    name = PACKAGE_NAME,
     srcs = glob([
         "src/**/*.hs*",
     ]) + [
@@ -23,10 +25,13 @@ haskell_library(
         ":Lexer",
     ],
     compiler_flags = [
+        "-Wno-incomplete-patterns",
+        "-Wno-unused-matches",
         "-XDeriveGeneric",
+        "-Wno-missing-home-modules",
     ],
     src_strip_prefix = "src",
-    version = packages["language-c"].version,
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         hazel_library("array"),

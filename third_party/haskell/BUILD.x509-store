@@ -1,11 +1,14 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
+PACKAGE_NAME = "x509-store"
+
 haskell_library(
-    name = "x509-store",
+    name = PACKAGE_NAME,
     srcs = glob(["Data/**/*.hs"]),
-    version = packages["x509-store"].version,
+    compiler_flags = ["-Wno-unused-imports"],
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         hazel_library("asn1-encoding"),

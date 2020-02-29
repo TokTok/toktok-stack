@@ -1,6 +1,9 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "lifted-base"
 
 cc_library(
     name = "cbits",
@@ -9,7 +12,7 @@ cc_library(
 )
 
 haskell_library(
-    name = "lifted-base",
+    name = PACKAGE_NAME,
     srcs = glob(
         [
             "Control/**/*.*hs",
@@ -19,7 +22,7 @@ haskell_library(
         ],
         exclude = ["Control/Concurrent/SampleVar/Lifted.hs"],
     ),
-    version = packages["lifted-base"].version,
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",

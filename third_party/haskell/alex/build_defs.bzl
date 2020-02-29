@@ -1,3 +1,7 @@
+"""Haskell Alex lexer generator."""
+
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_binary")
+
 def alex_lexer(name, src):
     out = src[:src.rindex(".")] + ".hs"
 
@@ -9,10 +13,11 @@ def alex_lexer(name, src):
         ],
         outs = [out],
         cmd = " ".join([
-            "$(location @haskell_alex//:alex)",
-            "-t external/toktok/third_party/haskell/alex/templates",
+            "$(location %s)" % hazel_binary("alex"),
+            "--ghc",
+            "-t third_party/haskell/alex/templates",
             "-o $(location %s)" % out,
             "$(location %s)" % src,
         ]),
-        tools = ["@haskell_alex//:alex"],
+        tools = [hazel_binary("alex")],
     )

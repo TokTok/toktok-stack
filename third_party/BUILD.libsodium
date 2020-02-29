@@ -1,9 +1,8 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
 genrule(
     name = "regen_version",
-    srcs = glob([
-        "build-aux/*",
-        "**/Makefile.in",
-    ]) + [
+    srcs = [
         "configure",
         "libsodium.pc.in",
         "libsodium-uninstalled.pc.in",

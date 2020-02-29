@@ -1,19 +1,31 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
+PACKAGE_NAME = "QuickCheck"
+
 haskell_library(
-    name = "QuickCheck",
+    name = PACKAGE_NAME,
     srcs = glob(["Test/**/*.*hs"]),
-    version = packages["QuickCheck"].version,
+    compiler_flags = [
+        "-Wno-incomplete-patterns",
+        "-Wno-missing-signatures",
+        "-Wno-name-shadowing",
+        "-Wno-trustworthy-safe",
+        "-Wno-type-defaults",
+        "-Wno-unused-do-bind",
+        "-Wno-unused-imports",
+        "-Wno-unused-matches",
+    ],
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         hazel_library("base"),
         hazel_library("containers"),
         hazel_library("deepseq"),
         hazel_library("random"),
+        hazel_library("splitmix"),
         hazel_library("template-haskell"),
-        hazel_library("tf-random"),
         hazel_library("transformers"),
     ],
 )

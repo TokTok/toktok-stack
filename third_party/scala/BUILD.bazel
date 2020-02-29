@@ -1,6 +1,6 @@
-package(default_visibility = ["//visibility:public"])
-
 load("@io_bazel_rules_scala//scala:scala_import.bzl", "scala_import")
+
+package(default_visibility = ["//visibility:public"])
 
 licenses(["notice"])
 

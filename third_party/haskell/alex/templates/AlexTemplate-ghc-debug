@@ -1,239 +1,4 @@
 {-# LINE 1 "templates/GenericTemplate.hs" #-}
-{-# LINE 1 "templates/GenericTemplate.hs" #-}
-{-# LINE 1 "<built-in>" #-}
-{-# LINE 1 "<command-line>" #-}
-{-# LINE 9 "<command-line>" #-}
-# 1 "/usr/include/stdc-predef.h" 1 3 4
-
-# 17 "/usr/include/stdc-predef.h" 3 4
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{-# LINE 9 "<command-line>" #-}
-{-# LINE 1 "/ghc/lib/ghc-8.2.2/include/ghcversion.h" #-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{-# LINE 9 "<command-line>" #-}
-{-# LINE 1 "/tmp/ghc18104_0/ghc_2.h" #-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{-# LINE 9 "<command-line>" #-}
-{-# LINE 1 "templates/GenericTemplate.hs" #-}
 -- -----------------------------------------------------------------------------
 -- ALEX TEMPLATE
 --
@@ -243,7 +8,17 @@
 -- -----------------------------------------------------------------------------
 -- INTERNALS and main scanner engine
 
-{-# LINE 21 "templates/GenericTemplate.hs" #-}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -257,7 +32,23 @@
 #define GTE(n,m) (n >=# m)
 #define EQ(n,m) (n ==# m)
 #endif
-{-# LINE 51 "templates/GenericTemplate.hs" #-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 data AlexAddr = AlexA# Addr#
@@ -443,3 +234,4 @@ alexRightContext (I# (sc)) user__ _ _ input__ =
         -- TODO: there's no need to find the longest
         -- match when checking the right context, just
         -- the first match will do.
+

@@ -1,12 +1,14 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "http-client"
 
 haskell_library(
     name = "http-client-publicsuffixlist",
     srcs = glob(["publicsuffixlist/**/*.*hs"]),
     src_strip_prefix = "publicsuffixlist",
-    version = packages["http-client"].version,
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         hazel_library("base"),
@@ -18,12 +20,13 @@ haskell_library(
 )
 
 haskell_library(
-    name = "http-client",
+    name = PACKAGE_NAME,
     srcs = glob([
         "Data/**/*.*hs",
         "Network/**/*.*hs",
     ]),
-    version = packages["http-client"].version,
+    compiler_flags = ["-Wno-unused-imports"],
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         ":http-client-publicsuffixlist",

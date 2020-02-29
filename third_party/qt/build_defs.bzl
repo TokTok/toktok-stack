@@ -9,6 +9,8 @@ This file defines three macros:
 # Qt UI compiler rule.
 # =========================================================
 
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+
 def _qt_uic_impl(ctx):
     uic = ctx.executable._uic
 
@@ -206,18 +208,16 @@ qt_moc = rule(
 # Qt test with MOC for the test .cpp file.
 # =========================================================
 
-def qt_test(name, src, deps, copts=[], size=None):
+def qt_test(name, src, deps, copts = [], size = None):
     qt_moc(
         name = "%s_moc_src" % name,
         srcs = [src],
     )
-
-    native.cc_library(
+    cc_library(
         name = "%s_moc" % name,
         hdrs = [":%s_moc_src" % name],
     )
-
-    native.cc_test(
+    cc_test(
         name = name,
         size = size,
         srcs = [src],
@@ -232,17 +232,17 @@ def qt_test(name, src, deps, copts=[], size=None):
 # =========================================================
 
 def qt_import(name, module):
-    native.objc_framework(
-        name = "Qt%s_framework" % module,
-        framework_imports = native.glob(["Frameworks/Qt%s.framework/**" % module]),
-    )
+    #   native.objc_framework(
+    #       name = "Qt%s_framework" % module,
+    #       framework_imports = native.glob(["Frameworks/Qt%s.framework/**" % module]),
+    #   )
+    #
+    #   native.objc_library(
+    #       name = "Qt%s_osx" % module,
+    #       deps = ["Qt%s_framework" % module],
+    #   )
 
-    native.objc_library(
-        name = "Qt%s_osx" % module,
-        deps = ["Qt%s_framework" % module],
-    )
-
-    native.cc_library(
+    cc_library(
         name = "Qt%s_elf" % module,
         srcs = [
             "lib/libQt5%s.so.5" % module,
@@ -254,8 +254,7 @@ def qt_import(name, module):
             "-lQt5%s" % module,
         ],
     )
-
-    native.cc_library(
+    cc_library(
         name = name,
         hdrs = native.glob(["include/Qt%s/**" % module]),
         includes = [

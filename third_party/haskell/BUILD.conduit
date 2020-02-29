@@ -1,6 +1,9 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "conduit"
 
 cc_library(
     name = "cbits",
@@ -8,23 +11,31 @@ cc_library(
 )
 
 haskell_library(
-    name = "conduit",
-    srcs = glob(["Data/**/*.*hs"]),
-    version = packages["conduit"].version,
+    name = PACKAGE_NAME,
+    srcs = glob(["src/**/*.*hs"]),
+    compiler_flags = [
+        "-Wno-deprecations",
+        "-Wno-inline-rule-shadowing",
+        "-Wno-unused-imports",
+    ],
+    src_strip_prefix = "src",
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
         hazel_library("base"),
+        hazel_library("bytestring"),
+        hazel_library("directory"),
         hazel_library("exceptions"),
-        hazel_library("lifted-base"),
-        hazel_library("mmorph"),
-        hazel_library("monad-control"),
+        hazel_library("filepath"),
+        hazel_library("mono-traversable"),
         hazel_library("mtl"),
         hazel_library("primitive"),
         hazel_library("resourcet"),
-        hazel_library("semigroups"),
+        hazel_library("text"),
         hazel_library("transformers"),
-        hazel_library("transformers-base"),
+        hazel_library("unix"),
         hazel_library("unliftio-core"),
+        hazel_library("vector"),
     ],
 )

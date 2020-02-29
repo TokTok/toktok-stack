@@ -1,3 +1,5 @@
+"""List of all the XCB protocols."""
+
 xcb_protos = [
     "bigreq",
     "composite",

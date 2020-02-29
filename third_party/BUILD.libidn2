@@ -1,3 +1,5 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
 genrule(
     name = "regen_config",
     srcs = glob(
@@ -51,6 +53,7 @@ cc_library(
         "unistring/c-strcase.h",
         "unistring/c-strcasecmp.c",
         "unistring/c-strcaseeq.h",
+        "unistring/c-strncasecmp.c",
         "unistring/localcharset.c",
         "unistring/localcharset.h",
         "unistring/malloca.c",
@@ -121,10 +124,10 @@ cc_library(
         "unistring/unused-parameter.h",
     ],
     copts = [
-        "-Iexternal/toktok/third_party/libidn2",
         "-I$(GENDIR)/external/libidn2/unistring",
         "-Iexternal/libidn2/unistring",
         "-I$(GENDIR)/external/libidn2",
+        "-Ithird_party/libidn2",
         "-Wno-static-in-inline",
         # We must always optimise this program, because otherwise GCC won't
         # inline c_tolower but also not emit it out of line, resulting in
@@ -140,7 +143,7 @@ cc_library(
         "gl/strverscmp.c",
     ],
     copts = [
-        "-Iexternal/toktok/third_party/libidn2",
+        "-Ithird_party/libidn2",
     ],
     deps = ["@toktok//third_party/libidn2:config"],
 )
@@ -172,7 +175,7 @@ cc_library(
     copts = [
         "-Iexternal/libidn2/gl",
         "-Iexternal/libidn2/unistring",
-        "-Iexternal/toktok/third_party/libidn2",
+        "-Ithird_party/libidn2",
         "-I$(GENDIR)/external/libidn2",
         "-I$(GENDIR)/external/libidn2/gl",
         "-I$(GENDIR)/external/libidn2/unistring",

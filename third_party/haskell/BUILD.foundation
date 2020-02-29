@@ -1,6 +1,9 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "foundation"
 
 cc_library(
     name = "cbits",
@@ -8,11 +11,11 @@ cc_library(
     hdrs = glob(["cbits/*.h"]),
     copts = ["-DFOUNDATION_BOUNDS_CHECK"],
     includes = ["cbits"],
-    deps = ["@io_tweag_rules_haskell_ghc_linux_amd64//:threaded-rts"],
+    deps = [hazel_library("rts")],
 )
 
 haskell_library(
-    name = "foundation",
+    name = PACKAGE_NAME,
     srcs = ["Foundation.hs"] + glob(
         ["Foundation/**/*.hs*"],
         exclude = [
@@ -35,7 +38,7 @@ haskell_library(
         "-XRebindableSyntax",
         "-XTypeFamilies",
     ],
-    version = packages["foundation"].version,
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",

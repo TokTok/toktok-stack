@@ -1,6 +1,9 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library", "hazel_workspace")
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "free"
 
 cc_library(
     name = "cbits",
@@ -8,14 +11,14 @@ cc_library(
 )
 
 haskell_library(
-    name = "free",
+    name = PACKAGE_NAME,
     srcs = glob(["src/**/*.*hs"]),
     compiler_flags = [
         "-XCPP",
-        "-Iexternal/haskell_free/include",
+        "-Iexternal/%s/include" % hazel_workspace(PACKAGE_NAME),
     ],
     src_strip_prefix = "src",
-    version = packages["free"].version,
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",

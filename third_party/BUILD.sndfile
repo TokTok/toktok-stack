@@ -1,3 +1,5 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
 genrule(
     name = "autoreconf",
     srcs = glob([
@@ -35,9 +37,9 @@ cc_library(
         "-Iexternal/sndfile/src",
         "-w",  # disable all warnings
     ] + select({
-        "@toktok//tools/config:freebsd": ["-Iexternal/toktok/third_party/sndfile/freebsd"],
-        "@toktok//tools/config:linux": ["-Iexternal/toktok/third_party/sndfile/linux"],
-        "@toktok//tools/config:osx": ["-Iexternal/toktok/third_party/sndfile/osx"],
+        "@toktok//tools/config:freebsd": ["-Ithird_party/sndfile/freebsd"],
+        "@toktok//tools/config:linux": ["-Ithird_party/sndfile/linux"],
+        "@toktok//tools/config:osx": ["-Ithird_party/sndfile/osx"],
     }),
     visibility = ["//visibility:public"],
     deps = [

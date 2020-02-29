@@ -1,0 +1,76 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings FATAL => 'all';
+use utf8;
+
+my %build_files;
+for my $file (<third_party/haskell/BUILD.*>) {
+   $file =~ s/.*BUILD.(.*)/$1/;
+   $build_files{lc $file} = $file;
+}
+
+sub build_file {
+   my ($pkg) = @_;
+   $pkg =~ s/_/-/g;
+   "third_party/haskell/BUILD.$build_files{$pkg}"
+}
+
+sub build {
+   print "================\n";
+   print "Building...\n";
+   my @warnings;
+   open my $fh, 'bazel build //... -k 2>&1 |' or die "bazel: $!";
+   while (my $line = <$fh>) {
+      print $line;
+      if ($line =~ m/error:/) {
+         chomp $line;
+         push @warnings, $line;
+      }
+   }
+
+   my %packages;
+   for my $warning (grep { @$_ } map { [m/external\/haskell_(.*?)_+\d+\/.*-Werror=([a-z0-9-]+)/] } @warnings) {
+      $packages{$warning->[0]}{$warning->[1]} = 1;
+   }
+   $packages{$_} = [keys %{$packages{$_}}] for keys %packages;
+
+   \%packages
+}
+
+sub run {
+   system "echo", @_;
+   system @_;
+   die "failed to execute $_[0]" if $?
+}
+
+sub update_build_files {
+   my ($packages) = @_;
+
+   run "mkdir", "-p", "buildozer-work";
+   for my $pkg (keys %$packages) {
+      my $BUILD = build_file $pkg;
+      die $BUILD unless -f $BUILD;
+      run "cp", $BUILD, "buildozer-work/BUILD.bazel";
+      run "sed", "-i", "-e", 's/name = PACKAGE_NAME,/name = "buildozer-work",/', "buildozer-work/BUILD.bazel";
+      for my $flag (@{$packages->{$pkg}}) {
+         run "buildozer", "add compiler_flags -Wno-$flag", "//buildozer-work";
+      }
+      run "sed", "-i", "-e", 's/name = "buildozer-work",/name = PACKAGE_NAME,/', "buildozer-work/BUILD.bazel";
+      run "mv", "buildozer-work/BUILD.bazel", $BUILD;
+   }
+   run "rmdir", "buildozer-work";
+}
+
+my $packages;
+do {
+   $packages = build;
+
+   use Data::Dumper;
+   $Data::Dumper::Indent = 1;
+   $Data::Dumper::Sortkeys = 1;
+   $Data::Dumper::Terse = 1;
+   print Dumper $packages;
+
+   update_build_files $packages;
+} while %$packages;

@@ -4,8 +4,10 @@ This to ensure completeness of linkopts and dependencies for libraries. The
 empty binary will fail to link if there are any undefined references.
 """
 
+load("@rules_cc//cc:defs.bzl", "cc_binary", _cc_library = "cc_library")
+
 def cc_library(name, hdrs = [], srcs = [], linkopts = [], visibility = None, **kwargs):
-    native.cc_library(
+    _cc_library(
         name = name,
         srcs = srcs,
         hdrs = hdrs,
@@ -19,8 +21,7 @@ def cc_library(name, hdrs = [], srcs = [], linkopts = [], visibility = None, **k
         outs = ["%s_empty_main.c" % name],
         cmd = "echo 'int main(void) { return 0; }' > $@",
     )
-
-    native.cc_binary(
+    cc_binary(
         name = "%s_bin" % name,
         srcs = hdrs + srcs + [":%s_empty_main.c" % name],
         linkstatic = True,

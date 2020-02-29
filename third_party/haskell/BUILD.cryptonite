@@ -1,6 +1,9 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library", "hazel_workspace")
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "cryptonite"
 
 cc_library(
     name = "cbits",
@@ -55,14 +58,15 @@ cc_library(
     ],
     copts = [
         "-Dasm=__asm__",
-        "-Iexternal/haskell_cryptonite/cbits",
-        "-Iexternal/haskell_cryptonite/cbits/ed25519",
-        "-Iexternal/haskell_cryptonite/cbits/decaf/include",
-        "-Iexternal/haskell_cryptonite/cbits/decaf/p448",
-        "-Iexternal/haskell_cryptonite/cbits/decaf/include/arch_ref64",
-        "-Iexternal/haskell_cryptonite/cbits/decaf/p448/arch_ref64",
-        "-Iexternal/haskell_cryptonite/cbits/blake2/ref",
-        "-Iexternal/haskell_cryptonite/cbits/argon2",
+        "-Iexternal/%s/cbits" % hazel_workspace(PACKAGE_NAME),
+        "-Iexternal/%s/cbits" % hazel_workspace(PACKAGE_NAME),
+        "-Iexternal/%s/cbits/ed25519" % hazel_workspace(PACKAGE_NAME),
+        "-Iexternal/%s/cbits/decaf/include" % hazel_workspace(PACKAGE_NAME),
+        "-Iexternal/%s/cbits/decaf/p448" % hazel_workspace(PACKAGE_NAME),
+        "-Iexternal/%s/cbits/decaf/include/arch_ref64" % hazel_workspace(PACKAGE_NAME),
+        "-Iexternal/%s/cbits/decaf/p448/arch_ref64" % hazel_workspace(PACKAGE_NAME),
+        "-Iexternal/%s/cbits/blake2/ref" % hazel_workspace(PACKAGE_NAME),
+        "-Iexternal/%s/cbits/argon2" % hazel_workspace(PACKAGE_NAME),
         "-Wno-strict-aliasing",
         "-Wno-unused-variable",
     ],
@@ -76,7 +80,7 @@ cc_library(
 )
 
 haskell_library(
-    name = "cryptonite",
+    name = PACKAGE_NAME,
     srcs = glob(
         ["Crypto/**/*.hs*"],
         exclude = ["Crypto/Random/Entropy/Windows.hs"],
@@ -89,15 +93,18 @@ haskell_library(
         "-DWITH_AESNI",
         "-DWITH_ASSERT_ALIGNMENT",
         "-DWITH_PCLMUL",
+        "-Wno-unused-imports",
     ],
-    version = packages["cryptonite"].version,
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
         hazel_library("base"),
         hazel_library("basement"),
         hazel_library("bytestring"),
+        hazel_library("deepseq"),
         hazel_library("ghc-prim"),
+        hazel_library("integer-gmp"),
         hazel_library("memory"),
     ],
 )

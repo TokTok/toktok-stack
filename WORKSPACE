@@ -7,8 +7,50 @@ load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
 github_archive(
     name = "bazel_toolchains",
     repo = "bazelbuild/bazel-toolchains",
-    sha256 = "75a57078391a46409cd612fa2eaaf9086bc53a29ac0ef83d8063096cc9d8f0e3",
-    version = "e74ab3b",
+    sha256 = "3c1940c409ccbc6f5512993f0f95ff81fadd193cbd2a8a061e18d9baaf2ca65b",
+    version = "2.2.0",
+)
+
+github_archive(
+    name = "rules_android",
+    repo = "bazelbuild/rules_android",
+    sha256 = "cd06d15dd8bb59926e4d65f9003bfc20f9da4b2519985c27e190cddc8b7a7806",
+    version = "v0.1.1",
+)
+
+github_archive(
+    name = "rules_cc",
+    repo = "bazelbuild/rules_cc",
+    sha256 = "06910242c6d47c5719efd5789cf34dac393034dc0fe4c73f1ed3aac739ffabdc",
+    version = "be6ea43fc8b22f1c44f0ed9e9ab723dea1955238",
+)
+
+github_archive(
+    name = "rules_java",
+    repo = "bazelbuild/rules_java",
+    sha256 = "7f4772b0ee2b46a042870c844e9c208e8a0960a953a079236a4bbd785e471275",
+    version = "9eb38ebffbaf4414fa3d2292b28e604a256dd5a5",
+)
+
+github_archive(
+    name = "rules_proto",
+    repo = "bazelbuild/rules_proto",
+    sha256 = "48a3382a47e9e9dca4ec0849c57fd4b57919a93a00d8ffb7e4c8d6715d1acc9d",
+    version = "f6b8d89b90a7956f6782a4a3609b2f0eee3ce965",
+)
+
+github_archive(
+    name = "rules_python",
+    repo = "bazelbuild/rules_python",
+    sha256 = "d3e40ca3b7e00b72d2b1585e0b3396bcce50f0fc692e2b7c91d8b0dc471e3eaf",
+    version = "748aa53d7701e71101dfd15d800e100f6ff8e5d1",
+)
+
+github_archive(
+    name = "bazel_skylib",
+    repo = "bazelbuild/bazel-skylib",
+    sha256 = "d786769a4c9bfd9d5fe7933cf70d8c9da506a49c9f24a8471d64de2ac529274a",
+    version = "6970e21d290ceaa36502d0c94533b26e5ec18c0b",
 )
 
 # Protobuf
@@ -20,8 +62,8 @@ github_archive(
 github_archive(
     name = "com_google_protobuf",
     repo = "protocolbuffers/protobuf",
-    sha256 = "cca676364ea5900373d701cf1991c9a571dab3c14f0da72dc4085d15f91d1fc2",
-    version = "3a3956e8a258784461270961c6577341356bce52",
+    sha256 = "9748c0d90e54ea09e5e75fb7fac16edce15d2028d4356f32211cfa3c0e956564",
+    version = "v3.11.4",
 )
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
@@ -32,38 +74,53 @@ protobuf_deps()
 # =========================================================
 
 github_archive(
-    name = "io_tweag_rules_nixpkgs",
+    name = "rules_nixpkgs",
     repo = "tweag/rules_nixpkgs",
     sha256 = "3a2d245e60d41c139cf5d1bb6f5a358c0c8a4d26325285af8ed092b078fb6b1d",
     version = "v0.5.2",
 )
 
 github_archive(
-    name = "io_tweag_rules_haskell",
-    repo = "tweag/rules_haskell",
-    sha256 = "41ae5d155e297a42a740a3a533ffa89afaf4f1f40d3261912b62c466f4ff2364",
-    version = "6495f68985a27884a941fe1f3c824d8f35887534",
+    name = "rules_sh",
+    repo = "tweag/rules_sh",
+    sha256 = "93fb94bec4228971343b1ecbb303450ff323f52c768d60eeb3a445acfa6328ff",
+    version = "0c274ad480ed3eade49250abd04ff71655a07820",
 )
 
-load("@io_tweag_rules_haskell//haskell:ghc_bindist.bzl", "haskell_register_ghc_bindists")
-load("@io_tweag_rules_haskell//haskell:repositories.bzl", "haskell_repositories")
-load("//third_party/haskell:haskell.bzl", "new_cabal_package")
+github_archive(
+    name = "rules_haskell",
+    repo = "tweag/rules_haskell",
+    sha256 = "b72c6f92b4cac0af92d91f35f4b392874805e07d412abaeeefc63e5b9b29cdb5",
+    version = "827d654235189242b0a9d45df8bc8754469b4579",
+)
+
+load("@rules_haskell//haskell:ghc_bindist.bzl", "haskell_register_ghc_bindists")
+load("@rules_haskell//haskell:repositories.bzl", "haskell_repositories")
 
 haskell_repositories()
 
 # This repository rule creates @ghc repository.
 haskell_register_ghc_bindists(
-    version = "8.4.4",
+    compiler_flags = [
+        "-Wall",
+        "-Werror",
+        "-optP=-Wno-trigraphs",
+        "-fdiagnostics-color=always",
+    ],
+    version = "8.6.5",
 )
 
 github_archive(
     name = "ai_formation_hazel",
     repo = "FormationAI/hazel",
-    sha256 = "605c83e0bf54c0517413096403ccb7799d6278fdeffdbe1555d11265e8165b17",
-    version = "ecf380e97cc2e2114f359c89e4d65cd9c6b0ca22",
+    sha256 = "db5466c442c228cffab14c51daff46a7861fdea3ef62be3e80ccd4b8dc60ab3e",
+    version = "fe4b139751951f9489434f3f26e96598a1afebe1",
 )
 
-load("@ai_formation_hazel//:hazel.bzl", "hazel_repositories")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_workspace")
+
+#load("@ai_formation_hazel//:hazel.bzl", "hazel_repositories")
+load("//third_party/haskell:haskell.bzl", "new_cabal_package")
 load("//third_party/haskell:packages.bzl", "core_packages", "packages")
 
 # TODO(iphydf): Enable this once hazel is good enough to do automatically what
@@ -74,7 +131,7 @@ load("//third_party/haskell:packages.bzl", "core_packages", "packages")
 #)
 
 [new_local_repository(
-    name = "haskell_%s" % pkg.replace("-", "_"),
+    name = hazel_workspace(pkg),
     build_file = "third_party/haskell/BUILD.bazel",
     path = "/usr",
 ) for pkg in core_packages.keys()]
@@ -107,18 +164,18 @@ skydoc_repositories()
 github_archive(
     name = "io_bazel_rules_go",
     repo = "bazelbuild/rules_go",
-    sha256 = "869ce867b583acccc8b9943688cd4b50818ff81926063e2e342fc7c5892f0638",
-    version = "0.16.5",
+    sha256 = "9fbaffc63aa802496b0de6ed708fce8fb4c34b27fa7fab6cfc64eeae900c19a7",
+    version = "v0.22.1",
 )
 
 github_archive(
     name = "bazel_gazelle",
     repo = "bazelbuild/bazel-gazelle",
-    sha256 = "a5b329e3d929247279005ba3cfda0c092a220085c0ed0505de1dcdd68dfc53bc",
-    version = "0.16.0",
+    sha256 = "8d2880d411e8461bab87c8bd239bf1b7ac2301f1af49f2b581ecc5cdc24b7206",
+    version = "v0.20.0",
 )
 
-load("@io_bazel_rules_go//go:def.bzl", "go_register_toolchains", "go_rules_dependencies")
+load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 
 go_rules_dependencies()
@@ -146,9 +203,9 @@ go_repository(
 )
 
 go_repository(
-    name = "org_bitbucket_kardianos_osext",
-    commit = "tip",
-    importpath = "bitbucket.org/kardianos/osext",
+    name = "com_github_kardianos_osext",
+    commit = "master",
+    importpath = "github.com/kardianos/osext",
 )
 
 # C/C++ dependencies
@@ -187,34 +244,34 @@ new_local_repository(
 http_archive(
     name = "boringssl",
     #sha256 = "39b512b2a7afb87bb054e16031f9142d5ca9bd1ceebed864b0978c264e11566b",
-    urls = ["https://boringssl.googlesource.com/boringssl/+archive/master-with-bazel.tar.gz"],
+    urls = ["https://boringssl.googlesource.com/boringssl/+archive/refs/heads/master-with-bazel.tar.gz"],
 )
 
-new_http_archive(
+http_archive(
     name = "bzip2",
-    build_file = "third_party/BUILD.bzip2",
-    sha256 = "d70a9ccd8bdf47e302d96c69fecd54925f45d9c7b966bb4ef5f56b770960afa7",
-    strip_prefix = "bzip2-1.0.6",
-    urls = ["http://http.debian.net/debian/pool/main/b/bzip2/bzip2_1.0.6.orig.tar.bz2"],
+    build_file = "@toktok//third_party:BUILD.bzip2",
+    sha256 = "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269",
+    strip_prefix = "bzip2-1.0.8",
+    urls = ["http://http.debian.net/debian/pool/main/b/bzip2/bzip2_1.0.8.orig.tar.gz"],
 )
 
 github_archive(
     name = "com_google_googletest",
     repo = "google/googletest",
-    sha256 = "55fc63da7baa58ced8165db0edd2d0d231414871ea1aa9d2c4a53f57849d26bf",
-    version = "827515f8a092050901d4eb9fdc1ddbb972f38442",
+    sha256 = "b18016e313e0a635b643371f8a33f9813103b600e894f71e8625f0b8215ae698",
+    version = "e588eb1ff9ff6598666279b737b27f983156ad85",
 )
 
 new_github_archive(
     name = "curl",
     repo = "curl/curl",
-    sha256 = "2b1cf218a1090556ad4437acbdca398e1d06bdac3091bc71b8a2a53a8026c776",
-    version = "curl-7_61_1",
+    sha256 = "3dc2825102eaed44b84613a98486aac8f924742d8fcf329bf2b49dc42c4ef93a",
+    version = "curl-7_69_1",
 )
 
-new_http_archive(
+http_archive(
     name = "ffmpeg",
-    build_file = "third_party/BUILD.ffmpeg",
+    build_file = "@toktok//third_party:BUILD.ffmpeg",
     sha256 = "eb0370bf223809b9ebb359fed5318f826ac038ce77933b3afd55ab1a0a21785a",
     strip_prefix = "ffmpeg-3.4.2",
     urls = ["http://ffmpeg.org/releases/ffmpeg-3.4.2.tar.bz2"],
@@ -227,20 +284,20 @@ new_github_archive(
     version = "v0.0.1",
 )
 
-new_http_archive(
+http_archive(
     name = "json",
-    build_file = "third_party/BUILD.json",
-    sha256 = "9588d63557333aaa485e92221ec38014a85a6134e7486fe3441e0541a5a89576",
+    build_file = "@toktok//third_party:BUILD.json",
+    sha256 = "87b5884741427220d3a33df1363ae0e8b898099fbc59f1c451113f6732891014",
     strip_prefix = "include",
-    urls = ["https://github.com/nlohmann/json/releases/download/v3.3.0/include.zip"],
+    urls = ["https://github.com/nlohmann/json/releases/download/v3.7.3/include.zip"],
 )
 
-new_http_archive(
+http_archive(
     name = "libcap",
-    build_file = "third_party/BUILD.libcap",
-    sha256 = "4ca80dc6f9f23d14747e4b619fd9784434c570e24a7346f326c692784ed83a86",
-    strip_prefix = "libcap-2.25",
-    urls = ["https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.25.tar.gz"],
+    build_file = "@toktok//third_party:BUILD.libcap",
+    sha256 = "db7de848064e656a0bb528dae6d53ff20c82e849d509cecd015a04d2fec8369d",
+    strip_prefix = "libcap-2.33",
+    urls = ["https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.33.tar.gz"],
 )
 
 new_github_archive(
@@ -253,30 +310,30 @@ new_github_archive(
 new_github_archive(
     name = "libexif",
     repo = "libexif/libexif",
-    sha256 = "a2b7f2f006c7f7e9aaef75b8846f9b4706efa41108a8138cb9299173c8829132",
-    version = "dbbef6a7e13b2c2cb530c77eb28fe272d9a5b665",
+    sha256 = "b43387df5a3866836c2a1bc141889af1d977c2e0c17e718b1b27fd1b002cb551",
+    version = "54b6f7fb6ae1d08602f9f7c44e0624c8344ee832",
 )
 
-new_http_archive(
+http_archive(
     name = "libidn2",
-    build_file = "third_party/BUILD.libidn2",
-    sha256 = "53f69170886f1fa6fa5b332439c7a77a7d22626a82ef17e2c1224858bb4ca2b8",
-    strip_prefix = "libidn2-2.0.5",
-    urls = ["https://ftp.gnu.org/gnu/libidn/libidn2-2.0.5.tar.gz"],
+    build_file = "@toktok//third_party:BUILD.libidn2",
+    sha256 = "e1cb1db3d2e249a6a3eb6f0946777c2e892d5c5dc7bd91c74394fc3a01cab8b5",
+    strip_prefix = "libidn2-2.3.0",
+    urls = ["https://ftp.gnu.org/gnu/libidn/libidn2-2.3.0.tar.gz"],
 )
 
 new_github_archive(
     name = "libqrencode",
     repo = "fukuchi/libqrencode",
-    sha256 = "8918db0e158a2f6cd26845b42c6d9d979d16907d65587b1a70c49b9df8dedd14",
-    version = "953a31e57b982f049e28dec652bdc2daa748d4c2",
+    sha256 = "ab58566242d0abc2c54592cc35eca00cf51cc91985f3c1fbd372fb2428a7195a",
+    version = "e5cbbafe5bd2052829176d05f2fac00ca9dbe4b8",
 )
 
 new_github_archive(
     name = "libsodium",
     repo = "jedisct1/libsodium",
-    sha256 = "bf00beb6dc5fba7703fb4ab4664c332e2b27f8a3a4269e0c7038b58df2cc9886",
-    version = "1.0.16",
+    sha256 = "1b72c0cdbc535ce42e14ac15e8fc7c089a3ee9ffe5183399fd77f0f3746ea794",
+    version = "1.0.18",
 )
 
 new_github_archive(
@@ -289,8 +346,8 @@ new_github_archive(
 new_github_archive(
     name = "libzmq",
     repo = "zeromq/libzmq",
-    sha256 = "2d94b93dc1477dacb4334b72efff000c27a01c2d1bb37433a9aae6156ee3150c",
-    version = "3863c869cc37c73d7e158118943650f6475867c1",
+    sha256 = "710cbbbd97cd8ab6831466d8d4f2e9f491efacf34c24c72183c4e6428e203300",
+    version = "v4.3.2",
 )
 
 new_github_archive(
@@ -300,17 +357,17 @@ new_github_archive(
     version = "83d5155f151ca47c9d6274ded1a7481f746b9a43",
 )
 
-new_http_archive(
+http_archive(
     name = "portaudio",
-    build_file = "third_party/BUILD.portaudio",
+    build_file = "@toktok//third_party:BUILD.portaudio",
     sha256 = "f5a21d7dcd6ee84397446fa1fa1a0675bb2e8a4a6dceb4305a8404698d8d1513",
     strip_prefix = "portaudio",
     urls = ["http://www.portaudio.com/archives/pa_stable_v190600_20161030.tgz"],
 )
 
-new_http_archive(
+http_archive(
     name = "pthread",
-    build_file = "third_party/BUILD.pthread",
+    build_file = "@toktok//third_party:BUILD.pthread",
     sha256 = "e6aca7aea8de33d9c8580bcb3a0ea3ec0a7ace4ba3f4e263ac7c7b66bc95fb4d",
     strip_prefix = "pthreads-w32-2-9-1-release",
     urls = ["https://sourceware.org/pub/pthreads-win32/pthreads-w32-2-9-1-release.tar.gz"],
@@ -322,81 +379,81 @@ new_local_repository(
     path = "/",
 )
 
-new_http_archive(
+http_archive(
     name = "sndfile",
-    build_file = "third_party/BUILD.sndfile",
+    build_file = "@toktok//third_party:BUILD.sndfile",
     sha256 = "1ff33929f042fa333aed1e8923aa628c3ee9e1eb85512686c55092d1e5a9dfa9",
     strip_prefix = "libsndfile-1.0.28",
     urls = ["http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28.tar.gz"],
 )
 
-new_http_archive(
+http_archive(
     name = "libxz",
-    build_file = "third_party/BUILD.libxz",
+    build_file = "@toktok//third_party:BUILD.libxz",
     sha256 = "b512f3b726d3b37b6dc4c8570e137b9311e7552e8ccbab4d39d47ce5f4177145",
     strip_prefix = "xz-5.2.4",
     urls = ["https://netix.dl.sourceforge.net/project/lzmautils/xz-5.2.4.tar.gz"],
 )
 
-new_http_archive(
+http_archive(
     name = "x11",
-    build_file = "third_party/BUILD.x11",
+    build_file = "@toktok//third_party:BUILD.x11",
     sha256 = "f62ab88c2a87b55e1dc338726a55bb6ed8048084fe6a3294a7ae324ca45159d1",
     strip_prefix = "libX11-1.6.7",
     urls = ["https://x.org/archive/individual/lib/libX11-1.6.7.tar.gz"],
 )
 
-new_http_archive(
+http_archive(
     name = "xau",
-    build_file = "third_party/BUILD.xau",
+    build_file = "@toktok//third_party:BUILD.xau",
     sha256 = "c343b4ef66d66a6b3e0e27aa46b37ad5cab0f11a5c565eafb4a1c7590bc71d7b",
     strip_prefix = "libXau-1.0.8",
     urls = ["https://x.org/archive/individual/lib/libXau-1.0.8.tar.gz"],
 )
 
-new_http_archive(
+http_archive(
     name = "xcb",
-    build_file = "third_party/BUILD.xcb",
+    build_file = "@toktok//third_party:BUILD.xcb",
     sha256 = "0bb3cfd46dbd90066bf4d7de3cad73ec1024c7325a4a0cbf5f4a0d4fa91155fb",
     strip_prefix = "libxcb-1.13",
     urls = ["https://xcb.freedesktop.org/dist/libxcb-1.13.tar.gz"],
 )
 
-new_http_archive(
+http_archive(
     name = "xcb_proto",
-    build_file = "third_party/BUILD.xcb_proto",
+    build_file = "@toktok//third_party:BUILD.xcb_proto",
     sha256 = "0698e8f596e4c0dbad71d3dc754d95eb0edbb42df5464e0f782621216fa33ba7",
     strip_prefix = "xcb-proto-1.13",
     urls = ["https://xcb.freedesktop.org/dist/xcb-proto-1.13.tar.gz"],
 )
 
-new_http_archive(
+http_archive(
     name = "xdmcp",
-    build_file = "third_party/BUILD.xdmcp",
+    build_file = "@toktok//third_party:BUILD.xdmcp",
     sha256 = "6f7c7e491a23035a26284d247779174dedc67e34e93cc3548b648ffdb6fc57c0",
     strip_prefix = "libXdmcp-1.1.2",
     urls = ["https://x.org/archive/individual/lib/libXdmcp-1.1.2.tar.gz"],
 )
 
-new_http_archive(
+http_archive(
     name = "xext",
-    build_file = "third_party/BUILD.xext",
+    build_file = "@toktok//third_party:BUILD.xext",
     sha256 = "eb0b88050491fef4716da4b06a4d92b4fc9e76f880d6310b2157df604342cfe5",
     strip_prefix = "libXext-1.3.3",
     urls = ["https://x.org/archive/individual/lib/libXext-1.3.3.tar.gz"],
 )
 
-new_http_archive(
+http_archive(
     name = "xss",
-    build_file = "third_party/BUILD.xss",
+    build_file = "@toktok//third_party:BUILD.xss",
     sha256 = "4f74e7e412144591d8e0616db27f433cfc9f45aae6669c6c4bb03e6bf9be809a",
     strip_prefix = "libXScrnSaver-1.2.3",
     urls = ["https://x.org/archive/individual/lib/libXScrnSaver-1.2.3.tar.gz"],
 )
 
-new_http_archive(
+http_archive(
     name = "xorgproto",
-    build_file = "third_party/BUILD.xorgproto",
+    build_file = "@toktok//third_party:BUILD.xorgproto",
     sha256 = "4b951e321ec089ce62ec8347e0fb512735763b315bf19a3467a75df7190435ff",
     strip_prefix = "xorgproto-xorgproto-2018.4",
     urls = ["https://gitlab.freedesktop.org/xorg/proto/xorgproto/-/archive/xorgproto-2018.4/xorgproto-xorgproto-2018.4.tar.gz"],
@@ -405,14 +462,23 @@ new_http_archive(
 new_github_archive(
     name = "yasm",
     repo = "yasm/yasm",
-    sha256 = "25370c6e88fb1a65a5caa1ba88e746dfbcd3eb1032de696d30e0dc00aa867312",
-    version = "35af9720e36df19382a57be26643b0d6bb48a363",
+    sha256 = "e8123135c857ca3a0511854e0709e04f345925ab196ee6c73112dc9fa8b41690",
+    version = "ea8f2393611025c5d32ddfe022dddff5a1a5c989",
 )
+
+# JUnit5
+# =========================================================
+
+load("//tools/workspace:junit5.bzl", "junit_jupiter_java_repositories", "junit_platform_java_repositories")
+
+junit_jupiter_java_repositories()
+
+junit_platform_java_repositories()
 
 # Maven dependencies
 # =========================================================
 
-load("@bazel_tools//tools/build_defs/repo:maven_rules.bzl", "maven_aar")
+load("@bazel_tools//tools/build_defs/repo:maven_rules.bzl", "maven_aar", "maven_jar")
 
 local_repository(
     name = "org_bytedeco_javacpp_presets_ffmpeg_platform",
@@ -550,13 +616,14 @@ maven_jar(
 github_archive(
     name = "io_bazel_rules_scala",
     repo = "bazelbuild/rules_scala",
-    sha256 = "60312e4ef03cdfea4db52b2c37a660f16e1a2afd665a872769925fcfd1509855",
-    version = "326b4ce252c36aeff2232e241ff4bfd8d6f6e071",
+    sha256 = "6be7a3e4a174590c069f502217a05437caf32ccaaea8ceb16d338f3af292c016",
+    version = "0bb4bcb38359707157b823c2b0e7ad2370c90d8d",
 )
 
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories")
 load("@io_bazel_rules_scala//scala:toolchains.bzl", "scala_register_toolchains")
 load("@io_bazel_rules_scala//scala_proto:scala_proto.bzl", "scala_proto_repositories")
+load("@io_bazel_rules_scala//scala_proto:toolchains.bzl", "scala_proto_register_enable_all_options_toolchain")
 
 scala_register_toolchains()
 
@@ -564,10 +631,13 @@ scala_repositories()
 
 scala_proto_repositories()
 
+scala_proto_register_enable_all_options_toolchain()
+
 git_repository(
     name = "gmaven_rules",
     commit = "c0571d8370ece2b5485fea8806cffdf8a9c8ff6b",
     remote = "https://github.com/aj-michael/gmaven_rules",
+    shallow_since = "1544654738 -0500",
 )
 
 load("@gmaven_rules//:gmaven.bzl", "gmaven_rules")
@@ -611,11 +681,6 @@ new_local_repository(
 load("//tools/workspace:python.bzl", "python_repository")
 
 python_repository(
-    name = "python2",
-    version = "2.7",
-)
-
-python_repository(
     name = "python3",
     version = "3.5",
 )
@@ -623,48 +688,64 @@ python_repository(
 # Node.js
 # =========================================================
 
-github_archive(
-    name = "org_pubref_rules_node",
-    # We use our own for now because pubref seems to no longer be maintained.
-    #repo = "pubref/rules_node",
-    repo = "iphydf/rules_node",
-    sha256 = "96102374ca25ba5112425f2a31acfb7848ff7d578a2911e14c631a8f99db71eb",
-    version = "3de4a224c6395a55ca80365b480f2494506e482c",
-)
+#github_archive(
+#    name = "rules_codeowners",
+#    repo = "zegl/rules_codeowners",
+#    #sha256 = "06910242c6d47c5719efd5789cf34dac393034dc0fe4c73f1ed3aac739ffabdc",
+#    version = "bdc2f987cd0e15ebfa9b76689a4c9a472730a6f0",
+#)
+#
+#github_archive(
+#    name = "build_bazel_rules_nodejs",
+#    repo = "bazelbuild/rules_nodejs",
+#    sha256 = "171bdbd8386576ed2f6a3f8aff87eeb048f963981870a3a8432be7d12cf5b2cc",
+#    version = "1.3.0",
+#)
+#
+#load("@build_bazel_rules_nodejs//:index.bzl", "yarn_install")
+#
+#yarn_install(
+#    name = "npm",
+#    package_json = "//js-toxcore-c:package.json",
+#    yarn_lock = "//js-toxcore-c:yarn.lock",
+#)
 
-load("@org_pubref_rules_node//node:rules.bzl", "node_repositories", "yarn_modules")
+#load("@npm//:install_bazel_dependencies.bzl", "install_bazel_dependencies")
+#install_bazel_dependencies()
 
-node_repositories()
-
-yarn_modules(
-    name = "yarn_modules",
-    install_tools = [
-        "sh",
-        "dirname",
-    ],
-    deps = {
-        "ansi-to-html": "0.6.4",
-        "async": "2.6.0",
-        "buffertools": "2.1.6",
-        "ffi": "2.2.0",
-        "firebase": "3.9.0",
-        "firepad": "1.4.0",
-        "grunt": "1.0.1",
-        "grunt-jsdoc": "2.2.1",
-        "grunt-shell": "2.1.0",
-        "ink-docstrap": "1.3.2",
-        "jsdoc": "3.5.5",
-        "mktemp": "0.4.0",
-        "mocha": "3.5.3",
-        "ref": "1.3.5",
-        "ref-array": "1.2.0",
-        "ref-struct": "1.1.0",
-        "should": "13.2.1",
-        "underscore": "1.8.3",
-    },
-)
-
-yarn_modules(
-    name = "mocha_modules",
-    deps = {"mocha": "3.5.3"},
-)
+#load("@org_pubref_rules_node//node:rules.bzl", "node_repositories", "yarn_modules")
+#
+#node_repositories()
+#
+#yarn_modules(
+#    name = "yarn_modules",
+#    install_tools = [
+#        "sh",
+#        "dirname",
+#    ],
+#    deps = {
+#        "ansi-to-html": "0.6.4",
+#        "async": "2.6.0",
+#        "buffertools": "2.1.6",
+#        "ffi": "2.2.0",
+#        "firebase": "3.9.0",
+#        "firepad": "1.4.0",
+#        "grunt": "1.0.1",
+#        "grunt-jsdoc": "2.2.1",
+#        "grunt-shell": "2.1.0",
+#        "ink-docstrap": "1.3.2",
+#        "jsdoc": "3.5.5",
+#        "mktemp": "0.4.0",
+#        "mocha": "3.5.3",
+#        "ref": "1.3.5",
+#        "ref-array": "1.2.0",
+#        "ref-struct": "1.1.0",
+#        "should": "13.2.1",
+#        "underscore": "1.8.3",
+#    },
+#)
+#
+#yarn_modules(
+#    name = "mocha_modules",
+#    deps = {"mocha": "3.5.3"},
+#)

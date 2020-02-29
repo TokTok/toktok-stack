@@ -1,6 +1,9 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "network"
 
 genrule(
     name = "config",
@@ -30,16 +33,17 @@ cc_library(
     srcs = glob(["cbits/*.c"]),
     hdrs = [
         "include/HsNet.h",
+        "include/HsNetDef.h",
         "include/HsNetworkConfig.h",
     ],
     copts = ["-Wno-strict-aliasing"],
     defines = ["_GNU_SOURCE"],
     includes = ["include"],
-    deps = ["@io_tweag_rules_haskell_ghc_linux_amd64//:threaded-rts"],
+    deps = [hazel_library("rts")],
 )
 
 haskell_library(
-    name = "network",
+    name = PACKAGE_NAME,
     srcs = [
         "Network.hs",
         "Network/BSD.hsc",
@@ -54,11 +58,13 @@ haskell_library(
         "Network/Socket/Types.hsc",
     ],
     compiler_flags = [
+        "-Wno-unused-imports",
+        "-Wno-unused-matches",
         "-XCPP",
         # XXX: Hack because for some reason it doesn't end up being defined.
         "-DCALLCONV=ccall",
     ],
-    version = packages["network"].version,
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",

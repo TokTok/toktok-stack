@@ -29,7 +29,8 @@ build --strict_filesets=true
 #
 ##############################################################################
 
-# Use workers for Scala compiler (much faster).
+# Use persistent workers for Java and Scala compilers (much faster).
+build --strategy=Javac=worker
 build --strategy=Scalac=worker
 
 # Use remote caching. This is disabled by default, because unless you have a
@@ -52,9 +53,9 @@ build:docker-sandbox --experimental_docker_verbose
 build:docker-sandbox --experimental_enable_docker_sandbox
 build:docker-sandbox --define=EXECUTOR=remote
 
-build:docker-sandbox --crosstool_top=@bazel_toolchains//configs/ubuntu16_04_clang/1.1/bazel_0.22.0/default:toolchain
-build:docker-sandbox --host_javabase=@bazel_toolchains//configs/ubuntu16_04_clang/1.1:jdk8
-build:docker-sandbox --javabase=@bazel_toolchains//configs/ubuntu16_04_clang/1.1:jdk8
+build:docker-sandbox --crosstool_top=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_2.2.0/cc:toolchain
+build:docker-sandbox --host_javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_2.2.0/java:jdk
+build:docker-sandbox --javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_2.2.0/java:jdk
 
 build:docker-sandbox --genrule_strategy=docker
 build:docker-sandbox --spawn_strategy=docker
@@ -68,21 +69,66 @@ build:docker-sandbox --strategy=Javac=docker
 
 build --strict_java_deps=error
 build --experimental_guard_against_concurrent_changes
-build --experimental_strict_action_env
+build --experimental_local_memory_estimate
+#build --experimental_ninja_actions
+build --experimental_run_validations
+build --experimental_repository_cache_hardlinks
+build --experimental_strict_fileset_output
+# TODO(https://github.com/tweag/rules_haskell/issues/1265): Enable this once rules_haskell supports it.
+#build --experimental_use_sandboxfs=auto
 
 # https://docs.bazel.build/versions/master/skylark/backward-compatibility.html
-# Disabled due to https://github.com/bazelbuild/bazel/issues/4718.
 #build --all_incompatible_changes
-#build --incompatible_depset_is_not_iterable=false
-#build --incompatible_depset_union=false
-#build --incompatible_disallow_data_transition=false
-#build --incompatible_disallow_dict_plus=false
-#build --incompatible_disallow_filetype=false
-#build --incompatible_disallow_legacy_javainfo=false
-#build --incompatible_disallow_old_style_args_add=false
-#build --incompatible_new_actions_api=false
-#build --incompatible_no_support_tools_in_action_inputs=false
-build --incompatible_remove_native_http_archive=false
+build --incompatible_remote_symlinks
+build --incompatible_remove_local_resources
+build --incompatible_symlinked_sandbox_expands_tree_artifacts_in_runfiles_tree
+build --incompatible_disable_expand_if_all_available_in_flag_set
+build --incompatible_dont_enable_host_nonhost_crosstool_features
+build --incompatible_make_thinlto_command_lines_standalone
+build --incompatible_prohibit_aapt1
+build --incompatible_remove_cpu_and_compiler_attributes_from_cc_toolchain
+build --incompatible_remove_legacy_whole_archive
+build --incompatible_require_ctx_in_configure_features
+build --incompatible_merge_genfiles_directory
+build --noincompatible_use_platforms_repo_for_constraints
+build --noincompatible_disable_native_android_rules
+build --incompatible_validate_top_level_header_inclusions
+build --incompatible_allow_python_version_transitions
+build --incompatible_always_check_depset_elements
+build --incompatible_bzl_disallow_load_after_statement
+build --incompatible_depset_for_libraries_to_link_getter
+build --incompatible_depset_union
+build --incompatible_disable_deprecated_attr_params
+build --incompatible_disable_depset_items
+build --incompatible_disable_target_provider_fields
+build --incompatible_disable_third_party_license_checking
+build --incompatible_disallow_empty_glob
+build --incompatible_disallow_legacy_javainfo
+build --incompatible_disallow_legacy_py_provider
+build --noincompatible_disallow_struct_provider_syntax
+build --incompatible_new_actions_api
+build --incompatible_no_attr_license
+build --noincompatible_no_implicit_file_export
+build --incompatible_no_output_attr_default
+build --noincompatible_no_rule_outputs_param
+build --incompatible_no_support_tools_in_action_inputs
+build --incompatible_no_target_output_group
+build --incompatible_remove_enabled_toolchain_types
+build --incompatible_remove_old_python_version_api
+build --incompatible_restrict_named_params
+build --incompatible_restrict_string_escapes
+build --incompatible_run_shell_command_string
+build --incompatible_use_cc_configure_from_rules_cc
+build --incompatible_visibility_private_attributes_at_definition
+build --incompatible_do_not_split_linking_cmdline
+build --incompatible_enable_profile_by_default
+build --incompatible_remove_binary_profile
+build --incompatible_default_to_explicit_init_py
+build --incompatible_py2_outputs_are_suffixed
+build --incompatible_py3_is_default
+build --incompatible_use_python_toolchains
+build --incompatible_remote_results_ignore_disk
+build --incompatible_strict_action_env
 
 ##############################################################################
 #
@@ -93,9 +139,13 @@ build --incompatible_remove_native_http_archive=false
 #build --config=asan
 
 #build -c dbg
-#build -c opt
-#build:gnulike --copt='-O3'
-#build:gnulike --copt='-march=native'
+
+build:release -c opt
+build:release --copt='-O3'
+build:release --copt='-march=native'
+build:release --copt='-DNDEBUG'
+# NDEBUG disables asserts.
+build:release --copt='-Wno-unused-variable'
 
 build:gnulike --per_file_copt='[-_]avx\\.c$@-mavx'
 build:gnulike --per_file_copt='[-_]avx2\\.c$@-mavx2'
@@ -111,15 +161,16 @@ build:asan --per_file_copt='^c-toxcore/.*@-fsanitize=address,-g'
 build:asan --per_file_copt='^toxins/.*@-fsanitize=address,-g'
 build:asan --linkopt='-fsanitize=address'
 
+# Undefined behaviour sanitizer.
+build:ubsan --copt='-fsanitize=undefined'
+build:ubsan --linkopt='-fsanitize=undefined'
+
 # Link-time optimization.
 build:lto --copt='-flto'
 build:lto --linkopt='-flto'
 
-# XXX: Workaround for Go, because it can't deal with colours when compiling the
-# stdlib. It doesn't look at per_file_copt, so we can't disable colours for the
-# Go stdlib, but we can enable it for everything else.
-#build:gnulike --copt='-fdiagnostics-color=always'
-build:gnulike --per_file_copt='.*@-fdiagnostics-color=always'
+# Colour diagnostics, even though bazel uses non-tty pipes.
+build:gnulike --copt='-fdiagnostics-color=always'
 
 build:gnulike --copt='-funsigned-char'
 
@@ -136,7 +187,7 @@ build:musl --copt='-isystem/usr/lib/gcc/x86_64-linux-gnu/6/include'
 #build:musl --copt='-isystem/usr/include/clang/3.8/include'
 
 # Enable trace logging for toxcore.
-build --per_file_copt='^c-toxcore/.*@-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_TRACE'
+build --per_file_copt='//c-toxcore/@-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_TRACE'
 
 test --test_output=errors
 test --test_verbose_timeout_warnings=true
@@ -156,7 +207,7 @@ build:gnulike --copt='-Wformat-security'
 
 build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-pedantic'
 
-#build:gnulike --cxxopt='-std=c++17'
+#build:gnulike --cxxopt='-std=c++2a'
 
 # GCC warning flags.
 #build:gcc --copt='-Wsuggest-attribute=const'
@@ -166,7 +217,8 @@ build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.(cc|cpp
 
 # TODO(iphydf): Fix these.
 build:gcc --per_file_copt='//toxins/tox_shell@-Wno-unused-result'
-build:gcc --per_file_copt='//toxins/toxvpn@-Wno-unused-result'
+build:gnulike --per_file_copt='//toxins/toxvpn:import/src/main.cpp@-Wno-unused-result'
+build:gnulike --per_file_copt='//toxins/toxvpn:import/src/toxvpn-remote.cpp@-Wno-unused-result'
 
 # Clang warning flags.
 build:clang --copt='-Wthread-safety-analysis'
@@ -184,22 +236,22 @@ build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-miss
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-padded'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-reserved-id-macro'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-unused-parameter'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-used-but-marked-unused'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-vla'
 
+build:clang --per_file_copt='//c-toxcore/toxav:video.c@-Wno-used-but-marked-unused'
 build:clang --per_file_copt='//c-toxcore/super_donators@-w'
 build:clang --per_file_copt='_test\\.(cc|cpp)$@-Wno-global-constructors,-Wno-exit-time-destructors'
 build:clang --per_file_copt='_test\\.(cc|cpp)$@-Wno-c99-extensions'
 build:clang --per_file_copt='_test\\.(cc|cpp)$@-Wno-zero-as-null-pointer-constant'
 build:clang --per_file_copt='rcc_.*\\.cpp$@-Wno-global-constructors,-Wno-exit-time-destructors'
 build:clang --per_file_copt='moc_.*\\.cpp$@-Wno-deprecated'
+build:clang --per_file_copt='moc_.*\\.cpp$@-Wno-gnu-zero-variadic-macro-arguments'
+build:clang --per_file_copt='moc_.*\\.cpp$@-Wno-redundant-parens'
 build:clang --per_file_copt='moc_.*\\.cpp$@-Wno-undefined-reinterpret-cast'
 
 # TODO(iphydf): Fix these.
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-cast-align'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-sign-compare'
+build:clang --per_file_copt='//c-toxcore@-Wno-sign-compare'
 build:clang --per_file_copt='//jvm-toxcore-c@-Wno-global-constructors,-Wno-exit-time-destructors'
-build:clang --per_file_copt='//jvm-toxcore-c@-Wno-undefined-func-template'
 build:clang --per_file_copt='//qtox@-Wno-cast-qual'
 build:clang --per_file_copt='//qtox@-Wno-comma'
 build:clang --per_file_copt='//qtox@-Wno-deprecated'
@@ -224,33 +276,32 @@ build:clang --per_file_copt='//qtox@-Wno-unreachable-code-break'
 build:clang --per_file_copt='//qtox@-Wno-unreachable-code-return'
 build:clang --per_file_copt='//qtox@-Wno-unused-macros'
 build:clang --per_file_copt='//qtox@-Wno-unused-private-field'
+build:clang --per_file_copt='//qtox@-Wno-used-but-marked-unused'
 build:clang --per_file_copt='//qtox@-Wno-weak-vtables'
 build:clang --per_file_copt='//qtox@-Wno-zero-as-null-pointer-constant'
+build:clang --per_file_copt='//toxic@-Wno-cast-align'
 build:clang --per_file_copt='//toxic@-Wno-cast-qual'
 build:clang --per_file_copt='//toxic@-Wno-format-nonliteral'
 build:clang --per_file_copt='//toxic@-Wno-missing-noreturn'
 build:clang --per_file_copt='//toxic@-Wno-missing-prototypes'
 build:clang --per_file_copt='//toxic@-Wno-missing-variable-declarations'
 build:clang --per_file_copt='//toxic@-Wno-shadow'
+build:clang --per_file_copt='//toxic@-Wno-sign-compare'
 build:clang --per_file_copt='//toxic@-Wno-switch-enum'
 build:clang --per_file_copt='//toxic@-Wno-undef'
 build:clang --per_file_copt='//toxic@-Wno-unreachable-code-return'
 build:clang --per_file_copt='//toxic@-Wno-unused-macros'
 build:clang --per_file_copt='//toxins/toxvpn@-Wno-cast-qual'
+build:clang --per_file_copt='//toxins@-Wno-cast-align'
 build:clang --per_file_copt='//toxins@-Wno-global-constructors,-Wno-exit-time-destructors'
 build:clang --per_file_copt='//toxins@-Wno-missing-prototypes'
 build:clang --per_file_copt='//toxins@-Wno-missing-variable-declarations'
 build:clang --per_file_copt='//toxins@-Wno-non-virtual-dtor'
 build:clang --per_file_copt='//toxins@-Wno-old-style-cast'
+build:clang --per_file_copt='//toxins@-Wno-sign-compare'
 build:clang --per_file_copt='//toxins@-Wno-switch-enum'
 build:clang --per_file_copt='//toxins@-Wno-unreachable-code'
 build:clang --per_file_copt='//toxins@-Wno-unreachable-code-return'
-
-# TODO(https://github.com/TokTok/toxic/pull/19): Remove.
-build:clang --per_file_copt='//toxic@-Wno-double-promotion'
-build:clang --per_file_copt='//toxic@-Wno-newline-eof'
-build:clang --per_file_copt='//toxic@-Wno-static-in-inline'
-build:clang --per_file_copt='//toxic@-Wno-strict-prototypes'
 
 # Ignore warnings for Go generated internal files and external libraries.
 build:gnulike --per_file_copt='/go_default_library%@-w'

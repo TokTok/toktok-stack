@@ -1,6 +1,9 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library", "hazel_workspace")
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "double-conversion"
 
 cc_library(
     name = "cbits",
@@ -11,16 +14,16 @@ cc_library(
         "include/*.h",
     ]),
     copts = [
-        "-Iexternal/haskell_double_conversion/include",
-        "-Iexternal/haskell_double_conversion/double-conversion/src",
+        "-Iexternal/%s/include" % hazel_workspace(PACKAGE_NAME),
+        "-Iexternal/%s/double-conversion/src" % hazel_workspace(PACKAGE_NAME),
         "-Wno-unused-function",
     ],
 )
 
 haskell_library(
-    name = "double-conversion",
+    name = PACKAGE_NAME,
     srcs = glob(["Data/**/*.hs"]),
-    version = packages["double-conversion"].version,
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",

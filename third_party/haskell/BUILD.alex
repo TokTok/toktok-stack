@@ -1,5 +1,5 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_binary")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_binary")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 genrule(
@@ -12,20 +12,21 @@ module Paths_alex where
 import Data.Version (Version, makeVersion)
 
 version :: Version
-version = makeVersion [3, 2, 3]
+version = makeVersion %s
 
 getDataDir :: IO FilePath
 getDataDir = return ""
 EOF
-    """,
+    """ % str([int(v) for v in packages["alex"].version.split(".")]),
 )
 
 haskell_binary(
-    name = "alex",
+    name = "alex_bin",
     srcs = glob(["src/**/*.hs"]) + [":paths"],
     compiler_flags = [
         "-XCPP",
         "-XDatatypeContexts",
+        "-w",  # DatatypeContexts is deprecated, but no flag can disable the warning.
     ],
     src_strip_prefix = "src",
     visibility = ["//visibility:public"],

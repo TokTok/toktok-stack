@@ -1,5 +1,4 @@
 load("@bazel_gazelle//:def.bzl", "gazelle")
-load("@io_tweag_rules_haskell//haskell:toolchain.bzl", "haskell_toolchain")
 load("//tools/project:build_defs.bzl", "workspace")
 
 workspace(projects = [
