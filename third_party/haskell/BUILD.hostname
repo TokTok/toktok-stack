@@ -1,12 +1,14 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library", "haskell_test")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
+PACKAGE_NAME = "hostname"
+
 haskell_library(
-    name = "hostname",
+    name = PACKAGE_NAME,
     srcs = ["Network/HostName.hs"],
     compiler_flags = ["-XCPP"],
-    version = packages["hostname"].version,
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [hazel_library("base")],
 )

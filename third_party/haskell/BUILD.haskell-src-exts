@@ -1,7 +1,9 @@
-load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
-load("@io_tweag_rules_haskell//haskell:haskell.bzl", "haskell_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 load("@toktok//third_party/haskell/happy:build_defs.bzl", "happy_parser")
+
+PACKAGE_NAME = "haskell-src-exts"
 
 happy_parser(
     name = "InternalParser",
@@ -9,14 +11,14 @@ happy_parser(
 )
 
 haskell_library(
-    name = "haskell-src-exts",
+    name = PACKAGE_NAME,
     srcs = glob(
         ["src/**/*.*hs"],
         exclude = ["src/Language/Haskell/Exts/InternalParser.hs"],
     ) + [":InternalParser"],
     compiler_flags = ["-j10"],
     src_strip_prefix = "src",
-    version = packages["haskell-src-exts"].version,
+    version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         hazel_library("array"),

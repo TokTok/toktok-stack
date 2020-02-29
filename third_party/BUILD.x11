@@ -1,3 +1,5 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
 # TODO(iphydf): Build x11 in bazel.
 cc_library(
     name = "x11",

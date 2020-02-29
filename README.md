@@ -30,8 +30,8 @@ Install the latest version of
 [Bazel](https://github.com/bazelbuild/bazel/releases), e.g.:
 
 ```sh
-$ wget https://github.com/bazelbuild/bazel/releases/download/0.19.1/bazel_0.19.0-linux-x86_64.deb
-$ sudo dpkg -i bazel_0.19.0-linux-x86_64.deb
+$ wget https://github.com/bazelbuild/bazel/releases/download/2.2.0/bazel_2.2.0-linux-x86_64.deb
+$ sudo dpkg -i bazel_2.2.0-linux-x86_64.deb
 ```
 
 #### Maven
@@ -91,7 +91,7 @@ development headers. `py-toxcore-c` currently builds for Python 2 in the Bazel
 build, while `toxic` needs Python 3.
 
 ```sh
-$ sudo apt install python2.7-dev python3.5-dev
+$ sudo apt install python3.5-dev
 ```
 
 #### Make
@@ -117,8 +117,8 @@ $ sudo apt install mercurial
 Streambot needs native libraries that need to be downloaded from Maven.
 
 ```sh
-$ wget http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/ffmpeg/3.4.1-1.4/ffmpeg-3.4.1-1.4-linux-x86_64.jar -O third_party/javacpp/ffmpeg/jar/ffmpeg-3.4.1-1.4-linux-x86_64.jar
-$ wget http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/3.4.0-1.4/opencv-3.4.0-1.4-linux-x86_64.jar -O third_party/javacpp/opencv/jar/opencv-3.4.0-1.4-linux-x86_64.jar
+$ wget https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/ffmpeg/3.4.1-1.4/ffmpeg-3.4.1-1.4-linux-x86_64.jar -O third_party/javacpp/ffmpeg/jar/ffmpeg-3.4.1-1.4-linux-x86_64.jar
+$ wget https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/3.4.0-1.4/opencv-3.4.0-1.4-linux-x86_64.jar -O third_party/javacpp/opencv/jar/opencv-3.4.0-1.4-linux-x86_64.jar
 ```
 
 #### Extra development packages

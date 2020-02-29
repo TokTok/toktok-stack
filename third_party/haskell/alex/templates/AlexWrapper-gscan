@@ -1,239 +1,4 @@
 {-# LINE 1 "templates/wrappers.hs" #-}
-{-# LINE 1 "templates/wrappers.hs" #-}
-{-# LINE 1 "<built-in>" #-}
-{-# LINE 1 "<command-line>" #-}
-{-# LINE 8 "<command-line>" #-}
-# 1 "/usr/include/stdc-predef.h" 1 3 4
-
-# 17 "/usr/include/stdc-predef.h" 3 4
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{-# LINE 8 "<command-line>" #-}
-{-# LINE 1 "/ghc/lib/ghc-8.2.2/include/ghcversion.h" #-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{-# LINE 8 "<command-line>" #-}
-{-# LINE 1 "/tmp/ghc18181_0/ghc_2.h" #-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{-# LINE 8 "<command-line>" #-}
-{-# LINE 1 "templates/wrappers.hs" #-}
 -- -----------------------------------------------------------------------------
 -- Alex wrapper code.
 --
@@ -244,33 +9,52 @@
 
 
 
-
 import Data.Word (Word8)
-{-# LINE 28 "templates/wrappers.hs" #-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 import Data.Char (ord)
 import qualified Data.Bits
 
 -- | Encode a Haskell String to a list of Word8 values, in UTF8 format.
 utf8Encode :: Char -> [Word8]
-utf8Encode = map fromIntegral . go . ord
+utf8Encode = uncurry (:) . utf8Encode'
+
+utf8Encode' :: Char -> (Word8, [Word8])
+utf8Encode' c = case go (ord c) of
+                  (x, xs) -> (fromIntegral x, map fromIntegral xs)
  where
   go oc
-   | oc <= 0x7f       = [oc]
+   | oc <= 0x7f       = ( oc
+                        , [
+                        ])
 
-   | oc <= 0x7ff      = [ 0xc0 + (oc `Data.Bits.shiftR` 6)
+   | oc <= 0x7ff      = ( 0xc0 + (oc `Data.Bits.shiftR` 6)
+                        , [0x80 + oc Data.Bits..&. 0x3f
+                        ])
+
+   | oc <= 0xffff     = ( 0xe0 + (oc `Data.Bits.shiftR` 12)
+                        , [0x80 + ((oc `Data.Bits.shiftR` 6) Data.Bits..&. 0x3f)
                         , 0x80 + oc Data.Bits..&. 0x3f
-                        ]
-
-   | oc <= 0xffff     = [ 0xe0 + (oc `Data.Bits.shiftR` 12)
+                        ])
+   | otherwise        = ( 0xf0 + (oc `Data.Bits.shiftR` 18)
+                        , [0x80 + ((oc `Data.Bits.shiftR` 12) Data.Bits..&. 0x3f)
                         , 0x80 + ((oc `Data.Bits.shiftR` 6) Data.Bits..&. 0x3f)
                         , 0x80 + oc Data.Bits..&. 0x3f
-                        ]
-   | otherwise        = [ 0xf0 + (oc `Data.Bits.shiftR` 18)
-                        , 0x80 + ((oc `Data.Bits.shiftR` 12) Data.Bits..&. 0x3f)
-                        , 0x80 + ((oc `Data.Bits.shiftR` 6) Data.Bits..&. 0x3f)
-                        , 0x80 + oc Data.Bits..&. 0x3f
-                        ]
+                        ])
 
 
 
@@ -295,15 +79,68 @@ alexGetByte :: AlexInput -> Maybe (Byte,AlexInput)
 alexGetByte (p,c,(b:bs),s) = Just (b,(p,c,bs,s))
 alexGetByte (_,_,[],[]) = Nothing
 alexGetByte (p,_,[],(c:s))  = let p' = alexMove p c
-                                  (b:bs) = utf8Encode c
-                              in p' `seq`  Just (b, (p', c, bs, s))
+                              in case utf8Encode' c of
+                                   (b, bs) -> p' `seq`  Just (b, (p', c, bs, s))
 
 
-{-# LINE 102 "templates/wrappers.hs" #-}
 
-{-# LINE 120 "templates/wrappers.hs" #-}
 
-{-# LINE 138 "templates/wrappers.hs" #-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 -- -----------------------------------------------------------------------------
 -- Token positions
@@ -323,35 +160,224 @@ alexStartPos :: AlexPosn
 alexStartPos = AlexPn 0 1 1
 
 alexMove :: AlexPosn -> Char -> AlexPosn
-alexMove (AlexPn a l c) '\t' = AlexPn (a+1)  l     (((c+alex_tab_size-1) `div` alex_tab_size)*alex_tab_size+1)
+alexMove (AlexPn a l c) '\t' = AlexPn (a+1)  l     (c+alex_tab_size-((c-1) `mod` alex_tab_size))
 alexMove (AlexPn a l _) '\n' = AlexPn (a+1) (l+1)   1
 alexMove (AlexPn a l c) _    = AlexPn (a+1)  l     (c+1)
 
 
 -- -----------------------------------------------------------------------------
--- Default monad
-
-{-# LINE 274 "templates/wrappers.hs" #-}
+-- Monad (default and with ByteString input)
 
 
--- -----------------------------------------------------------------------------
--- Monad (with ByteString input)
 
-{-# LINE 379 "templates/wrappers.hs" #-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 -- -----------------------------------------------------------------------------
 -- Basic wrapper
 
-{-# LINE 406 "templates/wrappers.hs" #-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 -- -----------------------------------------------------------------------------
 -- Basic wrapper, ByteString version
 
-{-# LINE 425 "templates/wrappers.hs" #-}
 
-{-# LINE 440 "templates/wrappers.hs" #-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 -- -----------------------------------------------------------------------------
@@ -359,13 +385,32 @@ alexMove (AlexPn a l c) _    = AlexPn (a+1)  l     (c+1)
 
 -- Adds text positions to the basic model.
 
-{-# LINE 457 "templates/wrappers.hs" #-}
+
+
+
+
+
+
+
+
+
+
 
 
 -- -----------------------------------------------------------------------------
 -- Posn wrapper, ByteString version
 
-{-# LINE 473 "templates/wrappers.hs" #-}
+
+
+
+
+
+
+
+
+
+
+
 
 
 -- -----------------------------------------------------------------------------
@@ -385,3 +430,4 @@ alex_gscan stop__ p c bs inp__ (sc,state__) =
           alex_gscan stop__ p' c' bs' inp__' (sc,state__)
         AlexToken (p',c',bs',inp__') len k ->
            k p c inp__ len (\scs -> alex_gscan stop__ p' c' bs' inp__' scs)                  (sc,state__)
+

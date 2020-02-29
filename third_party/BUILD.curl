@@ -1,3 +1,5 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+
 genrule(
     name = "config",
     srcs = glob([
@@ -37,14 +39,15 @@ cc_library(
     ),
     hdrs = glob(["include/**/*.h"]),
     copts = [
+        "-Wno-string-plus-int",
         "-DBUILDING_LIBCURL",
         "-DHAVE_CONFIG_H",
         "-I$(GENDIR)/external/curl/lib",
         "-Iexternal/curl/lib",
     ] + select({
-        "@toktok//tools/config:freebsd": ["-Iexternal/toktok/third_party/curl/linux"],
-        "@toktok//tools/config:linux": ["-Iexternal/toktok/third_party/curl/linux"],
-        "@toktok//tools/config:osx": ["-Iexternal/toktok/third_party/curl/osx"],
+        "@toktok//tools/config:freebsd": ["-Ithird_party/curl/linux"],
+        "@toktok//tools/config:linux": ["-Ithird_party/curl/linux"],
+        "@toktok//tools/config:osx": ["-Ithird_party/curl/osx"],
     }),
     includes = ["include"],
     linkopts = ["-lpthread"],
@@ -52,8 +55,8 @@ cc_library(
     deps = [
         "@boringssl//:ssl",
         "@libidn2",
-        "@net_zlib//:zlib",
         "@toktok//third_party/curl:curl_config",
+        "@zlib",
     ],
 )
 
@@ -68,9 +71,9 @@ cc_binary(
         "-I$(GENDIR)/external/curl/lib",
         "-Iexternal/curl/lib",
     ] + select({
-        "@toktok//tools/config:freebsd": ["-Iexternal/toktok/third_party/curl/linux"],
-        "@toktok//tools/config:linux": ["-Iexternal/toktok/third_party/curl/linux"],
-        "@toktok//tools/config:osx": ["-Iexternal/toktok/third_party/curl/osx"],
+        "@toktok//tools/config:freebsd": ["-Ithird_party/curl/linux"],
+        "@toktok//tools/config:linux": ["-Ithird_party/curl/linux"],
+        "@toktok//tools/config:osx": ["-Ithird_party/curl/osx"],
     }),
     deps = [":curl"],
 )

@@ -1,3 +1,5 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
 genrule(
     name = "regen_config",
     srcs = glob([
@@ -47,9 +49,9 @@ cc_library(
         "-w",  # disable all warnings.
         "'-DLOCALEDIR=\"lib\"'",
         "'-DGETTEXT_PACKAGE=\"libexif\"'",
-        "-Iexternal/toktok/third_party/libexif",
-        "-Iexternal/toktok/third_party/libexif/linux",
-        "-Iexternal/toktok/third_party/libexif/osx",
+        "-Ithird_party/libexif",
+        "-Ithird_party/libexif/linux",
+        "-Ithird_party/libexif/osx",
     ],
     includes = ["."],
     visibility = ["//visibility:public"],

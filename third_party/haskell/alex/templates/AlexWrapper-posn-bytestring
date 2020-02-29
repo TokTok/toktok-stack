@@ -1,245 +1,9 @@
 {-# LINE 1 "templates/wrappers.hs" #-}
-{-# LINE 1 "templates/wrappers.hs" #-}
-{-# LINE 1 "<built-in>" #-}
-{-# LINE 1 "<command-line>" #-}
-{-# LINE 8 "<command-line>" #-}
-# 1 "/usr/include/stdc-predef.h" 1 3 4
-
-# 17 "/usr/include/stdc-predef.h" 3 4
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{-# LINE 8 "<command-line>" #-}
-{-# LINE 1 "/ghc/lib/ghc-8.2.2/include/ghcversion.h" #-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{-# LINE 8 "<command-line>" #-}
-{-# LINE 1 "/tmp/ghc18146_0/ghc_2.h" #-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{-# LINE 8 "<command-line>" #-}
-{-# LINE 1 "templates/wrappers.hs" #-}
 -- -----------------------------------------------------------------------------
 -- Alex wrapper code.
 --
 -- This code is in the PUBLIC DOMAIN; you may copy it freely and use
 -- it for any purpose whatsoever.
-
 
 
 
@@ -253,14 +17,71 @@ import qualified Data.Char
 import qualified Data.ByteString.Lazy     as ByteString
 import qualified Data.ByteString.Internal as ByteString (w2c)
 
-{-# LINE 54 "templates/wrappers.hs" #-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 type Byte = Word8
 
 -- -----------------------------------------------------------------------------
 -- The input type
 
-{-# LINE 79 "templates/wrappers.hs" #-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 type AlexInput = (AlexPosn,     -- current position,
@@ -285,9 +106,41 @@ alexGetByte (p,_,cs,n) =
             in p' `seq` cs' `seq` n' `seq` Just (b, (p', c, cs',n'))
 
 
-{-# LINE 120 "templates/wrappers.hs" #-}
 
-{-# LINE 138 "templates/wrappers.hs" #-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 -- -----------------------------------------------------------------------------
 -- Token positions
@@ -307,35 +160,224 @@ alexStartPos :: AlexPosn
 alexStartPos = AlexPn 0 1 1
 
 alexMove :: AlexPosn -> Char -> AlexPosn
-alexMove (AlexPn a l c) '\t' = AlexPn (a+1)  l     (((c+alex_tab_size-1) `div` alex_tab_size)*alex_tab_size+1)
+alexMove (AlexPn a l c) '\t' = AlexPn (a+1)  l     (c+alex_tab_size-((c-1) `mod` alex_tab_size))
 alexMove (AlexPn a l _) '\n' = AlexPn (a+1) (l+1)   1
 alexMove (AlexPn a l c) _    = AlexPn (a+1)  l     (c+1)
 
 
 -- -----------------------------------------------------------------------------
--- Default monad
-
-{-# LINE 274 "templates/wrappers.hs" #-}
+-- Monad (default and with ByteString input)
 
 
--- -----------------------------------------------------------------------------
--- Monad (with ByteString input)
 
-{-# LINE 379 "templates/wrappers.hs" #-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 -- -----------------------------------------------------------------------------
 -- Basic wrapper
 
-{-# LINE 406 "templates/wrappers.hs" #-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 -- -----------------------------------------------------------------------------
 -- Basic wrapper, ByteString version
 
-{-# LINE 425 "templates/wrappers.hs" #-}
 
-{-# LINE 440 "templates/wrappers.hs" #-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 -- -----------------------------------------------------------------------------
@@ -343,7 +385,16 @@ alexMove (AlexPn a l c) _    = AlexPn (a+1)  l     (c+1)
 
 -- Adds text positions to the basic model.
 
-{-# LINE 457 "templates/wrappers.hs" #-}
+
+
+
+
+
+
+
+
+
+
 
 
 -- -----------------------------------------------------------------------------
@@ -366,4 +417,17 @@ alexScanTokens str0 = go (alexStartPos,'\n',str0,0)
 -- GScan wrapper
 
 -- For compatibility with previous versions of Alex, and because we can.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
