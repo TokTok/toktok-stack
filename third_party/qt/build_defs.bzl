@@ -67,6 +67,8 @@ def _qt_rcc_impl(ctx):
 
     ctx.actions.run(
         arguments = [src.path for src in srcs] + [
+            "--name",
+            ctx.attr.name,
             "-o",
             rcc_cpp.path,
         ],
@@ -113,8 +115,8 @@ def _qt_moc_impl(ctx):
     includes = {
         "-I%s" % inc: None
         for dep in ctx.attr.deps
-        if hasattr(dep, "cc")
-        for inc in dep.cc.system_include_directories
+        if CcInfo in dep
+        for inc in dep[CcInfo].compilation_context.system_includes.to_list()
     }.keys()
 
     srcs = [
@@ -130,8 +132,8 @@ def _qt_moc_impl(ctx):
     deps = [
         hdr
         for tgt in ctx.attr.deps
-        if hasattr(tgt, "cc")
-        for hdr in tgt.cc.transitive_headers.to_list()
+        if CcInfo in tgt
+        for hdr in tgt[CcInfo].compilation_context.headers.to_list()
     ]
     outs = []
 
@@ -208,10 +210,12 @@ qt_moc = rule(
 # Qt test with MOC for the test .cpp file.
 # =========================================================
 
-def qt_test(name, src, deps, copts = [], size = None):
+def qt_test(name, src, deps, copts = [], mocopts = [], size = None):
     qt_moc(
         name = "%s_moc_src" % name,
         srcs = [src],
+        deps = ["//qtox:qtox_lib"],
+        mocopts = ["-Iqtox"],
     )
     cc_library(
         name = "%s_moc" % name,

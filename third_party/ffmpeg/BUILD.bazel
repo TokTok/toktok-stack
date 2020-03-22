@@ -25,5 +25,6 @@ cc_library(
         "//tools/config:linux": ["linux/config.h"],
         "//tools/config:osx": ["osx/config.h"],
     }),
+    includes = ["."],
     visibility = ["@ffmpeg//:__pkg__"],
 )

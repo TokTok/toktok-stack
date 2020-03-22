@@ -20,10 +20,10 @@
 	path = go-toxcore-c
 	url = https://github.com/TokTok/go-toxcore-c
 [submodule "hs-msgpack"]
-	path = hs-msgpack
+	path = hs-msgpack-binary
 	url = https://github.com/TokTok/hs-msgpack
 [submodule "hs-msgpack-rpc"]
-	path = hs-msgpack-rpc
+	path = hs-msgpack-rpc-conduit
 	url = https://github.com/TokTok/hs-msgpack-rpc
 [submodule "hs-msgpack-types"]
 	path = hs-msgpack-types

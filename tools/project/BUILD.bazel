@@ -1,5 +1,7 @@
 exports_files(srcs = [
-    "license_test.sh",
+    "cabal_test.pl",
+    "diff_test.sh",
+    "haskell_travis.yml.in",
     "readme_test.sh",
     "yamllint.rc",
     "yamllint_test.sh",

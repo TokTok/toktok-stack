@@ -12,13 +12,6 @@ github_archive(
 )
 
 github_archive(
-    name = "rules_android",
-    repo = "bazelbuild/rules_android",
-    sha256 = "cd06d15dd8bb59926e4d65f9003bfc20f9da4b2519985c27e190cddc8b7a7806",
-    version = "v0.1.1",
-)
-
-github_archive(
     name = "rules_cc",
     repo = "bazelbuild/rules_cc",
     sha256 = "06910242c6d47c5719efd5789cf34dac393034dc0fe4c73f1ed3aac739ffabdc",
@@ -527,9 +520,9 @@ maven_jar(
 )
 
 maven_jar(
-    name = "com_intellij_annotations",
-    artifact = "com.intellij:annotations:12.0",
-    sha1 = "bbcf6448f6d40abe506e2c83b70a3e8bfd2b4539",
+    name = "org_jetbrains_annotations",
+    artifact = "org.jetbrains:annotations:13.0",
+    sha1 = "919f0dfe192fb4e063e7dacadee7f8bb9a2672a9",
 )
 
 maven_jar(
@@ -644,17 +637,27 @@ load("@gmaven_rules//:gmaven.bzl", "gmaven_rules")
 
 gmaven_rules()
 
+# Android
+# =========================================================
+
+github_archive(
+    name = "rules_android",
+    repo = "bazelbuild/rules_android",
+    sha256 = "cd06d15dd8bb59926e4d65f9003bfc20f9da4b2519985c27e190cddc8b7a7806",
+    version = "v0.1.1",
+)
+
 android_sdk_repository(
     name = "androidsdk",
     api_level = 28,
-    build_tools_version = "28.0.3",
+    build_tools_version = "29.0.2",
     path = "third_party/android/sdk",
 )
 
 android_ndk_repository(
     name = "androidndk",
     api_level = 25,
-    path = "third_party/android/android-ndk-r14b",
+    path = "third_party/android/android-ndk-r16b",
 )
 
 # Qt5

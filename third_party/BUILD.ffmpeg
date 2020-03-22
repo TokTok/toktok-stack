@@ -200,7 +200,6 @@ COPTS = [
     "-DPIC",
     "-DZLIB_CONST",
     "-DHAVE_AV_CONFIG_H",
-    "-Ithird_party/ffmpeg",
 ] + select({
     "@toktok//tools/config:freebsd": ["-Ithird_party/ffmpeg/freebsd"],
     "@toktok//tools/config:linux": [

@@ -1,0 +1,7 @@
+conf_forward:
+  options_ghc:
+  - -XLambdaCase
+  - -XRecordWildCards
+
+conf_layout:
+  lconfig_indentAmount: 4

@@ -1,11 +1,29 @@
 #!/bin/bash
 
-echo 'build --jobs=50 --curses=no --verbose_failures' | tee ~/.bazelrc
+echo '# Bazel configuration for toktok-stack' | tee ~/.bazelrc
+echo 'build --curses=no' | tee -a ~/.bazelrc
+echo 'build --jobs=50' | tee -a ~/.bazelrc
+echo 'build --show_timestamps' | tee -a ~/.bazelrc
+echo 'build --verbose_failures' | tee -a ~/.bazelrc
+
 echo 'build --config=linux' | tee -a ~/.bazelrc
 echo 'build --config=clang' | tee -a ~/.bazelrc
 
 RESPONSE='resource name must be a SHA256 hash'
 
 if curl -s -m1 https://code.tox.chat/bazel/ | grep "$RESPONSE"; then
-  echo "build --config=remote" | tee -a ~/.bazelrc
+  echo 'build --config=remote' | tee -a ~/.bazelrc
+fi
+
+# Download dependencies for streambot only if we're building it.
+if [ -f echobot-jvm/BUILD.bazel ]; then
+  wget https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/ffmpeg/3.4.1-1.4/ffmpeg-3.4.1-1.4-linux-x86_64.jar -O third_party/javacpp/ffmpeg/jar/ffmpeg-3.4.1-1.4-linux-x86_64.jar
+  wget https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/3.4.0-1.4/opencv-3.4.0-1.4-linux-x86_64.jar -O third_party/javacpp/opencv/jar/opencv-3.4.0-1.4-linux-x86_64.jar
+fi
+
+# Link dependencies for qtox only if we're building it.
+if [ -f qtox/BUILD.bazel ]; then
+  ln -s /usr/lib/x86_64-linux-gnu/qt5/bin third_party/qt/bin
+  ln -s /usr/include/x86_64-linux-gnu/qt5 third_party/qt/include
+  ln -s /usr/lib/x86_64-linux-gnu third_party/qt/lib
 fi

@@ -278,6 +278,10 @@ packages = (
             sha256 = "2c70d66e3a1ad52ce4b22d5510ffc6d7b3db950bd7f43bc61801cfe7b24c2e2d",
             version = "5.1.3",
         ),
+        "generic-arbitrary": struct(
+            sha256 = "69f30a54e7a3d0a45288778e22e6d0d03cfc3b525dfe0a663cd4f559a619bcc6",
+            version = "0.1.0",
+        ),
         "github": struct(
             sha256 = "757caf1c918b13ab2a6b9cd937c4a1d673802b5d1c5485d553ca047cf4775ba1",
             version = "0.25",

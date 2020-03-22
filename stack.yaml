@@ -1,8 +1,8 @@
 ---
 packages:
   - hs-github-tools/
-  - hs-msgpack/
-  - hs-msgpack-rpc/
+  - hs-msgpack-binary/
+  - hs-msgpack-rpc-conduit/
   - hs-msgpack-types/
   - hs-schema/
   - hs-tokstyle/
