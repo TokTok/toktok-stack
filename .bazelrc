@@ -130,6 +130,10 @@ build --incompatible_use_python_toolchains
 build --incompatible_remote_results_ignore_disk
 build --incompatible_strict_action_env
 
+# rules_apple uses old style list commands.
+# TODO(https://github.com/bazelbuild/rules_apple/issues/736): Remove.
+build:osx --noincompatible_run_shell_command_string
+
 ##############################################################################
 #
 # :: C/C++ compiler flags.
@@ -138,14 +142,40 @@ build --incompatible_strict_action_env
 
 #build --config=asan
 
-#build -c dbg
+# Debug mode.
+build:debug -c dbg
+build:debug --copt='-O3'
+build:debug --copt='-march=native'
 
+# Release mode.
 build:release -c opt
 build:release --copt='-O3'
 build:release --copt='-march=native'
 build:release --copt='-DNDEBUG'
 # NDEBUG disables asserts.
 build:release --copt='-Wno-unused-variable'
+
+# Address sanitizer (also with optimisation).
+build:asan -c dbg
+build:asan --copt='-O3'
+build:asan --copt='-march=native'
+build:asan --per_file_copt='^c-toxcore/.*@-fsanitize=address,-g'
+build:asan --per_file_copt='^toxins/.*@-fsanitize=address,-g'
+build:asan --per_file_copt='^qtox/.*@-fsanitize=address,-g'
+build:asan --linkopt='-fsanitize=address'
+build:asan --copt='-Wno-macro-redefined'
+
+# Undefined behaviour sanitizer.
+build:ubsan --copt='-fsanitize=undefined'
+build:ubsan --linkopt='-fsanitize=undefined'
+
+# Link-time optimization.
+build:lto --copt='-flto'
+build:lto --linkopt='-flto'
+
+# This file breaks clang on OSX when compiled with -O2 or higher:
+# fatal error: error in backend: Cannot emit physreg copy instruction
+build:osx --per_file_copt='c-toxcore/toxcore/group.c$@-O1'
 
 build:android --crosstool_top=//external:android/crosstool
 build:android --cpu=armeabi-v7a
@@ -161,25 +191,11 @@ build:gnulike --per_file_copt='[-_]sse41\\.c$@-msse4.1'
 build:gnulike --per_file_copt='[-_]sse4_1\\.c$@-msse4.1'
 build:gnulike --per_file_copt='[-_]ssse3\\.c$@-mssse3'
 
-# Address sanitizer.
-build:asan -c dbg
-build:asan --per_file_copt='^c-toxcore/.*@-fsanitize=address,-g'
-build:asan --per_file_copt='^toxins/.*@-fsanitize=address,-g'
-build:asan --linkopt='-fsanitize=address'
-
-# Undefined behaviour sanitizer.
-build:ubsan --copt='-fsanitize=undefined'
-build:ubsan --linkopt='-fsanitize=undefined'
-
-# Link-time optimization.
-build:lto --copt='-flto'
-build:lto --linkopt='-flto'
-
 # Colour diagnostics, even though bazel uses non-tty pipes.
 build:gnulike --copt='-fdiagnostics-color=always'
 
+# ABI and source behaviour options.
 build:gnulike --copt='-funsigned-char'
-
 build:gnulike --cxxopt='-fno-exceptions'
 build:gnulike --cxxopt='-fno-rtti'
 build:gnulike --cxxopt='-DGOOGLE_PROTOBUF_NO_RTTI'
@@ -276,6 +292,7 @@ build:clang --per_file_copt='//qtox@-Wno-missing-prototypes'
 build:clang --per_file_copt='//qtox@-Wno-non-virtual-dtor'
 build:clang --per_file_copt='//qtox@-Wno-error=range-loop-analysis'
 build:clang --per_file_copt='//qtox@-Wno-shadow'
+build:clang --per_file_copt='//qtox@-Wno-shadow-field'
 build:clang --per_file_copt='//qtox@-Wno-switch-enum'
 build:clang --per_file_copt='//qtox@-Wno-undef'
 build:clang --per_file_copt='//qtox@-Wno-unreachable-code-break'

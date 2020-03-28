@@ -1,0 +1,61 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+
+genrule(
+    name = "regen_config",
+    srcs = glob(
+        ["**/*"],
+        exclude = ["*.bazel"],
+    ) + ["@boringssl//:crypto"],
+    outs = [
+        "config.h",
+        "configure.out",
+    ],
+    cmd = """
+        OLDDIR=`pwd`
+        cd `dirname $(location configure)`
+        ./configure LDFLAGS="-L$$OLDDIR/$(GENDIR)/external/boringssl" > configure.out
+        DIR=`pwd`
+        cd -
+        for i in $(OUTS); do
+          cp $$DIR/`echo $$i | sed -e 's|$(GENDIR)/external/sqlcipher/||'` $$i
+        done
+    """,
+)
+
+cc_binary(
+    name = "lemon",
+    srcs = ["tool/lemon.c"],
+)
+
+genrule(
+    name = "parser",
+    srcs = ["src/parse.y", "tool/lempar.c"],
+    outs = [
+        "parse.h",
+        "parse.c",
+    ],
+    cmd = " ".join([
+        "$(location :lemon)",
+        "-T$(location tool/lempar.c)",
+        "-d`dirname $(location parse.c)`",
+        "$(location src/parse.y)",
+    ]),
+    tools = [":lemon"],
+)
+
+cc_library(
+    name = "sqlcipher",
+    srcs = [
+        "src/btree.h",
+        "src/vdbe.h",
+        "src/opcodes.h",
+        "src/msvc.h",
+        "parse.h",
+        "src/hash.h",
+        "src/sqliteLimit.h",
+        "src/vxworks.h",
+        "src/sqliteInt.h",
+        "src/main.c",
+    ],
+    visibility = ["//visibility:public"],
+)

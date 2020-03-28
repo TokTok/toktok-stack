@@ -10,3 +10,4 @@
 
 # Editor temporary files.
 *.swp
+.DS_Store

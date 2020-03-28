@@ -1,27 +1,26 @@
 """Abbreviations for (new_)http_archive for well-behaved GitHub repos."""
 
-load(
-    "@bazel_tools//tools/build_defs/repo:http.bzl",
-    _http_archive = "http_archive",
-)
+load("@bazel_tools//tools/build_defs/repo:http.bzl", _http_archive = "http_archive")
 
-def github_archive(name, repo, version, sha256 = None):
+def github_archive(name, repo, version, sha256 = None, patches = None):
     """http_archive but for GitHub downloads."""
     owner, repo = repo.split("/")
     _http_archive(
         name = name,
+        patches = patches,
         sha256 = sha256,
         strip_prefix = "%s-%s" % (repo, version.replace("v", "")),
         urls = ["https://github.com/%s/%s/archive/%s.zip" % (owner, repo, version)],
     )
 
-def new_github_archive(name, repo, version, sha256 = None):
+def new_github_archive(name, repo, version, sha256 = None, patches = None):
     """new_http_archive but for GitHub downloads."""
     owner, repo = repo.split("/")
     version_suffix = version[1:] if version.startswith("v") else version
     _http_archive(
         name = name,
         build_file = "@toktok//third_party:BUILD.%s" % name,
+        patches = patches,
         sha256 = sha256,
         strip_prefix = "%s-%s" % (repo, version_suffix),
         urls = ["https://github.com/%s/%s/archive/%s.zip" % (owner, repo, version)],

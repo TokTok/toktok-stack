@@ -1,0 +1,13 @@
+diff --git apple/internal/codesigning_support.bzl apple/internal/codesigning_support.bzl
+index 41ca6db..6e2eba5 100644
+--- apple/internal/codesigning_support.bzl
++++ apple/internal/codesigning_support.bzl
+@@ -265,7 +265,7 @@ def _codesigning_command(ctx, entitlements, frameworks_path, signed_frameworks,
+     rule_descriptor = rule_support.rule_descriptor(ctx)
+     signing_command_lines = ""
+     codesigning_exceptions = rule_descriptor.codesigning_exceptions
+-    should_sign_bundles = True
++    should_sign_bundles = False
+ 
+     if (codesigning_exceptions ==
+         rule_support.codesigning_exceptions.sign_with_provisioning_profile):

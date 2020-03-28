@@ -219,12 +219,7 @@ new_local_repository(
 new_local_repository(
     name = "openal",
     build_file = "third_party/BUILD.openal",
-    path = "/usr",
-)
-
-new_local_repository(
-    name = "opencv",
-    build_file = "third_party/BUILD.opencv",
+    #path = "/usr/local/Cellar/openal-soft/1.20.1",
     path = "/usr",
 )
 
@@ -388,6 +383,13 @@ http_archive(
     urls = ["https://netix.dl.sourceforge.net/project/lzmautils/xz-5.2.4.tar.gz"],
 )
 
+new_github_archive(
+    name = "sqlcipher",
+    repo = "sqlcipher/sqlcipher",
+    sha256 = "41e1408465488e9c478ca5b7c5f8410405a10caa73b82db60ac115a76c563c05",
+    version = "v4.3.0",
+)
+
 http_archive(
     name = "x11",
     build_file = "@toktok//third_party:BUILD.x11",
@@ -458,6 +460,40 @@ new_github_archive(
     sha256 = "e8123135c857ca3a0511854e0709e04f345925ab196ee6c73112dc9fa8b41690",
     version = "ea8f2393611025c5d32ddfe022dddff5a1a5c989",
 )
+
+# Apple frameworks
+# =========================================================
+
+github_archive(
+    name = "build_bazel_rules_apple",
+    repo = "bazelbuild/rules_apple",
+    sha256 = "49618def769ec2bf6f33d9f51479e5fdb8ef55f6ba156f2a14021e02d32f313a",
+    version = "524ea38c7c1f8a14bdea812f499aea7c5d3d1e13",
+    # TODO(https://github.com/bazelbuild/rules_apple/issues/737): Remove.
+    patches = ["@toktok//third_party/patches:rules_apple.patch"],
+)
+
+github_archive(
+    name = "build_bazel_rules_swift",
+    repo = "bazelbuild/rules_swift",
+    sha256 = "1263206c029b7a162bda0092fca1ade2b8873e56bf122a1f15a0d6cb95d6f0e8",
+    version = "7336f68990c3a2779186a7157bf29036023d3246",
+)
+
+github_archive(
+    name = "build_bazel_apple_support",
+    repo = "bazelbuild/apple_support",
+    sha256 = "8aa07a6388e121763c0164624feac9b20841afa2dd87bac0ba0c3ed1d56feb70",
+    version = "501b4afb27745c4813a88ffa28acd901408014e4",
+)
+
+load("@build_bazel_rules_apple//apple:repositories.bzl", "apple_rules_dependencies")
+load("@build_bazel_rules_swift//swift:repositories.bzl", "swift_rules_dependencies")
+load("@build_bazel_apple_support//lib:repositories.bzl", "apple_support_dependencies")
+
+apple_rules_dependencies()
+swift_rules_dependencies()
+apple_support_dependencies()
 
 # JUnit5
 # =========================================================
@@ -580,6 +616,12 @@ maven_jar(
 )
 
 maven_jar(
+    name = "org_scala_lang_modules_scala_swing",
+    artifact = "org.scala-lang.modules:scala-swing_2.11:2.1.1",
+    sha1 = "6949384b35d11c6d1ad12c4ee2c338771bb23096",
+)
+
+maven_jar(
     name = "org_scalacheck_scalacheck",
     artifact = "org.scalacheck:scalacheck_2.11:1.14.0",
     sha1 = "60087bb4b94537ad2b4955559a8ead7bac5c615d",
@@ -675,6 +717,7 @@ new_local_repository(
 new_local_repository(
     name = "x264",
     build_file = "third_party/BUILD.x264",
+    #path = "/usr/local/Cellar/x264/r2917_1",
     path = "/usr",
 )
 

@@ -3,13 +3,12 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 # TODO(iphydf): Build openal in bazel.
 cc_library(
     name = "openal",
-    srcs = [
-        "lib/x86_64-linux-gnu/libopenal.so",
-    ],
-    hdrs = [
-        "include/AL/al.h",
-        "include/AL/alc.h",
-    ],
+    srcs = select({
+        "@toktok//tools/config:freebsd": [],
+        "@toktok//tools/config:linux": ["lib/x86_64-linux-gnu/libopenal.so"],
+        "@toktok//tools/config:osx": ["lib/libopenal.dylib"],
+    }),
+    hdrs = glob(["include/AL/*.h"]),
     includes = ["include"],
     visibility = ["//visibility:public"],
 )

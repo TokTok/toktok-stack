@@ -2,6 +2,7 @@
 
 This file defines three macros:
 - qt_uic, compiles .ui files into header files.
+- qt_lconvert, compiles .ts files into .qm files.
 - qt_rcc, compiles .res files into a cc_library.
 - qt_moc, generates .cpp or .moc files for Qt MOC .h or .cpp files.
 """
@@ -9,7 +10,8 @@ This file defines three macros:
 # Qt UI compiler rule.
 # =========================================================
 
-load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+load("@build_bazel_rules_apple//apple:apple.bzl", "apple_dynamic_framework_import")
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test", "objc_library")
 
 def _qt_uic_impl(ctx):
     uic = ctx.executable._uic
@@ -52,6 +54,54 @@ qt_uic = rule(
     },
     output_to_genfiles = True,
     implementation = _qt_uic_impl,
+)
+
+# Qt language translation compiler rule.
+# =========================================================
+
+def _qt_lconvert_impl(ctx):
+    lconvert = ctx.executable._lconvert
+
+    srcs = [src for tgt in ctx.attr.srcs for src in tgt.files.to_list()]
+    outs = []
+
+    for src in srcs:
+        basename = src.basename[:-3]
+        qm = ctx.actions.declare_file("%s.qm" % basename, sibling = src)
+        outs.append(qm)
+        ctx.actions.run(
+            arguments = [
+                src.path,
+                "-of",
+                "qm",
+                "-o",
+                qm.path,
+            ],
+            executable = lconvert.path,
+            inputs = [src],
+            mnemonic = "CompileLConvert",
+            outputs = [qm],
+            progress_message = "Generating Qt binary translation file for " + src.basename,
+            tools = [lconvert],
+        )
+
+    return DefaultInfo(files = depset(outs))
+
+qt_lconvert = rule(
+    attrs = {
+        "srcs": attr.label_list(
+            allow_files = [".ts"],
+            doc = "The .ts files to compile.",
+        ),
+        "_lconvert": attr.label(
+            default = Label("@qt//:bin/lconvert"),
+            executable = True,
+            cfg = "host",
+            allow_single_file = True,
+        ),
+    },
+    output_to_genfiles = True,
+    implementation = _qt_lconvert_impl,
 )
 
 # Qt resource compiler rule.
@@ -164,10 +214,13 @@ def _qt_moc_impl(ctx):
         # moc $src -o $out
         arguments.extend([src.path, "-o", out.path])
 
+        for k, v in ctx.attr.metadata.items():
+            arguments.extend(["-M%s=%s" % (k, v)])
+
         # Inputs: the primary source file.
         inputs = [src]
 
-        # Make sure all files listed as srcs are in the execution environment.
+        # Make sure all files listed as hdrs are in the execution environment.
         inputs.extend(hdrs)
 
         # Also add all transitive headers from deps to the environment.
@@ -193,6 +246,7 @@ qt_moc = rule(
             ".h",
         ]),
         "hdrs": attr.label_list(allow_files = [".h"]),
+        "metadata": attr.string_dict(),
         "out": attr.output(),
         "deps": attr.label_list(),
         "mocopts": attr.string_list(),
@@ -214,7 +268,7 @@ def qt_test(name, src, deps, copts = [], mocopts = [], size = None):
     qt_moc(
         name = "%s_moc_src" % name,
         srcs = [src],
-        deps = ["//qtox:qtox_lib"],
+        deps = deps,
         mocopts = ["-Iqtox"],
     )
     cc_library(
@@ -236,15 +290,19 @@ def qt_test(name, src, deps, copts = [], mocopts = [], size = None):
 # =========================================================
 
 def qt_import(name, module):
-    #   native.objc_framework(
-    #       name = "Qt%s_framework" % module,
-    #       framework_imports = native.glob(["Frameworks/Qt%s.framework/**" % module]),
-    #   )
-    #
-    #   native.objc_library(
-    #       name = "Qt%s_osx" % module,
-    #       deps = ["Qt%s_framework" % module],
-    #   )
+    apple_dynamic_framework_import(
+        name = "Qt%s_framework" % module,
+        framework_imports = native.glob(
+            ["lib/Qt%s.framework/**" % module],
+            allow_empty = True,
+        ),
+        visibility = ["//visibility:public"],
+    )
+
+    objc_library(
+        name = "Qt%s_osx" % module,
+        deps = [":Qt%s_framework" % module],
+    )
 
     cc_library(
         name = "Qt%s_elf" % module,
@@ -258,6 +316,7 @@ def qt_import(name, module):
             "-lQt5%s" % module,
         ],
     )
+
     cc_library(
         name = name,
         hdrs = native.glob(["include/Qt%s/**" % module]),
@@ -268,7 +327,7 @@ def qt_import(name, module):
         linkopts = select({
             "@toktok//tools/config:linux": [],
             "@toktok//tools/config:osx": [
-                "-F/usr/local/opt/qt/Frameworks",
+                "-F/usr/local/Cellar/qt/5.14.1/lib",
                 "-framework Qt%s" % module,
             ],
         }),

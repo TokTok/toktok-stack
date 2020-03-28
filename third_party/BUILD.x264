@@ -1,25 +1,16 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
 cc_library(
-    name = "x264",
+    name = "core",
+    srcs = select({
+        "@toktok//tools/config:freebsd": [],
+        "@toktok//tools/config:linux": ["lib/x86_64-linux-gnu/libx264.so"],
+        "@toktok//tools/config:osx": ["lib/libx264.dylib"],
+    }),
     hdrs = [
         "include/x264.h",
         "include/x264_config.h",
     ],
     includes = ["include"],
     visibility = ["//visibility:public"],
-)
-
-cc_library(
-    name = "core",
-    srcs = glob(["lib/x86_64-linux-gnu/libx264.so*"]),
-    visibility = ["//visibility:public"],
-    deps = [":x264"],
-)
-
-cc_library(
-    name = "10bit",
-    srcs = glob(["lib/x86_64-linux-gnu/x264-10bit/libx264.so*"]),
-    visibility = ["//visibility:public"],
-    deps = [":x264"],
 )

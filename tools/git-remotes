@@ -1,9 +1,9 @@
 #!/usr/bin/env perl
 
-# Usage: git-remotes [--reset]
+# Usage: git-remotes <username>
 #
-# The --reset flag deletes all remotes and adds back the ones listed in the
-# code. Without --reset, it only adds remotes that did not exist yet.
+# This tool deletes all remotes and adds back the ones listed in the
+# code, with "origin" pointing at the fork owned by <username>.
 #
 # This tool is intended to be run once after cloning the repository and its
 # submodules. It will delete all remotes and set them up in a standard way that
@@ -14,17 +14,13 @@
 # - $name    => For each collaborator, another remote is added, so people can
 #               work together on a problem.
 #
-# Note that when passing --reset, this tool will remove all remotes and
-# therefore all remote tracking statuses of branches. It will add back the
-# master -> origin/master tracking, but all other branch tracking is deleted.
+# Note that this tool will remove all remotes and therefore all remote tracking
+# statuses of branches. It will add back the master -> origin/master tracking,
+# but all other branch tracking is deleted.
 
 use strict;
 use Cwd;
 use Data::Dumper;
-
-my %flags = (
-   reset => grep { $_ eq "--reset" } @ARGV,
-);
 
 local $Data::Dumper::Indent   = 1;
 local $Data::Dumper::Sortkeys = 1;
@@ -38,40 +34,19 @@ my %repos = (
    'apidsl' => ['apidsl', {
       upstream => 'toktok',
       repo 'iphydf',
-      repo 'nbraud',
-      repo 'nurupo',
+   }],
+   'cedar' => ['cedar', {
+      upstream => 'toktok',
+      repo 'iphydf',
    }],
    'c-toxcore' => ['c-toxcore', {
       upstream => 'toktok',
-      repo ['ansa89', 'toxcore'],
-      repo 'antis81',
-      repo ['cleverca22', 'toxcore'],
-      repo ['diadlo', 'toxcore'],
-      repo 'dvor',
-      repo ['endoffile78', 'toxcore'],
-      repo 'gjedeer',
-      repo ['grayhatter', 'toxcore'],
       repo 'iphydf',
       repo ['irungentoo', 'toxcore'],
-      repo ['isotoxin', 'toxcore'],
-      repo 'jin-eld',
-      repo 'linux-modder',
       repo ['jfreegman', 'toxcore'],
-      repo 'littlevulpix',
-      repo ['mannol', 'toxcore'],
       repo ['nurupo', 'InsertProjectNameHere'],
-      repo 'nyoroon',
-      repo 'pchk',
-      repo ['piling', 'toxcore'],
-      repo 'pranomostro',
       repo 'robinlinden',
-      repo 'romik-g',
-      repo 'skyzohkeyforks',
       repo 'sudden6',
-      repo 'xhebox',
-      repo 'yurivict',
-      repo 'zer0-one',
-      repo ['zetok', 'toxcore'],
       repo 'zoff99',
       repo 'zugz',
    }],
@@ -83,38 +58,49 @@ my %repos = (
       upstream => 'toktok',
       repo 'iphydf',
    }],
-   'hs-msgpack' => ['hs-msgpack', {
+   'echobot-jvm' => ['echobot-jvm', {
       upstream => 'toktok',
       repo 'iphydf',
-      repo 'martoon-00',
-      repo ['sx91', 'msgpack-haskell'],
    }],
-   'hs-msgpack-rpc' => ['hs-msgpack-rpc', {
+   'go-toxcore-c' => ['go-toxcore-c', {
       upstream => 'toktok',
       repo 'iphydf',
-      repo 'sx91',
+   }],
+   'hs-github-tools' => ['hs-github-tools', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
+   'hs-msgpack-binary' => ['hs-msgpack-binary', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
+   'hs-msgpack-rpc-conduit' => ['hs-msgpack-rpc-conduit', {
+      upstream => 'toktok',
+      repo 'iphydf',
    }],
    'hs-msgpack-types' => ['hs-msgpack-types', {
       upstream => 'toktok',
       repo 'iphydf',
-      repo 'sx91',
    }],
    'hs-schema' => ['hs-schema', {
       upstream => 'toktok',
       repo 'iphydf',
    }],
+   'hs-tokstyle' => ['hs-tokstyle', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
+   'hs-tools' => ['hs-tools', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
    'hs-toxcore' => ['hs-toxcore', {
       upstream => 'toktok',
-      repo ['endoffile78', 'hstox'],
-      repo ['grayhatter', 'hstox'],
       repo 'iphydf',
-      repo ['neduard', 'hstox'],
-      repo ['piling', 'hstox'],
       repo 'zugz',
    }],
    'hs-toxcore-c' => ['hs-toxcore-c', {
       upstream => 'toktok',
-      repo 'gordon-quad',
       repo 'iphydf',
    }],
    'js-toxcore-c' => ['js-toxcore-c', {
@@ -123,6 +109,7 @@ my %repos = (
    }],
    'jtox' => ['jtox', {
       origin => 'toktok',
+      repo 'iphydf',
    }],
    'jvm-macros' => ['jvm-macros', {
       upstream => 'toktok',
@@ -141,12 +128,7 @@ my %repos = (
       upstream => 'toktok',
       repo 'iphydf',
    }],
-   'github-tools' => ['github-tools', {
-      upstream => 'toktok',
-      repo 'grayhatter',
-      repo 'iphydf',
-   }],
-   'py-toxcore-c' => ['py-toxcore-c', {
+   'py_toxcore_c' => ['py-toxcore-c', {
       upstream => 'toktok',
       repo ['aitjcize', 'PyTox'],
       repo 'iphydf',
@@ -156,14 +138,25 @@ my %repos = (
       repo 'iphydf',
       repo 'qtox',
    }],
-   'tokstyle' => ['tokstyle', {
+   'spec' => ['spec', {
       upstream => 'toktok',
       repo 'iphydf',
    }],
-   'toktok-android' => ['toktok', {
+   'streambot-jvm' => ['streambot-jvm', {
       upstream => 'toktok',
       repo 'iphydf',
-      repo ['vassad', 'toktok'],
+   }],
+   'toktok-android' => ['toktok-android', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
+   'toxic' => ['toxic', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
+   'toxins' => ['toxins', {
+      upstream => 'toktok',
+      repo 'iphydf',
    }],
    'website' => ['website', {
       upstream => 'toktok',
@@ -174,19 +167,7 @@ my %repos = (
 );
 
 # Get map of remote -> url in current directory.
-sub remotes { return { map { (split /\s+/)[0..1] } `git remote -v` } }
-
-# Keey 'origin' as it is.
-my ($me) = remotes->{origin} =~ m|([^:/]+)/toktok-stack|;
-die "Please fork toktok-stack before running this script." if lc $me eq "toktok";
-print "Contributor name: $me\n";
-for (values %repos) {
-   unless ($_->[1]{origin}) {
-      $_->[1]{origin} = $me
-         if delete $_->[1]{$me};
-   }
-}
-
+sub git_remotes { return { map { (split /\s+/)[0..1] } `git remote -v` } }
 
 sub add_remote {
    my ($remotes, $repo, $remote, $user) = @_;
@@ -197,23 +178,16 @@ sub add_remote {
    }
 }
 
-
-for my $name (sort keys %repos) {
-   my $repo = $repos{$name};
-
-   # Change to repo clone directory.
-   my $dir = getcwd;
-   chdir $name or die "could not chdir to '$name'";
+sub add_remotes {
+   my ($repo) = @_;
 
    # Delete all current remotes.
-   if ($flags{reset}) {
-      for my $remote (sort keys %{remotes()}) {
-         print "Removing $repo->[0] remote $remote\n";
-         system 'git', 'remote', 'remove', $remote;
-      }
+   for my $remote (sort keys %{git_remotes()}) {
+      print "Removing $repo->[0] remote $remote\n";
+      system 'git', 'remote', 'remove', $remote;
    }
 
-   my %remotes = reverse %{remotes()};
+   my %remotes = reverse %{git_remotes()};
 
    # Add the ones we want back.
    for my $remote (sort keys %{ $repo->[1] }) {
@@ -225,14 +199,44 @@ for my $name (sort keys %repos) {
       }
       add_remote \%remotes, $reponame, $remote, $user;
    }
-
-   chdir $dir;
 }
+
+sub process_repos {
+   my ($repos) = @_;
+
+   for my $name (sort keys %$repos) {
+      my $repo = $repos->{$name};
+
+      # Change to repo clone directory.
+      my $dir = getcwd;
+      chdir $name or die "could not chdir to '$name'";
+
+      add_remotes $repo;
+
+      chdir $dir;
+   }
+}
+
+my ($username) = @ARGV or die "Usage: git-remotes <username>\n";
+
+# Set 'origin' to our own username.
+for (values %repos) {
+   $_->[1]{origin} = $username;
+   delete $_->[1]{$username};
+}
+
+# Set origin and upstream on toktok-stack.
+add_remotes ['toktok-stack', {
+   upstream => 'toktok',
+   origin => $username,
+}];
+
+process_repos \%repos;
 
 sub git_foreach {
    system 'git', 'submodule', 'foreach', @_;
 }
 
-# Fetch all remotes in the background.
+# Fetch all remotes and set master to track origin/master.
 git_foreach 'git', 'fetch', '--all';
 git_foreach 'git', 'branch', '--set-upstream-to=origin/master', 'master';

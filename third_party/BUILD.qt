@@ -1,6 +1,8 @@
 load("@toktok//third_party/qt:build_defs.bzl", "qt_import")
 
 exports_files(srcs = [
+    "bin/lconvert",
+    "bin/macdeployqt",
     "bin/moc",
     "bin/rcc",
     "bin/uic",
