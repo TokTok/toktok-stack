@@ -102,7 +102,7 @@ build --incompatible_disable_deprecated_attr_params
 build --incompatible_disable_depset_items
 build --incompatible_disable_target_provider_fields
 build --incompatible_disable_third_party_license_checking
-build --incompatible_disallow_empty_glob
+#build --incompatible_disallow_empty_glob
 build --incompatible_disallow_legacy_javainfo
 build --incompatible_disallow_legacy_py_provider
 build --noincompatible_disallow_struct_provider_syntax
@@ -229,7 +229,7 @@ build:gnulike --copt='-Wformat-security'
 
 build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-pedantic'
 
-#build:gnulike --cxxopt='-std=c++2a'
+build:gnulike --cxxopt='-std=c++14'
 
 # GCC warning flags.
 #build:gcc --copt='-Wsuggest-attribute=const'
@@ -272,6 +272,9 @@ build:clang --per_file_copt='moc_.*\\.cpp$@-Wno-deprecated'
 build:clang --per_file_copt='moc_.*\\.cpp$@-Wno-gnu-zero-variadic-macro-arguments'
 build:clang --per_file_copt='moc_.*\\.cpp$@-Wno-redundant-parens'
 build:clang --per_file_copt='moc_.*\\.cpp$@-Wno-undefined-reinterpret-cast'
+
+build:gnulike --per_file_copt='//jvm-toxcore-c@-Wno-error=switch'
+build:gnulike --per_file_copt='//jvm-toxcore-c@-Wno-parentheses'
 
 # TODO(iphydf): Fix these.
 build:clang --per_file_copt='//c-toxcore@-Wno-sign-compare'
@@ -329,6 +332,11 @@ build:gnulike --per_file_copt='/go_default_library%@-w'
 # Ignore warnings for protobuf generated files.
 build:gnulike --per_file_copt='\\.pb\\.cc$@-w'
 
+# Haskell rules pass '-headerpad_max_install_names' on compile and link, but
+# it's only needed on link.
+# TODO(https://github.com/tweag/rules_haskell/issues/1295): Remove.
+#build:gnulike --copt='-Wno-unused-command-line-argument'
+
 ##############################################################################
 #
 # :: System/compiler-specific optional flags.
@@ -352,5 +360,9 @@ build:gnuld --linkopt='-Wl,--warn-common'
 # Not enabled, because (at least - I gave up when trying to fix libvpx)
 # libsodium and libvpx assembly code doesn't define noexecstack.
 #build:gnuld --linkopt='-Wl,--warn-execstack'
+
+# MSVC has a header that disallows the above nullptr thing. Defining the
+# following symbol disables that check.
+build:windows --per_file_copt="//c-toxcore@/D_ALLOW_KEYWORD_MACROS"
 
 # vim:set tw=120

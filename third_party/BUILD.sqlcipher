@@ -1,26 +1,5 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
-
-genrule(
-    name = "regen_config",
-    srcs = glob(
-        ["**/*"],
-        exclude = ["*.bazel"],
-    ) + ["@boringssl//:crypto"],
-    outs = [
-        "config.h",
-        "configure.out",
-    ],
-    cmd = """
-        OLDDIR=`pwd`
-        cd `dirname $(location configure)`
-        ./configure LDFLAGS="-L$$OLDDIR/$(GENDIR)/external/boringssl" > configure.out
-        DIR=`pwd`
-        cd -
-        for i in $(OUTS); do
-          cp $$DIR/`echo $$i | sed -e 's|$(GENDIR)/external/sqlcipher/||'` $$i
-        done
-    """,
-)
+load("@toktok//third_party/tcl:build_defs.bzl", "TCLSH")
 
 cc_binary(
     name = "lemon",
@@ -29,10 +8,13 @@ cc_binary(
 
 genrule(
     name = "parser",
-    srcs = ["src/parse.y", "tool/lempar.c"],
+    srcs = [
+        "src/parse.y",
+        "tool/lempar.c",
+    ],
     outs = [
-        "parse.h",
         "parse.c",
+        "parse.h",
     ],
     cmd = " ".join([
         "$(location :lemon)",
@@ -43,19 +25,141 @@ genrule(
     tools = [":lemon"],
 )
 
+genrule(
+    name = "opcodes_c",
+    srcs = [
+        "opcodes.h",
+        "tool/mkopcodec.tcl",
+        "@tcl//:library",
+    ],
+    outs = ["opcodes.c"],
+    cmd = TCLSH + " $(location tool/mkopcodec.tcl) $(location opcodes.h) > $@",
+    tools = ["@tcl//:tclsh"],
+)
+
+genrule(
+    name = "opcodes_h",
+    srcs = [
+        "parse.h",
+        "src/vdbe.c",
+        "tool/mkopcodeh.tcl",
+        "@tcl//:library",
+    ],
+    outs = ["opcodes.h"],
+    cmd = " ".join([
+        "cat $(location parse.h) $(location src/vdbe.c) |",
+        TCLSH + " $(location tool/mkopcodeh.tcl) > $@",
+    ]),
+    tools = ["@tcl//:tclsh"],
+)
+
+cc_binary(
+    name = "mksourceid",
+    srcs = ["tool/mksourceid.c"],
+)
+
+genrule(
+    name = "sqlite3_header",
+    srcs = [
+        "VERSION",
+        "ext/fts5/fts5.h",
+        "ext/rtree/sqlite3rtree.h",
+        "ext/session/sqlite3session.h",
+        "manifest",
+        "src/sqlite.h.in",
+        "tool/mksqlite3h.tcl",
+        "@tcl//:library",
+    ],
+    outs = ["include/sqlite3.h"],
+    cmd = " ".join([
+        "cp $(location :mksourceid) mksourceid;",
+        TCLSH + " $(location tool/mksqlite3h.tcl) external/sqlcipher > $@",
+    ]),
+    tools = [
+        ":mksourceid",
+        "@tcl//:tclsh",
+    ],
+)
+
+cc_binary(
+    name = "mkkeywordhash",
+    srcs = ["tool/mkkeywordhash.c"],
+)
+
+genrule(
+    name = "keywordhash",
+    outs = ["keywordhash.h"],
+    cmd = "$(location :mkkeywordhash) > $@",
+    tools = [":mkkeywordhash"],
+)
+
 cc_library(
     name = "sqlcipher",
     srcs = [
-        "src/btree.h",
-        "src/vdbe.h",
-        "src/opcodes.h",
-        "src/msvc.h",
+        "keywordhash.h",
+        "opcodes.c",
+        "opcodes.h",
+        "parse.c",
         "parse.h",
-        "src/hash.h",
-        "src/sqliteLimit.h",
-        "src/vxworks.h",
-        "src/sqliteInt.h",
-        "src/main.c",
-    ],
+    ] + glob(
+        [
+            "src/*.c",
+            "src/*.h",
+        ],
+        exclude = [
+            "src/*_unix.c",
+            "src/mutex_w32.c",
+            "src/os_win.*",
+            "src/test*",
+            "src/tcl*",
+        ],
+    ) + select({
+        "@toktok//tools/config:windows": [
+            "src/mutex_w32.c",
+            "src/os_win.c",
+            "src/os_win.h",
+        ],
+        "//conditions:default": [
+            "src/mutex_unix.c",
+            "src/os_unix.c",
+        ],
+    }),
+    hdrs = ["include/sqlite3.h"],
+    copts = [
+        "-Iexternal/sqlcipher/src",
+        "-DBUILD_sqlite",
+        "-DOPENSSL_VERSION_TEXT='\"boringssl-master\"'",
+        "-DSQLITE_THREADSAFE=1",
+        "-DSQLITE_HAVE_ZLIB=1",
+        "-DSQLITE_HAS_CODEC=1",
+        "-DSQLITE_TEMP_STORE=2",
+        "-DSQLCIPHER_CRYPTO_OPENSSL",
+    ] + select({
+        "@toktok//tools/config:windows": [
+            "-DSQLITE_OS_WIN=1",
+        ],
+        "//conditions:default": [
+            "-DSQLITE_OS_UNIX=1",
+            "-Wno-unused",
+        ],
+    }),
+    includes = ["include"],
+    linkopts = select({
+        "@toktok//tools/config:linux": [
+            "-lpthread",
+            "-ldl",
+        ],
+        "@toktok//tools/config:osx": [
+            "-lpthread",
+        ],
+        "@toktok//tools/config:windows": [],
+    }),
     visibility = ["//visibility:public"],
+    deps = ["@boringssl//:crypto"],
+)
+
+cc_binary(
+    name = "sqldiff",
+    srcs = ["tool/sqldiff.c"],
+    deps = [":sqlcipher"],
 )

@@ -5,7 +5,10 @@ cc_library(
     srcs = ["pthread.c"],
     hdrs = glob(["*.h"]),
     copts = ["-DPTW32_BUILD"],
-    defines = ["HAVE_STRUCT_TIMESPEC=1"],
+    defines = [
+        "HAVE_STRUCT_TIMESPEC=1",
+        "PTW32_STATIC_LIB",
+    ],
     includes = ["."],
     textual_hdrs = ["exit.c"],
 )

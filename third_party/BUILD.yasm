@@ -84,7 +84,9 @@ genrule(
     echo '#define CMAKE_BUILD 1'                > $@
     echo '#define PACKAGE_VERSION "1.3.0"'      >> $@
     echo '#define PACKAGE_STRING "yasm 1.3.0"'  >> $@
+    echo '#ifndef _WIN32'                       >> $@
     echo '#define HAVE_UNISTD_H 1'              >> $@
+    echo '#endif'                               >> $@
     echo '#define HAVE_TOASCII 1'               >> $@
     echo '#define CPP_PROG "/usr/bin/cpp"'      >> $@
     """,
@@ -214,10 +216,13 @@ cc_binary(
         "tools/re2c/*.c",
         "tools/re2c/*.h",
     ]),
-    copts = [
-        "-Wno-unused",
-        "-Wno-switch",
-    ],
+    copts = select({
+        "@toktok//tools/config:windows": [],
+        "//conditions:default": [
+            "-Wno-unused",
+            "-Wno-switch",
+        ],
+    }),
 )
 
 genrule(

@@ -16,7 +16,10 @@ haskell_library(
         ["src/**/*.*hs"],
         exclude = ["src/Language/Haskell/Exts/InternalParser.hs"],
     ) + [":InternalParser"],
-    compiler_flags = ["-j10"],
+    compiler_flags = [
+        "-j10",
+        "-Wno-name-shadowing",
+    ],
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],

@@ -7,15 +7,8 @@ load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
 github_archive(
     name = "bazel_toolchains",
     repo = "bazelbuild/bazel-toolchains",
-    sha256 = "3c1940c409ccbc6f5512993f0f95ff81fadd193cbd2a8a061e18d9baaf2ca65b",
-    version = "2.2.0",
-)
-
-github_archive(
-    name = "rules_cc",
-    repo = "bazelbuild/rules_cc",
-    sha256 = "06910242c6d47c5719efd5789cf34dac393034dc0fe4c73f1ed3aac739ffabdc",
-    version = "be6ea43fc8b22f1c44f0ed9e9ab723dea1955238",
+    sha256 = "14daf97c62e0bb3b3aca2cc2d12f1d69c31c53f0a7417b6a9fd91ce6fdbebecd",
+    version = "2.2.2",
 )
 
 github_archive(
@@ -28,8 +21,8 @@ github_archive(
 github_archive(
     name = "rules_proto",
     repo = "bazelbuild/rules_proto",
-    sha256 = "48a3382a47e9e9dca4ec0849c57fd4b57919a93a00d8ffb7e4c8d6715d1acc9d",
-    version = "f6b8d89b90a7956f6782a4a3609b2f0eee3ce965",
+    sha256 = "26252c7c072c92e309ea48ed81d2e56fba82403da00d09c7ef64e0256580f142",
+    version = "218ffa7dfa5408492dc86c01ee637614f8695c45",
 )
 
 github_archive(
@@ -126,7 +119,7 @@ load("//third_party/haskell:packages.bzl", "core_packages", "packages")
 [new_local_repository(
     name = hazel_workspace(pkg),
     build_file = "third_party/haskell/BUILD.bazel",
-    path = "/usr",
+    path = "third_party/haskell",
 ) for pkg in core_packages.keys()]
 
 [new_cabal_package(
@@ -204,6 +197,13 @@ go_repository(
 # C/C++ dependencies
 # =========================================================
 
+github_archive(
+    name = "rules_cc",
+    repo = "bazelbuild/rules_cc",
+    sha256 = "06910242c6d47c5719efd5789cf34dac393034dc0fe4c73f1ed3aac739ffabdc",
+    version = "be6ea43fc8b22f1c44f0ed9e9ab723dea1955238",
+)
+
 new_local_repository(
     name = "asound",
     build_file = "third_party/BUILD.asound",
@@ -213,6 +213,7 @@ new_local_repository(
 new_local_repository(
     name = "ncurses",
     build_file = "third_party/BUILD.ncurses",
+    #path = "/usr/local/Cellar/ncurses/6.2",
     path = "/usr",
 )
 
@@ -223,16 +224,11 @@ new_local_repository(
     path = "/usr",
 )
 
-new_local_repository(
-    name = "sqlite3",
-    build_file = "third_party/BUILD.sqlite3",
-    path = "/usr",
-)
-
-http_archive(
+github_archive(
     name = "boringssl",
-    #sha256 = "39b512b2a7afb87bb054e16031f9142d5ca9bd1ceebed864b0978c264e11566b",
-    urls = ["https://boringssl.googlesource.com/boringssl/+archive/refs/heads/master-with-bazel.tar.gz"],
+    repo = "google/boringssl",
+    sha256 = "99cf9dec3f789373a896531a267244e6853526084b9a32c2cf49faf16492c36c",
+    version = "4984d802d95bb709ab824e07ffb2d61441b8348f",
 )
 
 http_archive(
@@ -263,13 +259,6 @@ http_archive(
     sha256 = "eb0370bf223809b9ebb359fed5318f826ac038ce77933b3afd55ab1a0a21785a",
     strip_prefix = "ffmpeg-3.4.2",
     urls = ["http://ffmpeg.org/releases/ffmpeg-3.4.2.tar.bz2"],
-)
-
-new_github_archive(
-    name = "filter_audio",
-    repo = "irungentoo/filter_audio",
-    sha256 = "6e5f3d705d674ba2b692253d67b116daa0c8bc9c8ff7bcaa5e2523a5ad9e8aab",
-    version = "v0.0.1",
 )
 
 http_archive(
@@ -364,7 +353,7 @@ http_archive(
 new_local_repository(
     name = "psocket",
     build_file = "third_party/BUILD.psocket",
-    path = "/",
+    path = "third_party",
 )
 
 http_archive(
@@ -385,9 +374,17 @@ http_archive(
 
 new_github_archive(
     name = "sqlcipher",
+    patches = ["@toktok//third_party/patches:sqlcipher.patch"],
     repo = "sqlcipher/sqlcipher",
     sha256 = "41e1408465488e9c478ca5b7c5f8410405a10caa73b82db60ac115a76c563c05",
     version = "v4.3.0",
+)
+
+new_github_archive(
+    name = "tcl",
+    repo = "tcltk/tcl",
+    sha256 = "14e45a20a839fd13cc067244db668851465f970661f831ab8eabb7233e664221",
+    version = "1771deb31e24580d6a7cdedcb68ccfcdb89eb384",
 )
 
 http_archive(
@@ -466,11 +463,11 @@ new_github_archive(
 
 github_archive(
     name = "build_bazel_rules_apple",
+    # TODO(https://github.com/bazelbuild/rules_apple/issues/737): Remove.
+    patches = ["@toktok//third_party/patches:rules_apple.patch"],
     repo = "bazelbuild/rules_apple",
     sha256 = "49618def769ec2bf6f33d9f51479e5fdb8ef55f6ba156f2a14021e02d32f313a",
     version = "524ea38c7c1f8a14bdea812f499aea7c5d3d1e13",
-    # TODO(https://github.com/bazelbuild/rules_apple/issues/737): Remove.
-    patches = ["@toktok//third_party/patches:rules_apple.patch"],
 )
 
 github_archive(
@@ -492,7 +489,9 @@ load("@build_bazel_rules_swift//swift:repositories.bzl", "swift_rules_dependenci
 load("@build_bazel_apple_support//lib:repositories.bzl", "apple_support_dependencies")
 
 apple_rules_dependencies()
+
 swift_rules_dependencies()
+
 apple_support_dependencies()
 
 # JUnit5
@@ -507,7 +506,15 @@ junit_platform_java_repositories()
 # Maven dependencies
 # =========================================================
 
+github_archive(
+    name = "rules_jvm_external",
+    repo = "bazelbuild/rules_jvm_external",
+    sha256 = "8ba00db3da4c65a37050a95ca17551cf0956ef33b0c35f7cc058c5d8f33dd59c",
+    version = "bad9e2501279aea5268b1b8a5463ccc1be8ddf65",
+)
+
 load("@bazel_tools//tools/build_defs/repo:maven_rules.bzl", "maven_aar", "maven_jar")
+load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 local_repository(
     name = "org_bytedeco_javacpp_presets_ffmpeg_platform",
@@ -519,130 +526,38 @@ local_repository(
     path = "third_party/javacpp/opencv",
 )
 
-maven_aar(
-    name = "com_timehop_stickyheadersrecyclerview_library",
-    artifact = "com.timehop.stickyheadersrecyclerview:library:0.4.3",
-    sha1 = "44a237a0ebff7c7ebb10c79698f97f6d635d0e26",
-)
-
-maven_aar(
-    name = "com_tonicartos_superslim",
-    artifact = "com.tonicartos:superslim:0.4.13",
-    sha1 = "b05a0931a2d97fd370dc4ae6e003a9f57eada69a",
-)
-
-maven_aar(
-    name = "de_hdodenhof_circleimageview",
-    artifact = "de.hdodenhof:circleimageview:2.1.0",
-    sha1 = "c0fcd515432ccb654bc5b44af60320703880a0f6",
-)
-
-maven_aar(
-    name = "com_sothree_slidinguppanel_library",
-    artifact = "com.sothree.slidinguppanel:library:3.4.0",
-    sha1 = "a46c103238d666c097f6fefcffb479ebb450d365",
-)
-
-maven_jar(
-    name = "com_chuusai_shapeless",
-    artifact = "com.chuusai:shapeless_2.11:2.3.3",
-    sha1 = "ea34d4b6128b9090386945dcb952816bd9e87ce2",
-)
-
-maven_jar(
-    name = "com_google_guava_guava",
-    artifact = "com.google.guava:guava:19.0",
-    sha1 = "6ce200f6b23222af3d8abb6b6459e6c44f4bb0e9",
-)
-
-maven_jar(
-    name = "org_jetbrains_annotations",
-    artifact = "org.jetbrains:annotations:13.0",
-    sha1 = "919f0dfe192fb4e063e7dacadee7f8bb9a2672a9",
-)
-
-maven_jar(
-    name = "com_typesafe_scala_logging_scala_logging",
-    artifact = "com.typesafe.scala-logging:scala-logging_2.11:3.7.2",
-    sha1 = "5015fe84c5aec4f8eb3daa2d1663d447d65f8c02",
-)
-
-maven_jar(
-    name = "junit_junit",
-    artifact = "junit:junit:4.12",
-    sha1 = "2973d150c0dc1fefe998f834810d68f278ea58ec",
-)
-
-maven_jar(
-    name = "log4j_log4j",
-    artifact = "log4j:log4j:1.2.17",
-    sha1 = "5af35056b4d257e4b64b9e8069c0746e8b08629f",
-)
-
-maven_jar(
-    name = "org_apache_commons_commons_lang3",
-    artifact = "org.apache.commons:commons-lang3:3.4",
-    sha1 = "5fe28b9518e58819180a43a850fbc0dd24b7c050",
-)
-
-maven_jar(
-    name = "org_bytedeco_javacpp",
-    artifact = "org.bytedeco:javacpp:1.4",
-    sha1 = "6e9062d70f863a4e55b3827d42d302f94e89d7e5",
-)
-
-maven_jar(
-    name = "org_bytedeco_javacpp_presets_ffmpeg",
-    artifact = "org.bytedeco.javacpp-presets:ffmpeg:3.4.1-1.4",
-    sha1 = "bf46f2d74014475c948f1a8e063fae50ab724520",
-)
-
-maven_jar(
-    name = "org_bytedeco_javacpp_presets_opencv",
-    artifact = "org.bytedeco.javacpp-presets:opencv:3.4.0-1.4",
-    sha1 = "b82eeed2295f30369044b2520937d764efeb3e1e",
-)
-
-maven_jar(
-    name = "org_bytedeco_javacv",
-    artifact = "org.bytedeco:javacv:1.4",
-    sha1 = "c443d8c648fb7e53428837e469ced47369a297af",
-)
-
-maven_jar(
-    name = "org_bytedeco_javacv_platform",
-    artifact = "org.bytedeco:javacv-platform:1.4",
-    sha1 = "9a674bb8266e02f6c85b6f5644b7eab13119f14e",
-)
-
-maven_jar(
-    name = "org_scala_lang_modules_scala_swing",
-    artifact = "org.scala-lang.modules:scala-swing_2.11:2.1.1",
-    sha1 = "6949384b35d11c6d1ad12c4ee2c338771bb23096",
-)
-
-maven_jar(
-    name = "org_scalacheck_scalacheck",
-    artifact = "org.scalacheck:scalacheck_2.11:1.14.0",
-    sha1 = "60087bb4b94537ad2b4955559a8ead7bac5c615d",
-)
-
-maven_jar(
-    name = "org_slf4j_slf4j_api",
-    artifact = "org.slf4j:slf4j-api:1.7.25",
-    sha1 = "da76ca59f6a57ee3102f8f9bd9cee742973efa8a",
-)
-
-maven_jar(
-    name = "org_slf4j_slf4j_android",
-    artifact = "org.slf4j:slf4j-android:1.7.22",
-    sha1 = "74825860214ed889b38d0fc865b89af18f4e95a7",
-)
-
-maven_jar(
-    name = "org_slf4j_slf4j_log4j12",
-    artifact = "org.slf4j:slf4j-log4j12:1.7.22",
-    sha1 = "3bb94b26c2ad2f8755302aa9bf96f03b23a76639",
+maven_install(
+    artifacts = [
+        "androidx.appcompat:appcompat:1.1.0",
+        "androidx.cardview:cardview:1.0.0",
+        "androidx.constraintlayout:constraintlayout:1.1.3",
+        "androidx.test:rules:1.2.0",
+        "androidx.test.ext:junit:1.1.1",
+        "androidx.test.espresso:espresso-core:3.2.0",
+        "com.google.android.material:material:1.1.0",
+        "com.chuusai:shapeless_2.11:2.3.3",
+        "com.google.guava:guava:19.0",
+        "com.typesafe.scala-logging:scala-logging_2.11:3.7.2",
+        "de.hdodenhof:circleimageview:3.1.0",
+        "junit:junit:4.13",
+        "log4j:log4j:1.2.17",
+        "org.apache.commons:commons-lang3:3.4",
+        "org.bytedeco:javacpp:1.4",
+        "org.bytedeco.javacpp-presets:ffmpeg:3.4.1-1.4",
+        "org.bytedeco.javacpp-presets:opencv:3.4.0-1.4",
+        "org.bytedeco:javacv:1.4",
+        "org.bytedeco:javacv-platform:1.4",
+        "org.jetbrains:annotations:13.0",
+        "org.scalacheck:scalacheck_2.11:1.14.0",
+        "org.scala-lang.modules:scala-swing_2.11:2.1.1",
+        "org.slf4j:slf4j-android:1.7.30",
+        "org.slf4j:slf4j-api:1.7.25",
+        "org.slf4j:slf4j-log4j12:1.7.22",
+    ],
+    repositories = [
+        "https://maven.google.com",
+        "https://repo1.maven.org/maven2",
+    ],
 )
 
 # Scala toolchain
@@ -668,17 +583,6 @@ scala_proto_repositories()
 
 scala_proto_register_enable_all_options_toolchain()
 
-git_repository(
-    name = "gmaven_rules",
-    commit = "c0571d8370ece2b5485fea8806cffdf8a9c8ff6b",
-    remote = "https://github.com/aj-michael/gmaven_rules",
-    shallow_since = "1544654738 -0500",
-)
-
-load("@gmaven_rules//:gmaven.bzl", "gmaven_rules")
-
-gmaven_rules()
-
 # Android
 # =========================================================
 
@@ -701,6 +605,17 @@ android_ndk_repository(
     api_level = 25,
     path = "third_party/android/android-ndk-r16b",
 )
+
+github_archive(
+    name = "android_test_support",
+    repo = "android/android-test",
+    sha256 = "dad9ccda5a017a9fbe624c46d50ef88b4e3e4f9ad8657c820d79a83d9328c87e",
+    version = "a7a3ee9bee1de76fea76ffda8855678a40694e42",
+)
+
+load("@android_test_support//:repo.bzl", "android_test_repositories")
+
+android_test_repositories()
 
 # Qt5
 # =========================================================
@@ -728,7 +643,6 @@ load("//tools/workspace:python.bzl", "python_repository")
 
 python_repository(
     name = "python3",
-    version = "3.5",
 )
 
 # Node.js

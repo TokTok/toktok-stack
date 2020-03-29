@@ -2,10 +2,13 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 
 cc_library(
     name = "libqrencode",
-    srcs = glob([
-        "*.c",
-        "*.h",
-    ]),
+    srcs = glob(
+        [
+            "*.c",
+            "*.h",
+        ],
+        exclude = ["qrenc.c"],
+    ),
     hdrs = ["qrencode.h"],
     copts = [
         "-DSTATIC_IN_RELEASE=static",

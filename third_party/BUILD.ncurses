@@ -3,14 +3,18 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 # TODO(iphydf): Build ncurses in bazel.
 cc_library(
     name = "ncurses",
-    srcs = [
-        "lib/x86_64-linux-gnu/libcurses.so",
-        "lib/x86_64-linux-gnu/libtinfo.so",
-    ],
+    srcs = select({
+        "@toktok//tools/config:linux": [
+            "lib/x86_64-linux-gnu/libcurses.so",
+            "lib/x86_64-linux-gnu/libtinfo.so",
+        ],
+        "@toktok//tools/config:osx": ["lib/libncurses.dylib"],
+    }),
     hdrs = [
         "include/curses.h",
-        "include/ncurses_dll.h",
-        "include/unctrl.h",
+        "include/ncursesw/curses.h",
+        "include/ncursesw/ncurses_dll.h",
+        "include/ncursesw/unctrl.h",
     ],
     includes = ["include"],
     visibility = ["//visibility:public"],

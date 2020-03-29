@@ -13,7 +13,6 @@ cc_library(
         "randtable.c",
     ],
     hdrs = ["bzlib.h"],
-    copts = ["-Wno-pointer-sign"],
     includes = ["."],
     visibility = ["//visibility:public"],
 )

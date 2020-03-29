@@ -6,8 +6,8 @@ Example:
     WORKSPACE:
         load("//tools/workspace:python.bzl", "python_repository")
         python_repository(
-            name = "python2",
-            version = "2.7",
+            name = "python3",
+            version = "3",
         )
 
     BUILD:
@@ -22,15 +22,32 @@ Arguments:
     version: The version of Python headers and libraries to be found.
 """
 
+def _python_config(repository_ctx, versions):
+    for version in versions:
+        python_config = repository_ctx.which("python{}-config".format(version))
+
+        if not python_config:
+            continue
+
+        result = repository_ctx.execute([python_config, "--help"])
+        if result.return_code == 0:
+            return python_config
+
+    return None
+
 def _impl(repository_ctx):
-    python_config = repository_ctx.which("python{}-config".format(
-        repository_ctx.attr.version,
-    ))
+    version = repository_ctx.attr.version
+    if "." in version:
+        versions = [repository_ctx.attr.version]
+    elif version == "2":
+        versions = ["2.7"]
+    elif version == "3":
+        versions = ["3.8", "3.7", "3.6", "3.5"]
+
+    python_config = _python_config(repository_ctx, versions)
 
     if not python_config:
-        fail("Could not find python{}-config".format(
-            repository_ctx.attr.version,
-        ))
+        fail("Could not find pythonX-config for X in {}".format(versions))
 
     result = repository_ctx.execute([python_config, "--includes"])
 
@@ -86,6 +103,6 @@ cc_library(
 
 python_repository = repository_rule(
     _impl,
-    attrs = {"version": attr.string(default = "2.7")},
+    attrs = {"version": attr.string(default = "3")},
     local = True,
 )

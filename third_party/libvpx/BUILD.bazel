@@ -5,16 +5,35 @@ licenses(["notice"])
 exports_files(
     srcs = [
         "libs-x86_64-linux-gcc.mk",
-        "vpx_config.asm",
-        "vpx_config.h",
         "vpx_version.h",
     ],
     visibility = ["@libvpx//:__pkg__"],
 )
 
+genrule(
+    name = "platform_asm_header",
+    srcs = select({
+        "@toktok//tools/config:windows": ["windows/vpx_config.asm"],
+        "//conditions:default": ["posix/vpx_config.asm"],
+    }),
+    outs = ["vpx_config.asm"],
+	cmd = "cp $< $@",
+	visibility = ["@libvpx//:__pkg__"],
+)
+
+genrule(
+    name = "platform_header",
+    srcs = select({
+        "@toktok//tools/config:windows": ["windows/vpx_config.h"],
+        "//conditions:default": ["posix/vpx_config.h"],
+    }),
+    outs = ["vpx_config.h"],
+	cmd = "cp $< $@",
+)
+
 cc_library(
     name = "vpx_config",
-    hdrs = ["vpx_config.h"],
+    hdrs = [":platform_header"],
     includes = ["."],
     visibility = ["@libvpx//:__pkg__"],
 )

@@ -7,11 +7,19 @@ cc_library(
         "lib/*.h",
     ]),
     hdrs = ["lib/libconfig.h"],
-    copts = [
-        "-DHAVE_NEWLOCALE",
-        "-DHAVE_USELOCALE",
-        "-DHAVE_FREELOCALE",
-    ],
+    copts = select({
+        "@toktok//tools/config:linux": [
+            "-DHAVE_NEWLOCALE",
+            "-DHAVE_USELOCALE",
+            "-DHAVE_FREELOCALE",
+        ],
+        "@toktok//tools/config:osx": [
+            "-DHAVE_NEWLOCALE",
+            "-DHAVE_USELOCALE",
+            "-DHAVE_FREELOCALE",
+            "-DHAVE_XLOCALE_H",
+        ],
+    }),
     includes = ["lib"],
     visibility = ["//visibility:public"],
 )

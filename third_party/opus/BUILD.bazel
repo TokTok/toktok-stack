@@ -2,8 +2,18 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 
 licenses(["notice"])
 
+genrule(
+    name = "platform_header",
+    srcs = select({
+        "@toktok//tools/config:windows": ["windows/config.h"],
+        "//conditions:default": ["posix/config.h"],
+    }),
+    outs = ["config.h"],
+	cmd = "cp $< $@",
+)
+
 cc_library(
     name = "config",
-    hdrs = ["config.h"],
+    hdrs = [":platform_header"],
     visibility = ["@opus//:__pkg__"],
 )

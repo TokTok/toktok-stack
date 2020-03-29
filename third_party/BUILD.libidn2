@@ -45,7 +45,7 @@ genrule(
 )
 
 cc_library(
-    name = "libunistring",
+    name = "unistring",
     srcs = [
         "configmake.h",
         "unistring/array-mergesort.h",
@@ -55,7 +55,6 @@ cc_library(
         "unistring/c-strcaseeq.h",
         "unistring/c-strncasecmp.c",
         "unistring/localcharset.c",
-        "unistring/localcharset.h",
         "unistring/malloca.c",
         "unistring/malloca.h",
         "unistring/striconveh.c",
@@ -127,24 +126,37 @@ cc_library(
         "-I$(GENDIR)/external/libidn2/unistring",
         "-Iexternal/libidn2/unistring",
         "-I$(GENDIR)/external/libidn2",
-        "-Ithird_party/libidn2",
         "-Wno-static-in-inline",
         # We must always optimise this program, because otherwise GCC won't
         # inline c_tolower but also not emit it out of line, resulting in
         # undefined reference errors.
         "-O2",
-    ],
+    ] + select({
+        "@toktok//tools/config:linux": ["-Ithird_party/libidn2/linux"],
+        "@toktok//tools/config:osx": ["-Ithird_party/libidn2/osx"],
+        "@toktok//tools/config:windows": ["-Ithird_party/libidn2/windows"],
+    }),
+    linkopts = select({
+        "@toktok//tools/config:osx": ["-liconv"],
+        "//conditions:default": [],
+    }),
     deps = ["@toktok//third_party/libidn2:config"],
 )
 
 cc_library(
     name = "gnulib",
     srcs = [
+        "gl/rawmemchr.c",
+        "gl/strchrnul.c",
         "gl/strverscmp.c",
     ],
     copts = [
-        "-Ithird_party/libidn2",
-    ],
+        "-Ithird_party/libidn2/gl",
+    ] + select({
+        "@toktok//tools/config:linux": ["-Ithird_party/libidn2/linux"],
+        "@toktok//tools/config:osx": ["-Ithird_party/libidn2/osx"],
+        "@toktok//tools/config:windows": ["-Ithird_party/libidn2/windows"],
+    }),
     deps = ["@toktok//third_party/libidn2:config"],
 )
 
@@ -175,11 +187,15 @@ cc_library(
     copts = [
         "-Iexternal/libidn2/gl",
         "-Iexternal/libidn2/unistring",
-        "-Ithird_party/libidn2",
+        "-Ithird_party/libidn2/gl",
         "-I$(GENDIR)/external/libidn2",
         "-I$(GENDIR)/external/libidn2/gl",
         "-I$(GENDIR)/external/libidn2/unistring",
-    ],
+    ] + select({
+        "@toktok//tools/config:linux": ["-Ithird_party/libidn2/linux"],
+        "@toktok//tools/config:osx": ["-Ithird_party/libidn2/osx"],
+        "@toktok//tools/config:windows": ["-Ithird_party/libidn2/windows"],
+    }),
     includes = ["lib"],
     textual_hdrs = [
         "lib/tr46map_data.c",
@@ -187,6 +203,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":gnulib",
-        ":libunistring",
+        ":unistring",
     ],
 )

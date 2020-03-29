@@ -1,7 +1,7 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* A GNU-like <string.h>.
 
-   Copyright (C) 1995-1996, 2001-2017 Free Software Foundation, Inc.
+   Copyright (C) 1995-1996, 2001-2019 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, see <http://www.gnu.org/licenses/>.  */
+   along with this program; if not, see <https://www.gnu.org/licenses/>.  */
 
 #if __GNUC__ >= 3
 #pragma GCC system_header
@@ -70,7 +70,7 @@
 
 /* The definitions of _GL_FUNCDECL_RPL etc. are copied here.  */
 /* C++ compatible function declaration macros.
-   Copyright (C) 2010-2017 Free Software Foundation, Inc.
+   Copyright (C) 2010-2019 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published
@@ -83,7 +83,7 @@
    General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
 #ifndef _GL_CXXDEFS_H
 #define _GL_CXXDEFS_H
@@ -337,7 +337,7 @@
    _GL_CXXALIASWARN_1 (func, GNULIB_NAMESPACE)
 # define _GL_CXXALIASWARN_1(func,namespace) \
    _GL_CXXALIASWARN_2 (func, namespace)
-/* To work around GCC bug <http://gcc.gnu.org/bugzilla/show_bug.cgi?id=43881>,
+/* To work around GCC bug <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=43881>,
    we enable the warning only when not optimizing.  */
 # if !__OPTIMIZE__
 #  define _GL_CXXALIASWARN_2(func,namespace) \
@@ -365,7 +365,7 @@
                         GNULIB_NAMESPACE)
 # define _GL_CXXALIASWARN1_1(func,rettype,parameters_and_attributes,namespace) \
    _GL_CXXALIASWARN1_2 (func, rettype, parameters_and_attributes, namespace)
-/* To work around GCC bug <http://gcc.gnu.org/bugzilla/show_bug.cgi?id=43881>,
+/* To work around GCC bug <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=43881>,
    we enable the warning only when not optimizing.  */
 # if !__OPTIMIZE__
 #  define _GL_CXXALIASWARN1_2(func,rettype,parameters_and_attributes,namespace) \
@@ -388,7 +388,7 @@
 
 /* The definition of _GL_ARG_NONNULL is copied here.  */
 /* A C macro for declaring that specific arguments must not be NULL.
-   Copyright (C) 2009-2017 Free Software Foundation, Inc.
+   Copyright (C) 2009-2019 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published
@@ -401,7 +401,7 @@
    General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
 /* _GL_ARG_NONNULL((n,...,m)) tells the compiler and static analyzer tools
    that the values passed as arguments n, ..., m must be non-NULL pointers.
@@ -416,7 +416,7 @@
 
 /* The definition of _GL_WARN_ON_USE is copied here.  */
 /* A C macro for emitting warnings if a function is used.
-   Copyright (C) 2010-2017 Free Software Foundation, Inc.
+   Copyright (C) 2010-2019 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published
@@ -429,7 +429,7 @@
    General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
 /* _GL_WARN_ON_USE (function, "literal string") issues a declaration
    for FUNCTION which will then trigger a compiler warning containing
@@ -437,23 +437,32 @@
    supported by the compiler.  If the compiler does not support this
    feature, the macro expands to an unused extern declaration.
 
-   This macro is useful for marking a function as a potential
+   _GL_WARN_ON_USE_ATTRIBUTE ("literal string") expands to the
+   attribute used in _GL_WARN_ON_USE.  If the compiler does not support
+   this feature, it expands to empty.
+
+   These macros are useful for marking a function as a potential
    portability trap, with the intent that "literal string" include
    instructions on the replacement function that should be used
-   instead.  However, one of the reasons that a function is a
-   portability trap is if it has the wrong signature.  Declaring
-   FUNCTION with a different signature in C is a compilation error, so
-   this macro must use the same type as any existing declaration so
-   that programs that avoid the problematic FUNCTION do not fail to
-   compile merely because they included a header that poisoned the
-   function.  But this implies that _GL_WARN_ON_USE is only safe to
-   use if FUNCTION is known to already have a declaration.  Use of
-   this macro implies that there must not be any other macro hiding
-   the declaration of FUNCTION; but undefining FUNCTION first is part
-   of the poisoning process anyway (although for symbols that are
-   provided only via a macro, the result is a compilation error rather
-   than a warning containing "literal string").  Also note that in
-   C++, it is only safe to use if FUNCTION has no overloads.
+   instead.
+   _GL_WARN_ON_USE is for functions with 'extern' linkage.
+   _GL_WARN_ON_USE_ATTRIBUTE is for functions with 'static' or 'inline'
+   linkage.
+
+   However, one of the reasons that a function is a portability trap is
+   if it has the wrong signature.  Declaring FUNCTION with a different
+   signature in C is a compilation error, so this macro must use the
+   same type as any existing declaration so that programs that avoid
+   the problematic FUNCTION do not fail to compile merely because they
+   included a header that poisoned the function.  But this implies that
+   _GL_WARN_ON_USE is only safe to use if FUNCTION is known to already
+   have a declaration.  Use of this macro implies that there must not
+   be any other macro hiding the declaration of FUNCTION; but
+   undefining FUNCTION first is part of the poisoning process anyway
+   (although for symbols that are provided only via a macro, the result
+   is a compilation error rather than a warning containing
+   "literal string").  Also note that in C++, it is only safe to use if
+   FUNCTION has no overloads.
 
    For an example, it is possible to poison 'getline' by:
    - adding a call to gl_WARN_ON_USE_PREPARE([[#include <stdio.h>]],
@@ -471,12 +480,21 @@
    (less common usage, like &environ, will cause a compilation error
    rather than issue the nice warning, but the end result of informing
    the developer about their portability problem is still achieved):
-   #if HAVE_RAW_DECL_ENVIRON
-   static char ***rpl_environ (void) { return &environ; }
-   _GL_WARN_ON_USE (rpl_environ, "environ is not always properly declared");
-   # undef environ
-   # define environ (*rpl_environ ())
-   #endif
+     #if HAVE_RAW_DECL_ENVIRON
+     static char ***
+     rpl_environ (void) { return &environ; }
+     _GL_WARN_ON_USE (rpl_environ, "environ is not always properly declared");
+     # undef environ
+     # define environ (*rpl_environ ())
+     #endif
+   or better (avoiding contradictory use of 'static' and 'extern'):
+     #if HAVE_RAW_DECL_ENVIRON
+     static char ***
+     _GL_WARN_ON_USE_ATTRIBUTE ("environ is not always properly declared")
+     rpl_environ (void) { return &environ; }
+     # undef environ
+     # define environ (*rpl_environ ())
+     #endif
    */
 #ifndef _GL_WARN_ON_USE
 
@@ -484,13 +502,17 @@
 /* A compiler attribute is available in gcc versions 4.3.0 and later.  */
 #  define _GL_WARN_ON_USE(function, message) \
 extern __typeof__ (function) function __attribute__ ((__warning__ (message)))
+#  define _GL_WARN_ON_USE_ATTRIBUTE(message) \
+  __attribute__ ((__warning__ (message)))
 # elif __GNUC__ >= 3 && GNULIB_STRICT_CHECKING
 /* Verify the existence of the function.  */
 #  define _GL_WARN_ON_USE(function, message) \
 extern __typeof__ (function) function
+#  define _GL_WARN_ON_USE_ATTRIBUTE(message)
 # else /* Unsupported.  */
 #  define _GL_WARN_ON_USE(function, message) \
 _GL_WARN_EXTERN_C int _gl_warn_on_use
+#  define _GL_WARN_ON_USE_ATTRIBUTE(message)
 # endif
 #endif
 
@@ -700,7 +722,7 @@ _GL_WARN_ON_USE (memrchr, "memrchr is unportable - "
    memchr(S,C,N), at the expense of undefined behavior if C does not
    occur within N bytes.  */
 #if 1
-# if ! 1
+# if ! 0
 _GL_FUNCDECL_SYS (rawmemchr, void *, (void const *__s, int __c_in)
                                      _GL_ATTRIBUTE_PURE
                                      _GL_ARG_NONNULL ((1)));
@@ -801,7 +823,7 @@ _GL_FUNCDECL_RPL (strchrnul, char *, (const char *__s, int __c_in)
 _GL_CXXALIAS_RPL (strchrnul, char *,
                   (const char *str, int ch));
 # else
-#  if ! 1
+#  if ! 0
 _GL_FUNCDECL_SYS (strchrnul, char *, (char const *__s, int __c_in)
                                      _GL_ATTRIBUTE_PURE
                                      _GL_ARG_NONNULL ((1)));
@@ -1422,7 +1444,7 @@ _GL_EXTERN_C char * mbstok_r (char *string, const char *delim, char **save_ptr)
 
 /* Map any int, typically from errno, into an error message.  */
 #if 1
-# if 0
+# if 1
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #   undef strerror
 #   define strerror rpl_strerror
@@ -1494,7 +1516,7 @@ _GL_WARN_ON_USE (strsignal, "strsignal is unportable - "
 #endif
 
 #if 1
-# if !1
+# if !0
 _GL_FUNCDECL_SYS (strverscmp, int, (const char *, const char *)
                                    _GL_ATTRIBUTE_PURE
                                    _GL_ARG_NONNULL ((1, 2)));

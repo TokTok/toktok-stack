@@ -34,12 +34,24 @@ wget https://github.com/bazelbuild/bazel/releases/download/2.2.0/bazel_2.2.0-lin
 sudo dpkg -i bazel_2.2.0-linux-x86_64.deb
 ```
 
+On OSX:
+
+```sh
+brew install bazel
+```
+
 #### Maven
 
 If you want to build Java binaries, you need to install Maven:
 
 ```sh
 sudo apt install maven
+```
+
+On OSX:
+
+```sh
+brew install maven
 ```
 
 #### Android SDK
@@ -53,6 +65,8 @@ unzip -d third_party/android/sdk/ commandlinetools-linux-6200805_latest.zip
 rm commandlinetools-linux-6200805_latest.zip
 ```
 
+On OSX, replace `linux` with `mac` in the above instructions.
+
 You will need to install the latest build tools (`aapt` and friends) and
 platform 28 (targeted by our Android apps) using the SDK manager. Press "y"
 to accept all the licenses as you are asked. Use `sdkmanager --list` to see
@@ -63,6 +77,23 @@ third_party/android/sdk/tools/bin/sdkmanager --update
 third_party/android/sdk/tools/bin/sdkmanager 'build-tools;29.0.2'
 third_party/android/sdk/tools/bin/sdkmanager 'platforms;android-28'
 ```
+
+If you want to run instrumentation tests, also install an emulator image:
+
+```sh
+third_party/android/sdk/tools/bin/sdkmanager 'system-images;android-28;default;x86'
+```
+
+If you get `Warning: Could not create settings` and an exception, run the
+following steps instead of the `--update` step:
+
+```sh
+third_party/android/sdk/tools/bin/sdkmanager --sdk_root=third_party/android/sdk --update
+third_party/android/sdk/tools/bin/sdkmanager --sdk_root=third_party/android/sdk 'tools'
+```
+
+From then on, you won't need the `--sdk_root` flag anymore. See
+[this](https://stackoverflow.com/a/60454207) stackoverflow for more details.
 
 If you're using Java 11, see [this](https://stackoverflow.com/a/55982976)
 stackoverflow answer if you're getting exceptions or other errors when running
@@ -83,6 +114,15 @@ The build expects symlinks to the development files in `third_party/qt`:
 ln -s /usr/lib/x86_64-linux-gnu/qt5/bin third_party/qt/bin
 ln -s /usr/include/x86_64-linux-gnu/qt5 third_party/qt/include
 ln -s /usr/lib/x86_64-linux-gnu third_party/qt/lib
+```
+
+On OSX:
+
+```sh
+brew install qt
+ln -s /usr/local/Cellar/qt/5.14.1/bin third_party/qt/bin
+ln -s /usr/local/Cellar/qt/5.14.1/include third_party/qt/include
+ln -s /usr/local/Cellar/qt/5.14.1/lib third_party/qt/lib
 ```
 
 You may need slightly different paths depending on where your Qt installation
@@ -172,3 +212,5 @@ unzip -d third_party/android/ android-ndk-r16b-linux-x86_64.zip
 
 Note that the version of clang coming with android-ndk-r16b needs
 libncurses.so.5, which on Debian is in the libncurses5 package.
+
+On OSX, replace `linux` with `darwin`.

@@ -117,10 +117,10 @@ def _qt_rcc_impl(ctx):
 
     ctx.actions.run(
         arguments = [src.path for src in srcs] + [
-            "--name",
-            ctx.attr.name,
-            "-o",
-            rcc_cpp.path,
+            "--name", ctx.attr.name,
+            "--compress", "9",
+            "--threshold", "50",
+            "-o", rcc_cpp.path,
         ],
         executable = rcc.path,
         inputs = srcs + data,

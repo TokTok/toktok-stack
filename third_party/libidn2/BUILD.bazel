@@ -5,8 +5,10 @@ licenses(["notice"])
 cc_library(
     name = "config",
     hdrs = [
-        "config.h",
         "gl/string.h",
+        "linux/config.h",
+        "osx/config.h",
+        "windows/config.h",
     ],
     visibility = ["@libidn2//:__pkg__"],
 )

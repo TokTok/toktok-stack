@@ -5,7 +5,12 @@ asm_library(
     name = "assemblies",
     srcs = glob([
         "vp*/**/x86/*.asm",
-    ]),
+    ]) + [
+        "vpx_ports/float_control_word.asm",
+    ] + select({
+        "@toktok//tools/config:windows": ["vpx_ports/emms_mmx.asm"],
+        "//conditions:default": [],
+    }),
     hdrs = [
         "third_party/x86inc/x86inc.asm",
         "vpx_dsp/x86/bitdepth_conversion_sse2.asm",
@@ -15,7 +20,7 @@ asm_library(
     asmopts = [
         "-I$(GENDIR)/external/libvpx",  # Generated headers.
         "-Iexternal/libvpx",
-        "-Ithird_party/libvpx",
+        "-I$(GENDIR)/third_party/libvpx",
     ],
 )
 
@@ -91,19 +96,31 @@ cc_library(
             "vp8/encoder/mr_dissim.c",
             "vpx_ports/arm_cpudetect.c",
             "vpx_ports/ppc_cpudetect.c",
+            "vpx_ports/emms_mmx.c",
         ],
-    ),
+    ) + select({
+        "@toktok//tools/config:windows": [],
+        "//conditions:default": ["vpx_ports/emms_mmx.c"],
+    }),
     copts = [
         "-I$(GENDIR)/external/libvpx",
         "-Iexternal/libvpx",
-        "-fvisibility=protected",
-        "-Wno-overflow",
-    ],
+    ] + select({
+        "@toktok//tools/config:windows": [],
+        "//conditions:default": [
+            "-fvisibility=protected",
+            "-Wno-overflow",
+        ],
+    }),
     includes = ["."],
-    linkopts = ["-lm"],
+    linkopts = select({
+        "@toktok//tools/config:windows": [],
+        "//conditions:default": ["-lm"],
+    }),
     visibility = ["//visibility:public"],
     deps = [
         ":headers",
+        "@pthread",
         "@toktok//third_party/libvpx:vpx_config",
         "@toktok//third_party/libvpx:vpx_version",
     ],

@@ -147,6 +147,7 @@ asm_library(
         "@toktok//tools/config:freebsd": [],
         "@toktok//tools/config:linux": [],
         "@toktok//tools/config:osx": ["-DPREFIX"],
+        "@toktok//tools/config:windows": [],
     }),
 )
 
@@ -171,13 +172,14 @@ genrule(
     cmd = """
         export PATH=$$PWD/$$(dirname $(location @yasm)):$$PATH
         cd `dirname $(location configure)`
-        ./configure --disable-v4l2_m2m
+        ./configure --disable-v4l2_m2m || (cat ffbuild/config.log && false)
         DIR=`pwd`
         cd -
         for i in $(OUTS); do
           cp $$DIR/`echo $$i | sed -e 's|$(GENDIR)/external/ffmpeg/||'` $$i
         done
     """,
+    toolchains = ["@bazel_tools//tools/cpp:current_cc_toolchain"],
     tools = ["@yasm"],
 )
 
@@ -188,15 +190,10 @@ genrule(
         "VERSION",
     ],
     outs = ["libavutil/ffversion.h"],
-    cmd = "$(location ffbuild/version.sh) external/ffmpeg $@",
+    cmd = "$(location ffbuild/version.sh) external/ffmpeg ffversion.h && mv ffversion.h $@",
 )
 
 COPTS = [
-    "-fvisibility=protected",
-    "-std=c11",
-    "-w",
-    "-D_FILE_OFFSET_BITS=64",
-    "-D_LARGEFILE_SOURCE",
     "-DPIC",
     "-DZLIB_CONST",
     "-DHAVE_AV_CONFIG_H",
@@ -209,6 +206,19 @@ COPTS = [
         "-Ithird_party/ffmpeg/linux",
     ],
     "@toktok//tools/config:osx": ["-Ithird_party/ffmpeg/osx"],
+    "@toktok//tools/config:windows": [
+        "-Iexternal/ffmpeg/compat/atomics/win32",
+        "-Ithird_party/ffmpeg/windows",
+    ],
+}) + select({
+    "@toktok//tools/config:windows": ["-D_LARGEFILE_SOURCE=0"],
+    "//conditions:default": [
+        "-fvisibility=protected",
+        "-std=c11",
+        "-w",
+        "-D_FILE_OFFSET_BITS=64",
+        "-D_LARGEFILE_SOURCE",
+    ],
 })
 
 cc_library(
@@ -1832,7 +1842,6 @@ cc_library(
         "libavformat/txd.c",
         "libavformat/udp.c",
         "libavformat/uncodedframecrcenc.c",
-        "libavformat/unix.c",
         "libavformat/url.c",
         "libavformat/urldecode.c",
         "libavformat/utils.c",
@@ -2005,15 +2014,27 @@ cc_library(
             "libavdevice/xcbgrab.c",
         ],
         "@toktok//tools/config:osx": [],
+        "@toktok//tools/config:windows": [],
+    }) + select({
+        "@toktok//tools/config:windows": [],
+        "//conditions:default": ["libavformat/unix.c"],
     }),
     copts = COPTS,
     includes = ["."],
-    linkopts = [
-        "-lpthread",
-    ] + select({
-        "@toktok//tools/config:freebsd": ["-lm"],
-        "@toktok//tools/config:linux": ["-ldl"],
-        "@toktok//tools/config:osx": ["-liconv"],
+    linkopts = select({
+        "@toktok//tools/config:freebsd": [
+            "-lpthread",
+            "-lm",
+        ],
+        "@toktok//tools/config:linux": [
+            "-lpthread",
+            "-ldl",
+        ],
+        "@toktok//tools/config:osx": [
+            "-lpthread",
+            "-liconv",
+        ],
+        "@toktok//tools/config:windows": [],
     }),
     visibility = ["//visibility:public"],
     deps = [
@@ -2029,5 +2050,6 @@ cc_library(
             "@xcb",
         ],
         "@toktok//tools/config:osx": [":ffmpeg_osx"],
+        "@toktok//tools/config:windows": [],
     }),
 )
