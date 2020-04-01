@@ -8,6 +8,36 @@ To download the TokTok stack, use `git`:
 git clone --recursive https://github.com/TokTok/toktok-stack
 ```
 
+## Configuring
+
+You'll need to pass `--config` flags to make bazel select the correct compiler
+flags. If you're on Linux, pass `--config=linux`, on OSX, pass `--config=osx`,
+and on Windows, pass `--config=windows`.
+
+You must also pass the correct compiler config. If you use Clang (default on
+OSX), pass `--config=clang`. If you use GCC, pass `--config=gcc`. On Windows,
+you don't need any compiler flag because we assume it's MSVC.
+
+There are also `--config=release` and `--config=debug`, as well as
+`--config=asan` flags, and more. See `.bazelrc` in this repository for more
+config flags you can pass.
+
+We recommend creating a `$HOME/.bazelrc` roughly like this:
+
+```sh
+build --jobs=12
+
+build --config=linux
+build --config=clang
+#build --config=gcc
+build --config=release
+#build --config=ubsan
+```
+
+The shell script at `tools/setup-ci` does this for you on Linux/Clang, but
+also sets up remote caching, which you may not want if you don't have a very
+fast internet connection.
+
 ## Building
 
 After installing prerequisites (instructions below), run the following command
@@ -105,28 +135,19 @@ To build Qt-based binaries such as `qtox`, you need an installation of Qt
 development headers and libraries and tools.
 
 ```sh
-sudo apt install qttools5-dev libqt5svg5-dev
-```
-
-The build expects symlinks to the development files in `third_party/qt`:
-
-```sh
-ln -s /usr/lib/x86_64-linux-gnu/qt5/bin third_party/qt/bin
-ln -s /usr/include/x86_64-linux-gnu/qt5 third_party/qt/include
-ln -s /usr/lib/x86_64-linux-gnu third_party/qt/lib
+sudo apt install qttools5-dev qttools5-dev-tools libqt5svg5-dev
 ```
 
 On OSX:
 
 ```sh
 brew install qt
-ln -s /usr/local/Cellar/qt/5.14.1/bin third_party/qt/bin
-ln -s /usr/local/Cellar/qt/5.14.1/include third_party/qt/include
-ln -s /usr/local/Cellar/qt/5.14.1/lib third_party/qt/lib
 ```
 
-You may need slightly different paths depending on where your Qt installation
-lives.
+If your Qt installation doesn't live in a standard location, make changes to
+the detector script in `tools/workspace/qt.bzl` and consider sending us a pull
+request. If your version of Qt is different, edit `WORKSPACE` and adjust it in
+the `qt_repository` declaration.
 
 #### Python
 
@@ -172,6 +193,12 @@ For `//toxic`:
 sudo apt install libopenal-dev libxss-dev
 ```
 
+On OSX (for both `qtox` and `toxic`):
+
+```sh
+brew install openal-soft
+```
+
 Note that toxic also needs Python 3. See the section on Python for how to
 install its development files.
 
@@ -194,7 +221,7 @@ wget https://dl.google.com/android/repository/android-ndk-r16b-linux-x86_64.zip
 unzip -d third_party/android/ android-ndk-r16b-linux-x86_64.zip
 ```
 
-Note that the version of clang coming with android-ndk-r16b needs
+Note that the version of Clang coming with android-ndk-r16b needs
 libncurses.so.5, which on Debian is in the libncurses5 package.
 
 On OSX, replace `linux` with `darwin`.

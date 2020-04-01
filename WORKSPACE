@@ -210,18 +210,22 @@ new_local_repository(
     path = "/usr",
 )
 
-new_local_repository(
+load("//tools/workspace:local.bzl", "local_library_repository")
+
+local_library_repository(
     name = "ncurses",
-    build_file = "third_party/BUILD.ncurses",
-    #path = "/usr/local/Cellar/ncurses/6.2",
-    path = "/usr",
+    version = "6.2",
 )
 
-new_local_repository(
+local_library_repository(
     name = "openal",
-    build_file = "third_party/BUILD.openal",
-    #path = "/usr/local/Cellar/openal-soft/1.20.1",
-    path = "/usr",
+    brew_name = "openal-soft",
+    version = "1.20.1",
+)
+
+local_library_repository(
+    name = "x264",
+    version = "r2917_1",
 )
 
 github_archive(
@@ -620,20 +624,11 @@ android_test_repositories()
 # Qt5
 # =========================================================
 
-new_local_repository(
+load("//tools/workspace:qt.bzl", "qt_repository")
+
+qt_repository(
     name = "qt",
-    build_file = "third_party/BUILD.qt",
-    path = "third_party/qt",
-)
-
-# x264
-# =========================================================
-
-new_local_repository(
-    name = "x264",
-    build_file = "third_party/BUILD.x264",
-    #path = "/usr/local/Cellar/x264/r2917_1",
-    path = "/usr",
+    version = "5.14.1",
 )
 
 # Python

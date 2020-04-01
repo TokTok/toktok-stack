@@ -20,10 +20,3 @@ if [ -f echobot-jvm/BUILD.bazel ]; then
   wget https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/ffmpeg/3.4.1-1.4/ffmpeg-3.4.1-1.4-linux-x86_64.jar -O third_party/javacpp/ffmpeg/jar/ffmpeg-3.4.1-1.4-linux-x86_64.jar
   wget https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/3.4.0-1.4/opencv-3.4.0-1.4-linux-x86_64.jar -O third_party/javacpp/opencv/jar/opencv-3.4.0-1.4-linux-x86_64.jar
 fi
-
-# Link dependencies for qtox only if we're building it.
-if [ -f qtox/BUILD.bazel ]; then
-  ln -s /usr/lib/x86_64-linux-gnu/qt5/bin third_party/qt/bin
-  ln -s /usr/include/x86_64-linux-gnu/qt5 third_party/qt/include
-  ln -s /usr/lib/x86_64-linux-gnu third_party/qt/lib
-fi
