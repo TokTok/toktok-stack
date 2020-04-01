@@ -11,6 +11,7 @@ cc_library(
         "-DHASXDMAUTH",
         "-DHAVE_LRAND48",
         "-DHAVE_SRAND48",
+        "-Wno-unused-variable",
     ],
     includes = ["include"],
     visibility = ["//visibility:public"],

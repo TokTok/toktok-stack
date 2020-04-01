@@ -131,8 +131,8 @@ lives.
 #### Python
 
 To build `py-toxcore-c` and other programs using Python FFI, you need Python
-development headers. `py-toxcore-c` currently builds for Python 2 in the Bazel
-build, while `toxic` needs Python 3.
+development headers. `py-toxcore-c` and `toxic` both need Python 3. Any of
+3.5, 3.6, or 3.7 works.
 
 ```sh
 sudo apt install python3.5-dev
@@ -144,16 +144,6 @@ For `//js-toxcore-c`, you will need a `make` program in your `$PATH`:
 
 ```sh
 sudo apt install make
-```
-
-#### Mercurial
-
-For `//qtox/osx/updater`, you will need the `hg` program in your `$PATH`,
-because it contains a Go program that points at a Bitbucket Mercurial
-repository:
-
-```sh
-sudo apt install mercurial
 ```
 
 #### Native javacpp libraries
@@ -173,23 +163,17 @@ installed on the system.
 For `//qtox`:
 
 ```sh
-sudo apt install libopenal-dev libsqlite3-dev libasound2-dev libxss-dev
+sudo apt install libopenal-dev libasound2-dev libxss-dev
 ```
 
 For `//toxic`:
 
 ```sh
-sudo apt install libopenal-dev libncurses5-dev libxss-dev
+sudo apt install libopenal-dev libxss-dev
 ```
 
 Note that toxic also needs Python 3. See the section on Python for how to
 install its development files.
-
-For `//c-toxcore/testing:av_test`:
-
-```sh
-sudo apt install libcv-dev libhighgui-dev
-```
 
 ## Building native code for Android
 
@@ -214,3 +198,20 @@ Note that the version of clang coming with android-ndk-r16b needs
 libncurses.so.5, which on Debian is in the libncurses5 package.
 
 On OSX, replace `linux` with `darwin`.
+
+## Troubleshooting
+
+### Xcode version must be specified to use an Apple CROSSTOOL
+
+Try running the following:
+
+```sh
+sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+sudo xcodebuild -license
+bazel clean --expunge
+```
+
+See
+[this](https://github.com/bazelbuild/bazel/issues/4314#issuecomment-370172472)
+GitHub comment or [this](https://stackoverflow.com/a/46460129) stackoverflow
+answer for more details.

@@ -21,6 +21,7 @@ jobs:
             - libqt5svg5-dev
             - python3.5-dev
             - qttools5-dev
+            - qttools5-dev-tools
       before_install: source tools/setup-bazel
       install: tools/setup-ci
       script:
