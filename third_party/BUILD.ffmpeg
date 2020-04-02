@@ -304,6 +304,18 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "ffmpeg_portable",
+    srcs = [
+        "libavdevice/timefilter.c",
+    ],
+    copts = COPTS,
+    deps = [
+        ":headers",
+        "@toktok//third_party/ffmpeg:config",
+    ],
+)
+
 objc_library(
     name = "ffmpeg_osx_objc",
     srcs = [
@@ -343,7 +355,10 @@ cc_library(
         "-lpthread",
         "-liconv",
     ],
-    deps = [":ffmpeg_osx_objc"],
+    deps = [
+        ":ffmpeg_osx_objc",
+        ":ffmpeg_portable",
+    ],
 )
 
 cc_library(
@@ -381,6 +396,7 @@ cc_library(
         "/DEFAULTLIB:Ws2_32.lib",
     ],
     deps = [
+        ":ffmpeg_portable",
         ":headers",
         "@toktok//third_party/ffmpeg:config",
     ],
@@ -415,6 +431,7 @@ cc_library(
     ],
     deps = [
         ":ffmpeg_cuda",
+        ":ffmpeg_portable",
         ":headers",
         "@toktok//third_party/ffmpeg:config",
     ],
@@ -451,6 +468,7 @@ cc_library(
     ],
     deps = [
         ":ffmpeg_cuda",
+        ":ffmpeg_portable",
         ":headers",
         "@asound",
         "@toktok//third_party/ffmpeg:config",
@@ -1319,7 +1337,6 @@ cc_library(
         "libavdevice/avdevice.c",
         "libavdevice/lavfi.c",
         "libavdevice/openal-dec.c",
-        "libavdevice/timefilter.c",
         "libavdevice/utils.c",
         "libavfilter/aeval.c",
         "libavfilter/af_acopy.c",
