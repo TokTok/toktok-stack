@@ -24,12 +24,13 @@ def _impl(repository_ctx):
         repository_ctx.symlink(brew_prefix + "/lib", "lib")
     else:
         local_prefix = str(repository_ctx.path(
-            Label("@toktok//third_party:%s/readme.txt" % (repository_ctx.attr.brew_name or repository_ctx.name))
+            Label("@toktok//third_party:%s/readme.txt" % (repository_ctx.attr.brew_name or repository_ctx.name)),
         ).dirname)
         if repository_ctx.path(local_prefix).exists:
             repository_ctx.symlink(local_prefix + "/include", "include")
             repository_ctx.symlink(local_prefix + "/libs/Win64", "lib")
-        fail("Could not find %s installation." % name)
+        else:
+            fail("Could not find %s installation." % name)
 
 local_library_repository = repository_rule(
     _impl,
