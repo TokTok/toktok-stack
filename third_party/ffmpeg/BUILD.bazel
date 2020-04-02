@@ -15,18 +15,29 @@ genrule(
     visibility = ["@ffmpeg//:__pkg__"],
 )
 
+genrule(
+    name = "platform",
+    srcs = select({
+        "//tools/config:freebsd": glob(["freebsd/**"]),
+        "//tools/config:linux": glob(["linux/**"]),
+        "//tools/config:osx": glob(["osx/**"]),
+        "//tools/config:windows": glob(["windows/**"]),
+    }),
+    outs = ["platform/" + f[6:] for f in glob(["linux/**"])],
+    cmd = """
+        PLATFORM=`echo $(SRCS) | sed -e 's!third_party/ffmpeg/\\([^/]*\\)/.*!\\1!'`
+        for i in $(OUTS); do
+          cp `echo $$i | sed -e "s!$(GENDIR)/!!;s!/platform/!/$$PLATFORM/!"` $$i
+        done
+    """,
+)
+
 cc_library(
     name = "config",
     hdrs = [
-        "libavcodec/bsf_list.c",
-        "libavformat/protocol_list.c",
         "libavutil/avconfig.h",
-    ] + select({
-        "//tools/config:freebsd": ["freebsd/config.h"],
-        "//tools/config:linux": ["linux/config.h"],
-        "//tools/config:osx": ["osx/config.h"],
-        "//tools/config:windows": ["windows/config.h"],
-    }),
+        ":platform",
+    ],
     includes = ["."],
     visibility = ["@ffmpeg//:__pkg__"],
 )

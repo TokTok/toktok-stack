@@ -4,8 +4,8 @@ exports_files(
     srcs = [
         "linux/sodium_config.h",
         "osx/sodium_config.h",
-        "windows/sodium_config.h",
         "version.h",
+        "windows/sodium_config.h",
     ],
     visibility = ["@libsodium//:__pkg__"],
 )

@@ -1,6 +1,5 @@
 workspace(name = "toktok")
 
-load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
 
@@ -9,6 +8,13 @@ github_archive(
     repo = "bazelbuild/bazel-toolchains",
     sha256 = "14daf97c62e0bb3b3aca2cc2d12f1d69c31c53f0a7417b6a9fd91ce6fdbebecd",
     version = "2.2.2",
+)
+
+github_archive(
+    name = "rules_cc",
+    repo = "bazelbuild/rules_cc",
+    sha256 = "523c59bb3f16518679668594c8874da46872fde05c32ba246bc0a35ec292f8a6",
+    version = "34ca16f4aa4bf2a5d3e4747229202d6cb630ebab",
 )
 
 github_archive(
@@ -197,13 +203,6 @@ go_repository(
 # C/C++ dependencies
 # =========================================================
 
-github_archive(
-    name = "rules_cc",
-    repo = "bazelbuild/rules_cc",
-    sha256 = "06910242c6d47c5719efd5789cf34dac393034dc0fe4c73f1ed3aac739ffabdc",
-    version = "be6ea43fc8b22f1c44f0ed9e9ab723dea1955238",
-)
-
 new_local_repository(
     name = "asound",
     build_file = "third_party/BUILD.asound",
@@ -257,12 +256,19 @@ new_github_archive(
     version = "curl-7_69_1",
 )
 
+new_github_archive(
+    name = "ffnvcodec",
+    repo = "FFmpeg/nv-codec-headers",
+    sha256 = "f1fd5adb2ed6815e7debff30cb44b21188dc65da42b7a67537f28256e8e71c29",
+    version = "250292dd20af60edc6e0d07f1d6e489a2f8e1c44",
+)
+
 http_archive(
     name = "ffmpeg",
     build_file = "@toktok//third_party:BUILD.ffmpeg",
-    sha256 = "eb0370bf223809b9ebb359fed5318f826ac038ce77933b3afd55ab1a0a21785a",
-    strip_prefix = "ffmpeg-3.4.2",
-    urls = ["http://ffmpeg.org/releases/ffmpeg-3.4.2.tar.bz2"],
+    sha256 = "b620d187c26f76ca19e74210a0336c3b8380b97730df5cdf45f3e69e89000e5c",
+    strip_prefix = "ffmpeg-4.2.2",
+    urls = ["https://ffmpeg.org/releases/ffmpeg-4.2.2.tar.bz2"],
 )
 
 http_archive(
@@ -517,7 +523,6 @@ github_archive(
     version = "bad9e2501279aea5268b1b8a5463ccc1be8ddf65",
 )
 
-load("@bazel_tools//tools/build_defs/repo:maven_rules.bzl", "maven_aar", "maven_jar")
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 local_repository(

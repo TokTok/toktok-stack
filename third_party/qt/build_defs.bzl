@@ -46,7 +46,7 @@ qt_uic = rule(
             doc = "The .ui files to compile.",
         ),
         "_uic": attr.label(
-            default = Label("@qt//:bin/uic"),
+            default = Label("@qt//:uic"),
             executable = True,
             cfg = "host",
             allow_single_file = True,
@@ -94,7 +94,7 @@ qt_lconvert = rule(
             doc = "The .ts files to compile.",
         ),
         "_lconvert": attr.label(
-            default = Label("@qt//:bin/lconvert"),
+            default = Label("@qt//:lconvert"),
             executable = True,
             cfg = "host",
             allow_single_file = True,
@@ -117,10 +117,14 @@ def _qt_rcc_impl(ctx):
 
     ctx.actions.run(
         arguments = [src.path for src in srcs] + [
-            "--name", ctx.attr.name,
-            "--compress", "9",
-            "--threshold", "50",
-            "-o", rcc_cpp.path,
+            "--name",
+            ctx.attr.name,
+            "--compress",
+            "9",
+            "--threshold",
+            "50",
+            "-o",
+            rcc_cpp.path,
         ],
         executable = rcc.path,
         inputs = srcs + data,
@@ -143,7 +147,7 @@ qt_rcc = rule(
             doc = "The resource files to compile into the resulting .cpp file.",
         ),
         "_rcc": attr.label(
-            default = Label("@qt//:bin/rcc"),
+            default = Label("@qt//:rcc"),
             executable = True,
             cfg = "host",
             allow_single_file = True,
@@ -251,7 +255,7 @@ qt_moc = rule(
         "deps": attr.label_list(),
         "mocopts": attr.string_list(),
         "_moc": attr.label(
-            default = Label("@qt//:bin/moc"),
+            default = Label("@qt//:moc"),
             executable = True,
             cfg = "host",
             allow_single_file = True,
@@ -290,6 +294,15 @@ def qt_test(name, src, deps, copts = [], mocopts = [], size = None):
 # =========================================================
 
 def qt_import(name, module):
+    """Creates a cc_library of the given name that links in a Qt module.
+
+    Modules are e.g. "Core" for QtCore, "Gui" for QtGui, etc. This works
+    across platforms: OSX, Windows, and FreeBSD/Linux.
+
+    Args:
+      name: the name of the resulting cc_library.
+      module: Qt module name (Core, Gui, Widgets, etc.).
+    """
     apple_dynamic_framework_import(
         name = "Qt%s_framework" % module,
         framework_imports = native.glob(
@@ -318,6 +331,11 @@ def qt_import(name, module):
     )
 
     cc_library(
+        name = "Qt%s_win" % module,
+        srcs = ["lib/Qt5%s.lib" % module],
+    )
+
+    cc_library(
         name = name,
         hdrs = native.glob(["include/Qt%s/**" % module]),
         includes = [
@@ -330,10 +348,12 @@ def qt_import(name, module):
                 "-F/usr/local/Cellar/qt/5.14.1/lib",
                 "-framework Qt%s" % module,
             ],
+            "@toktok//tools/config:windows": [],
         }),
         visibility = ["//visibility:public"],
         deps = select({
             "@toktok//tools/config:linux": [":Qt%s_elf" % module],
             "@toktok//tools/config:osx": [":Qt%s_osx" % module],
+            "@toktok//tools/config:windows": [":Qt%s_win" % module],
         }),
     )

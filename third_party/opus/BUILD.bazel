@@ -9,7 +9,7 @@ genrule(
         "//conditions:default": ["posix/config.h"],
     }),
     outs = ["config.h"],
-	cmd = "cp $< $@",
+    cmd = "cp $< $@",
 )
 
 cc_library(

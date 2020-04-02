@@ -16,7 +16,7 @@ cc_library(
     copts = [
         "-Iexternal/%s/include" % hazel_workspace(PACKAGE_NAME),
         "-Iexternal/%s/double-conversion/src" % hazel_workspace(PACKAGE_NAME),
-        "-Wno-unused-function",
+        "-Wno-unused",
     ],
 )
 

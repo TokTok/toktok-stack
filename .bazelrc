@@ -144,21 +144,23 @@ build:osx --noincompatible_run_shell_command_string
 
 # Debug mode.
 build:debug -c dbg
-build:debug --copt='-O3'
-build:debug --copt='-march=native'
+
+# On Windows, we always generate debug info, and always compile with
+# optimisation flags.
+build:windows --config=release
+build:windows --copt='/Z7' --copt='/UNDEBUG'
+# Disable inlining of functions not marked as "inline".
+build:windows --copt='/Ob1'
+build:windows --linkopt='/DEBUG:FULL'
 
 # Release mode.
 build:release -c opt
-build:release --copt='-O3'
-build:release --copt='-march=native'
-build:release --copt='-DNDEBUG'
 # NDEBUG disables asserts.
-build:release --copt='-Wno-unused-variable'
+#build:release --copt='-Wno-unused-variable'
 
 # Address sanitizer (also with optimisation).
 build:asan -c dbg
-build:asan --copt='-O3'
-build:asan --copt='-march=native'
+build:asan --copt="-O2"
 build:asan --per_file_copt='^c-toxcore/.*@-fsanitize=address,-g'
 build:asan --per_file_copt='^toxins/.*@-fsanitize=address,-g'
 build:asan --per_file_copt='^qtox/.*@-fsanitize=address,-g'
@@ -325,6 +327,7 @@ build:clang --per_file_copt='//toxins@-Wno-sign-compare'
 build:clang --per_file_copt='//toxins@-Wno-switch-enum'
 build:clang --per_file_copt='//toxins@-Wno-unreachable-code'
 build:clang --per_file_copt='//toxins@-Wno-unreachable-code-return'
+build:windows --per_file_copt='//qtox@/wd4068'  # unknown pragma
 
 # Ignore warnings for Go generated internal files and external libraries.
 build:gnulike --per_file_copt='/go_default_library%@-w'
