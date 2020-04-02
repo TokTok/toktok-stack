@@ -1,12 +1,20 @@
 load("@toktok//third_party/qt:build_defs.bzl", "qt_import")
 
-exports_files(srcs = [
-    "bin/lconvert",
-    "bin/macdeployqt",
-    "bin/moc",
-    "bin/rcc",
-    "bin/uic",
-])
+[alias(
+    name = name,
+    actual = select({
+        "@toktok//tools/config:windows": "bin/%s.exe" % name,
+        "//conditions:default": "bin/%s" % name,
+    }),
+    visibility = ["//visibility:public"],
+) for name in [
+    "lconvert",
+    "macdeployqt",
+    "moc",
+    "rcc",
+    "uic",
+    "windeployqt",
+]]
 
 qt_import(
     name = "qt_concurrent",

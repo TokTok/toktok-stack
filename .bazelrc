@@ -144,21 +144,25 @@ build:osx --noincompatible_run_shell_command_string
 
 # Debug mode.
 build:debug -c dbg
-build:debug --copt='-O3'
-build:debug --copt='-march=native'
+
+# On Windows, we always generate debug info, and always optimise external
+# code. For ffmpeg on Windows, this is necessary, because it relies on the
+# fact that the optimiser removes calls to undefined functions. Without this,
+# we'd get undefined references linker errors.
+build:windows --copt='/DEBUG:FULL'
+build:windows --config=release
+# TODO(iphydf): This causes warning D9025, so we actually optimize *all* code now.
+#build:windows --per_file_copt='^external/@-O2'
 
 # Release mode.
 build:release -c opt
-build:release --copt='-O3'
-build:release --copt='-march=native'
 build:release --copt='-DNDEBUG'
 # NDEBUG disables asserts.
-build:release --copt='-Wno-unused-variable'
+#build:release --copt='-Wno-unused-variable'
 
 # Address sanitizer (also with optimisation).
 build:asan -c dbg
-build:asan --copt='-O3'
-build:asan --copt='-march=native'
+build:asan --copt="-O2"
 build:asan --per_file_copt='^c-toxcore/.*@-fsanitize=address,-g'
 build:asan --per_file_copt='^toxins/.*@-fsanitize=address,-g'
 build:asan --per_file_copt='^qtox/.*@-fsanitize=address,-g'

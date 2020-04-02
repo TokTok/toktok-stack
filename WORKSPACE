@@ -12,6 +12,13 @@ github_archive(
 )
 
 github_archive(
+    name = "rules_cc",
+    repo = "bazelbuild/rules_cc",
+    sha256 = "523c59bb3f16518679668594c8874da46872fde05c32ba246bc0a35ec292f8a6",
+    version = "34ca16f4aa4bf2a5d3e4747229202d6cb630ebab",
+)
+
+github_archive(
     name = "rules_java",
     repo = "bazelbuild/rules_java",
     sha256 = "7f4772b0ee2b46a042870c844e9c208e8a0960a953a079236a4bbd785e471275",
@@ -196,13 +203,6 @@ go_repository(
 
 # C/C++ dependencies
 # =========================================================
-
-github_archive(
-    name = "rules_cc",
-    repo = "bazelbuild/rules_cc",
-    sha256 = "06910242c6d47c5719efd5789cf34dac393034dc0fe4c73f1ed3aac739ffabdc",
-    version = "be6ea43fc8b22f1c44f0ed9e9ab723dea1955238",
-)
 
 new_local_repository(
     name = "asound",

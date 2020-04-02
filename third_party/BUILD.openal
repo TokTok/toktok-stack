@@ -7,6 +7,7 @@ cc_library(
         "@toktok//tools/config:freebsd": [],
         "@toktok//tools/config:linux": ["lib/x86_64-linux-gnu/libopenal.so"],
         "@toktok//tools/config:osx": ["lib/libopenal.dylib"],
+        "@toktok//tools/config:windows": ["lib/OpenAL32.lib"],
     }),
     hdrs = glob(["include/AL/*.h"]),
     includes = ["include"],

@@ -138,6 +138,7 @@ asm_library(
         "libavutil/x86/x86util.asm",
         "@toktok//third_party/ffmpeg:config_asm",
     ],
+    archive = False,
     asmopts = [
         "-Iexternal/ffmpeg",
         "-I$(GENDIR)/third_party/ffmpeg",
@@ -211,11 +212,19 @@ COPTS = [
         "-Ithird_party/ffmpeg/windows",
     ],
 }) + select({
-    "@toktok//tools/config:windows": ["-D_LARGEFILE_SOURCE=0"],
+    "@toktok//tools/config:windows": [],
     "//conditions:default": [
         "-fvisibility=protected",
         "-std=c11",
-        "-w",
+        "-Wno-absolute-value",
+        "-Wno-missing-braces",
+        "-Wno-deprecated-declarations",
+        "-Wno-incompatible-pointer-types-discards-qualifiers",
+        "-Wno-parentheses",
+        "-Wno-pointer-sign",
+        "-Wno-sometimes-uninitialized",
+        "-Wno-switch",
+        "-Wno-unused",
         "-D_FILE_OFFSET_BITS=64",
         "-D_LARGEFILE_SOURCE",
     ],
@@ -293,12 +302,13 @@ cc_library(
 )
 
 objc_library(
-    name = "ffmpeg_osx",
+    name = "ffmpeg_osx_objc",
     srcs = [
         "libavcodec/audiotoolboxdec.c",
         "libavcodec/audiotoolboxenc.c",
         "libavcodec/videotoolbox.c",
         "libavcodec/videotoolboxenc.c",
+        "libavformat/unix.c",
         "libavutil/hwcontext_videotoolbox.c",
         "libavutil/pixdesc.c",
     ],
@@ -324,14 +334,136 @@ objc_library(
     ],
 )
 
-CUDA_SRCS = [
-    "libavcodec/cuvid.c",
-    "libavcodec/nvenc.c",
-    "libavcodec/nvenc_h264.c",
-    "libavcodec/nvenc_hevc.c",
-    "libavfilter/vf_hwupload_cuda.c",
-    "libavutil/hwcontext_cuda.c",
-]
+cc_library(
+    name = "ffmpeg_osx",
+    linkopts = [
+        "-lpthread",
+        "-liconv",
+    ],
+    deps = [":ffmpeg_osx_objc"],
+)
+
+cc_library(
+    name = "ffmpeg_windows",
+    srcs = [
+        "libavcodec/dxva2.c",
+        "libavcodec/dxva2_h264.c",
+        "libavcodec/dxva2_hevc.c",
+        "libavcodec/dxva2_mpeg2.c",
+        "libavcodec/dxva2_vc1.c",
+        "libavcodec/dxva2_vp9.c",
+        "libavdevice/dshow.c",
+        "libavdevice/dshow_common.c",
+        "libavdevice/dshow_crossbar.c",
+        "libavdevice/dshow_enummediatypes.c",
+        "libavdevice/dshow_enumpins.c",
+        "libavdevice/dshow_filter.c",
+        "libavdevice/dshow_pin.c",
+        "libavdevice/gdigrab.c",
+        "libavdevice/vfwcap.c",
+        "libavutil/hwcontext_d3d11va.c",
+        "libavutil/hwcontext_dxva2.c",
+    ],
+    copts = COPTS,
+    linkopts = [
+        "/DEFAULTLIB:D3D11.lib",
+        "/DEFAULTLIB:DXGI.lib",
+        "/DEFAULTLIB:Gdi32.lib",
+        "/DEFAULTLIB:Ole32.lib",
+        "/DEFAULTLIB:OleAut32.lib",
+        "/DEFAULTLIB:Shlwapi.lib",
+        "/DEFAULTLIB:Strmiids.lib",
+        "/DEFAULTLIB:User32.lib",
+        "/DEFAULTLIB:Vfw32.lib",
+        "/DEFAULTLIB:Ws2_32.lib",
+    ],
+    deps = [
+        ":headers",
+        "@toktok//third_party/ffmpeg:config",
+    ],
+)
+
+cc_library(
+    name = "ffmpeg_cuda",
+    srcs = [
+        "libavcodec/cuvid.c",
+        "libavcodec/nvenc.c",
+        "libavcodec/nvenc_h264.c",
+        "libavcodec/nvenc_hevc.c",
+        "libavfilter/vf_hwupload_cuda.c",
+        "libavutil/hwcontext_cuda.c",
+    ],
+    copts = COPTS,
+    deps = [
+        ":headers",
+        "@toktok//third_party/ffmpeg:config",
+    ],
+)
+
+cc_library(
+    name = "ffmpeg_freebsd",
+    srcs = [
+        "libavformat/unix.c",
+    ],
+    copts = COPTS,
+    linkopts = [
+        "-lpthread",
+        "-lm",
+    ],
+    deps = [
+        ":ffmpeg_cuda",
+        ":headers",
+        "@toktok//third_party/ffmpeg:config",
+    ],
+)
+
+cc_library(
+    name = "ffmpeg_linux",
+    srcs = [
+        "libavcodec/v4l2_buffers.c",
+        "libavcodec/v4l2_context.c",
+        "libavcodec/v4l2_fmt.c",
+        "libavcodec/v4l2_m2m.c",
+        "libavcodec/v4l2_m2m_dec.c",
+        "libavcodec/v4l2_m2m_enc.c",
+        "libavdevice/alsa.c",
+        "libavdevice/alsa_dec.c",
+        "libavdevice/alsa_enc.c",
+        "libavdevice/fbdev_common.c",
+        "libavdevice/fbdev_dec.c",
+        "libavdevice/fbdev_enc.c",
+        "libavdevice/oss.c",
+        "libavdevice/oss_dec.c",
+        "libavdevice/oss_enc.c",
+        "libavdevice/v4l2.c",
+        "libavdevice/v4l2-common.c",
+        "libavdevice/v4l2enc.c",
+        "libavdevice/xcbgrab.c",
+        "libavformat/unix.c",
+    ],
+    copts = COPTS,
+    linkopts = [
+        "-lpthread",
+        "-ldl",
+    ],
+    deps = [
+        ":ffmpeg_cuda",
+        ":headers",
+        "@asound",
+        "@toktok//third_party/ffmpeg:config",
+        "@xcb",
+    ],
+)
+
+alias(
+    name = "ffmpeg_sysdep",
+    actual = select({
+        "@toktok//tools/config:freebsd": ":ffmpeg_freebsd",
+        "@toktok//tools/config:linux": ":ffmpeg_linux",
+        "@toktok//tools/config:osx": ":ffmpeg_osx",
+        "@toktok//tools/config:windows": ":ffmpeg_windows",
+    }),
+)
 
 cc_library(
     name = "ffmpeg",
@@ -1183,6 +1315,7 @@ cc_library(
         "libavdevice/alldevices.c",
         "libavdevice/avdevice.c",
         "libavdevice/lavfi.c",
+        "libavdevice/openal-dec.c",
         "libavdevice/timefilter.c",
         "libavdevice/utils.c",
         "libavfilter/aeval.c",
@@ -1990,66 +2123,17 @@ cc_library(
         "libswscale/x86/yuv2rgb.c",
         "libswscale/yuv2rgb.c",
         ":assemblies",
-    ] + select({
-        "@toktok//tools/config:freebsd": CUDA_SRCS,
-        "@toktok//tools/config:linux": CUDA_SRCS + [
-            "libavcodec/v4l2_buffers.c",
-            "libavcodec/v4l2_context.c",
-            "libavcodec/v4l2_fmt.c",
-            "libavcodec/v4l2_m2m.c",
-            "libavcodec/v4l2_m2m_dec.c",
-            "libavcodec/v4l2_m2m_enc.c",
-            "libavdevice/alsa.c",
-            "libavdevice/alsa_dec.c",
-            "libavdevice/alsa_enc.c",
-            "libavdevice/fbdev_common.c",
-            "libavdevice/fbdev_dec.c",
-            "libavdevice/fbdev_enc.c",
-            "libavdevice/oss.c",
-            "libavdevice/oss_dec.c",
-            "libavdevice/oss_enc.c",
-            "libavdevice/v4l2.c",
-            "libavdevice/v4l2-common.c",
-            "libavdevice/v4l2enc.c",
-            "libavdevice/xcbgrab.c",
-        ],
-        "@toktok//tools/config:osx": [],
-        "@toktok//tools/config:windows": [],
-    }) + select({
-        "@toktok//tools/config:windows": [],
-        "//conditions:default": ["libavformat/unix.c"],
-    }),
+    ],
     copts = COPTS,
     includes = ["."],
-    linkopts = select({
-        "@toktok//tools/config:freebsd": [
-            "-lpthread",
-            "-lm",
-        ],
-        "@toktok//tools/config:linux": [
-            "-lpthread",
-            "-ldl",
-        ],
-        "@toktok//tools/config:osx": [
-            "-lpthread",
-            "-liconv",
-        ],
-        "@toktok//tools/config:windows": [],
-    }),
     visibility = ["//visibility:public"],
     deps = [
+        ":ffmpeg_sysdep",
         ":headers",
         "@bzip2",
         "@libxz",
-        "@zlib",
+        "@openal",
         "@toktok//third_party/ffmpeg:config",
-    ] + select({
-        "@toktok//tools/config:freebsd": [],
-        "@toktok//tools/config:linux": [
-            "@asound",
-            "@xcb",
-        ],
-        "@toktok//tools/config:osx": [":ffmpeg_osx"],
-        "@toktok//tools/config:windows": [],
-    }),
+        "@zlib",
+    ],
 )
