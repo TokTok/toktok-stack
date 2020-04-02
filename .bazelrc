@@ -145,18 +145,16 @@ build:osx --noincompatible_run_shell_command_string
 # Debug mode.
 build:debug -c dbg
 
-# On Windows, we always generate debug info, and always optimise external
-# code. For ffmpeg on Windows, this is necessary, because it relies on the
-# fact that the optimiser removes calls to undefined functions. Without this,
-# we'd get undefined references linker errors.
-build:windows --copt='/DEBUG:FULL'
+# On Windows, we always generate debug info, and always compile with
+# optimisation flags.
 build:windows --config=release
-# TODO(iphydf): This causes warning D9025, so we actually optimize *all* code now.
-#build:windows --per_file_copt='^external/@-O2'
+build:windows --copt='/Z7' --copt='/UNDEBUG'
+# Disable inlining of functions not marked as "inline".
+build:windows --copt='/Ob1'
+build:windows --linkopt='/DEBUG:FULL'
 
 # Release mode.
 build:release -c opt
-build:release --copt='-DNDEBUG'
 # NDEBUG disables asserts.
 #build:release --copt='-Wno-unused-variable'
 
@@ -329,6 +327,7 @@ build:clang --per_file_copt='//toxins@-Wno-sign-compare'
 build:clang --per_file_copt='//toxins@-Wno-switch-enum'
 build:clang --per_file_copt='//toxins@-Wno-unreachable-code'
 build:clang --per_file_copt='//toxins@-Wno-unreachable-code-return'
+build:windows --per_file_copt='//qtox@/wd4068'  # unknown pragma
 
 # Ignore warnings for Go generated internal files and external libraries.
 build:gnulike --per_file_copt='/go_default_library%@-w'

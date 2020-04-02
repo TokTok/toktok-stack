@@ -55,7 +55,7 @@
 #define HAVE_AESNI 1
 #define HAVE_AMD3DNOW 1
 #define HAVE_AMD3DNOWEXT 1
-#define HAVE_AVX 1
+#define HAVE_AVX 0
 #define HAVE_AVX2 1
 #define HAVE_FMA3 1
 #define HAVE_FMA4 1

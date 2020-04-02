@@ -27,7 +27,9 @@ def _impl(repository_ctx):
         repository_ctx.symlink(msvc_prefix + "/bin", "bin")
         repository_ctx.symlink(msvc_prefix + "/include", "include")
         repository_ctx.symlink(msvc_prefix + "/lib", "lib")
+        repository_ctx.symlink(msvc_prefix + "/mkspecs", "mkspecs")
         repository_ctx.symlink(msvc_prefix + "/plugins", "plugins")
+        repository_ctx.symlink(msvc_prefix + "/translations", "translations")
     else:
         fail("Could not find Qt installation.")
 
