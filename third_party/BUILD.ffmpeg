@@ -2310,14 +2310,14 @@ cc_library(
 )
 
 cc_binary(
-    name = "ffmpeg_bin",
+    name = "bin/ffmpeg",
     srcs = ["fftools/ffmpeg.c"],
     copts = COPTS,
     deps = [":fftools"],
 )
 
 cc_binary(
-    name = "ffprobe_bin",
+    name = "bin/ffprobe",
     srcs = ["fftools/ffprobe.c"],
     copts = COPTS,
     deps = [":fftools"],
