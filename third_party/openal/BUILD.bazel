@@ -1,0 +1,21 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+licenses(["notice"])
+
+genrule(
+    name = "platform",
+    srcs = select({
+        "//tools/config:freebsd": ["freebsd/config.h"],
+        "//tools/config:linux": ["linux/config.h"],
+        "//tools/config:osx": ["osx/config.h"],
+        "//tools/config:windows": ["windows/config.h"],
+    }),
+    outs = ["platform/config.h"],
+    cmd = "cp $< $@",
+)
+
+cc_library(
+    name = "config",
+    hdrs = [":platform"],
+    visibility = ["@openal//:__pkg__"],
+)

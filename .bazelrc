@@ -127,7 +127,7 @@ build --incompatible_default_to_explicit_init_py
 build --incompatible_py2_outputs_are_suffixed
 build --incompatible_py3_is_default
 build --incompatible_use_python_toolchains
-build --incompatible_remote_results_ignore_disk
+#build --incompatible_remote_results_ignore_disk
 build --incompatible_strict_action_env
 
 # rules_apple uses old style list commands.
@@ -148,10 +148,14 @@ build:debug -c dbg
 # On Windows, we always generate debug info, and always compile with
 # optimisation flags.
 build:windows --config=release
-build:windows --copt='/Z7' --copt='/UNDEBUG'
+build:windows --copt='/Z7'
+#build:windows --copt='/UNDEBUG'
 # Disable inlining of functions not marked as "inline".
 build:windows --copt='/Ob1'
 build:windows --linkopt='/DEBUG:FULL'
+
+# Generate code to protect against Spectre variant 1.
+#build:windows --copt='/Qspectre'
 
 # Release mode.
 build:release -c opt
@@ -232,6 +236,7 @@ build:gnulike --copt='-Wformat-security'
 build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-pedantic'
 
 build:gnulike --cxxopt='-std=c++14'
+build:gnulike --conlyopt='-std=c99'
 
 # GCC warning flags.
 #build:gcc --copt='-Wsuggest-attribute=const'
@@ -340,6 +345,47 @@ build:gnulike --per_file_copt='\\.pb\\.cc$@-w'
 # TODO(https://github.com/tweag/rules_haskell/issues/1295): Remove.
 #build:gnulike --copt='-Wno-unused-command-line-argument'
 
+build:windows --copt='/WX' --linkopt='/WX'
+build:windows --per_file_copt='^external/libqrencode[:/]@/wd4273'
+#build:windows --per_file_copt='//c-toxcore[:/]@/Za'
+build:windows --per_file_copt='//c-toxcore[:/]@/permissive-'
+build:windows --per_file_copt='//c-toxcore[:/]@/W4'
+build:windows --per_file_copt='//c-toxcore[:/]@/wd4018'
+build:windows --per_file_copt='//c-toxcore[:/]@/wd4100'
+build:windows --per_file_copt='//c-toxcore[:/]@/wd4127'
+build:windows --per_file_copt='//c-toxcore[:/]@/wd4200'
+build:windows --per_file_copt='//c-toxcore[:/]@/wd4204'
+build:windows --per_file_copt='//c-toxcore[:/]@/wd4244'
+build:windows --per_file_copt='//c-toxcore[:/]@/wd4245'
+build:windows --per_file_copt='//c-toxcore[:/]@/wd4267'
+build:windows --per_file_copt='//c-toxcore[:/]@/wd4310'
+build:windows --per_file_copt='//c-toxcore[:/]@/wd4389'
+
+#build:windows --per_file_copt='//qtox[:/]@/Za'
+build:windows --per_file_copt='//qtox[:/]@/permissive-'
+build:windows --per_file_copt='//qtox[:/]@/W4'
+build:windows --per_file_copt='//qtox[:/]@/wd4065'
+build:windows --per_file_copt='//qtox[:/]@/wd4100'
+build:windows --per_file_copt='//qtox[:/]@/wd4127'
+build:windows --per_file_copt='//qtox[:/]@/wd4244'
+build:windows --per_file_copt='//qtox[:/]@/wd4245'
+build:windows --per_file_copt='//qtox[:/]@/wd4267'
+build:windows --per_file_copt='//qtox[:/]@/wd4305'
+build:windows --per_file_copt='//qtox[:/]@/wd4456'
+build:windows --per_file_copt='//qtox[:/]@/wd4457'
+build:windows --per_file_copt='//qtox[:/]@/wd4458'
+build:windows --per_file_copt='//qtox[:/]@/wd4459'
+build:windows --per_file_copt='//qtox[:/]@/wd4566'
+build:windows --per_file_copt='//qtox[:/]@/wd4702'
+
+# Fix these:
+build:windows --per_file_copt='//qtox[:/]@/wd4701'
+build:windows --per_file_copt='//qtox[:/]@/wd4703'
+
+build:windows --linkopt='/GUARD:CF'
+# Could be WINDOWS, but we like our console.
+build:windows --linkopt='/SUBSYSTEM:CONSOLE'
+
 ##############################################################################
 #
 # :: System/compiler-specific optional flags.
@@ -367,5 +413,7 @@ build:gnuld --linkopt='-Wl,--warn-common'
 # MSVC has a header that disallows the above nullptr thing. Defining the
 # following symbol disables that check.
 build:windows --per_file_copt="//c-toxcore@/D_ALLOW_KEYWORD_MACROS"
+
+try-import %workspace%/.bazelrc.local
 
 # vim:set tw=120

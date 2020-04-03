@@ -48,6 +48,7 @@ cc_library(
     ] + select({
         "@toktok//tools/config:windows": ["-DMYTHREAD_VISTA"],
         "//conditions:default": [
+            "-D_POSIX_C_SOURCE=199506L",
             "-DMYTHREAD_POSIX",
             "-Wno-unused-function",
         ],

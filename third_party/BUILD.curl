@@ -40,6 +40,7 @@ cc_library(
     hdrs = glob(["include/**/*.h"]),
     copts = [
         "-Wno-string-plus-int",
+        "-D_POSIX_C_SOURCE=200809L",
         "-DBUILDING_LIBCURL",
         "-DHAVE_CONFIG_H",
         "-I$(GENDIR)/external/curl/lib",

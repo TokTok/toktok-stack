@@ -32,6 +32,21 @@ qt_import(
 )
 
 qt_import(
+    name = "qt_multimedia",
+    module = "Multimedia",
+)
+
+qt_import(
+    name = "qt_multimedia_widgets",
+    module = "MultimediaWidgets",
+)
+
+qt_import(
+    name = "qt_opengl",
+    module = "OpenGL",
+)
+
+qt_import(
     name = "qt_network",
     module = "Network",
 )

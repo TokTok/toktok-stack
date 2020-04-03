@@ -34,7 +34,7 @@ def _haskell_project(standard_travis):
     native.sh_test(
         name = "cabal_test",
         size = "small",
-        srcs = ["//tools/project:cabal_test.pl"],
+        srcs = ["//tools/project:cabal_test.py"],
         args = [
             "$(location BUILD.bazel)",
             "$(location %s)" % cabal_file,

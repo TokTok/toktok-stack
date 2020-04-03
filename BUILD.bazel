@@ -3,9 +3,10 @@ load("//tools/project:build_defs.bzl", "workspace")
 
 workspace(projects = [
     "apidsl",
-    "cedar",
-    "c-toxcore-hs",
     "c-toxcore",
+    "c-toxcore-hs",
+    "cedar",
+    "ci-tools",
     "dockerfiles",
     "echobot-jvm",
     "go-toxcore-c",
@@ -15,9 +16,8 @@ workspace(projects = [
     "hs-msgpack-types",
     "hs-schema",
     "hs-tokstyle",
-    "hs-tools",
-    "hs-toxcore-c",
     "hs-toxcore",
+    "hs-toxcore-c",
     "js-toxcore-c",
     "jtox",
     "jvm-macros",

@@ -74,7 +74,12 @@ cc_library(
         "silk",
         "silk/float",
     ],
-    linkopts = ["-lm"],
+    linkopts = select({
+        "@toktok//tools/config:freebsd": [],
+        "@toktok//tools/config:linux": ["-lm"],
+        "@toktok//tools/config:osx": [],
+        "@toktok//tools/config:windows": [],
+    }),
     visibility = ["//visibility:public"],
     deps = ["@toktok//third_party/opus:config"],
 )

@@ -23,6 +23,7 @@ jobs:
             - libasound-dev
             - libopenal-dev
             - libqt5svg5-dev
+            - libsqlcipher-dev
             - python3.5-dev
             - qttools5-dev
             - qttools5-dev-tools

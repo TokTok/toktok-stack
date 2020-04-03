@@ -1,0 +1,16 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+genrule(
+    name = "headers",
+    srcs = ["Xos.h"],
+    outs = ["include/X11/Xos.h"],
+    cmd = "cp $< $@",
+)
+
+cc_library(
+    name = "xproto",
+    hdrs = ["include/X11/Xos.h"],
+    #linkopts = ["-lX11"],
+    includes = ["include"],
+    visibility = ["//visibility:public"],
+)

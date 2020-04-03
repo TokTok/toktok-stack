@@ -1,36 +1,48 @@
 [submodule "apidsl"]
 	path = apidsl
 	url = https://github.com/TokTok/apidsl
+[submodule "cedar"]
+	path = cedar
+	url = https://github.com/TokTok/cedar
+[submodule "ci-tools"]
+	path = ci-tools
+	url = https://github.com/TokTok/ci-tools
 [submodule "c-toxcore-hs"]
 	path = c-toxcore-hs
 	url = https://github.com/TokTok/c-toxcore-hs
 [submodule "c-toxcore"]
 	path = c-toxcore
-	url = https://github.com/TokTok/toxcore
+	url = https://github.com/TokTok/c-toxcore
 [submodule "dockerfiles"]
 	path = dockerfiles
 	url = https://github.com/TokTok/dockerfiles
 [submodule "echobot-jvm"]
 	path = echobot-jvm
 	url = https://github.com/TokTok/echobot-jvm
-[submodule "hs-github-tools"]
-	path = hs-github-tools
-	url = https://github.com/TokTok/hs-github-tools
 [submodule "go-toxcore-c"]
 	path = go-toxcore-c
 	url = https://github.com/TokTok/go-toxcore-c
-[submodule "hs-msgpack"]
+[submodule "hs-cimple"]
+	path = hs-cimple
+	url = https://github.com/TokTok/hs-cimple
+[submodule "hs-github-tools"]
+	path = hs-github-tools
+	url = https://github.com/TokTok/hs-github-tools
+[submodule "hs-msgpack-binary"]
 	path = hs-msgpack-binary
-	url = https://github.com/TokTok/hs-msgpack
-[submodule "hs-msgpack-rpc"]
+	url = https://github.com/TokTok/hs-msgpack-binary
+[submodule "hs-msgpack-rpc-conduit"]
 	path = hs-msgpack-rpc-conduit
-	url = https://github.com/TokTok/hs-msgpack-rpc
+	url = https://github.com/TokTok/hs-msgpack-rpc-conduit
 [submodule "hs-msgpack-types"]
 	path = hs-msgpack-types
 	url = https://github.com/TokTok/hs-msgpack-types
 [submodule "hs-schema"]
 	path = hs-schema
 	url = https://github.com/TokTok/hs-schema
+[submodule "hs-tokstyle"]
+	path = hs-tokstyle
+	url = https://github.com/TokTok/hs-tokstyle
 [submodule "hs-toxcore-c"]
 	path = hs-toxcore-c
 	url = https://github.com/TokTok/hs-toxcore-c
@@ -61,30 +73,21 @@
 [submodule "qtox"]
 	path = qtox
 	url = https://github.com/TokTok/qtox
-[submodule "streambot-jvm"]
-	path = streambot-jvm
-	url = https://github.com/TokTok/streambot-jvm
-[submodule "hs-tokstyle"]
-	path = hs-tokstyle
-	url = https://github.com/TokTok/hs-tokstyle
-[submodule "toktok-android"]
-	path = toktok-android
-	url = https://github.com/TokTok/toktok-android
-[submodule "website"]
-	path = website
-	url = https://github.com/TokTok/website
-[submodule "toxins"]
-	path = toxins
-	url = https://github.com/TokTok/toxins
-[submodule "cedar"]
-	path = cedar
-	url = https://github.com/TokTok/cedar
-[submodule "toxic"]
-	path = toxic
-	url = https://github.com/TokTok/toxic
 [submodule "spec"]
 	path = spec
 	url = https://github.com/TokTok/spec
-[submodule "hs-tools"]
-	path = hs-tools
-	url = https://github.com/TokTok/hs-tools
+[submodule "streambot-jvm"]
+	path = streambot-jvm
+	url = https://github.com/TokTok/streambot-jvm
+[submodule "toktok-android"]
+	path = toktok-android
+	url = https://github.com/TokTok/toktok-android
+[submodule "toxic"]
+	path = toxic
+	url = https://github.com/TokTok/toxic
+[submodule "toxins"]
+	path = toxins
+	url = https://github.com/TokTok/toxins
+[submodule "website"]
+	path = website
+	url = https://github.com/TokTok/website

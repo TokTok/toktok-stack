@@ -19,6 +19,7 @@ haskell_library(
     compiler_flags = [
         "-j10",
         "-Wno-name-shadowing",
+        "-Wno-unused-matches",
     ],
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,

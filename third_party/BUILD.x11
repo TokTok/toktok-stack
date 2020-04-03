@@ -4,5 +4,7 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 cc_library(
     name = "x11",
     linkopts = ["-lX11"],
+    includes = ["include"],
+#    hdrs = ["include/X11/Xos.h"],
     visibility = ["//visibility:public"],
 )

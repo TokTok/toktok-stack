@@ -11,6 +11,7 @@ This file defines three macros:
 # =========================================================
 
 load("@build_bazel_rules_apple//apple:apple.bzl", "apple_dynamic_framework_import")
+load("@build_bazel_rules_apple//apple:macos.bzl", "macos_application")
 load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test", "objc_library")
 
 def _qt_uic_impl(ctx):
@@ -356,4 +357,39 @@ def qt_import(name, module):
             "@toktok//tools/config:osx": [":Qt%s_osx" % module],
             "@toktok//tools/config:windows": [":Qt%s_win" % module],
         }),
+    )
+
+# Building app bundles for macOS.
+# =========================================================
+
+def qt_mac_deploy(name, app_icons, bundle_id, deps):
+    macos_application(
+        name = name,
+        app_icons = app_icons,
+        bundle_id = bundle_id,
+        infoplists = [":info.plist"],
+        # 10.9 is the lowest we can go and still get libstdc++.
+        minimum_os_version = "10.9",
+        tags = ["manual"],
+        deps = deps,
+    )
+
+    app = name + ".app"
+    native.genrule(
+        name = name + "_deploy",
+        srcs = [":" + name],
+        outs = [name + "_deploy.tar.gz"],
+        cmd = "\n".join([
+            "unzip -q $<",
+            "$(location @qt//:macdeployqt) " + app,
+            "$(location //third_party/qt:deduplicate) " + app,
+            "$(location //third_party/qt:macfixrpath) " + app,
+            "tar zcf $@ " + app,
+        ]),
+        tags = ["manual"],
+        tools = [
+            "//third_party/qt:deduplicate",
+            "//third_party/qt:macfixrpath",
+            "@qt//:macdeployqt",
+        ],
     )

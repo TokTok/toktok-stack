@@ -1,5 +1,6 @@
 exports_files(srcs = [
     "cabal_test.pl",
+    "cabal_test.py",
     "diff_test.sh",
     "haskell_travis.yml.in",
     "readme_test.sh",

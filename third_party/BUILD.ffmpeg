@@ -183,14 +183,14 @@ genrule(
     cmd = """
         export PATH=$$PWD/$$(dirname $(location @yasm)):$$PATH
         cd `dirname $(location configure)`
-        ./configure --disable-v4l2_m2m || (cat ffbuild/config.log && false)
+        ./configure --cc="$(CC)" --disable-v4l2_m2m || (cat ffbuild/config.log && false)
         DIR=`pwd`
         cd -
         for i in $(OUTS); do
           cp $$DIR/`echo $$i | sed -e 's|$(GENDIR)/external/ffmpeg/||'` $$i
         done
     """,
-    toolchains = ["@bazel_tools//tools/cpp:current_cc_toolchain"],
+    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
     tools = ["@yasm"],
 )
 
@@ -222,7 +222,9 @@ COPTS = [
         "-Iexternal/ffmpeg/compat/atomics/win32",
     ],
 }) + select({
-    "@toktok//tools/config:windows": [],
+    "@toktok//tools/config:windows": [
+        "/w",
+    ],
     "//conditions:default": [
         "-fvisibility=protected",
         "-std=c11",
@@ -452,8 +454,15 @@ cc_library(
 )
 
 cc_library(
-    name = "ffmpeg_freebsd",
+    name = "ffmpeg_unix",
     srcs = [
+        "libavdevice/alsa.c",
+        "libavdevice/alsa_dec.c",
+        "libavdevice/alsa_enc.c",
+        "libavdevice/oss.c",
+        "libavdevice/oss_dec.c",
+        "libavdevice/oss_enc.c",
+        "libavdevice/xcbgrab.c",
         "libavformat/unix.c",
     ],
     copts = COPTS,
@@ -465,8 +474,15 @@ cc_library(
         ":ffmpeg_cuda",
         ":ffmpeg_portable",
         ":headers",
+        "@asound",
         "@toktok//third_party/ffmpeg:config",
+        "@xcb",
     ],
+)
+
+alias(
+    name = "ffmpeg_freebsd",
+    actual = "ffmpeg_unix",
 )
 
 cc_library(
@@ -478,20 +494,12 @@ cc_library(
         "libavcodec/v4l2_m2m.c",
         "libavcodec/v4l2_m2m_dec.c",
         "libavcodec/v4l2_m2m_enc.c",
-        "libavdevice/alsa.c",
-        "libavdevice/alsa_dec.c",
-        "libavdevice/alsa_enc.c",
         "libavdevice/fbdev_common.c",
         "libavdevice/fbdev_dec.c",
         "libavdevice/fbdev_enc.c",
-        "libavdevice/oss.c",
-        "libavdevice/oss_dec.c",
-        "libavdevice/oss_enc.c",
         "libavdevice/v4l2.c",
         "libavdevice/v4l2-common.c",
         "libavdevice/v4l2enc.c",
-        "libavdevice/xcbgrab.c",
-        "libavformat/unix.c",
     ],
     copts = COPTS,
     linkopts = [
@@ -499,12 +507,9 @@ cc_library(
         "-ldl",
     ],
     deps = [
-        ":ffmpeg_cuda",
-        ":ffmpeg_portable",
+        ":ffmpeg_unix",
         ":headers",
-        "@asound",
         "@toktok//third_party/ffmpeg:config",
-        "@xcb",
     ],
 )
 
@@ -1416,6 +1421,7 @@ cc_library(
         "libavdevice/alldevices.c",
         "libavdevice/avdevice.c",
         "libavdevice/lavfi.c",
+        "libavdevice/openal-dec.c",
         "libavdevice/timefilter.c",
         "libavdevice/utils.c",
         "libavfilter/aeval.c",
@@ -2300,7 +2306,6 @@ cc_library(
         ":templates",
         "@bzip2",
         "@libxz",
-        "@openal",
         "@toktok//third_party/ffmpeg:config",
         "@zlib",
     ],
@@ -2314,7 +2319,7 @@ cc_library(
         "fftools/ffmpeg_filter.c",
         "fftools/ffmpeg_hw.c",
         "fftools/ffmpeg_opt.c",
-        "fftools/ffmpeg_videotoolbox.c",
+#        "fftools/ffmpeg_videotoolbox.c",
     ],
     copts = COPTS,
     deps = [":ffmpeg"],
@@ -2325,6 +2330,16 @@ cc_binary(
     srcs = ["fftools/ffmpeg.c"],
     copts = COPTS,
     deps = [":fftools"],
+)
+
+cc_binary(
+    name = "bin/ffplay",
+    srcs = ["fftools/ffplay.c"],
+    copts = COPTS,
+    deps = [
+        ":fftools",
+        "@sdl2",
+    ],
 )
 
 cc_binary(

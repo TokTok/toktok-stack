@@ -1,0 +1,9 @@
+build --jobs=12
+
+build --config=linux
+build --config=clang
+#build --config=gcc
+#build --config=asan
+build --config=debug
+#build --config=release
+#build --config=ubsan

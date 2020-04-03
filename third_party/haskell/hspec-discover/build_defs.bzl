@@ -42,7 +42,7 @@ def hspec_test(name, **kwargs):
     native.genrule(
         name = name + "_hspec_driver",
         srcs = srcs,
-        outs = ["Spec.hs"],
+        outs = ["test/Spec.hs"],
         cmd = ";".join([
             "cd %s/test" % native.package_name(),
             "../../$(location //third_party/haskell/hspec-discover) $$(basename $@) Main.hs ../../$@",

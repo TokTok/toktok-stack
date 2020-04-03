@@ -19,6 +19,9 @@ def _impl(repository_ctx):
     if repository_ctx.path("/usr/lib/x86_64-linux-gnu/lib%s.so" % name).exists:
         repository_ctx.symlink("/usr/include", "include")
         repository_ctx.symlink("/usr/lib", "lib")
+    elif repository_ctx.path("/usr/local/lib/lib%s.so" % name).exists:
+        repository_ctx.symlink("/usr/local/include", "include")
+        repository_ctx.symlink("/usr/local/lib", "lib")
     elif repository_ctx.path(brew_prefix).exists:
         repository_ctx.symlink(brew_prefix + "/include", "include")
         repository_ctx.symlink(brew_prefix + "/lib", "lib")

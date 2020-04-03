@@ -9,7 +9,10 @@ cc_library(
     name = "cbits",
     srcs = glob(["cbits/*.c"]),
     hdrs = glob(["cbits/*.h"]),
-    copts = ["-DFOUNDATION_BOUNDS_CHECK"],
+    copts = [
+        "-DFOUNDATION_BOUNDS_CHECK",
+        "-std=gnu99",
+    ],
     includes = ["cbits"],
     deps = [hazel_library("rts")],
 )

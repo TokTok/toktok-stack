@@ -32,7 +32,10 @@ cc_library(
         "include/HsTime.h",
         "include/HsTimeConfig.h",
     ],
-    copts = ["-D__GLASGOW_HASKELL__"],
+    copts = [
+        "-D__GLASGOW_HASKELL__",
+        "-D_POSIX_C_SOURCE",
+    ],
     includes = ["include"],
 )
 

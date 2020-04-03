@@ -47,15 +47,15 @@ cc_library(
     ],
     copts = [
         "-w",  # disable all warnings.
-        "'-DLOCALEDIR=\"lib\"'",
-        "'-DGETTEXT_PACKAGE=\"libexif\"'",
+        "-DLOCALEDIR='\"lib\"'",
+        "-DGETTEXT_PACKAGE='\"libexif\"'",
         "-Ithird_party/libexif",
-    ] + select({
-        "@toktok//tools/config:linux": ["-Ithird_party/libexif/linux"],
-        "@toktok//tools/config:osx": ["-Ithird_party/libexif/osx"],
-        "@toktok//tools/config:windows": ["-Ithird_party/libexif/windows"],
-    }),
+        "-I$(GENDIR)/third_party/libexif/platform",
+    ],
     includes = ["."],
     visibility = ["//visibility:public"],
-    deps = ["@toktok//third_party/libexif:config"],
+    deps = [
+        #"@gettext",
+        "@toktok//third_party/libexif:config",
+    ],
 )

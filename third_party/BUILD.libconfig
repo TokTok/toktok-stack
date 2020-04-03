@@ -8,7 +8,13 @@ cc_library(
     ]),
     hdrs = ["lib/libconfig.h"],
     copts = select({
+        "@toktok//tools/config:freebsd": [
+            "-DHAVE_NEWLOCALE",
+            "-DHAVE_USELOCALE",
+            "-DHAVE_FREELOCALE",
+        ],
         "@toktok//tools/config:linux": [
+            "-std=gnu89",
             "-DHAVE_NEWLOCALE",
             "-DHAVE_USELOCALE",
             "-DHAVE_FREELOCALE",

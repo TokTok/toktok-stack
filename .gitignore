@@ -12,3 +12,6 @@
 # Editor temporary files.
 *.swp
 .DS_Store
+
+# Local bazel settings per developer.
+/.bazelrc.local

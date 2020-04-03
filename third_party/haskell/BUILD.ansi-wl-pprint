@@ -7,6 +7,10 @@ PACKAGE_NAME = "ansi-wl-pprint"
 haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["Text/**/*.*hs"]),
+    compiler_flags = [
+        "-Wno-name-shadowing",
+        "-Wno-unused-matches",
+    ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [

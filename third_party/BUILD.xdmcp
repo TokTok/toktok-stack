@@ -8,6 +8,7 @@ cc_library(
     ]),
     hdrs = ["include/X11/Xdmcp.h"],
     copts = [
+        "-D_DEFAULT_SOURCE",
         "-DHASXDMAUTH",
         "-DHAVE_LRAND48",
         "-DHAVE_SRAND48",
@@ -15,4 +16,5 @@ cc_library(
     ],
     includes = ["include"],
     visibility = ["//visibility:public"],
+    deps = ["@xproto"],
 )

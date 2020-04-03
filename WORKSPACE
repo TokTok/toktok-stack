@@ -203,23 +203,16 @@ go_repository(
 # C/C++ dependencies
 # =========================================================
 
-new_local_repository(
-    name = "asound",
-    build_file = "third_party/BUILD.asound",
-    path = "/usr",
-)
-
 load("//tools/workspace:local.bzl", "local_library_repository")
+
+local_library_repository(
+    name = "asound",
+    version = "2.0",
+)
 
 local_library_repository(
     name = "ncurses",
     version = "6.2",
-)
-
-local_library_repository(
-    name = "openal",
-    brew_name = "openal-soft",
-    version = "1.20.1",
 )
 
 local_library_repository(
@@ -269,6 +262,20 @@ http_archive(
     sha256 = "b620d187c26f76ca19e74210a0336c3b8380b97730df5cdf45f3e69e89000e5c",
     strip_prefix = "ffmpeg-4.2.2",
     urls = ["https://ffmpeg.org/releases/ffmpeg-4.2.2.tar.bz2"],
+)
+
+#new_local_repository(
+#    name = "ffmpeg",
+#    build_file = "@toktok//third_party:BUILD.ffmpeg",
+#    path = "third_party/ffmpeg/ffmpeg-4.2.2",
+#)
+
+http_archive(
+    name = "gettext",
+    build_file = "@toktok//third_party:BUILD.gettext",
+    #sha256 = "87b5884741427220d3a33df1363ae0e8b898099fbc59f1c451113f6732891014",
+    strip_prefix = "gettext-0.20.1",
+    urls = ["https://ftp.gnu.org/pub/gnu/gettext/gettext-0.20.1.tar.gz"],
 )
 
 http_archive(
@@ -338,6 +345,13 @@ new_github_archive(
 )
 
 new_github_archive(
+    name = "openal",
+    repo = "kcat/openal-soft",
+    sha256 = "4acd4cdd3295658c8cfdf53b67782f6812ab9499913ed2dc9acc03c6cf7329c5",
+    version = "openal-soft-1.20.1",
+)
+
+new_github_archive(
     name = "opus",
     repo = "xiph/opus",
     sha256 = "24ee6eb416b3bf15785e0c6a8d08b046f6a1d32e4c677908de314b5f841d2d6e",
@@ -382,13 +396,26 @@ http_archive(
     urls = ["https://netix.dl.sourceforge.net/project/lzmautils/xz-5.2.4.tar.gz"],
 )
 
-new_github_archive(
-    name = "sqlcipher",
-    patches = ["@toktok//third_party/patches:sqlcipher.patch"],
-    repo = "sqlcipher/sqlcipher",
-    sha256 = "41e1408465488e9c478ca5b7c5f8410405a10caa73b82db60ac115a76c563c05",
-    version = "v4.3.0",
+http_archive(
+    name = "sdl2",
+    build_file = "@toktok//third_party:BUILD.sdl2",
+    sha256 = "349268f695c02efbc9b9148a70b85e58cefbbf704abd3e91be654db7f1e2c863",
+    strip_prefix = "SDL2-2.0.12",
+    urls = ["https://www.libsdl.org/release/SDL2-2.0.12.tar.gz"],
 )
+
+local_library_repository(
+    name = "sqlcipher",
+    version = "4.3.0",
+)
+
+#new_github_archive(
+#    name = "sqlcipher",
+#    patches = ["@toktok//third_party/patches:sqlcipher.patch"],
+#    repo = "sqlcipher/sqlcipher",
+#    sha256 = "41e1408465488e9c478ca5b7c5f8410405a10caa73b82db60ac115a76c563c05",
+#    version = "v4.3.0",
+#)
 
 new_github_archive(
     name = "tcl",
@@ -459,6 +486,14 @@ http_archive(
     sha256 = "ebfcfce48b66bec25d5dff0e9510e04053ef78e51a8eabeeee4c00e399226d61",
     strip_prefix = "xorgproto-2019.2",
     urls = ["https://www.x.org/releases/individual/proto/xorgproto-2019.2.tar.gz"],
+)
+
+http_archive(
+    name = "xproto",
+    build_file = "@toktok//third_party:BUILD.xproto",
+    sha256 = "6d755eaae27b45c5cc75529a12855fed5de5969b367ed05003944cf901ed43c7",
+    strip_prefix = "xproto-7.0.31",
+    urls = ["https://www.x.org/releases/individual/proto/xproto-7.0.31.tar.gz"],
 )
 
 new_github_archive(

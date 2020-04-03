@@ -3,7 +3,10 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 # TODO(iphydf): Build asound in bazel.
 cc_library(
     name = "asound",
-    srcs = glob(["lib/x86_64-linux-gnu/libasound.so*"]),
+    srcs = select({
+        "@toktok//tools/config:freebsd": ["lib/libasound.so"],
+        "@toktok//tools/config:linux": ["lib/x86_64-linux-gnu/libasound.so"],
+    }),
     hdrs = [
         "include/alsa/asoundef.h",
         "include/alsa/asoundlib.h",

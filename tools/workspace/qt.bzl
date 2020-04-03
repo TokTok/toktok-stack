@@ -18,6 +18,10 @@ def _impl(repository_ctx):
         repository_ctx.symlink("/usr/lib/x86_64-linux-gnu/qt5/bin", "bin")
         repository_ctx.symlink("/usr/include/x86_64-linux-gnu/qt5", "include")
         repository_ctx.symlink("/usr/lib/x86_64-linux-gnu", "lib")
+    elif repository_ctx.path("/usr/local/lib/qt5").exists:
+        repository_ctx.symlink("/usr/local/bin", "bin")
+        repository_ctx.symlink("/usr/local/include/qt5", "include")
+        repository_ctx.symlink("/usr/local/lib/qt5", "lib")
     elif repository_ctx.path(brew_prefix).exists:
         repository_ctx.symlink(brew_prefix + "/bin", "bin")
         repository_ctx.symlink(brew_prefix + "/include", "include")

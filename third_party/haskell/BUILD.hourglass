@@ -8,6 +8,7 @@ PACKAGE_NAME = "hourglass"
 cc_library(
     name = "cbits",
     srcs = ["cbits/unix.c"],
+    copts = ["-D_POSIX_C_SOURCE=199309L"],
 )
 
 haskell_library(
