@@ -264,18 +264,12 @@ new_github_archive(
     version = "250292dd20af60edc6e0d07f1d6e489a2f8e1c44",
 )
 
-#http_archive(
-#    name = "ffmpeg",
-#    build_file = "@toktok//third_party:BUILD.ffmpeg",
-#    sha256 = "eb0370bf223809b9ebb359fed5318f826ac038ce77933b3afd55ab1a0a21785a",
-#    strip_prefix = "ffmpeg-3.4.2",
-#    urls = ["http://ffmpeg.org/releases/ffmpeg-3.4.2.tar.bz2"],
-#)
-
-new_local_repository(
+http_archive(
     name = "ffmpeg",
     build_file = "@toktok//third_party:BUILD.ffmpeg",
-    path = "third_party/ffmpeg/ffmpeg-4.2.2",
+    sha256 = "b620d187c26f76ca19e74210a0336c3b8380b97730df5cdf45f3e69e89000e5c",
+    strip_prefix = "ffmpeg-4.2.2",
+    urls = ["https://ffmpeg.org/releases/ffmpeg-4.2.2.tar.bz2"],
 )
 
 http_archive(

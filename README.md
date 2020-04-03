@@ -70,18 +70,105 @@ On OSX:
 brew install bazel
 ```
 
-#### Maven
-
-If you want to build Java binaries, you need to install Maven:
+On FreeBSD:
 
 ```sh
-sudo apt install maven
+sudo pkg install bazel
+```
+
+On Windows:
+
+```sh
+choco install bazel
+```
+
+#### Qt5
+
+To build Qt-based binaries such as `qtox`, you need an installation of Qt
+development headers and libraries and tools.
+
+```sh
+sudo apt install qttools5-dev qttools5-dev-tools libqt5svg5-dev
 ```
 
 On OSX:
 
 ```sh
-brew install maven
+brew install qt
+```
+
+On FreeBSD:
+
+```sh
+sudo pkg install qt5
+```
+
+On Windows:
+
+```sh
+choco install qt
+```
+
+If your Qt installation doesn't live in a standard location, make changes to
+the detector script in `tools/workspace/qt.bzl` and consider sending us a pull
+request. If your version of Qt is different, edit `WORKSPACE` and adjust it in
+the `qt_repository` declaration.
+
+#### Extra development packages
+
+Some libraries have not yet been imported into `third_party`, so must be
+installed on the system.
+
+For `//qtox`:
+
+```sh
+sudo apt install libopenal-dev libasound2-dev libxss-dev
+```
+
+For `//toxic`:
+
+```sh
+sudo apt install libopenal-dev libxss-dev
+```
+
+On OSX (for both `qtox` and `toxic`):
+
+```sh
+brew install ncurses openal-soft
+```
+
+On FreeBSD:
+
+```sh
+sudo pkg install ncurses openal-soft
+```
+
+Note that toxic also needs Python 3. See the section on Python for how to
+install its development files.
+
+#### Python
+
+To build `py-toxcore-c` and other programs using Python FFI, you need Python
+development headers. `py-toxcore-c` and `toxic` both need Python 3. Any of
+3.5, 3.6, or 3.7 works.
+
+```sh
+sudo apt install python3.5-dev
+```
+
+On FreeBSD:
+
+```sh
+sudo pkg install python3
+```
+
+#### Native javacpp libraries
+
+Streambot needs native libraries that need to be downloaded from Maven.
+
+```sh
+wget https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/ffmpeg/3.4.1-1.4/ffmpeg-3.4.1-1.4-linux-x86_64.jar -O third_party/javacpp/ffmpeg/jar/ffmpeg-3.4.1-1.4-linux-x86_64.jar
+wget https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/3.4.0-1.4/opencv-3.4.0-1.4-linux-x86_64.jar -O third_party/javacpp/opencv/jar/opencv-3.4.0-1.4-linux-x86_64.jar
 ```
 
 #### Android SDK
@@ -128,79 +215,6 @@ From then on, you won't need the `--sdk_root` flag anymore. See
 If you're using Java 11, see [this](https://stackoverflow.com/a/55982976)
 stackoverflow answer if you're getting exceptions or other errors when running
 sdkmanager.
-
-#### Qt5
-
-To build Qt-based binaries such as `qtox`, you need an installation of Qt
-development headers and libraries and tools.
-
-```sh
-sudo apt install qttools5-dev qttools5-dev-tools libqt5svg5-dev
-```
-
-On OSX:
-
-```sh
-brew install qt
-```
-
-If your Qt installation doesn't live in a standard location, make changes to
-the detector script in `tools/workspace/qt.bzl` and consider sending us a pull
-request. If your version of Qt is different, edit `WORKSPACE` and adjust it in
-the `qt_repository` declaration.
-
-#### Python
-
-To build `py-toxcore-c` and other programs using Python FFI, you need Python
-development headers. `py-toxcore-c` and `toxic` both need Python 3. Any of
-3.5, 3.6, or 3.7 works.
-
-```sh
-sudo apt install python3.5-dev
-```
-
-#### Make
-
-For `//js-toxcore-c`, you will need a `make` program in your `$PATH`:
-
-```sh
-sudo apt install make
-```
-
-#### Native javacpp libraries
-
-Streambot needs native libraries that need to be downloaded from Maven.
-
-```sh
-wget https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/ffmpeg/3.4.1-1.4/ffmpeg-3.4.1-1.4-linux-x86_64.jar -O third_party/javacpp/ffmpeg/jar/ffmpeg-3.4.1-1.4-linux-x86_64.jar
-wget https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/3.4.0-1.4/opencv-3.4.0-1.4-linux-x86_64.jar -O third_party/javacpp/opencv/jar/opencv-3.4.0-1.4-linux-x86_64.jar
-```
-
-#### Extra development packages
-
-Some libraries have not yet been imported into `third_party`, so must be
-installed on the system.
-
-For `//qtox`:
-
-```sh
-sudo apt install libopenal-dev libasound2-dev libxss-dev
-```
-
-For `//toxic`:
-
-```sh
-sudo apt install libopenal-dev libxss-dev
-```
-
-On OSX (for both `qtox` and `toxic`):
-
-```sh
-brew install openal-soft
-```
-
-Note that toxic also needs Python 3. See the section on Python for how to
-install its development files.
 
 ## Building native code for Android
 
