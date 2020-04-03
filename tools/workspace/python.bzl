@@ -38,11 +38,14 @@ def _python_config(repository_ctx, versions):
 def _impl(repository_ctx):
     version = repository_ctx.attr.version
     if "." in version:
-        versions = [repository_ctx.attr.version]
+        versions = [version]
     elif version == "2":
         versions = ["2.7"]
     elif version == "3":
         versions = ["3.8", "3.7", "3.6", "3.5"]
+    else:
+        fail("Unsupported Python version: %s " % version +
+             "(need 2, 3, or an exact version number)")
 
     python_config = _python_config(repository_ctx, versions)
 

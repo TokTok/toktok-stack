@@ -17,8 +17,8 @@ genrule(
         "//conditions:default": ["posix/vpx_config.asm"],
     }),
     outs = ["vpx_config.asm"],
-	cmd = "cp $< $@",
-	visibility = ["@libvpx//:__pkg__"],
+    cmd = "cp $< $@",
+    visibility = ["@libvpx//:__pkg__"],
 )
 
 genrule(
@@ -28,7 +28,7 @@ genrule(
         "//conditions:default": ["posix/vpx_config.h"],
     }),
     outs = ["vpx_config.h"],
-	cmd = "cp $< $@",
+    cmd = "cp $< $@",
 )
 
 cc_library(

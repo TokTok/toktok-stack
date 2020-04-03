@@ -1,6 +1,5 @@
 workspace(name = "toktok")
 
-load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
 
@@ -524,7 +523,6 @@ github_archive(
     version = "bad9e2501279aea5268b1b8a5463ccc1be8ddf65",
 )
 
-load("@bazel_tools//tools/build_defs/repo:maven_rules.bzl", "maven_aar", "maven_jar")
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 local_repository(

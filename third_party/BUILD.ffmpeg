@@ -330,6 +330,7 @@ cc_library(
     name = "ffmpeg_portable",
     srcs = [
         "libavdevice/timefilter.c",
+        "libavformat/tls.c",
     ],
     copts = COPTS,
     deps = [
@@ -340,15 +341,6 @@ cc_library(
 
 objc_library(
     name = "ffmpeg_osx_objc",
-    srcs = [
-        "libavcodec/audiotoolboxdec.c",
-        "libavcodec/audiotoolboxenc.c",
-        "libavcodec/videotoolbox.c",
-        "libavcodec/videotoolboxenc.c",
-        "libavformat/unix.c",
-        "libavutil/hwcontext_videotoolbox.c",
-        "libavutil/pixdesc.c",
-    ],
     copts = COPTS,
     non_arc_srcs = [
         "libavdevice/avfoundation.m",
@@ -363,6 +355,7 @@ objc_library(
         "CoreMedia",
         "CoreVideo",
         "OpenGL",
+        "Security",
         "VideoToolbox",
     ],
     deps = [
@@ -373,6 +366,17 @@ objc_library(
 
 cc_library(
     name = "ffmpeg_osx",
+    srcs = [
+        "libavcodec/audiotoolboxdec.c",
+        "libavcodec/audiotoolboxenc.c",
+        "libavcodec/videotoolbox.c",
+        "libavcodec/videotoolboxenc.c",
+        "libavformat/tls_securetransport.c",
+        "libavformat/unix.c",
+        "libavutil/hwcontext_videotoolbox.c",
+        "libavutil/pixdesc.c",
+    ],
+    copts = COPTS,
     linkopts = [
         "-lpthread",
         "-liconv",
@@ -401,7 +405,6 @@ cc_library(
         "libavdevice/dshow_pin.c",
         "libavdevice/gdigrab.c",
         "libavdevice/vfwcap.c",
-        "libavformat/tls.c",
         "libavformat/tls_schannel.c",
         "libavutil/hwcontext_d3d11va.c",
         "libavutil/hwcontext_dxva2.c",
@@ -2310,6 +2313,7 @@ cc_library(
         "fftools/ffmpeg_filter.c",
         "fftools/ffmpeg_hw.c",
         "fftools/ffmpeg_opt.c",
+        "fftools/ffmpeg_videotoolbox.c",
     ],
     copts = COPTS,
     deps = [":ffmpeg"],
