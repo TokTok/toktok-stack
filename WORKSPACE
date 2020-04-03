@@ -257,12 +257,25 @@ new_github_archive(
     version = "curl-7_69_1",
 )
 
-http_archive(
+new_github_archive(
+    name = "ffnvcodec",
+    repo = "FFmpeg/nv-codec-headers",
+    sha256 = "f1fd5adb2ed6815e7debff30cb44b21188dc65da42b7a67537f28256e8e71c29",
+    version = "250292dd20af60edc6e0d07f1d6e489a2f8e1c44",
+)
+
+#http_archive(
+#    name = "ffmpeg",
+#    build_file = "@toktok//third_party:BUILD.ffmpeg",
+#    sha256 = "eb0370bf223809b9ebb359fed5318f826ac038ce77933b3afd55ab1a0a21785a",
+#    strip_prefix = "ffmpeg-3.4.2",
+#    urls = ["http://ffmpeg.org/releases/ffmpeg-3.4.2.tar.bz2"],
+#)
+
+new_local_repository(
     name = "ffmpeg",
     build_file = "@toktok//third_party:BUILD.ffmpeg",
-    sha256 = "eb0370bf223809b9ebb359fed5318f826ac038ce77933b3afd55ab1a0a21785a",
-    strip_prefix = "ffmpeg-3.4.2",
-    urls = ["http://ffmpeg.org/releases/ffmpeg-3.4.2.tar.bz2"],
+    path = "third_party/ffmpeg/ffmpeg-4.2.2",
 )
 
 http_archive(

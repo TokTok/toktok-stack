@@ -17,9 +17,7 @@ genrule(
 
 cc_library(
     name = "config",
-    hdrs = [
-        "libavcodec/bsf_list.c",
-        "libavformat/protocol_list.c",
+    hdrs = glob(["libav*/*_list.c"]) + [
         "libavutil/avconfig.h",
     ] + select({
         "//tools/config:freebsd": ["freebsd/config.h"],
