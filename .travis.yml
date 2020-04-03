@@ -4,6 +4,10 @@ compiler: clang
 dist: xenial
 os: linux
 
+cache:
+  directories:
+    - $HOME/.cache/bazel/_bazel_$USER/cache/repos/v1/content_addressable 
+
 jobs:
   include:
     - env: JOB=docker-build
