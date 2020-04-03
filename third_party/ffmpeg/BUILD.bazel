@@ -16,8 +16,8 @@ genrule(
 )
 
 genrule(
-name = "platform",
-srcs = select({
+    name = "platform",
+    srcs = select({
         "//tools/config:freebsd": glob(["freebsd/**"]),
         "//tools/config:linux": glob(["linux/**"]),
         "//tools/config:osx": glob(["osx/**"]),
@@ -34,6 +34,10 @@ srcs = select({
 
 cc_library(
     name = "config",
-    hdrs = [":platform"],
+    hdrs = [
+        "libavutil/avconfig.h",
+        ":platform",
+    ],
+    includes = ["."],
     visibility = ["@ffmpeg//:__pkg__"],
 )
