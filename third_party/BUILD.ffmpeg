@@ -227,6 +227,7 @@ COPTS = [
         "-fvisibility=protected",
         "-std=c11",
         "-Wno-absolute-value",
+        "-Wno-braced-scalar-init",
         "-Wno-deprecated-declarations",
         "-Wno-incompatible-pointer-types-discards-qualifiers",
         "-Wno-missing-braces",
