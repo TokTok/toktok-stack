@@ -21,9 +21,8 @@ jobs:
         apt:
           packages:
             - libasound-dev
-            - libopenal-dev
             - libqt5svg5-dev
-            - libsqlcipher-dev
+            - libssl-dev
             - python3.5-dev
             - qttools5-dev
             - qttools5-dev-tools

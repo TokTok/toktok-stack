@@ -2,10 +2,11 @@
 
 def _impl(repository_ctx):
     name = repository_ctx.name
-    brew_prefix = "/usr/local/Cellar/%s/%s" % (
-        repository_ctx.attr.brew_name or repository_ctx.name,
-        repository_ctx.attr.version,
-    )
+    libs = repository_ctx.attr.libs or [name]
+    brew_name = repository_ctx.attr.brew_name or name
+    version = repository_ctx.attr.version
+
+    brew_prefix = "/usr/local/Cellar/%s/%s" % (brew_name, version)
 
     repository_ctx.file(
         "BUILD",
@@ -16,10 +17,10 @@ def _impl(repository_ctx):
         ),
     )
 
-    if repository_ctx.path("/usr/lib/x86_64-linux-gnu/lib%s.so" % name).exists:
+    if repository_ctx.path("/usr/lib/x86_64-linux-gnu/lib%s.so" % libs[0]).exists:
         repository_ctx.symlink("/usr/include", "include")
         repository_ctx.symlink("/usr/lib", "lib")
-    elif repository_ctx.path("/usr/local/lib/lib%s.so" % name).exists:
+    elif repository_ctx.path("/usr/local/lib/lib%s.so" % libs[0]).exists:
         repository_ctx.symlink("/usr/local/include", "include")
         repository_ctx.symlink("/usr/local/lib", "lib")
     elif repository_ctx.path(brew_prefix).exists:
@@ -27,7 +28,7 @@ def _impl(repository_ctx):
         repository_ctx.symlink(brew_prefix + "/lib", "lib")
     else:
         local_prefix = str(repository_ctx.path(
-            Label("@toktok//third_party:%s/readme.txt" % (repository_ctx.attr.brew_name or repository_ctx.name)),
+            Label("@toktok//third_party:%s/readme.txt" % brew_name),
         ).dirname)
         if repository_ctx.path(local_prefix).exists:
             repository_ctx.symlink(local_prefix + "/include", "include")
@@ -39,6 +40,7 @@ local_library_repository = repository_rule(
     _impl,
     attrs = {
         "version": attr.string(mandatory = True),
+        "libs": attr.string_list(),
         "brew_name": attr.string(),
     },
     configure = True,

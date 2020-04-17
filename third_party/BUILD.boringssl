@@ -1,0 +1,13 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "crypto",
+    visibility = ["//visibility:public"],
+    deps = ["@openssl//:crypto"],
+)
+
+cc_library(
+    name = "ssl",
+    visibility = ["//visibility:public"],
+    deps = ["@openssl//:ssl"],
+)

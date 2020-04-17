@@ -2306,6 +2306,7 @@ cc_library(
         ":templates",
         "@bzip2",
         "@libxz",
+        "@openal",
         "@toktok//third_party/ffmpeg:config",
         "@zlib",
     ],
@@ -2319,8 +2320,12 @@ cc_library(
         "fftools/ffmpeg_filter.c",
         "fftools/ffmpeg_hw.c",
         "fftools/ffmpeg_opt.c",
-#        "fftools/ffmpeg_videotoolbox.c",
-    ],
+    ] + select({
+        "@toktok//tools/config:freebsd": [],
+        "@toktok//tools/config:linux": [],
+        "@toktok//tools/config:osx": ["fftools/ffmpeg_videotoolbox.c"],
+        "@toktok//tools/config:windows": [],
+    }),
     copts = COPTS,
     deps = [":ffmpeg"],
 )

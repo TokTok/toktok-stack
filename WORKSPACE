@@ -220,11 +220,32 @@ local_library_repository(
     version = "r2917_1",
 )
 
-github_archive(
+# TODO(iphydf): We can't build boringssl in bazel yet, because Qt links
+# against openssl from the system, while we link against our local boringssl.
+# This causes issues with global initialisation where one library thinks it's
+# initialised but the state is in the other library. Note that this only
+# happens with dynamic linking. If we link statically (we do for binaries, but
+# not for tests), this works fine.
+#github_archive(
+#    name = "boringssl",
+#    repo = "google/boringssl",
+#    sha256 = "99cf9dec3f789373a896531a267244e6853526084b9a32c2cf49faf16492c36c",
+#    version = "4984d802d95bb709ab824e07ffb2d61441b8348f",
+#)
+
+local_library_repository(
+    name = "openssl",
+    libs = [
+        "crypto",
+        "ssl",
+    ],
+    version = "1.0",
+)
+
+new_local_repository(
     name = "boringssl",
-    repo = "google/boringssl",
-    sha256 = "99cf9dec3f789373a896531a267244e6853526084b9a32c2cf49faf16492c36c",
-    version = "4984d802d95bb709ab824e07ffb2d61441b8348f",
+    build_file = "@toktok//third_party:BUILD.boringssl",
+    path = "third_party",
 )
 
 http_archive(
@@ -404,18 +425,13 @@ http_archive(
     urls = ["https://www.libsdl.org/release/SDL2-2.0.12.tar.gz"],
 )
 
-local_library_repository(
+new_github_archive(
     name = "sqlcipher",
-    version = "4.3.0",
+    patches = ["@toktok//third_party/patches:sqlcipher.patch"],
+    repo = "sqlcipher/sqlcipher",
+    sha256 = "41e1408465488e9c478ca5b7c5f8410405a10caa73b82db60ac115a76c563c05",
+    version = "v4.3.0",
 )
-
-#new_github_archive(
-#    name = "sqlcipher",
-#    patches = ["@toktok//third_party/patches:sqlcipher.patch"],
-#    repo = "sqlcipher/sqlcipher",
-#    sha256 = "41e1408465488e9c478ca5b7c5f8410405a10caa73b82db60ac115a76c563c05",
-#    version = "v4.3.0",
-#)
 
 new_github_archive(
     name = "tcl",

@@ -19,7 +19,7 @@ def parse_bazel(build):
         "project": lambda **kwargs: None,
         "alex_lexer": lambda **kwargs: None,
         "happy_parser": lambda **kwargs: None,
-        "glob": lambda include, exclude=[]: None,
+        "glob": lambda include, exclude=[]: [],
         "hazel_library": lambda name: name,
         "haskell_library": store("haskell_library"),
         "hspec_test": store("hspec_test"),
