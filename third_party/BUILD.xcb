@@ -22,9 +22,19 @@ genrule(
     tools = [":c_client"],
 )
 
+genrule(
+    name = "copy_headers",
+    srcs = ["src/xcb.h"],
+    outs = ["include/xcb/xcb.h"],
+    cmd = "cp $< $@",
+)
+
 cc_library(
     name = "xcb",
-    srcs = [":xcb_proto"] + glob([
+    srcs = [
+        ":xcb_proto",
+        "include/xcb/xcb.h",
+    ] + glob([
         "src/*.c",
         "src/*.h",
     ]),
@@ -37,7 +47,10 @@ cc_library(
         "@toktok//tools/config:linux": ["-Ithird_party/xcb/linux"],
         "@toktok//tools/config:osx": ["-Ithird_party/xcb/osx"],
     }),
-    includes = ["src"],
+    includes = [
+        "include",
+        "src",
+    ],
     visibility = ["//visibility:public"],
     deps = [
         "@toktok//third_party/xcb:config",

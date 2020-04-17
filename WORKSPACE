@@ -235,11 +235,12 @@ local_library_repository(
 
 local_library_repository(
     name = "openssl",
+    brew_name = "openssl@1.1",
     libs = [
         "crypto",
         "ssl",
     ],
-    version = "1.0",
+    version = "1.1.1f",
 )
 
 new_local_repository(

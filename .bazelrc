@@ -61,6 +61,9 @@ build:docker-sandbox --genrule_strategy=docker
 build:docker-sandbox --spawn_strategy=docker
 build:docker-sandbox --strategy=Javac=docker
 
+# Use sandboxfs, which is much faster than docker, but slightly less hermetic.
+build:sandboxfs --experimental_use_sandboxfs=auto
+
 ##############################################################################
 #
 # :: Extra strictness in rule execution.
@@ -75,7 +78,6 @@ build --experimental_run_validations
 build --experimental_repository_cache_hardlinks
 build --experimental_strict_fileset_output
 # TODO(https://github.com/tweag/rules_haskell/issues/1265): Enable this once rules_haskell supports it.
-#build --experimental_use_sandboxfs=auto
 
 # https://docs.bazel.build/versions/master/skylark/backward-compatibility.html
 #build --all_incompatible_changes
@@ -239,8 +241,8 @@ build:gnulike --cxxopt='-std=c++14'
 build:gnulike --conlyopt='-std=c99'
 
 # GCC warning flags.
-#build:gcc --copt='-Wsuggest-attribute=const'
-#build:gcc --copt='-Wsuggest-attribute=pure'
+#build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.c$@-Wsuggest-attribute=const'
+#build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.c$@-Wsuggest-attribute=pure'
 build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.c$@-Wold-style-declaration,-Wold-style-definition'
 build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.(cc|cpp)$@-Wzero-as-null-pointer-constant'
 
@@ -254,6 +256,7 @@ build:clang --copt='-Wthread-safety-analysis'
 build:clang --copt='-Wno-error=thread-safety-analysis'
 build:clang --copt='-Wno-error=inconsistent-missing-override'
 
+build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-ftrapv'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Weverything'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-c++98-compat'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-c++98-compat-pedantic'

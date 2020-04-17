@@ -52,8 +52,10 @@ objc_library(
         ],
     ),
     sdk_frameworks = [
+        "AppKit",
         "Carbon",
         "CoreAudio",
+        "CoreVideo",
         "ForceFeedback",
         "IOKit",
         "Metal",
@@ -81,7 +83,10 @@ cc_library(
         "-lpthread",
     ],
     textual_hdrs = ["src/hidapi/linux/hid.c"],
-    deps = [":public"],
+    deps = [
+        ":public",
+        "@xcb",
+    ],
 )
 
 alias(

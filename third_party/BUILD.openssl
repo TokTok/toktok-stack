@@ -4,6 +4,7 @@ cc_library(
     name = "crypto",
     srcs = select({
         "@toktok//tools/config:linux": ["lib/x86_64-linux-gnu/libcrypto.so"],
+        "@toktok//tools/config:osx": ["lib/libcrypto.dylib"],
     }),
     hdrs = glob(["include/openssl/*.h"]),
     includes = ["include"],
@@ -14,6 +15,7 @@ cc_library(
     name = "ssl",
     srcs = select({
         "@toktok//tools/config:linux": ["lib/x86_64-linux-gnu/libssl.so"],
+        "@toktok//tools/config:osx": ["lib/libssl.dylib"],
     }),
     hdrs = glob(["include/openssl/*.h"]),
     includes = ["include"],
