@@ -1,14 +1,25 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
 cc_library(
+    name = "headers",
+    hdrs = glob(["include/openssl/*.h"]) + select({
+        "@toktok//tools/config:linux": ["include/x86_64-linux-gnu/openssl/opensslconf.h"],
+        "//conditions:default": [],
+    }),
+    includes = [
+        "include",
+        "include/x86_64-linux-gnu",
+    ],
+)
+
+cc_library(
     name = "crypto",
     srcs = select({
         "@toktok//tools/config:linux": ["lib/x86_64-linux-gnu/libcrypto.so"],
         "@toktok//tools/config:osx": ["lib/libcrypto.dylib"],
     }),
-    hdrs = glob(["include/openssl/*.h"]),
-    includes = ["include"],
     visibility = ["//visibility:public"],
+    deps = [":headers"],
 )
 
 cc_library(
@@ -17,7 +28,6 @@ cc_library(
         "@toktok//tools/config:linux": ["lib/x86_64-linux-gnu/libssl.so"],
         "@toktok//tools/config:osx": ["lib/libssl.dylib"],
     }),
-    hdrs = glob(["include/openssl/*.h"]),
-    includes = ["include"],
     visibility = ["//visibility:public"],
+    deps = [":headers"],
 )

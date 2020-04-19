@@ -60,8 +60,8 @@ Install the latest version of
 [Bazel](https://github.com/bazelbuild/bazel/releases), e.g.:
 
 ```sh
-wget https://github.com/bazelbuild/bazel/releases/download/2.2.0/bazel_2.2.0-linux-x86_64.deb
-sudo dpkg -i bazel_2.2.0-linux-x86_64.deb
+wget https://github.com/bazelbuild/bazel/releases/download/3.0.0/bazel_3.0.0-linux-x86_64.deb
+sudo dpkg -i bazel_3.0.0-linux-x86_64.deb
 ```
 
 On OSX:

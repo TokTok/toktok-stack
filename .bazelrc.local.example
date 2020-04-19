@@ -1,9 +1,28 @@
+# Bazel developer-specific config.
+#
+# Copy this file to .bazelrc.local and adjust to meet your needs.
+
+# Note that bazel will still only run as many jobs as it can on your number of
+# CPUs. The number 12 here just means it will look ahead and schedule more jobs
+# to make sure all CPUs are always busy.
 build --jobs=12
 
+# You will need one of "linux", "osx", "freebsd", or "windows".
 build --config=linux
+
+# You will need one of "gcc" or "clang", unless you are on Windows.
 build --config=clang
 #build --config=gcc
-#build --config=asan
-build --config=debug
-#build --config=release
-#build --config=ubsan
+
+# You may choose one of the possible sandboxing technologies.
+#build --config=sandboxfs
+#build --config=docker-sandbox
+
+# You may use the remote cache. This is mostly only useful when building with
+# docker-sandbox, as that way you'll be sharing build artifacts with the CI
+# builds, speeding up your builds significantly.
+#build --config=remote
+
+# Enable *one* of the following configs.
+#build --config=debug
+build --config=release

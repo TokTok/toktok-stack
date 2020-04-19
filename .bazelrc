@@ -53,9 +53,9 @@ build:docker-sandbox --experimental_docker_verbose
 build:docker-sandbox --experimental_enable_docker_sandbox
 build:docker-sandbox --define=EXECUTOR=remote
 
-build:docker-sandbox --crosstool_top=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_2.2.0/cc:toolchain
-build:docker-sandbox --host_javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_2.2.0/java:jdk
-build:docker-sandbox --javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_2.2.0/java:jdk
+build:docker-sandbox --crosstool_top=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_3.0.0/cc:toolchain
+build:docker-sandbox --host_javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_3.0.0/java:jdk
+build:docker-sandbox --javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_3.0.0/java:jdk
 
 build:docker-sandbox --genrule_strategy=docker
 build:docker-sandbox --spawn_strategy=docker
@@ -142,10 +142,17 @@ build:osx --noincompatible_run_shell_command_string
 #
 ##############################################################################
 
-#build --config=asan
-
 # Debug mode.
 build:debug -c dbg
+
+# Release mode.
+build:release -c opt
+# NDEBUG disables asserts.
+#build:release --copt='-Wno-unused-variable'
+
+# Link-time optimization.
+build:lto --copt='-flto'
+build:lto --linkopt='-flto'
 
 # On Windows, we always generate debug info, and always compile with
 # optimisation flags.
@@ -159,28 +166,6 @@ build:windows --linkopt='/DEBUG:FULL'
 # Generate code to protect against Spectre variant 1.
 #build:windows --copt='/Qspectre'
 
-# Release mode.
-build:release -c opt
-# NDEBUG disables asserts.
-#build:release --copt='-Wno-unused-variable'
-
-# Address sanitizer (also with optimisation).
-build:asan -c dbg
-build:asan --copt="-O2"
-build:asan --per_file_copt='^c-toxcore/.*@-fsanitize=address,-g'
-build:asan --per_file_copt='^toxins/.*@-fsanitize=address,-g'
-build:asan --per_file_copt='^qtox/.*@-fsanitize=address,-g'
-build:asan --linkopt='-fsanitize=address'
-build:asan --copt='-Wno-macro-redefined'
-
-# Undefined behaviour sanitizer.
-build:ubsan --copt='-fsanitize=undefined'
-build:ubsan --linkopt='-fsanitize=undefined'
-
-# Link-time optimization.
-build:lto --copt='-flto'
-build:lto --linkopt='-flto'
-
 # This file breaks clang on OSX when compiled with -O2 or higher:
 # fatal error: error in backend: Cannot emit physreg copy instruction
 build:osx --per_file_copt='c-toxcore/toxcore/group.c$@-O1'
@@ -189,7 +174,7 @@ build:android --crosstool_top=//external:android/crosstool
 build:android --cpu=armeabi-v7a
 build:android --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 build:android --verbose_failures
-build:android --copt="-Wno-unused-macros"
+build:android --copt='-Wno-unused-macros'
 
 build:gnulike --per_file_copt='[-_]avx\\.c$@-mavx'
 build:gnulike --per_file_copt='[-_]avx2\\.c$@-mavx2'
@@ -415,7 +400,7 @@ build:gnuld --linkopt='-Wl,--warn-common'
 
 # MSVC has a header that disallows the above nullptr thing. Defining the
 # following symbol disables that check.
-build:windows --per_file_copt="//c-toxcore@/D_ALLOW_KEYWORD_MACROS"
+build:windows --per_file_copt='//c-toxcore@/D_ALLOW_KEYWORD_MACROS'
 
 try-import %workspace%/.bazelrc.local
 

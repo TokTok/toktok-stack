@@ -31,9 +31,9 @@ def _python_config(repository_ctx, versions):
 
         result = repository_ctx.execute([python_config, "--help"])
         if result.return_code == 0:
-            return python_config
+            return python_config, version
 
-    return None
+    return None, None
 
 def _impl(repository_ctx):
     version = repository_ctx.attr.version
@@ -47,17 +47,16 @@ def _impl(repository_ctx):
         fail("Unsupported Python version: %s " % version +
              "(need 2, 3, or an exact version number)")
 
-    python_config = _python_config(repository_ctx, versions)
+    python_config, version = _python_config(repository_ctx, versions)
 
     if not python_config:
         fail("Could not find pythonX-config for X in {}".format(versions))
 
-    result = repository_ctx.execute([python_config, "--includes"])
+    includes_result = repository_ctx.execute([python_config, "--includes"])
+    if includes_result.return_code != 0:
+        fail("Could not determine Python includes", attr = includes_result.stderr)
 
-    if result.return_code != 0:
-        fail("Could not determine Python includes", attr = result.stderr)
-
-    cflags = result.stdout.strip().split(" ")
+    cflags = includes_result.stdout.strip().split(" ")
     cflags = [cflag for cflag in cflags if cflag]
 
     root = repository_ctx.path("")
@@ -76,6 +75,8 @@ def _impl(repository_ctx):
                 repository_ctx.symlink(source, destination)
                 includes.append(include)
 
+    hdrs = ["%s/**" % inc for inc in includes]
+
     result = repository_ctx.execute([python_config, "--ldflags"])
 
     if result.return_code != 0:
@@ -88,15 +89,29 @@ def _impl(repository_ctx):
         if not linkopts[i].startswith("-"):
             linkopts[i - 1] = " ".join([linkopts[i - 1], linkopts.pop(i)])
 
+    if repository_ctx.path("/usr/include/x86_64-linux-gnu").exists:
+        abiflags_result = repository_ctx.execute([python_config, "--abiflags"])
+        if abiflags_result.return_code != 0:
+            fail("Could not determine Python ABI flags", attr = abiflags_result.stderr)
+
+        repository_ctx.symlink(
+            "/usr/include/x86_64-linux-gnu",
+            base.get_child("x86_64-linux-gnu"),
+        )
+
+        hdrs.append("include/x86_64-linux-gnu/python%s%s/pyconfig.h" % (
+                version, abiflags_result.stdout.strip()))
+        includes.append("include")
+
     file_content = """
 cc_library(
     name = "python",
-    hdrs = glob(["include/**"]),
+    hdrs = glob({}),
     includes = {},
     linkopts = {},
     visibility = ["//visibility:public"],
 )
-  """.format(includes, linkopts)
+  """.format(hdrs, includes, linkopts)
 
     repository_ctx.file(
         "BUILD",

@@ -12,9 +12,11 @@ cc_library(
     }),
     hdrs = [
         "include/curses.h",
+        "include/ncurses_dll.h",
         "include/ncursesw/curses.h",
         "include/ncursesw/ncurses_dll.h",
         "include/ncursesw/unctrl.h",
+        "include/unctrl.h",
     ],
     includes = ["include"],
     visibility = ["//visibility:public"],

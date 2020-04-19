@@ -72,7 +72,7 @@
 #define HAVE_WAVE
 
 /* Define if we have the SDL2 backend */
-#define HAVE_SDL2
+//#define HAVE_SDL2
 
 /* Define if we have the stat function */
 #define HAVE_STAT

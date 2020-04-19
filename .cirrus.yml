@@ -1,16 +1,16 @@
 ---
 cirrus-ci_task:
   container:
-    image: l.gcr.io/google/bazel:2.2.0
+    image: l.gcr.io/google/bazel:3.0.0
     cpu: 8
     memory: 12G
   configure_script:
     - git submodule update --init --depth=5 --recursive
     - tools/setup-ci
   test_all_script:
-    - RUN_TEST="bazel test --config=release -k
+    - bazel test --config=release -k
+        --per_file_copt='//c-toxcore/auto_tests@-DUSE_IPV6=0'
         //c-toxcore/...
         //go-toxcore-c/...
         //py_toxcore_c/...
-        //toxins/..."
-    - $RUN_TEST || $RUN_TEST || $RUN_TEST
+        //toxins/...

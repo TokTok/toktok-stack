@@ -90,7 +90,8 @@ cc_library(
         "alc/backends/base.cpp",
         "alc/backends/loopback.cpp",
         "alc/backends/null.cpp",
-        "alc/backends/sdl2.cpp",
+        # TODO(iphydf): Make SDL2 build under docker-sandbox and enable this.
+        #"alc/backends/sdl2.cpp",
         "alc/backends/wave.cpp",
         "bsinc_inc.h",
         "hrtf_default.h",
@@ -107,9 +108,14 @@ cc_library(
     copts = COPTS,
     deps = [
         ":public",
-        "@sdl2",
+        #"@sdl2",
         "@toktok//third_party/openal:config",
-    ],
+    ] + select({
+        "@toktok//tools/config:freebsd": [],
+        "@toktok//tools/config:linux": ["@asound"],
+        "@toktok//tools/config:osx": [],
+        "@toktok//tools/config:windows": [],
+    }),
 )
 
 objc_library(
