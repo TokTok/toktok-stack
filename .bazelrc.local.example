@@ -7,9 +7,6 @@
 # to make sure all CPUs are always busy.
 build --jobs=12
 
-# You will need one of "linux", "osx", "freebsd", or "windows".
-build --config=linux
-
 # You will need one of "gcc" or "clang", unless you are on Windows.
 build --config=clang
 #build --config=gcc
@@ -23,6 +20,7 @@ build --config=clang
 # builds, speeding up your builds significantly.
 #build --config=remote
 
-# Enable *one* of the following configs.
+# Optionally enable *one* of the following configs. If none is enabled, we build
+# in fastbuild mode (no optimisation, minimal debugging information).
 #build --config=debug
 build --config=release

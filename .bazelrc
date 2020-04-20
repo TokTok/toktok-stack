@@ -22,6 +22,7 @@ build --check_licenses=true
 build --experimental_import_deps_checking=warning
 build --process_headers_in_dependencies
 build --strict_filesets=true
+build --enable_platform_specific_config
 
 ##############################################################################
 #
@@ -134,7 +135,7 @@ build --incompatible_strict_action_env
 
 # rules_apple uses old style list commands.
 # TODO(https://github.com/bazelbuild/rules_apple/issues/736): Remove.
-build:osx --noincompatible_run_shell_command_string
+build:macos --noincompatible_run_shell_command_string
 
 ##############################################################################
 #
@@ -168,7 +169,7 @@ build:windows --linkopt='/DEBUG:FULL'
 
 # This file breaks clang on OSX when compiled with -O2 or higher:
 # fatal error: error in backend: Cannot emit physreg copy instruction
-build:osx --per_file_copt='c-toxcore/toxcore/group.c$@-O1'
+build:macos --per_file_copt='c-toxcore/toxcore/group.c$@-O1'
 
 build:android --crosstool_top=//external:android/crosstool
 build:android --cpu=armeabi-v7a

@@ -6,7 +6,6 @@ echo 'build --jobs=50' | tee -a ~/.bazelrc
 echo 'build --show_timestamps' | tee -a ~/.bazelrc
 echo 'build --verbose_failures' | tee -a ~/.bazelrc
 
-echo 'build --config=linux' | tee -a ~/.bazelrc
 echo 'build --config=clang' | tee -a ~/.bazelrc
 
 RESPONSE='resource name must be a SHA256 hash'
