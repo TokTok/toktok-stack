@@ -191,7 +191,7 @@ genrule(
         done
     """,
     toolchains = ["@rules_cc//cc:current_cc_toolchain"],
-    tools = ["@yasm"],
+    exec_tools = ["@yasm"],
 )
 
 genrule(

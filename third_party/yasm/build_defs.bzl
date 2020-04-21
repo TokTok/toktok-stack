@@ -105,7 +105,7 @@ _asm_library = rule(
         "_yasm": attr.label(
             default = Label("@yasm"),
             executable = True,
-            cfg = "host",
+            cfg = "exec",
             allow_single_file = True,
         ),
         "_cc_toolchain": attr.label(default = Label("@rules_cc//cc:current_cc_toolchain")),

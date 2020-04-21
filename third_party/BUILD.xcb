@@ -19,7 +19,7 @@ genrule(
         "mv {0}.c {0}.h $$(dirname $(location {0}.c));".format(p)
         for p in xcb_protos
     ]),
-    tools = [":c_client"],
+    exec_tools = [":c_client"],
 )
 
 genrule(

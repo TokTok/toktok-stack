@@ -23,7 +23,7 @@ genrule(
     name = "cap_names",
     outs = ["cap_names.h"],
     cmd = "$(location _makenames) > $@",
-    tools = ["_makenames"],
+    exec_tools = ["_makenames"],
 )
 
 cc_library(

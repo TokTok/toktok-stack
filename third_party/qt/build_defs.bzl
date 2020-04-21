@@ -49,7 +49,7 @@ qt_uic = rule(
         "_uic": attr.label(
             default = Label("@qt//:uic"),
             executable = True,
-            cfg = "host",
+            cfg = "exec",
             allow_single_file = True,
         ),
     },
@@ -97,7 +97,7 @@ qt_lconvert = rule(
         "_lconvert": attr.label(
             default = Label("@qt//:lconvert"),
             executable = True,
-            cfg = "host",
+            cfg = "exec",
             allow_single_file = True,
         ),
     },
@@ -150,7 +150,7 @@ qt_rcc = rule(
         "_rcc": attr.label(
             default = Label("@qt//:rcc"),
             executable = True,
-            cfg = "host",
+            cfg = "exec",
             allow_single_file = True,
         ),
     },
@@ -258,7 +258,7 @@ qt_moc = rule(
         "_moc": attr.label(
             default = Label("@qt//:moc"),
             executable = True,
-            cfg = "host",
+            cfg = "exec",
             allow_single_file = True,
         ),
     },

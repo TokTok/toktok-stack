@@ -22,7 +22,7 @@ genrule(
         "-d`dirname $(location parse.c)`",
         "$(location src/parse.y)",
     ]),
-    tools = [":lemon"],
+    exec_tools = [":lemon"],
 )
 
 genrule(
@@ -34,7 +34,7 @@ genrule(
     ],
     outs = ["opcodes.c"],
     cmd = TCLSH + " $(location tool/mkopcodec.tcl) $(location opcodes.h) > $@",
-    tools = ["@tcl//:tclsh"],
+    exec_tools = ["@tcl//:tclsh"],
 )
 
 genrule(
@@ -50,7 +50,7 @@ genrule(
         "cat $(location parse.h) $(location src/vdbe.c) |",
         TCLSH + " $(location tool/mkopcodeh.tcl) > $@",
     ]),
-    tools = ["@tcl//:tclsh"],
+    exec_tools = ["@tcl//:tclsh"],
 )
 
 cc_binary(
@@ -75,7 +75,7 @@ genrule(
         "cp $(location :mksourceid) mksourceid;",
         TCLSH + " $(location tool/mksqlite3h.tcl) external/sqlcipher > $@",
     ]),
-    tools = [
+    exec_tools = [
         ":mksourceid",
         "@tcl//:tclsh",
     ],
@@ -90,7 +90,7 @@ genrule(
     name = "keywordhash",
     outs = ["keywordhash.h"],
     cmd = "$(location :mkkeywordhash) > $@",
-    tools = [":mkkeywordhash"],
+    exec_tools = [":mkkeywordhash"],
 )
 
 cc_library(

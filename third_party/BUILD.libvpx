@@ -45,7 +45,7 @@ genrule(
           cp $$DIR/`basename $$i` $$i
         done
     """,
-    tools = ["@yasm"],
+    exec_tools = ["@yasm"],
 )
 
 [genrule(
