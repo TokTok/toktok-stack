@@ -19,6 +19,9 @@
 [submodule "echobot-jvm"]
 	path = echobot-jvm
 	url = https://github.com/TokTok/echobot-jvm
+[submodule "experimental"]
+	path = experimental
+	url = https://github.com/TokTok/experimental
 [submodule "go-toxcore-c"]
 	path = go-toxcore-c
 	url = https://github.com/TokTok/go-toxcore-c

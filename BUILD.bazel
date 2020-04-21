@@ -9,6 +9,7 @@ workspace(projects = [
     "ci-tools",
     "dockerfiles",
     "echobot-jvm",
+    "experimental",
     "go-toxcore-c",
     "hs-github-tools",
     "hs-msgpack-binary",
