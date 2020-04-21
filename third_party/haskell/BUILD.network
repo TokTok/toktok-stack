@@ -19,13 +19,14 @@ genrule(
     outs = ["include/HsNetworkConfig.h"],
     cmd = """
         cd `dirname $(location configure)`
-        ./configure
+        ./configure CC=$(CC)
         DIR=`pwd`
         cd -
         cp $$DIR/include/HsNetworkConfig.h $@
         # XXX: Hack because _GNU_SOURCE doesn't get propagated to hsc2hs.
         sed -i -e 's|#define HAVE_STRUCT_UCRED 1||' $@
     """,
+    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
 )
 
 cc_library(

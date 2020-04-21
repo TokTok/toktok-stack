@@ -10,11 +10,6 @@ cache:
 
 jobs:
   include:
-    - env: JOB=docker-build
-      services: [docker]
-      before_install: []
-      install: []
-      script: docker build tools -t toxchat/builder
     - env: JOB=bazel-docker
       services: [docker]
       addons: &addons

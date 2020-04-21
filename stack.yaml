@@ -10,6 +10,8 @@ packages:
   - hs-toxcore/
   - hs-toxcore-c/
 resolver: lts-14.27
+extra-lib-dirs:
+  - $HOME/code/toktok-stack/bazel-bin/c-toxcore/toxcore
 extra-deps:
   - binary-instances-1@sha256:b17565598b8df3241f9b46fa8e3a3368ecc8e3f2eb175d7c28f319042a6f5c79,2613
   - bytestring-arbitrary-0.1.3@sha256:14db64d4fe126fbad2eb8d3601bfd80a693f3131e2db0e76891feffe44f10df8,1773

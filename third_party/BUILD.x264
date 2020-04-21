@@ -14,3 +14,9 @@ cc_library(
     includes = ["include"],
     visibility = ["//visibility:public"],
 )
+
+cc_library(
+    name = "x264",
+    visibility = ["//visibility:public"],
+    deps = [":core"],
+)

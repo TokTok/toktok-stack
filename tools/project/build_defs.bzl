@@ -28,7 +28,7 @@ _haskell_travis = rule(
     implementation = _haskell_travis_impl,
 )
 
-def _haskell_project(standard_travis):
+def _haskell_project(standard_travis = True):
     haskell_package = native.package_name()[3:]
     cabal_file = haskell_package + ".cabal"
     native.sh_test(

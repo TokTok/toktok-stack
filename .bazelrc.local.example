@@ -7,7 +7,8 @@
 # to make sure all CPUs are always busy.
 build --jobs=12
 
-# You will need one of "gcc" or "clang", unless you are on Windows.
+# You may set one of "gcc" or "clang" (unless you are on Windows) to enable
+# additional warning flags specific to these compilers.
 build --config=clang
 #build --config=gcc
 
@@ -19,8 +20,14 @@ build --config=clang
 # docker-sandbox, as that way you'll be sharing build artifacts with the CI
 # builds, speeding up your builds significantly.
 #build --config=remote
+#build --config=remote-exec
 
 # Optionally enable *one* of the following configs. If none is enabled, we build
 # in fastbuild mode (no optimisation, minimal debugging information).
 #build --config=debug
-build --config=release
+#build --config=release
+
+# Enable this to get Bazel deprecation warnings for future feature changes.
+# Disable this if you're running with an older version of Bazel that doesn't
+# support some of the --incompatible flags.
+build --config=strict

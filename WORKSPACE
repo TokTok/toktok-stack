@@ -82,8 +82,8 @@ github_archive(
 github_archive(
     name = "rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "b72c6f92b4cac0af92d91f35f4b392874805e07d412abaeeefc63e5b9b29cdb5",
-    version = "827d654235189242b0a9d45df8bc8754469b4579",
+    sha256 = "a576ce81aeced265791ee03e63b2656fdb1b8813398e88c32456d2132649755a",
+    version = "c625c53c3fe6644abb366bd868051d9e82f2a204",
 )
 
 load("@rules_haskell//haskell:ghc_bindist.bzl", "haskell_register_ghc_bindists")
@@ -295,7 +295,7 @@ http_archive(
 http_archive(
     name = "gettext",
     build_file = "@toktok//third_party:BUILD.gettext",
-    #sha256 = "87b5884741427220d3a33df1363ae0e8b898099fbc59f1c451113f6732891014",
+    sha256 = "66415634c6e8c3fa8b71362879ec7575e27da43da562c798a8a2f223e6e47f5c",
     strip_prefix = "gettext-0.20.1",
     urls = ["https://ftp.gnu.org/pub/gnu/gettext/gettext-0.20.1.tar.gz"],
 )

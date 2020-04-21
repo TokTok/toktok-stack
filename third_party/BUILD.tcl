@@ -262,6 +262,7 @@ cc_library(
             "-DEFAULTLIB:user32.lib",
         ],
     }),
+    visibility = ["@toktok//third_party:__pkg__"],
     deps = [
         ":inc_files",
         "@zlib",
