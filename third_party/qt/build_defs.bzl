@@ -393,3 +393,30 @@ def qt_mac_deploy(name, app_icons, bundle_id, deps):
             "@qt//:macdeployqt",
         ],
     )
+
+def qt_win_deploy(name, deps):
+    native.genrule(
+        name = name + "_deploy",
+        srcs = deps,
+        outs = [
+            name + ".tar.gz",
+            "windeployqt.log",
+        ],
+        cmd = " ".join([
+            "mkdir -p $$$$/{name};".format(name = name),
+            "cp $(location //{name}) $$$$/{name}/;".format(name = name),
+            "cp `dirname $(location //{name})`/{name}.pdb $$$$/{name}/;".format(name = name),
+            "$(location @qt//:windeployqt) $$$$/{name} > $(location windeployqt.log);".format(name = name),
+            "tar zcf $(location {name}.tar.gz) --strip-components=1 $$$$/{name}".format(name = name),
+        ]),
+        tags = ["manual"],
+        exec_tools = ["@qt//:windeployqt"],
+    )
+
+    native.sh_binary(
+        name = name,
+        srcs = ["//third_party/qt:winlaunch.sh"],
+        args = [name, "$(location %s.tar.gz)" % name],
+        data = ["%s.tar.gz" % name],
+        tags = ["manual"],
+    )
