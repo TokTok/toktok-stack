@@ -8,6 +8,7 @@ haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["Text/**/*.*hs"]),
     compiler_flags = [
+        "-Wno-deprecations",
         "-XFlexibleContexts",
         "-XFlexibleInstances",
         "-XTypeSynonymInstances",

@@ -123,6 +123,7 @@ cc_library(
             "libtommath/*.h",
         ],
         exclude = [
+            "generic/tclLoadNone.c",
             "generic/tclStubLibTbl.c",
             "generic/tclUniData.c",
         ],
@@ -230,10 +231,12 @@ cc_library(
             "-Iexternal/tcl/unix",
             "-Wno-int-to-void-pointer-cast",
             "-Wno-implicit-int",
+            "-Wno-typedef-redefinition",
         ],
     }) + select({
         "@toktok//tools/config:windows": [],
         "@toktok//tools/config:linux": [
+            "-D_DEFAULT_SOURCE",
             "-DHAVE_GETHOSTBYADDR_R=1",
             "-DHAVE_GETHOSTBYADDR_R_8=1",
             "-DHAVE_GETHOSTBYNAME_R=1",
@@ -262,6 +265,7 @@ cc_library(
             "-DEFAULTLIB:user32.lib",
         ],
     }),
+    visibility = ["@toktok//third_party:__pkg__"],
     deps = [
         ":inc_files",
         "@zlib",

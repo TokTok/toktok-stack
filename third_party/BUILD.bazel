@@ -1,3 +1,9 @@
-# Intentionally empty.
-#
-# This directory contains BUILD files for various third party libraries.
+# A filegroup that depends on all C/C++ dependencies, just so our Docker build
+# sees them in the first aquery and can download the dependencies.
+filegroup(
+    name = "third_party",
+    srcs = ["@{pkg}//:{pkg}".format(pkg = pkg[len("BUILD."):]) for pkg in glob(
+        ["BUILD.*"],
+        exclude = ["BUILD.bazel"],
+    )],
+)

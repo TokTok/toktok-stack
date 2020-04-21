@@ -70,3 +70,9 @@ qt_import(
     name = "qt_xml",
     module = "Xml",
 )
+
+filegroup(
+    name = "qt",
+    srcs = [],
+    visibility = ["@toktok//third_party:__pkg__"],
+)

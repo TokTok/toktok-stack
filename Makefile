@@ -1,26 +1,88 @@
-CACHE := $(HOME)/.cache/toktok-stack
+IMAGE		= toxchat/toktok-stack:0.0.7
+DOWNLOADS	= toxchat/toktok-stack:downloads
 
-SBT_PROJECTS := $(dir $(wildcard */build.sbt))
+CACHE		= /tmp/build_cache
+OUTPUT		= /dev/shm/build_output
 
-CACHEDIRS := $(foreach i,$(SBT_PROJECTS),$i.idea $iproject/project $iproject/target $itarget)
+# You can override with e.g. "make run ACTION=test".
+ACTION		= build
 
-help:
-	@echo "make cache    # set up local cache directories for Java/Scala projects"
+#######################################
+# The main build targets
 
-cache: $(foreach i,$(CACHEDIRS),$(CURDIR)/$i)
+# Build the Docker image.
+build: build-workspace
 
-$(CURDIR)/%: $(CACHE)/%
-	rm -rf $@
-	ln -sf $< $@
+# Run the Bazel build in the built image without persisting any state.
+run:
+	docker run --rm -it $(IMAGE) bazel $(ACTION) //... $(BAZELFLAGS)
 
-.PRECIOUS: $(CACHE)/%
-$(CACHE)/%:
-	mkdir -p $@
+run-local: $(CACHE) $(OUTPUT)
+	docker run -v $(CURDIR):/src/workspace $(DOCKERFLAGS)
+		
+run-persistent: $(CACHE) $(OUTPUT)
+	docker run $(DOCKERFLAGS)
 
-export LD_LIBRARY_PATH := $(PWD)/bazel-bin/c-toxcore/toxcore
+BAZELFLAGS = --config=release --config=docker
 
-haskell:
-	stack build --extra-lib-dirs=$(PWD)/bazel-bin/c-toxcore/toxcore
+# Common flags for the rules above.
+DOCKERFLAGS := --rm -it					\
+	-e USER="$(shell id -u)" -u="$(shell id -u)"	\
+	-v $(CACHE):/tmp/build_cache			\
+	-v $(OUTPUT):/tmp/build_output			\
+	$(IMAGE) bazel					\
+	--output_user_root=/tmp/build_cache		\
+	--output_base=/tmp/build_output			\
+	$(ACTION) //... $(BAZELFLAGS)
 
-check:
-	stack test --extra-lib-dirs=$(PWD)/bazel-bin/c-toxcore/toxcore
+#######################################
+# Implementation details follow
+
+# Filter out all submodule names, because otherwise we tar up entire
+# directories, not just the files. git ls-files lists submodules as "files".
+FILTER := "^($(shell echo $(shell git submodule --quiet foreach --recursive pwd | sed -e "s@^$(CURDIR)/@@") | sed -e 's/ /|/g'))$$"
+
+# git ls-files --recurse-submodules doesn't quite work. For some reason it
+# completely ignores ci-tools. This may have been because the git repo is
+# somehow broken, but this method is more robust.
+LS_FILES := git ls-files | sed -e "s@^@$$(pwd)/@"
+LS_FILES_RECURSIVE :=						\
+	$(LS_FILES);						\
+	git submodule --quiet foreach --recursive '$(LS_FILES)'	\
+
+# Filter out Makefile (because we're ofter changing it when developing the
+# Docker image) and sbt project directories, because we've got some hacks in
+# there using symlinks and we don't need them for Bazel builds.
+FILES :=					\
+	($(LS_FILES_RECURSIVE))			\
+	| sed -e 's@^$(CURDIR)/@@'		\
+	| egrep -v '^jvm-[^/]*/project'		\
+	| egrep -v '^Makefile'			\
+	| egrep -v '.gitignore'			\
+	| egrep -v $(FILTER)			\
+	| sort -u
+
+# We use an intermediate target here so "make" does the cleanup of workspace.tar
+# for us. It has to be 2 levels deep, otherwise it's considered "precious".
+build-%: %.tar downloads
+	docker build -t $(IMAGE) - < $<
+
+# This is the intermediate image, which is huge and doesn't try to be efficient.
+# We copy the populated third_party directory from it into the final image.
+downloads: Dockerfile
+	tar -c Dockerfile | docker build --target downloads -t $(DOWNLOADS) -
+
+# Build a .tar with the workspace in it. This will be unpacked in the
+# Dockerfile. We use $(...) in bash instead of $(shell) in make because
+# otherwise the command line will be too large. We use --mode to give read
+# permissions to everyone. We make everything executable, because some things
+# need to be, and we have no easy way to be selective.
+%.tar: Makefile
+	tar -hcf $@ --mode=ugo+rx --transform 's,^,$*/,;s,$*/Dockerfile,Dockerfile,' $$($(FILES))
+
+# Bazel build products will end up here.
+$(CACHE):  ; mkdir $@
+$(OUTPUT): ; mkdir $@
+
+# We need this for $(...) to work.
+SHELL = bash

@@ -10,33 +10,18 @@ git clone --recursive https://github.com/TokTok/toktok-stack
 
 ## Configuring
 
-You'll need to pass `--config` flags to make bazel select the correct compiler
-flags. If you're on Linux, pass `--config=linux`, on OSX, pass `--config=osx`,
-and on Windows, pass `--config=windows`.
+You may pass a compiler config for additional compiler-specific warnings and
+optimisations. If you use Clang (default on OSX), pass `--config=clang`. If
+you use GCC, pass `--config=gcc`. On Windows, you don't need any compiler flag
+because we assume it's MSVC.
 
-You must also pass the correct compiler config. If you use Clang (default on
-OSX), pass `--config=clang`. If you use GCC, pass `--config=gcc`. On Windows,
-you don't need any compiler flag because we assume it's MSVC.
+There are also `--config=release` and `--config=debug` and more. See
+`.bazelrc` in this repository for more config flags you can pass. If you're
+using the Docker build, then `--config=asan`, `tsan`, and `msan` are also
+available.
 
-There are also `--config=release` and `--config=debug`, as well as
-`--config=asan` flags, and more. See `.bazelrc` in this repository for more
-config flags you can pass.
-
-We recommend creating a `$HOME/.bazelrc` roughly like this:
-
-```sh
-build --jobs=12
-
-build --config=linux
-build --config=clang
-#build --config=gcc
-build --config=release
-#build --config=ubsan
-```
-
-The shell script at `tools/setup-ci` does this for you on Linux/Clang, but
-also sets up remote caching, which you may not want if you don't have a very
-fast internet connection.
+We recommend copying `.bazelrc.local.example` to `.bazelrc.local` and
+customising it according to the comments in that file.
 
 ## Building
 
@@ -122,25 +107,25 @@ installed on the system.
 For `//qtox`:
 
 ```sh
-sudo apt install libopenal-dev libasound2-dev libxss-dev
+sudo apt install libasound2-dev libxss-dev
 ```
 
 For `//toxic`:
 
 ```sh
-sudo apt install libopenal-dev libxss-dev
+sudo apt install libxss-dev
 ```
 
 On OSX (for both `qtox` and `toxic`):
 
 ```sh
-brew install ncurses openal-soft
+brew install ncurses
 ```
 
 On FreeBSD:
 
 ```sh
-sudo pkg install ncurses openal-soft
+sudo pkg install ncurses
 ```
 
 Note that toxic also needs Python 3. See the section on Python for how to

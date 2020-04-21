@@ -9,6 +9,7 @@ cc_library(
     ]),
     hdrs = glob(["include/*.h"]),
     copts = [
+        "-std=gnu89",
         "-Iexternal/portaudio/src/common",
         "-Wno-deprecated-declarations",
     ],

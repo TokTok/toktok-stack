@@ -38,3 +38,9 @@ haskell_binary(
         hazel_library("QuickCheck"),
     ],
 )
+
+alias(
+    name = "alex",
+    actual = ":alex_bin",
+    visibility = ["@toktok//third_party/haskell:__pkg__"],
+)

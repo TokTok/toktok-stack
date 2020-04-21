@@ -38,3 +38,9 @@ haskell_binary(
         hazel_library("mtl"),
     ],
 )
+
+alias(
+    name = "happy",
+    actual = ":happy_bin",
+    visibility = ["@toktok//third_party/haskell:__pkg__"],
+)

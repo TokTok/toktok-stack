@@ -104,6 +104,8 @@ def _impl(repository_ctx):
         includes.append("include")
 
     file_content = """
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
 cc_library(
     name = "python",
     hdrs = glob({}),

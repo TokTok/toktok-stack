@@ -1,0 +1,40 @@
+load("//tools/project:build_defs.bzl", "workspace")
+
+workspace(projects = [
+    "apidsl",
+    "c-toxcore",
+    "c-toxcore-hs",
+    "cedar",
+    "ci-tools",
+    "dockerfiles",
+    "echobot-jvm",
+    "experimental",
+    "go-toxcore-c",
+    "hs-github-tools",
+    "hs-msgpack-binary",
+    "hs-msgpack-rpc-conduit",
+    "hs-msgpack-types",
+    "hs-schema",
+    "hs-tokstyle",
+    "hs-toxcore",
+    "hs-toxcore-c",
+    "js-toxcore-c",
+    "jtox",
+    "jvm-macros",
+    "jvm-sbt-plugins",
+    "jvm-toxcore-api",
+    "jvm-toxcore-c",
+    "py_toxcore_c",
+    "qtox",
+    "spec",
+    "streambot-jvm",
+    "toktok-android",
+    "toxic",
+    "toxins",
+    "website",
+])
+
+exports_files(srcs = [
+    "LICENSE.gpl3",
+    "LICENSE.hs-msgpack",
+])

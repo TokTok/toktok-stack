@@ -19,6 +19,7 @@ haskell_library(
     srcs = glob(["Text/**/*.*hs*"]),
     compiler_flags = [
         "-DSPLIT_BASE",
+        "-Wno-deprecations",
         "-XCPP",
         "-XFlexibleContexts",
         "-XFlexibleInstances",

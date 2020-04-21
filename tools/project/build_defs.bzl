@@ -28,7 +28,7 @@ _haskell_travis = rule(
     implementation = _haskell_travis_impl,
 )
 
-def _haskell_project(standard_travis):
+def _haskell_project(standard_travis = True):
     haskell_package = native.package_name()[3:]
     cabal_file = haskell_package + ".cabal"
     native.sh_test(
@@ -73,11 +73,11 @@ def project(license = "gpl3", standard_travis = False):
         srcs = ["//tools/project:diff_test.sh"],
         args = [
             "$(location LICENSE)",
-            "$(location //:LICENSE.%s)" % license,
+            "$(location //tools:LICENSE.%s)" % license,
         ],
         data = [
             "LICENSE",
-            "//:LICENSE.%s" % license,
+            "//tools:LICENSE.%s" % license,
         ],
     )
 
@@ -96,16 +96,14 @@ def project(license = "gpl3", standard_travis = False):
         )
 
 def workspace(projects):
-    project()
-
     native.test_suite(
         name = "license_tests",
-        tests = [":license_test"] + ["//%s:license_test" % p for p in projects],
+        tests = ["//%s:license_test" % p for p in projects],
     )
 
     native.test_suite(
         name = "readme_tests",
-        tests = [":readme_test"] + ["//%s:readme_test" % p for p in projects],
+        tests = ["//%s:readme_test" % p for p in projects],
     )
 
     native.test_suite(

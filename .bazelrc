@@ -1,28 +1,37 @@
 # Global bazel options for toktok-stack.
 
+import tools/bazelrc.boot
+
 ##############################################################################
 #
 # :: Bazel UI flags and globally enabled features.
 #
 ##############################################################################
 
-build --color=yes
 build --show_progress_rate_limit=0.5
-
-build --features=public_proto_imports
-build --features=pie
-build --features=module_maps
-build --features=header_modules
-build --features=use_header_modules
-build --features=layering_check
-build --features=parse_headers
-build --features=cc_include_scanning
+build --experimental_ui_deduplicate
 
 build --check_licenses=true
-build --experimental_import_deps_checking=warning
 build --process_headers_in_dependencies
+#build --remote_download_minimal
 build --strict_filesets=true
 build --enable_platform_specific_config
+
+# TODO(https://github.com/tweag/rules_haskell/issues/1312): Remove this once
+# rules_haskell is happy without it.
+build --build_runfile_links
+
+build --experimental_generate_json_trace_profile
+build --experimental_profile_cpu_usage
+
+build --experimental_local_memory_estimate
+build --experimental_objc_include_scanning
+build --experimental_omitfp
+build --experimental_remotable_source_manifests
+
+build --experimental_android_compress_java_resources=true
+build --experimental_android_resource_shrinking=true
+#build --experimental_desugar_java8_libs=true
 
 ##############################################################################
 #
@@ -34,6 +43,16 @@ build --enable_platform_specific_config
 build --strategy=Javac=worker
 build --strategy=Scalac=worker
 
+# toxchat/builder toolchain used by Docker and remote execution.
+build:builder-toolchain --crosstool_top=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_3.0.0/cc:toolchain
+build:builder-toolchain --host_javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_3.0.0/java:jdk
+build:builder-toolchain --javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_3.0.0/java:jdk
+
+build:libc++ --action_env=CXXFLAGS=-stdlib=libc++
+build:libc++ --action_env=LDFLAGS=-stdlib=libc++
+build:libc++ --action_env=BAZEL_CXXOPTS=-stdlib=libc++
+build:libc++ --action_env=BAZEL_LINKLIBS=-l%:libc++.a:-l%:libc++abi.a:-lm
+
 # Use remote caching. This is disabled by default, because unless you have a
 # fairly fast connection (like on our CI systems), this is not very useful.
 #build:remote --remote_cache=code.tox.chat:8980
@@ -41,11 +60,8 @@ build:remote --remote_http_cache=https://code.tox.chat/bazel
 
 # Use remote execution. Disabled by default, because we don't want everyone to
 # use the remote executors (and they might be down sometimes).
-build:remote-exec --remote_executor=code.tox.chat:8980
-
-build:remote-exec --genrule_strategy=remote
-build:remote-exec --spawn_strategy=remote
-build:remote-exec --strategy=Javac=remote
+build:remote-exec --remote_executor=grpc://code.tox.chat:8980
+build:remote-exec --config=builder-toolchain
 
 # Use local docker sandbox. This is a lot slower than linux-sandbox, but is more
 # hermetic and reproducible, so it is used on our CI.
@@ -53,17 +69,28 @@ build:docker-sandbox --experimental_docker_image=toxchat/builder:latest
 build:docker-sandbox --experimental_docker_verbose
 build:docker-sandbox --experimental_enable_docker_sandbox
 build:docker-sandbox --define=EXECUTOR=remote
-
-build:docker-sandbox --crosstool_top=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_3.0.0/cc:toolchain
-build:docker-sandbox --host_javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_3.0.0/java:jdk
-build:docker-sandbox --javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_3.0.0/java:jdk
+build:docker-sandbox --config=builder-toolchain
 
 build:docker-sandbox --genrule_strategy=docker
 build:docker-sandbox --spawn_strategy=docker
 build:docker-sandbox --strategy=Javac=docker
 
 # Use sandboxfs, which is much faster than docker, but slightly less hermetic.
+#
+# TODO(https://github.com/tweag/rules_haskell/issues/1265): Enable this by
+# default once rules_haskell supports it.
 build:sandboxfs --experimental_use_sandboxfs=auto
+build:sandboxfs --experimental_use_windows_sandbox=auto
+
+##############################################################################
+#
+# :: Filter out OS-specific parts from "bazel build //...".
+#
+##############################################################################
+
+build:freebsd --build_tag_filters=-windows,-macos
+build:linux --build_tag_filters=-windows,-macos
+build:macos --build_tag_filters=-windows
 
 ##############################################################################
 #
@@ -73,65 +100,73 @@ build:sandboxfs --experimental_use_sandboxfs=auto
 
 build --strict_java_deps=error
 build --experimental_guard_against_concurrent_changes
-build --experimental_local_memory_estimate
-#build --experimental_ninja_actions
+build --experimental_import_deps_checking=warning
 build --experimental_run_validations
-build --experimental_repository_cache_hardlinks
 build --experimental_strict_fileset_output
-# TODO(https://github.com/tweag/rules_haskell/issues/1265): Enable this once rules_haskell supports it.
+build --experimental_strict_java_deps=warn
 
 # https://docs.bazel.build/versions/master/skylark/backward-compatibility.html
-#build --all_incompatible_changes
-build --incompatible_remote_symlinks
-build --incompatible_remove_local_resources
-build --incompatible_symlinked_sandbox_expands_tree_artifacts_in_runfiles_tree
-build --incompatible_disable_expand_if_all_available_in_flag_set
-build --incompatible_dont_enable_host_nonhost_crosstool_features
-build --incompatible_make_thinlto_command_lines_standalone
-build --incompatible_prohibit_aapt1
-build --incompatible_remove_cpu_and_compiler_attributes_from_cc_toolchain
-build --incompatible_remove_legacy_whole_archive
-build --incompatible_require_ctx_in_configure_features
-build --incompatible_merge_genfiles_directory
-build --noincompatible_use_platforms_repo_for_constraints
-build --noincompatible_disable_native_android_rules
-build --incompatible_validate_top_level_header_inclusions
-build --incompatible_allow_python_version_transitions
-build --incompatible_always_check_depset_elements
-build --incompatible_bzl_disallow_load_after_statement
-build --incompatible_depset_for_libraries_to_link_getter
-build --incompatible_depset_union
-build --incompatible_disable_deprecated_attr_params
-build --incompatible_disable_depset_items
-build --incompatible_disable_target_provider_fields
-build --incompatible_disable_third_party_license_checking
-#build --incompatible_disallow_empty_glob
-build --incompatible_disallow_legacy_javainfo
-build --incompatible_disallow_legacy_py_provider
-build --noincompatible_disallow_struct_provider_syntax
-build --incompatible_new_actions_api
-build --incompatible_no_attr_license
-build --noincompatible_no_implicit_file_export
-build --incompatible_no_output_attr_default
-build --noincompatible_no_rule_outputs_param
-build --incompatible_no_support_tools_in_action_inputs
-build --incompatible_no_target_output_group
-build --incompatible_remove_enabled_toolchain_types
-build --incompatible_remove_old_python_version_api
-build --incompatible_restrict_named_params
-build --incompatible_restrict_string_escapes
-build --incompatible_run_shell_command_string
-build --incompatible_use_cc_configure_from_rules_cc
-build --incompatible_visibility_private_attributes_at_definition
-build --incompatible_do_not_split_linking_cmdline
-build --incompatible_enable_profile_by_default
-build --incompatible_remove_binary_profile
-build --incompatible_default_to_explicit_init_py
-build --incompatible_py2_outputs_are_suffixed
-build --incompatible_py3_is_default
-build --incompatible_use_python_toolchains
-#build --incompatible_remote_results_ignore_disk
-build --incompatible_strict_action_env
+#build:strict --all_incompatible_changes
+
+# TODO(https://github.com/bazelbuild/bazel/issues/7849): Enable.
+build:strict --noincompatible_use_toolchain_resolution_for_java_rules
+build:strict --incompatible_objc_compile_info_migration
+build:strict --incompatible_disallow_resource_jars
+# TODO(iphydf): This breaks remote-exec.
+build:strict --noincompatible_enable_cc_toolchain_resolution
+build:strict --noincompatible_load_cc_rules_from_bzl
+build:strict --noincompatible_load_java_rules_from_bzl
+build:strict --incompatible_load_proto_rules_from_bzl
+build:strict --incompatible_load_python_rules_from_bzl
+build:strict --incompatible_remote_symlinks
+build:strict --incompatible_remove_local_resources
+build:strict --incompatible_symlinked_sandbox_expands_tree_artifacts_in_runfiles_tree
+build:strict --incompatible_disable_expand_if_all_available_in_flag_set
+build:strict --incompatible_dont_enable_host_nonhost_crosstool_features
+build:strict --incompatible_make_thinlto_command_lines_standalone
+build:strict --incompatible_prohibit_aapt1
+build:strict --incompatible_remove_cpu_and_compiler_attributes_from_cc_toolchain
+build:strict --incompatible_remove_legacy_whole_archive
+build:strict --incompatible_require_ctx_in_configure_features
+build:strict --incompatible_merge_genfiles_directory
+build:strict --noincompatible_use_platforms_repo_for_constraints
+build:strict --noincompatible_disable_native_android_rules
+build:strict --incompatible_validate_top_level_header_inclusions
+build:strict --incompatible_allow_python_version_transitions
+build:strict --incompatible_always_check_depset_elements
+build:strict --incompatible_bzl_disallow_load_after_statement
+build:strict --incompatible_depset_for_libraries_to_link_getter
+build:strict --incompatible_depset_union
+build:strict --incompatible_disable_deprecated_attr_params
+build:strict --incompatible_disable_depset_items
+build:strict --incompatible_disable_target_provider_fields
+build:strict --incompatible_disable_third_party_license_checking
+build:strict --incompatible_disallow_empty_glob
+build:strict --incompatible_disallow_legacy_javainfo
+build:strict --incompatible_disallow_legacy_py_provider
+build:strict --noincompatible_disallow_struct_provider_syntax
+build:strict --incompatible_new_actions_api
+build:strict --incompatible_no_attr_license
+build:strict --noincompatible_no_implicit_file_export
+build:strict --incompatible_no_output_attr_default
+build:strict --noincompatible_no_rule_outputs_param
+build:strict --incompatible_no_support_tools_in_action_inputs
+build:strict --incompatible_no_target_output_group
+build:strict --incompatible_remove_enabled_toolchain_types
+build:strict --incompatible_remove_old_python_version_api
+build:strict --incompatible_restrict_named_params
+build:strict --incompatible_restrict_string_escapes
+build:strict --incompatible_run_shell_command_string
+build:strict --incompatible_use_cc_configure_from_rules_cc
+build:strict --incompatible_visibility_private_attributes_at_definition
+build:strict --incompatible_do_not_split_linking_cmdline
+build:strict --incompatible_enable_profile_by_default
+build:strict --incompatible_remove_binary_profile
+build:strict --incompatible_default_to_explicit_init_py
+build:strict --incompatible_py2_outputs_are_suffixed
+build:strict --incompatible_py3_is_default
+build:strict --incompatible_use_python_toolchains
+build:strict --incompatible_strict_action_env
 
 # rules_apple uses old style list commands.
 # TODO(https://github.com/bazelbuild/rules_apple/issues/736): Remove.
@@ -221,6 +256,7 @@ build:gnulike --copt='-Werror'
 build:gnulike --copt='-Wformat'
 build:gnulike --copt='-Wformat-security'
 
+build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-ftrapv'
 build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-pedantic'
 
 build:gnulike --cxxopt='-std=c++14'
@@ -242,7 +278,6 @@ build:clang --copt='-Wthread-safety-analysis'
 build:clang --copt='-Wno-error=thread-safety-analysis'
 build:clang --copt='-Wno-error=inconsistent-missing-override'
 
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-ftrapv'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Weverything'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-c++98-compat'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-c++98-compat-pedantic'
@@ -411,6 +446,22 @@ build:ci --curses=no
 build:ci --jobs=50
 build:ci --show_timestamps
 build:ci --verbose_failures
+
+# Docker image build toxchat/toktok-stack running clang-11.
+build:docker --per_file_copt='c-toxcore@-Wno-c99-extensions'
+build:docker --per_file_copt='external/ffmpeg@-Wno-implicit-int-float-conversion'
+build:docker --per_file_copt='external/ffmpeg@-Wno-misleading-indentation'
+build:docker --per_file_copt='external/ffmpeg@-Wno-bool-operation'
+build:docker --per_file_copt='external/portaudio@-Wno-implicit-int-float-conversion'
+build:docker --per_file_copt='external/yasm@-Wno-misleading-indentation'
+build:docker --per_file_copt='(moc_.*.cpp|_test.cpp)@-Wno-extra-semi-stmt'
+
+# Docker build doesn't support IPv6.
+build:docker --per_file_copt='//c-toxcore/auto_tests@-DUSE_IPV6=0'
+
+build:cirrus --config=ci
+build:cirrus --config=docker
+build:cirrus --remote_http_cache=http://$CIRRUS_HTTP_CACHE_HOST
 
 try-import %workspace%/.bazelrc.local
 

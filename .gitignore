@@ -5,6 +5,7 @@
 /bazel-*
 /cov-analysis*
 *.jar
+*.tar
 
 # Work-in-progress directory.
 /wip
