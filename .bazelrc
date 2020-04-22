@@ -381,12 +381,14 @@ build:windows --linkopt='/SUBSYSTEM:CONSOLE'
 #
 ##############################################################################
 
-build:gcc --config=gnulike
-build:clang --config=gnulike
+build:freebsd --config=gnulike
+build:linux --config=gnulike
+build:macos --config=gnulike
 
 # Linux-specific flags.
 build:linux --config=gnuld
-build:linux --linkopt='-Wl,--detect-odr-violations'
+# Gives lots of warnings with sanitizers.
+#build:linux --linkopt='-Wl,--detect-odr-violations'
 
 # FreeBSD-specific flags.
 build:freebsd --config=gnuld
@@ -402,6 +404,13 @@ build:gnuld --linkopt='-Wl,--warn-common'
 # MSVC has a header that disallows the above nullptr thing. Defining the
 # following symbol disables that check.
 build:windows --per_file_copt='//c-toxcore@/D_ALLOW_KEYWORD_MACROS'
+
+# Continuous Integration platforms tend to not have IPv6.
+build:ci --per_file_copt='//c-toxcore/auto_tests@-DUSE_IPV6=0'
+build:ci --curses=no
+build:ci --jobs=50
+build:ci --show_timestamps
+build:ci --verbose_failures
 
 try-import %workspace%/.bazelrc.local
 

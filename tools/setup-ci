@@ -1,12 +1,8 @@
 #!/bin/bash
 
-echo '# Bazel configuration for toktok-stack' | tee ~/.bazelrc
-echo 'build --curses=no' | tee -a ~/.bazelrc
-echo 'build --jobs=50' | tee -a ~/.bazelrc
-echo 'build --show_timestamps' | tee -a ~/.bazelrc
-echo 'build --verbose_failures' | tee -a ~/.bazelrc
-
-echo 'build --config=clang' | tee -a ~/.bazelrc
+echo '# Bazel configuration for toktok-stack'   | tee ~/.bazelrc
+echo 'build --config=ci'                        | tee -a ~/.bazelrc
+echo "build --config=$(basename "${CC-clang}")" | tee -a ~/.bazelrc
 
 RESPONSE='resource name must be a SHA256 hash'
 
