@@ -22,6 +22,7 @@ build --enable_platform_specific_config
 build --build_runfile_links
 
 build --experimental_generate_json_trace_profile
+build --experimental_json_trace_compression
 build --experimental_profile_cpu_usage
 
 build --experimental_local_memory_estimate
@@ -458,10 +459,6 @@ build:docker --per_file_copt='(moc_.*.cpp|_test.cpp)@-Wno-extra-semi-stmt'
 
 # Docker build doesn't support IPv6.
 build:docker --per_file_copt='//c-toxcore/auto_tests@-DUSE_IPV6=0'
-
-build:cirrus --config=ci
-build:cirrus --config=docker
-build:cirrus --remote_http_cache=http://$CIRRUS_HTTP_CACHE_HOST
 
 try-import %workspace%/.bazelrc.local
 
