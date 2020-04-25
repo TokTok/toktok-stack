@@ -52,6 +52,9 @@
 [submodule "hs-toxcore"]
 	path = hs-toxcore
 	url = https://github.com/TokTok/hs-toxcore
+[submodule "js-bugz"]
+	path = js-bugz
+	url = https://github.com/TokTok/js-bugz
 [submodule "js-toxcore-c"]
 	path = js-toxcore-c
 	url = https://github.com/TokTok/js-toxcore-c
@@ -82,12 +85,12 @@
 [submodule "streambot-jvm"]
 	path = streambot-jvm
 	url = https://github.com/TokTok/streambot-jvm
-[submodule "template"]
-	path = template
-	url = https://github.com/TokTok/template
 [submodule "toktok-android"]
 	path = toktok-android
 	url = https://github.com/TokTok/toktok-android
+[submodule "tools/.github"]
+	path = tools/.github
+	url = https://github.com/TokTok/.github
 [submodule "toxic"]
 	path = toxic
 	url = https://github.com/TokTok/toxic

@@ -1,5 +1,5 @@
 ---
-_extends: template
+_extends: .github
 
 repository:
   name: toktok-stack
@@ -14,7 +14,5 @@ branches:
         contexts:
           - Codacy/PR Quality Review
           - Travis CI - Pull Request
-          - WIP
           - cirrus-ci
           - code-review/reviewable
-          - license/cla
