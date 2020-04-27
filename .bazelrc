@@ -1,6 +1,6 @@
 # Global bazel options for toktok-stack.
 
-import tools/bazelrc.boot
+import %workspace%/tools/bazelrc.boot
 
 ##############################################################################
 #
