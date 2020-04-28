@@ -4,8 +4,10 @@
 /stack.yaml.lock
 /bazel-*
 /cov-analysis*
+/.mypy_cache
 *.jar
 *.tar
+__pycache__
 
 # Work-in-progress directory.
 /wip

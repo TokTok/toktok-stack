@@ -6,8 +6,8 @@ load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
 github_archive(
     name = "bazel_toolchains",
     repo = "bazelbuild/bazel-toolchains",
-    sha256 = "62b9682073c779c6d875b77ce956a01185d28c6fda13080fe9c4b33aef7e709d",
-    version = "3.0.1",
+    sha256 = "d02d5f766a47b25b355a79e391871d1e824ee116861972962315fe28315d974d",
+    version = "3.1.1",
 )
 
 github_archive(
@@ -761,3 +761,44 @@ python_repository(
 #    name = "mocha_modules",
 #    deps = {"mocha": "3.5.3"},
 #)
+
+# Compilation database
+# =========================================================
+
+# Tool used for creating a compilation database.
+github_archive(
+    name = "io_kythe",
+    repo = "kythe/kythe",
+    sha256 = "804da114170d0403a2a5fee88ed0dc3109be8e43681bee6cea5223f875979ebb",
+    version = "3842dabd95eb2adf4852d5ad04fb2bc6279e9e70",
+)
+
+http_archive(
+    name = "com_github_tencent_rapidjson",
+    build_file = "@io_kythe//third_party:rapidjson.BUILD",
+    sha256 = "e6fc99c7df7f29995838a764dd68df87b71db360f7727ace467b21b82c85efda",
+    strip_prefix = "rapidjson-8f4c021fa2f1e001d2376095928fc0532adf2ae6",
+    url = "https://github.com/Tencent/rapidjson/archive/8f4c021fa2f1e001d2376095928fc0532adf2ae6.zip",
+)
+
+github_archive(
+    name = "com_google_absl",
+    repo = "abseil/abseil-cpp",
+    sha256 = "6668ada01192e2b95b42bb3668cfa5282c047de5176f5e567028e12f8bfb8aef",
+    version = "6e18c7115df9b7ca0987cc346b1b1d4b3cc829b3",
+)
+
+new_github_archive(
+    name = "com_github_google_glog",
+    build_file_content = "\n".join([
+        "load(\"//:bazel/glog.bzl\", \"glog_library\")",
+        "glog_library(with_gflags=0)",
+    ]),
+    repo = "google/glog",
+    sha256 = "feca3c7e29a693cab7887409756d89d342d4a992d54d7c5599bebeae8f7b50be",
+    version = "3ba8976592274bc1f907c402ce22558011d6fc5e",
+)
+
+load("@io_kythe//:setup.bzl", "kythe_rule_repositories")
+
+kythe_rule_repositories()
