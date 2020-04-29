@@ -67,6 +67,9 @@ FILES :=					\
 build-%: %.tar downloads
 	docker build -t $(IMAGE) - < $<
 
+build-kythe: build-workspace.tar
+	docker build -t toxchat/kythe -f tools/kythe/Dockerfile - < $<
+
 # This is the intermediate image, which is huge and doesn't try to be efficient.
 # We copy the populated third_party directory from it into the final image.
 downloads: Dockerfile

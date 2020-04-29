@@ -10,6 +10,7 @@ import %workspace%/tools/bazelrc.boot
 
 build --show_progress_rate_limit=0.5
 build --experimental_ui_deduplicate
+build --record_rule_instantiation_callstack
 
 build --check_licenses=true
 build --process_headers_in_dependencies
@@ -135,9 +136,7 @@ build:strict --noincompatible_disable_native_android_rules
 build:strict --incompatible_validate_top_level_header_inclusions
 build:strict --incompatible_allow_python_version_transitions
 build:strict --incompatible_always_check_depset_elements
-build:strict --incompatible_bzl_disallow_load_after_statement
 build:strict --incompatible_depset_for_libraries_to_link_getter
-build:strict --incompatible_depset_union
 build:strict --incompatible_disable_deprecated_attr_params
 build:strict --incompatible_disable_depset_items
 build:strict --incompatible_disable_target_provider_fields
@@ -149,13 +148,10 @@ build:strict --noincompatible_disallow_struct_provider_syntax
 build:strict --incompatible_new_actions_api
 build:strict --incompatible_no_attr_license
 build:strict --noincompatible_no_implicit_file_export
-build:strict --incompatible_no_output_attr_default
 build:strict --noincompatible_no_rule_outputs_param
 build:strict --incompatible_no_support_tools_in_action_inputs
 build:strict --incompatible_no_target_output_group
-build:strict --incompatible_remove_enabled_toolchain_types
 build:strict --incompatible_remove_old_python_version_api
-build:strict --incompatible_restrict_named_params
 build:strict --incompatible_restrict_string_escapes
 build:strict --incompatible_run_shell_command_string
 build:strict --incompatible_use_cc_configure_from_rules_cc

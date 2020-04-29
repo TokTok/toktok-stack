@@ -23,7 +23,7 @@ RUN ["wget", "https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/ffmpeg
 RUN ["mkdir", "-p", "third_party/javacpp/opencv/jar"]
 RUN ["wget", "https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/3.4.0-1.4/opencv-3.4.0-1.4-linux-x86_64.jar", "-O", "third_party/javacpp/opencv/jar/opencv-3.4.0-1.4-linux-x86_64.jar"]
 
-FROM l.gcr.io/google/bazel:3.0.0
+FROM l.gcr.io/google/bazel:3.1.0
 # hadolint ignore=DL3008
 RUN apt-get update && apt-get install -y --no-install-recommends \
  libasound2-dev \
