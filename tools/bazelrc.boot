@@ -8,3 +8,4 @@ build --color=yes
 build --experimental_disable_external_package
 build --experimental_ninja_actions
 build --experimental_repository_cache_hardlinks
+build --record_rule_instantiation_callstack

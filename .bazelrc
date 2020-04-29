@@ -10,7 +10,6 @@ import %workspace%/tools/bazelrc.boot
 
 build --show_progress_rate_limit=0.5
 build --experimental_ui_deduplicate
-build --record_rule_instantiation_callstack
 
 build --check_licenses=true
 build --process_headers_in_dependencies
@@ -353,6 +352,10 @@ build:clang --per_file_copt='//toxins@-Wno-sign-compare'
 build:clang --per_file_copt='//toxins@-Wno-switch-enum'
 build:clang --per_file_copt='//toxins@-Wno-unreachable-code'
 build:clang --per_file_copt='//toxins@-Wno-unreachable-code-return'
+build:gcc --per_file_copt='//c-toxcore@-Wno-error=pedantic'
+build:gcc --per_file_copt='//toxic@-Wno-format-overflow'
+build:gcc --per_file_copt='//toxic@-Wno-format-truncation'
+build:gcc --per_file_copt='//toxins@-Wno-format-overflow'
 build:windows --per_file_copt='//qtox@/wd4068'  # unknown pragma
 
 # Ignore warnings for Go generated internal files and external libraries.
@@ -360,6 +363,20 @@ build:gnulike --per_file_copt='/go_default_library%@-w'
 
 # Ignore warnings for protobuf generated files.
 build:gnulike --per_file_copt='\\.pb\\.cc$@-w'
+
+# Disable some clang warnings on ffmpeg.
+build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-incompatible-pointer-types-discards-qualifiers'
+build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-braced-scalar-init'
+build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-pointer-bool-conversion'
+build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-shorten-64-to-32'
+build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-sometimes-uninitialized'
+build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-string-plus-int'
+build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-bool-operation'
+build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-discarded-qualifiers'
+build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-format-truncation'
+build:gcc --per_file_copt='external/tcl[:/]@-Wno-unused-but-set-variable'
+build:gcc --per_file_copt='external/yasm[:/]@-Wno-misleading-indentation'
+build:gcc --per_file_copt='external/yasm[:/]@-Wno-tautological-compare'
 
 # Haskell rules pass '-headerpad_max_install_names' on compile and link, but
 # it's only needed on link.

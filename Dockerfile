@@ -2,26 +2,8 @@ FROM alpine:3.11.5 AS downloads
 
 WORKDIR /src/toktok-stack
 
-RUN ["wget", "https://dl.google.com/android/repository/android-ndk-r16b-linux-x86_64.zip"]
-RUN ["mkdir", "-p", "third_party/android/"]
-RUN ["unzip", "-d", "third_party/android/", "android-ndk-r16b-linux-x86_64.zip"]
-RUN ["rm", "android-ndk-r16b-linux-x86_64.zip"]
-
-RUN ["wget", "https://dl.google.com/android/repository/commandlinetools-linux-6200805_latest.zip"]
-RUN ["apk", "--no-cache", "add", "openjdk8"]
-RUN ["mkdir", "-p", "third_party/android/sdk/"]
-RUN ["unzip", "-d", "third_party/android/sdk/", "commandlinetools-linux-6200805_latest.zip"]
-RUN ["rm", "commandlinetools-linux-6200805_latest.zip"]
-RUN yes | third_party/android/sdk/tools/bin/sdkmanager --sdk_root=third_party/android/sdk --licenses
-RUN ["touch", "/root/.android/repositories.cfg"]
-RUN ["third_party/android/sdk/tools/bin/sdkmanager", "--sdk_root=third_party/android/sdk", "tools"]
-RUN ["third_party/android/sdk/tools/bin/sdkmanager", "build-tools;29.0.2"]
-RUN ["third_party/android/sdk/tools/bin/sdkmanager", "platforms;android-28"]
-
-RUN ["mkdir", "-p", "third_party/javacpp/ffmpeg/jar"]
-RUN ["wget", "https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/ffmpeg/3.4.1-1.4/ffmpeg-3.4.1-1.4-linux-x86_64.jar", "-O", "third_party/javacpp/ffmpeg/jar/ffmpeg-3.4.1-1.4-linux-x86_64.jar"]
-RUN ["mkdir", "-p", "third_party/javacpp/opencv/jar"]
-RUN ["wget", "https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/3.4.0-1.4/opencv-3.4.0-1.4-linux-x86_64.jar", "-O", "third_party/javacpp/opencv/jar/opencv-3.4.0-1.4-linux-x86_64.jar"]
+COPY workspace/tools/prepare_third_party.sh /tmp/
+RUN ["/tmp/prepare_third_party.sh"]
 
 FROM l.gcr.io/google/bazel:3.1.0
 # hadolint ignore=DL3008
