@@ -35,7 +35,7 @@ cc_library(
     ),
     copts = [
         "-Iexternal/sndfile/src",
-        "-std=gnu89",
+        "-std=gnu99",
         "-w",  # disable all warnings
     ] + select({
         "@toktok//tools/config:freebsd": ["-Ithird_party/sndfile/freebsd"],

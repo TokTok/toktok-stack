@@ -2,10 +2,10 @@
 
 set -eux
 
-wget https://github.com/bazelbuild/bazel/releases/download/3.0.0/bazel-3.0.0-installer-linux-x86_64.sh
-sha256sum -c tools/bazel-3.0.0-installer-linux-x86_64.sh.sha256
-chmod +x bazel-3.0.0-installer-linux-x86_64.sh
-./bazel-3.0.0-installer-linux-x86_64.sh --user
+wget https://github.com/bazelbuild/bazel/releases/download/3.1.0/bazel-3.1.0-installer-linux-x86_64.sh
+sha256sum -c tools/bazel-3.1.0-installer-linux-x86_64.sh.sha256
+chmod +x bazel-3.1.0-installer-linux-x86_64.sh
+./bazel-3.1.0-installer-linux-x86_64.sh --user
 export PATH="$HOME/bin:$PATH"
 
 set +eux

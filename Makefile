@@ -19,7 +19,7 @@ run:
 
 run-local: $(CACHE) $(OUTPUT)
 	docker run -v $(CURDIR):/src/workspace $(DOCKERFLAGS)
-		
+
 run-persistent: $(CACHE) $(OUTPUT)
 	docker run $(DOCKERFLAGS)
 
@@ -64,13 +64,16 @@ FILES :=					\
 
 # We use an intermediate target here so "make" does the cleanup of workspace.tar
 # for us. It has to be 2 levels deep, otherwise it's considered "precious".
-build-%: %.tar downloads
-	docker build -t $(IMAGE) - < $<
+build-%: %.tar downloads-%
+	docker build --ulimit memlock=67108864 -t $(IMAGE) - < $<
+
+TAR = tar --mode=ugo+rx --transform 's,^,$*/,;s,$*/Dockerfile,Dockerfile,'
 
 # This is the intermediate image, which is huge and doesn't try to be efficient.
 # We copy the populated third_party directory from it into the final image.
-downloads: Dockerfile
-	tar -c Dockerfile | docker build --target downloads -t $(DOWNLOADS) -
+downloads-%: Dockerfile tools/prepare_third_party.sh
+	$(TAR) -c Dockerfile tools/prepare_third_party.sh \
+		| docker build --target downloads -t $(DOWNLOADS) -
 
 # Build a .tar with the workspace in it. This will be unpacked in the
 # Dockerfile. We use $(...) in bash instead of $(shell) in make because
@@ -78,7 +81,7 @@ downloads: Dockerfile
 # permissions to everyone. We make everything executable, because some things
 # need to be, and we have no easy way to be selective.
 %.tar: Makefile
-	tar -hcf $@ --mode=ugo+rx --transform 's,^,$*/,;s,$*/Dockerfile,Dockerfile,' $$($(FILES))
+	$(TAR) -hcf $@ $$($(FILES))
 
 # Bazel build products will end up here.
 $(CACHE):  ; mkdir $@
