@@ -31,6 +31,10 @@ def _python_config(repository_ctx, versions):
 
         result = repository_ctx.execute([python_config, "--help"])
         if result.return_code == 0:
+            python_config = [python_config]
+            # From version 3.8, we need to pass --embed to get -lpython3.8.
+            if version in ["3.8"]:
+                python_config.append("--embed")
             return python_config, version
 
     return None, None
@@ -52,7 +56,7 @@ def _impl(repository_ctx):
     if not python_config:
         fail("Could not find pythonX-config for X in {}".format(versions))
 
-    includes_result = repository_ctx.execute([python_config, "--includes"])
+    includes_result = repository_ctx.execute(python_config + ["--includes"])
     if includes_result.return_code != 0:
         fail("Could not determine Python includes", attr = includes_result.stderr)
 
@@ -77,7 +81,7 @@ def _impl(repository_ctx):
 
     hdrs = ["%s/**" % inc for inc in includes]
 
-    result = repository_ctx.execute([python_config, "--ldflags"])
+    result = repository_ctx.execute(python_config + ["--ldflags"])
 
     if result.return_code != 0:
         fail("Could NOT determine Python linkopts", attr = result.stderr)
@@ -90,7 +94,7 @@ def _impl(repository_ctx):
             linkopts[i - 1] = " ".join([linkopts[i - 1], linkopts.pop(i)])
 
     if repository_ctx.path("/usr/include/x86_64-linux-gnu").exists:
-        abiflags_result = repository_ctx.execute([python_config, "--abiflags"])
+        abiflags_result = repository_ctx.execute(python_config + ["--abiflags"])
         if abiflags_result.return_code != 0:
             fail("Could not determine Python ABI flags", attr = abiflags_result.stderr)
 
