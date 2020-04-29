@@ -10,6 +10,7 @@ workspace(projects = [
     "echobot-jvm",
     "experimental",
     "go-toxcore-c",
+    "hs-cimple",
     "hs-github-tools",
     "hs-msgpack-binary",
     "hs-msgpack-rpc-conduit",

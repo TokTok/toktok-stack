@@ -108,6 +108,20 @@ def project(license = "gpl3", standard_travis = False):
         )
 
 def workspace(projects):
+    native.sh_test(
+        name = "git_modules_test",
+        size = "small",
+        srcs = [":git_modules_test.pl"],
+        args = [
+            "$(location gitmodules)",
+            "$(location git-remotes)",
+        ] + projects,
+        data = [
+            "gitmodules",
+            "git-remotes",
+        ],
+    )
+
     native.test_suite(
         name = "license_tests",
         tests = ["//%s:license_test" % p for p in projects],

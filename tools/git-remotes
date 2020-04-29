@@ -30,12 +30,16 @@ sub irepo($) { $_[0] => $_[0] }
 sub nrepo($) { $_[0]->[0] => $_[0] }
 sub repo($) { ref $_[0] ? nrepo $_[0] : irepo $_[0] }
 
-my %repos = (
+our %REPOS = (
    'apidsl' => ['apidsl', {
       upstream => 'toktok',
       repo 'iphydf',
    }],
    'cedar' => ['cedar', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
+   'ci-tools' => ['ci-tools', {
       upstream => 'toktok',
       repo 'iphydf',
    }],
@@ -62,7 +66,15 @@ my %repos = (
       upstream => 'toktok',
       repo 'iphydf',
    }],
+   'experimental' => ['experimental', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
    'go-toxcore-c' => ['go-toxcore-c', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
+   'hs-cimple' => ['hs-cimple', {
       upstream => 'toktok',
       repo 'iphydf',
    }],
@@ -90,16 +102,16 @@ my %repos = (
       upstream => 'toktok',
       repo 'iphydf',
    }],
-   'hs-tools' => ['hs-tools', {
-      upstream => 'toktok',
-      repo 'iphydf',
-   }],
    'hs-toxcore' => ['hs-toxcore', {
       upstream => 'toktok',
       repo 'iphydf',
       repo 'zugz',
    }],
    'hs-toxcore-c' => ['hs-toxcore-c', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
+   'js-bugz' => ['js-bugz', {
       upstream => 'toktok',
       repo 'iphydf',
    }],
@@ -150,12 +162,20 @@ my %repos = (
       upstream => 'toktok',
       repo 'iphydf',
    }],
+   'tools/.github' => ['.github', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
    'toxic' => ['toxic', {
       upstream => 'toktok',
       repo 'iphydf',
    }],
    'toxins' => ['toxins', {
       upstream => 'toktok',
+      repo 'iphydf',
+   }],
+   'toxins/toxvpn/import' => ['toxvpn', {
+      upstream => 'cleverca22',
       repo 'iphydf',
    }],
    'website' => ['website', {
@@ -217,26 +237,28 @@ sub process_repos {
    }
 }
 
-my ($username) = @ARGV or die "Usage: git-remotes <username>\n";
+if (__PACKAGE__ eq 'main') {
+   my ($username) = @ARGV or die "Usage: git-remotes <username>\n";
 
-# Set 'origin' to our own username.
-for (values %repos) {
-   $_->[1]{origin} = $username;
-   delete $_->[1]{$username};
+   # Set 'origin' to our own username.
+   for (values %REPOS) {
+      $_->[1]{origin} = $username;
+      delete $_->[1]{$username};
+   }
+
+   # Set origin and upstream on toktok-stack.
+   add_remotes ['toktok-stack', {
+      upstream => 'toktok',
+      origin => $username,
+   }];
+
+   process_repos \%REPOS;
+
+   sub git_foreach {
+      system 'git', 'submodule', 'foreach', @_;
+   }
+
+   # Fetch all remotes and set master to track origin/master.
+   git_foreach 'git', 'fetch', '--all';
+   git_foreach 'git', 'branch', '--set-upstream-to=origin/master', 'master';
 }
-
-# Set origin and upstream on toktok-stack.
-add_remotes ['toktok-stack', {
-   upstream => 'toktok',
-   origin => $username,
-}];
-
-process_repos \%repos;
-
-sub git_foreach {
-   system 'git', 'submodule', 'foreach', @_;
-}
-
-# Fetch all remotes and set master to track origin/master.
-git_foreach 'git', 'fetch', '--all';
-git_foreach 'git', 'branch', '--set-upstream-to=origin/master', 'master';

@@ -5,7 +5,7 @@ cirrus-ci_task:
     cpu: 8
     memory: 12G
   configure_script:
-    - git submodule update --init --depth=5 --recursive
+    - git submodule update --init --depth=50 --recursive
   test_all_script:
     - bazel test -k
         --remote_http_cache=http://$CIRRUS_HTTP_CACHE_HOST
