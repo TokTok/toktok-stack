@@ -98,4 +98,4 @@ git:
 
 branches:
   only:
-  - master
+    - master
