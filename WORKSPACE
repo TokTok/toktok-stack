@@ -13,8 +13,8 @@ github_archive(
 github_archive(
     name = "rules_cc",
     repo = "bazelbuild/rules_cc",
-    sha256 = "523c59bb3f16518679668594c8874da46872fde05c32ba246bc0a35ec292f8a6",
-    version = "34ca16f4aa4bf2a5d3e4747229202d6cb630ebab",
+    sha256 = "eb828d67ad115cf589529335d02408cd956047e9e09d44bfab6dd1a09b3fd7ed",
+    version = "4c3e410486a078d6492baeaebb406ce4d20e3164",
 )
 
 github_archive(
@@ -27,22 +27,22 @@ github_archive(
 github_archive(
     name = "rules_proto",
     repo = "bazelbuild/rules_proto",
-    sha256 = "26252c7c072c92e309ea48ed81d2e56fba82403da00d09c7ef64e0256580f142",
-    version = "218ffa7dfa5408492dc86c01ee637614f8695c45",
+    sha256 = "c3b774ebcf2a86ccf684c89862a05519002ce2a77a38f8bb7be08eeb84ecab34",
+    version = "8b81c3ccfdd0e915e46ffa888d3cdb6116db6fa5",
 )
 
 github_archive(
     name = "rules_python",
     repo = "bazelbuild/rules_python",
-    sha256 = "d3e40ca3b7e00b72d2b1585e0b3396bcce50f0fc692e2b7c91d8b0dc471e3eaf",
-    version = "748aa53d7701e71101dfd15d800e100f6ff8e5d1",
+    sha256 = "98c9b903f6e8fe20b7e56d19c4822c8c49a11b475bd4ec0ca6a564e8bc5d5fa2",
+    version = "a0fbf98d4e3a232144df4d0d80b577c7a693b570",
 )
 
 github_archive(
     name = "bazel_skylib",
     repo = "bazelbuild/bazel-skylib",
-    sha256 = "d786769a4c9bfd9d5fe7933cf70d8c9da506a49c9f24a8471d64de2ac529274a",
-    version = "6970e21d290ceaa36502d0c94533b26e5ec18c0b",
+    sha256 = "154f4063d96a4e47b17a917108eaabdfeb4ef08383795cf936b3be6f8179c9fc",
+    version = "560d7b2359aecb066d81041cb532b82d7354561b",
 )
 
 # Protobuf
@@ -66,24 +66,17 @@ protobuf_deps()
 # =========================================================
 
 github_archive(
-    name = "rules_nixpkgs",
-    repo = "tweag/rules_nixpkgs",
-    sha256 = "3a2d245e60d41c139cf5d1bb6f5a358c0c8a4d26325285af8ed092b078fb6b1d",
-    version = "v0.5.2",
-)
-
-github_archive(
     name = "rules_sh",
     repo = "tweag/rules_sh",
-    sha256 = "93fb94bec4228971343b1ecbb303450ff323f52c768d60eeb3a445acfa6328ff",
-    version = "0c274ad480ed3eade49250abd04ff71655a07820",
+    sha256 = "b6efbe69769514ea5d6f9b79352fbc286fe0939e7fc13b4db24b0aa329b7735b",
+    version = "v0.2.0",
 )
 
 github_archive(
     name = "rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "a576ce81aeced265791ee03e63b2656fdb1b8813398e88c32456d2132649755a",
-    version = "c625c53c3fe6644abb366bd868051d9e82f2a204",
+    sha256 = "c55f89c620d2dbe031f3a0e22090cb950723e81b9e15e1482de3b2c5bdb13ae5",
+    version = "0b86a258ce2ebe56cd50279d38a41f5bf2c68175",
 )
 
 load("@rules_haskell//haskell:ghc_bindist.bzl", "haskell_register_ghc_bindists")
@@ -136,28 +129,14 @@ load("//third_party/haskell:packages.bzl", "core_packages", "packages")
     sha256 = data.sha256,
 ) for pkg, data in packages.items()]
 
-# Skydoc
-# =========================================================
-
-github_archive(
-    name = "io_bazel_skydoc",
-    repo = "bazelbuild/skydoc",
-    sha256 = "6b9ab4cf5c781e467888ce14864e62f47adc4b6d0cb7a9838469440d25643a4b",
-    version = "0.2.0",
-)
-
-load("@io_bazel_skydoc//skylark:skylark.bzl", "skydoc_repositories")
-
-skydoc_repositories()
-
 # Go
 # =========================================================
 
 github_archive(
     name = "io_bazel_rules_go",
     repo = "bazelbuild/rules_go",
-    sha256 = "9fbaffc63aa802496b0de6ed708fce8fb4c34b27fa7fab6cfc64eeae900c19a7",
-    version = "v0.22.1",
+    sha256 = "7ea3e1f1438efabb1781eaddc3a392afc5491b3aaace700ba06510a9db54a171",
+    version = "v0.22.4",
 )
 
 github_archive(
@@ -260,15 +239,15 @@ http_archive(
 github_archive(
     name = "com_google_googletest",
     repo = "google/googletest",
-    sha256 = "b18016e313e0a635b643371f8a33f9813103b600e894f71e8625f0b8215ae698",
-    version = "e588eb1ff9ff6598666279b737b27f983156ad85",
+    sha256 = "a6ab7c7d6fd4dd727f6012b5d85d71a73d3aa1274f529ecd4ad84eb9ec4ff767",
+    version = "dcc92d0ab6c4ce022162a23566d44f673251eee4",
 )
 
 new_github_archive(
     name = "curl",
     repo = "curl/curl",
-    sha256 = "3dc2825102eaed44b84613a98486aac8f924742d8fcf329bf2b49dc42c4ef93a",
-    version = "curl-7_69_1",
+    sha256 = "c3181fd2ec477a55f359b4c89eb13de984200ee59fd493d84a4a53e5d7dd4a9f",
+    version = "curl-7_70_0",
 )
 
 new_github_archive(
@@ -326,8 +305,8 @@ new_github_archive(
 new_github_archive(
     name = "libexif",
     repo = "libexif/libexif",
-    sha256 = "b43387df5a3866836c2a1bc141889af1d977c2e0c17e718b1b27fd1b002cb551",
-    version = "54b6f7fb6ae1d08602f9f7c44e0624c8344ee832",
+    sha256 = "7f283fee7c949944eb3e0066cd5763355dc5591ad15ea96910cb2f24adca43f3",
+    version = "154189b77491191e00e1204083ab51c4ad5a60ff",
 )
 
 http_archive(
@@ -355,8 +334,8 @@ new_github_archive(
 new_github_archive(
     name = "libvpx",
     repo = "webmproject/libvpx",
-    sha256 = "9032e21faf6e26dc298ed0cbbb2a5bec732b55c93effff6746c59a3afb356198",
-    version = "e20be1b2340dd3115cd445eafd9c1c717b621298",
+    sha256 = "27d082899b60dea79c596affc68341522db1f72c241f6d6096fc46bcf774f217",
+    version = "3d28ff98039134325cf689d8d08996fc8dabb225",
 )
 
 new_github_archive(
@@ -376,8 +355,8 @@ new_github_archive(
 new_github_archive(
     name = "opus",
     repo = "xiph/opus",
-    sha256 = "24ee6eb416b3bf15785e0c6a8d08b046f6a1d32e4c677908de314b5f841d2d6e",
-    version = "83d5155f151ca47c9d6274ded1a7481f746b9a43",
+    sha256 = "09366bf588b02b76bda3fd1428a30b55ca995d6d2eac509a39919f337690329e",
+    version = "5c94ec3205c30171ffd01056f5b4622b7c0ab54c",
 )
 
 http_archive(
@@ -437,8 +416,8 @@ new_github_archive(
 new_github_archive(
     name = "tcl",
     repo = "tcltk/tcl",
-    sha256 = "14e45a20a839fd13cc067244db668851465f970661f831ab8eabb7233e664221",
-    version = "1771deb31e24580d6a7cdedcb68ccfcdb89eb384",
+    sha256 = "f58abc084565e658a611765891c9c89db12137197a389b259998abef22bfff3f",
+    version = "95b7301fac733f972e6e837f4e27c42c5487e6ec",
 )
 
 http_archive(
@@ -546,9 +525,9 @@ github_archive(
     version = "501b4afb27745c4813a88ffa28acd901408014e4",
 )
 
+load("@build_bazel_apple_support//lib:repositories.bzl", "apple_support_dependencies")
 load("@build_bazel_rules_apple//apple:repositories.bzl", "apple_rules_dependencies")
 load("@build_bazel_rules_swift//swift:repositories.bzl", "swift_rules_dependencies")
-load("@build_bazel_apple_support//lib:repositories.bzl", "apple_support_dependencies")
 
 apple_rules_dependencies()
 
@@ -571,8 +550,8 @@ junit_platform_java_repositories()
 github_archive(
     name = "rules_jvm_external",
     repo = "bazelbuild/rules_jvm_external",
-    sha256 = "8ba00db3da4c65a37050a95ca17551cf0956ef33b0c35f7cc058c5d8f33dd59c",
-    version = "bad9e2501279aea5268b1b8a5463ccc1be8ddf65",
+    sha256 = "9508c97baa2b3a5a952b4d3acaa06ee71e6b36bed7d62db2d919d6e450078862",
+    version = "b500b01137f75e0f8442bb4429ef5ce59135864a",
 )
 
 load("@rules_jvm_external//:defs.bzl", "maven_install")
@@ -627,8 +606,8 @@ maven_install(
 github_archive(
     name = "io_bazel_rules_scala",
     repo = "bazelbuild/rules_scala",
-    sha256 = "6be7a3e4a174590c069f502217a05437caf32ccaaea8ceb16d338f3af292c016",
-    version = "0bb4bcb38359707157b823c2b0e7ad2370c90d8d",
+    sha256 = "91458687d11e0643b6e82a5b68dc7ed1db9383940e107638dc9d7230d3832238",
+    version = "73c0dbb55d1ab2905c3d97923efc415623f67ac6",
 )
 
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories")
@@ -670,8 +649,8 @@ android_ndk_repository(
 github_archive(
     name = "android_test_support",
     repo = "android/android-test",
-    sha256 = "dad9ccda5a017a9fbe624c46d50ef88b4e3e4f9ad8657c820d79a83d9328c87e",
-    version = "a7a3ee9bee1de76fea76ffda8855678a40694e42",
+    sha256 = "4e24acc717d499ed869d58398e4beb19fa1e37e6a4a1dc23409d1b214cab3d81",
+    version = "1bc5f8803f8b70c7a4426d3e890a0d80eeaba60c",
 )
 
 load("@android_test_support//:repo.bzl", "android_test_repositories")

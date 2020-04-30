@@ -109,64 +109,96 @@ build --experimental_strict_java_deps=warn
 # https://docs.bazel.build/versions/master/skylark/backward-compatibility.html
 #build:strict --all_incompatible_changes
 
-# TODO(https://github.com/bazelbuild/bazel/issues/7849): Enable.
-build:strict --noincompatible_use_toolchain_resolution_for_java_rules
-build:strict --incompatible_objc_compile_info_migration
-build:strict --incompatible_disallow_resource_jars
-# TODO(iphydf): This breaks remote-exec.
-build:strict --noincompatible_enable_cc_toolchain_resolution
-build:strict --noincompatible_load_cc_rules_from_bzl
-build:strict --noincompatible_load_java_rules_from_bzl
-build:strict --incompatible_load_proto_rules_from_bzl
-build:strict --incompatible_load_python_rules_from_bzl
-build:strict --incompatible_remote_symlinks
-build:strict --incompatible_remove_local_resources
-build:strict --incompatible_symlinked_sandbox_expands_tree_artifacts_in_runfiles_tree
-build:strict --incompatible_disable_expand_if_all_available_in_flag_set
-build:strict --incompatible_dont_enable_host_nonhost_crosstool_features
-build:strict --incompatible_make_thinlto_command_lines_standalone
-build:strict --incompatible_prohibit_aapt1
-build:strict --incompatible_remove_cpu_and_compiler_attributes_from_cc_toolchain
-build:strict --incompatible_remove_legacy_whole_archive
-build:strict --incompatible_require_ctx_in_configure_features
-build:strict --incompatible_merge_genfiles_directory
-build:strict --noincompatible_use_platforms_repo_for_constraints
-build:strict --noincompatible_disable_native_android_rules
-build:strict --incompatible_validate_top_level_header_inclusions
 build:strict --incompatible_allow_python_version_transitions
 build:strict --incompatible_always_check_depset_elements
+build:strict --incompatible_applicable_licenses
+build:strict --incompatible_auto_configure_host_platform
+build:strict --incompatible_default_to_explicit_init_py
 build:strict --incompatible_depset_for_libraries_to_link_getter
+build:strict --incompatible_disable_cc_configuration_make_variables
+build:strict --incompatible_disable_cc_toolchain_label_from_crosstool_proto
+build:strict --incompatible_disable_crosstool_file
 build:strict --incompatible_disable_deprecated_attr_params
+build:strict --incompatible_disable_depset_in_cc_user_flags
 build:strict --incompatible_disable_depset_items
+build:strict --incompatible_disable_expand_if_all_available_in_flag_set
+build:strict --incompatible_disable_late_bound_option_defaults
+build:strict --incompatible_disable_legacy_cc_provider
+build:strict --incompatible_disable_legacy_cpp_toolchain_skylark_api
+build:strict --incompatible_disable_legacy_crosstool_fields
+build:strict --incompatible_disable_legacy_flags_cc_toolchain_api
+build:strict --incompatible_disable_legacy_proto_provider
+build:strict --incompatible_disable_native_android_rules="false"
+build:strict --incompatible_disable_nocopts
+build:strict --incompatible_disable_proto_source_root
+build:strict --incompatible_disable_runtimes_filegroups
+build:strict --incompatible_disable_static_cc_toolchains
+build:strict --incompatible_disable_sysroot_from_configuration
 build:strict --incompatible_disable_target_provider_fields
 build:strict --incompatible_disable_third_party_license_checking
+build:strict --incompatible_disable_tools_defaults_package
 build:strict --incompatible_disallow_empty_glob
 build:strict --incompatible_disallow_legacy_javainfo
+build:strict --incompatible_disallow_legacy_java_provider
 build:strict --incompatible_disallow_legacy_py_provider
-build:strict --noincompatible_disallow_struct_provider_syntax
+build:strict --incompatible_disallow_resource_jars
+build:strict --incompatible_disallow_struct_provider_syntax="false"
+build:strict --incompatible_do_not_emit_buggy_external_repo_import
+build:strict --incompatible_do_not_split_linking_cmdline
+build:strict --incompatible_dont_emit_static_libgcc
+build:strict --incompatible_dont_enable_host_nonhost_crosstool_features
+build:strict --incompatible_enable_cc_toolchain_resolution="false"  # TODO(iphydf): This breaks remote-exec.
+build:strict --incompatible_enable_legacy_cpp_toolchain_skylark_api
+build:strict --incompatible_enable_profile_by_default
+build:strict --incompatible_generated_protos_in_virtual_imports
+build:strict --incompatible_linkopts_in_user_link_flags
+build:strict --incompatible_linkopts_to_linklibs
+build:strict --incompatible_load_cc_rules_from_bzl="false"
+build:strict --incompatible_load_java_rules_from_bzl="false"
+build:strict --incompatible_load_proto_rules_from_bzl
+build:strict --incompatible_load_python_rules_from_bzl
+build:strict --incompatible_make_thinlto_command_lines_standalone
+build:strict --incompatible_merge_genfiles_directory
 build:strict --incompatible_new_actions_api
 build:strict --incompatible_no_attr_license
-build:strict --noincompatible_no_implicit_file_export
-build:strict --noincompatible_no_rule_outputs_param
+build:strict --incompatible_no_implicit_file_export="false"
+build:strict --incompatible_no_rule_outputs_param="false"
 build:strict --incompatible_no_support_tools_in_action_inputs
 build:strict --incompatible_no_target_output_group
-build:strict --incompatible_remove_old_python_version_api
-build:strict --incompatible_restrict_string_escapes
-build:strict --incompatible_run_shell_command_string
-build:strict --incompatible_use_cc_configure_from_rules_cc
-build:strict --incompatible_visibility_private_attributes_at_definition
-build:strict --incompatible_do_not_split_linking_cmdline
-build:strict --incompatible_enable_profile_by_default
-build:strict --incompatible_remove_binary_profile
-build:strict --incompatible_default_to_explicit_init_py
+build:strict --incompatible_objc_compile_info_migration
+build:strict --incompatible_prohibit_aapt1
+build:strict --incompatible_provide_cc_toolchain_info_from_cc_toolchain_suite
 build:strict --incompatible_py2_outputs_are_suffixed
 build:strict --incompatible_py3_is_default
-build:strict --incompatible_use_python_toolchains
+build:strict --incompatible_remote_results_ignore_disk
+build:strict --incompatible_remote_symlinks
+build:strict --incompatible_remove_binary_profile
+build:strict --incompatible_remove_cpu_and_compiler_attributes_from_cc_toolchain
+build:strict --incompatible_remove_legacy_whole_archive
+build:strict --incompatible_remove_local_resources
+build:strict --incompatible_remove_old_python_version_api
+build:strict --incompatible_remove_ram_utilization_factor
+build:strict --incompatible_require_ctx_in_configure_features
+build:strict --incompatible_require_feature_configuration_for_pic
+build:strict --incompatible_require_java_toolchain_header_compiler_direct
+build:strict --incompatible_require_linker_input_cc_api="false"  # io_bazel_rules_go
+build:strict --incompatible_restrict_string_escapes
+build:strict --incompatible_run_shell_command_string
+build:strict --incompatible_skip_genfiles_symlink
 build:strict --incompatible_strict_action_env
+build:strict --incompatible_symlinked_sandbox_expands_tree_artifacts_in_runfiles_tree
+build:strict --incompatible_use_cc_configure_from_rules_cc
+build:strict --incompatible_use_native_patch
+build:strict --incompatible_use_platforms_repo_for_constraints="false"
+build:strict --incompatible_use_python_toolchains
+build:strict --incompatible_use_specific_tool_files
+build:strict --incompatible_use_toolchain_resolution_for_java_rules="false"  # TODO(https://github.com/bazelbuild/bazel/issues/7849): Enable.
+build:strict --incompatible_validate_top_level_header_inclusions
+build:strict --incompatible_visibility_private_attributes_at_definition
 
 # rules_apple uses old style list commands.
 # TODO(https://github.com/bazelbuild/rules_apple/issues/736): Remove.
-build:macos --noincompatible_run_shell_command_string
+build:macos --incompatible_run_shell_command_string="false"
 
 ##############################################################################
 #

@@ -3,9 +3,10 @@
 # Copy this file to .bazelrc.local and adjust to meet your needs.
 
 # Note that bazel will still only run as many jobs as it can on your number of
-# CPUs. The number 12 here just means it will look ahead and schedule more jobs
-# to make sure all CPUs are always busy.
-build --jobs=12
+# CPU cores. The number 16 here just means it will look ahead and schedule more
+# jobs to make sure all cores are always busy. If you have more than 16 cores,
+# you'll want to change this number to at least `$(($(nproc) + 4))`.
+build --jobs=16
 
 # You may set one of "gcc" or "clang" (unless you are on Windows) to enable
 # additional warning flags specific to these compilers.
