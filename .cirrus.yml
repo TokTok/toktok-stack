@@ -7,8 +7,7 @@ cirrus-ci_task:
   configure_script:
     - git submodule update --init --depth=50 --recursive
   test_all_script:
-    - bazel test -k
-      --remote_http_cache=http://$CIRRUS_HTTP_CACHE_HOST
+    - TEST="bazel test -k
       --config=ci
       --config=clang
       --config=release
@@ -19,4 +18,5 @@ cirrus-ci_task:
       //jvm-toxcore-api/...
       //jvm-toxcore-c/...
       //py_toxcore_c/...
-      //toxins/...
+      //toxins/..."
+    - $TEST || $TEST || $TEST || $TEST

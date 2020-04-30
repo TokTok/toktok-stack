@@ -15,6 +15,16 @@ KYTHE_REPO = "io_kythe"
 KYTHE_TOOLS = "kythe/cxx/tools/generate_compile_commands"
 EXTRACT_JSON = f"@{KYTHE_REPO}//{KYTHE_TOOLS}:extract_json"
 
+_GCC_ONLY = (
+    "-fno-canonical-system-headers",
+    "-Wunused-but-set-parameter",
+    "-Wno-free-nonheap-object",
+    "-Wold-style-declaration",
+)
+
+def filter_for_clang(args):
+    """Filter out gcc-only flags to make the command line ready for clang."""
+    return [arg for arg in args if arg not in _GCC_ONLY]
 
 def diff_commands(cmd1: str, cmd2: str) -> str:
     """Return a unified diff of two shell commands."""
@@ -130,6 +140,10 @@ class Builder:
         for path in pathlib.Path(self.json_root()).rglob("*.compile_command.json"):
             with open(path, "r") as handle:
                 command = json.loads(handle.read())
+                # TODO(iphydf): Use shlex.join when Python 3.8 becomes
+                # widespread.
+                command["command"] = " ".join(
+                    filter_for_clang(shlex.split(command["command"])))
                 command["directory"] = (
                     command["directory"].replace(
                         "@BAZEL_ROOT@", self.execution_root()))

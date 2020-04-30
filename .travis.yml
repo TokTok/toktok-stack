@@ -9,8 +9,14 @@ cache:
     - $HOME/.cache/bazel/_bazel_$USER
 
 before_cache:
+  - OUTPUT_BASE=$(bazel info output_base)
   - rm -rf $HOME/.cache/bazel/_bazel_$USER/cache
   - rm -rf $HOME/.cache/bazel/_bazel_$USER/install
+  - rm -f $OUTPUT_BASE/action_cache/action_journal_*.blaze
+  - rm -f $OUTPUT_BASE/bazel-workers/worker-*.log
+  - rm -f $OUTPUT_BASE/command.log
+  - rm -f $OUTPUT_BASE/command.profile.gz
+  - rm -f $OUTPUT_BASE/execroot/toktok/bazel-out/stable-status.txt
 
 jobs:
   include:
@@ -56,7 +62,8 @@ jobs:
       before_install: source tools/setup-bazel
       install: tools/setup-ci
       script:
-        - (sleep 30m && killall java) &
+        - OUTPUT_BASE=$(bazel info output_base)
+        - (sleep 30m && kill -2 $(grep pid= "$OUTPUT_BASE/lock" | cut -f2 -d=)) &
         - bazel test -k
           --config=release
           //apidsl/...
@@ -98,4 +105,4 @@ git:
 
 branches:
   only:
-  - master
+    - master

@@ -32,3 +32,7 @@ build --config=clang
 # Disable this if you're running with an older version of Bazel that doesn't
 # support some of the --incompatible flags.
 build --config=strict
+
+# Use this config to put tox into a test network that speaks an incompatible
+# protocol (all packet ids are shifted).
+#build --config=testnet

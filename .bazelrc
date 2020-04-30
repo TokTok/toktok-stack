@@ -45,9 +45,9 @@ build --strategy=Javac=worker
 build --strategy=Scalac=worker
 
 # toxchat/builder toolchain used by Docker and remote execution.
-build:builder-toolchain --crosstool_top=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_3.0.0/cc:toolchain
-build:builder-toolchain --host_javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_3.0.0/java:jdk
-build:builder-toolchain --javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_3.0.0/java:jdk
+build:builder-toolchain --crosstool_top=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_3.1.0/cc:toolchain
+build:builder-toolchain --host_javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_3.1.0/java:jdk
+build:builder-toolchain --javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_3.1.0/java:jdk
 
 build:libc++ --action_env=CXXFLAGS=-stdlib=libc++
 build:libc++ --action_env=LDFLAGS=-stdlib=libc++
@@ -267,6 +267,10 @@ build:musl --copt='-isystem/usr/lib/gcc/x86_64-linux-gnu/6/include'
 
 # Enable trace logging for toxcore.
 build --per_file_copt='//c-toxcore/@-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_TRACE'
+
+# Use this config to put tox into a test network that speaks an incompatible
+# protocol (all packet ids are shifted).
+build:testnet --per_file_copt='//c-toxcore[:/]@-DUSE_TEST_NETWORK=1'
 
 test --test_output=errors
 test --test_verbose_timeout_warnings=true

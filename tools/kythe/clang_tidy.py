@@ -3,6 +3,7 @@
 
 import logging
 import os
+import shutil
 import subprocess  # nosec
 import sys
 
@@ -25,13 +26,23 @@ class LogHandler(logging.Handler):
 
 logging.basicConfig(level=logging.DEBUG, handlers=[LogHandler()])
 
+def find_clang_tidy() -> str:
+    for candidate in ("clang-tidy", "clang_tidy"):
+        found = shutil.which(candidate)
+        if found:
+            logging.info("found clang-tidy: %s", found)
+            return found
+    logging.info("didn't find clang-tidy, going ahead anyway")
+    return "clang-tidy"
+
 def run_clang_tidy(bazel: builder.Builder, sources: List[str]) -> int:
     """Run clang-tidy on the source files for a given target."""
+    clang_tidy = find_clang_tidy()
     errors = 0
     for source in sources:
         logging.info("running clang-tidy on '%s'", source)
         res = subprocess.run([  # nosec
-            "clang-tidy",
+            clang_tidy,
             "-p=" + bazel.execution_root(),
             "-header-filter=-external",
             "-warnings-as-errors=*", os.path.join(bazel.source_root(), source)])

@@ -28,10 +28,9 @@ def Settings(
     db = bazel.generate_compilation_database([filename])
     if not db:
         raise Exception(filename)
-    flags = shlex.split(db[0]["command"])[1:]
+    flags = builder.filter_for_clang(shlex.split(db[0]["command"])[1:])
     return {"flags": flags}
 
 if __name__ == '__main__':
     import sys
-    filename = os.path.abspath(sys.argv[1])
-    print(Settings(language='cfamily', filename=filename))
+    print(Settings(language='cfamily', filename=os.path.abspath(sys.argv[1])))
