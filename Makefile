@@ -1,5 +1,4 @@
-IMAGE		= toxchat/toktok-stack:0.0.9
-DOWNLOADS	= toxchat/toktok-stack:downloads
+IMAGE		= toxchat/toktok-stack:0.0.10
 
 CACHE		= /tmp/build_cache
 OUTPUT		= /dev/shm/build_output
@@ -64,7 +63,7 @@ DOCKER_BUILD = docker build --ulimit memlock=67108864
 
 # We use an intermediate target here so "make" does the cleanup of workspace.tar
 # for us. It has to be 2 levels deep, otherwise it's considered "precious".
-build-%: %.tar downloads-%
+build-%: %.tar
 	$(DOCKER_BUILD) -t $(IMAGE) - < $<
 
 build-kythe: kythe.tar tools/kythe/Dockerfile
@@ -72,12 +71,6 @@ build-kythe: kythe.tar tools/kythe/Dockerfile
 	$(DOCKER_BUILD) -t toxchat/kythe-serving dockerfiles/kythe/serving
 
 TAR = tar --mode=ugo+rx --transform 's,^,$*/,;s,^$*/Dockerfile,Dockerfile,'
-
-# This is the intermediate image, which is huge and doesn't try to be efficient.
-# We copy the populated third_party directory from it into the final image.
-downloads-%: Dockerfile tools/prepare_third_party.sh
-	$(TAR) -c Dockerfile tools/prepare_third_party.sh \
-		| docker build --target downloads -t $(DOWNLOADS) -
 
 # Build a .tar with the workspace in it. This will be unpacked in the
 # Dockerfile. We use $(...) in bash instead of $(shell) in make because

@@ -1,10 +1,3 @@
-FROM alpine:3.11.5 AS downloads
-
-WORKDIR /src/toktok-stack
-
-COPY workspace/tools/prepare_third_party.sh /tmp/
-RUN ["/tmp/prepare_third_party.sh"]
-
 FROM l.gcr.io/google/bazel:3.1.0
 # hadolint ignore=DL3008
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -30,7 +23,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Dependencies installed with apt above should never change, as we should be
 # building most things inside Bazel.
 WORKDIR /src/workspace
-COPY --from=downloads /src/toktok-stack /src/workspace
+COPY workspace/tools/prepare_third_party.sh /tmp/
+RUN ["/tmp/prepare_third_party.sh"]
 
 # We set up a builder user with uid/gid 1000. This is what will run on the CI,
 # and if our outside user has the same uid, "make run-local" will work well. We
@@ -56,7 +50,13 @@ RUN bazel aquery --output=proto --show_timestamps //... > /dev/null
 # Now we can copy the entire tree. This is expected to change very often, as it
 # includes all of the sources of all projects.
 COPY workspace /src/workspace/
-COPY workspace/tools/bazelrc.docker /src/workspace/.bazelrc.local
+
+# Append the Docker image default configs to .bazelrc. This allows child images
+# to have their own .bazelrc.local. We have to temporarily change back to root
+# here so we can write to the read-only part of the image.
+USER root
+RUN echo 'import %workspace%/tools/bazelrc.docker' >> /src/workspace/.bazelrc
+USER builder
 
 # Finally, we run another aquery. This will download some more dependencies, but
 # the most expensive ones should already have been downloaded above.

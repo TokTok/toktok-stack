@@ -18,9 +18,7 @@ rm "$REPO"
 mv /tmp/cirrus-ci-repo "$REPO"
 cd /tmp/cirrus-ci-build
 
-# Set up .bazelrc.local from the example in toktok-stack.
-cp ".bazelrc.local.example" ".bazelrc.local"
 if [ -f "$REPO/.bazelrc.local" ]; then
   # If the repo has customisations, add those here.
-  cat "$REPO/.bazelrc.local" >> ".bazelrc.local"
+  cp "$REPO/.bazelrc.local" ".bazelrc.local"
 fi
