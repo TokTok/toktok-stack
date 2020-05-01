@@ -1,4 +1,0 @@
-ecea1a33b1a9fd0845e60466b8a533d5f843c0418e2ec663951d8d600ca3749c  bazel-bin/toxins/echobot/echobot
-b252641662bec8923e0a5c16b28605d3be3432d84ae3d7810c881b9df9824894  bazel-bin/toxins/irc_syncbot/irc_syncbot
-eec90fce1b93bb01ad9ceb9c773d09d93f876c7d66c583066699db1ce1236e26  bazel-bin/toxins/tox_shell/tox_shell
-37cf0b84ed7291bde7c678229f95750b4dd5f9fcf296526061b8f9ad031df1b0  bazel-bin/toxins/tox_sync/tox_sync

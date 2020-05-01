@@ -4,8 +4,7 @@ _extends: .github
 repository:
   name: toktok-stack
   description: A snapshot of the complete software stack (excluding some external libraries and programs)
-  topics: bazel
-  has_issues: true
+  topics: bazel, tox
 
 branches:
   - name: "master"
