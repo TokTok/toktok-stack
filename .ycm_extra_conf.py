@@ -29,6 +29,7 @@ elif sys.version_info.major == 2:
         if process.returncode == 0:
             return json.loads(stdout)
         if process.returncode == 2:
+            print(stderr)
             raise Exception(json.loads(stdout)["message"])
         else:
             raise Exception(stderr)

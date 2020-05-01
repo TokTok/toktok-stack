@@ -1,4 +1,4 @@
-IMAGE		= toxchat/toktok-stack:0.0.8
+IMAGE		= toxchat/toktok-stack:0.0.9
 DOWNLOADS	= toxchat/toktok-stack:downloads
 
 CACHE		= /tmp/build_cache
@@ -15,7 +15,7 @@ build: build-workspace
 
 # Run the Bazel build in the built image without persisting any state.
 run:
-	docker run --rm -it $(IMAGE) bazel $(ACTION) //... $(BAZELFLAGS)
+	docker run --rm -it $(IMAGE) bazel $(ACTION) //...
 
 run-local: $(CACHE) $(OUTPUT)
 	docker run -v $(CURDIR):/src/workspace $(DOCKERFLAGS)
@@ -23,17 +23,14 @@ run-local: $(CACHE) $(OUTPUT)
 run-persistent: $(CACHE) $(OUTPUT)
 	docker run $(DOCKERFLAGS)
 
-BAZELFLAGS = --config=release --config=docker
-
 # Common flags for the rules above.
 DOCKERFLAGS := --rm -it					\
-	-e USER="$(shell id -u)" -u="$(shell id -u)"	\
 	-v $(CACHE):/tmp/build_cache			\
 	-v $(OUTPUT):/tmp/build_output			\
 	$(IMAGE) bazel					\
 	--output_user_root=/tmp/build_cache		\
 	--output_base=/tmp/build_output			\
-	$(ACTION) //... $(BAZELFLAGS)
+	$(ACTION) //...
 
 #######################################
 # Implementation details follow

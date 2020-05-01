@@ -11,10 +11,17 @@ from typing import List
 
 import builder
 
+
+_CHECKS = [
+    "-checks=-clang-analyzer-security.insecureAPI.strcpy",
+]
+
+
 class LogHandler(logging.Handler):
     """Prints log records in a similar way to Bazel."""
 
     def __init__(self) -> None:
+        """Initialise the logger with cached log level prefix dict."""
         super().__init__()
         self._prefix = {
             logging.INFO: "\x1b[0;32mINFO:\x1b[0m",
@@ -22,11 +29,15 @@ class LogHandler(logging.Handler):
         }
 
     def emit(self, record: logging.LogRecord) -> None:
+        """Print the log message prefixed with the log level string."""
         print(self._prefix[record.levelno], record.getMessage())
+
 
 logging.basicConfig(level=logging.DEBUG, handlers=[LogHandler()])
 
+
 def find_clang_tidy() -> str:
+    """Find clang-tidy or a variant of its name in $PATH."""
     for candidate in ("clang-tidy", "clang_tidy"):
         found = shutil.which(candidate)
         if found:
@@ -34,6 +45,7 @@ def find_clang_tidy() -> str:
             return found
     logging.info("didn't find clang-tidy, going ahead anyway")
     return "clang-tidy"
+
 
 def run_clang_tidy(bazel: builder.Builder, sources: List[str]) -> int:
     """Run clang-tidy on the source files for a given target."""
@@ -45,13 +57,15 @@ def run_clang_tidy(bazel: builder.Builder, sources: List[str]) -> int:
             clang_tidy,
             "-p=" + bazel.execution_root(),
             "-header-filter=-external",
-            "-warnings-as-errors=*", os.path.join(bazel.source_root(), source)])
+            "-warnings-as-errors=*",
+            os.path.join(bazel.source_root(), source)] + _CHECKS)
         if res.returncode != 0:
             errors += 1
     return errors
 
+
 def analyse(bazel: builder.Builder, target: str) -> None:
-    """Main function: generate compilation database and run clang-tidy."""
+    """Generate compilation database and run clang-tidy."""
     sources = bazel.source_files(target, ".c")
     bazel.generate_compilation_database(sources)
     errors = run_clang_tidy(bazel, sources)
@@ -60,8 +74,9 @@ def analyse(bazel: builder.Builder, target: str) -> None:
                       errors, len(sources))
         sys.exit(1)
 
+
 def main(args: List[str]) -> None:
-    """Runs clang-tidy on the target provided."""
+    """Run clang-tidy on the target provided."""
     try:
         bazel = builder.Builder()
         if len(args) == 2:
@@ -71,6 +86,7 @@ def main(args: List[str]) -> None:
     except subprocess.CalledProcessError as exn:
         print(exn.stderr.decode("utf-8").strip())
         logging.exception(exn)
+
 
 if __name__ == "__main__":
     main(sys.argv)

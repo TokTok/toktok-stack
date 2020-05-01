@@ -56,6 +56,7 @@ RUN bazel aquery --output=proto --show_timestamps //... > /dev/null
 # Now we can copy the entire tree. This is expected to change very often, as it
 # includes all of the sources of all projects.
 COPY workspace /src/workspace/
+COPY workspace/tools/bazelrc.docker /src/workspace/.bazelrc.local
 
 # Finally, we run another aquery. This will download some more dependencies, but
 # the most expensive ones should already have been downloaded above.

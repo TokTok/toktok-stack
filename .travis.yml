@@ -10,13 +10,18 @@ cache:
 
 before_cache:
   - OUTPUT_BASE=$(bazel info output_base)
-  - rm -rf $HOME/.cache/bazel/_bazel_$USER/cache
-  - rm -rf $HOME/.cache/bazel/_bazel_$USER/install
-  - rm -f $OUTPUT_BASE/action_cache/action_journal_*.blaze
-  - rm -f $OUTPUT_BASE/bazel-workers/worker-*.log
-  - rm -f $OUTPUT_BASE/command.log
-  - rm -f $OUTPUT_BASE/command.profile.gz
-  - rm -f $OUTPUT_BASE/execroot/toktok/bazel-out/stable-status.txt
+  - rm -rf
+    $HOME/.cache/bazel/_bazel_$USER/cache
+    $HOME/.cache/bazel/_bazel_$USER/install
+    $OUTPUT_BASE/action_cache/action_journal_*.blaze
+    $OUTPUT_BASE/bazel-workers/worker-*.log
+    $OUTPUT_BASE/command.log
+    $OUTPUT_BASE/command.profile.gz
+    $OUTPUT_BASE/execroot/toktok/bazel-out/stable-status.txt
+    $OUTPUT_BASE/execroot/toktok/bazel-out/volatile-status.txt
+    $OUTPUT_BASE/java.log*
+    $OUTPUT_BASE/lock
+    $OUTPUT_BASE/server
 
 jobs:
   include:
@@ -40,10 +45,12 @@ jobs:
         apt:
           packages:
             - libasound-dev
+            - libqt5opengl5-dev
             - libqt5svg5-dev
             - libssl-dev
             - libx264-dev
             - python3.5-dev
+            - qtmultimedia5-dev
             - qttools5-dev
             - qttools5-dev-tools
       before_install: source tools/setup-bazel

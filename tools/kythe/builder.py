@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import pathlib
+import re
 import shlex
 import subprocess  # nosec
 import sys
@@ -17,14 +18,41 @@ EXTRACT_JSON = f"@{KYTHE_REPO}//{KYTHE_TOOLS}:extract_json"
 
 _GCC_ONLY = (
     "-fno-canonical-system-headers",
-    "-Wunused-but-set-parameter",
+    "-Wno-format-overflow",
+    "-Wno-format-truncation",
     "-Wno-free-nonheap-object",
     "-Wold-style-declaration",
+    "-Wunused-but-set-parameter",
 )
 
-def filter_for_clang(args):
+_INC_FLAGS = (
+    "-iquote",
+    "-isystem",
+    "-I",
+)
+
+
+def flags_for_clang(execroot: str, args: List[str]) -> List[str]:
     """Filter out gcc-only flags to make the command line ready for clang."""
-    return [arg for arg in args if arg not in _GCC_ONLY]
+    clang_args = []
+    i = 0
+    while i < len(args):
+        if args[i] in _GCC_ONLY:
+            # Skip gcc-specific flags not available in clang.
+            i += 1
+        elif args[i] in _INC_FLAGS:
+            # Make include-flags absolute paths.
+            clang_args.append(args[i])
+            if args[i + 1].startswith("/"):
+                clang_args.append(args[i + 1])
+            else:
+                clang_args.append(os.path.join(execroot, args[i + 1]))
+            i += 2
+        else:
+            clang_args.append(re.sub("=\"([^\"]+)\"", "='\"\\1\"'", args[i]))
+            i += 1
+    return clang_args
+
 
 def diff_commands(cmd1: str, cmd2: str) -> str:
     """Return a unified diff of two shell commands."""
@@ -72,8 +100,7 @@ class Builder:
     """Provides functions to generate and work with compilation databases."""
 
     def __init__(self, bazel: str = "bazel", strict: bool = False):
-        """
-        Initialises a Bazel builder object.
+        """Initialise a Bazel builder object.
 
         Args:
           bazel: Path to the "bazel" binary. Defaults to looking up via $PATH.
@@ -104,7 +131,7 @@ class Builder:
         return self._root
 
     def json_root(self) -> str:
-        """Return the absolute path to the directory containing compile commands."""
+        """Return the absolute path to the directory with compile commands."""
         return os.path.join(
             os.path.dirname(self._info["bazel-bin"]),
             "extra_actions/external", KYTHE_REPO, KYTHE_TOOLS, "extra_action")
@@ -119,14 +146,16 @@ class Builder:
                 for kv in (line.split(": ") for line in lines)}
 
     def query(self, query: str) -> List[str]:
-        """Query bazel for all the source files contributing to a given target."""
+        """Query bazel for all the source files contributing to a given target.
+        """
         logging.info("running bazel query: \"%s\"", query)
         cmd = [self._bazel, "query", query]
         res = subprocess.run(cmd, capture_output=True, check=True)  # nosec
         return list(res.stdout.strip().decode("utf-8").split("\n"))
 
     def source_files(self, target: str, suffix: str = "") -> List[str]:
-        """Query bazel for all the source files contributing to a given target."""
+        """Query bazel for all the source files contributing to a given target.
+        """
         logging.info("querying bazel for source files")
         return sorted(target.replace(":", "/")[2:]
                       for target in self.query(
@@ -137,13 +166,15 @@ class Builder:
         """Read the compile_command.json files and parse them into one list."""
         commands: Dict[str, Dict[str, str]] = {}
         stems = tuple(os.path.splitext(src)[0] for src in sources)
-        for path in pathlib.Path(self.json_root()).rglob("*.compile_command.json"):
+        paths = pathlib.Path(self.json_root()).rglob("*.compile_command.json")
+        for path in paths:
             with open(path, "r") as handle:
                 command = json.loads(handle.read())
-                # TODO(iphydf): Use shlex.join when Python 3.8 becomes
-                # widespread.
+                # TODO(iphydf): Use shlex.join when Python 3.8 becomes more
+                # widely available.
                 command["command"] = " ".join(
-                    filter_for_clang(shlex.split(command["command"])))
+                    flags_for_clang(self.execution_root(),
+                                    shlex.split(command["command"])))
                 command["directory"] = (
                     command["directory"].replace(
                         "@BAZEL_ROOT@", self.execution_root()))
@@ -152,7 +183,8 @@ class Builder:
                     diff = diff_commands(commands[file_name]["command"],
                                          command["command"])
                     if self._strict and diff:
-                        print(f"file {file_name} already in compilation database:")
+                        print(f"file {file_name} already in compilation "
+                              "database:")
                         print(diff)
                         sys.exit(1)
                 elif os.path.splitext(file_name)[0] in stems:
@@ -165,9 +197,12 @@ class Builder:
                "--experimental_action_listener=" + EXTRACT_JSON] + targets
         subprocess.run(cmd, check=True)  # nosec
 
-    def generate_compilation_database(self, sources: List[str]) -> List[Dict[str, str]]:
+    def generate_compilation_database(
+            self, sources: List[str]
+    ) -> List[Dict[str, str]]:
         """Generate a compile_commands.json file using bazel and kythe."""
-        logging.info("generating compile_commands.json for %d sources", len(sources))
+        logging.info("generating compile_commands.json for %d sources",
+                     len(sources))
         commands = self.collect_commands(sources)
 
         if len(commands) != len(sources):
