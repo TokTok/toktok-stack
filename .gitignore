@@ -9,6 +9,9 @@
 *.tar
 __pycache__
 
+# Work files for tools/debug/run_mallocfail.
+mallocfail_hashes*
+
 # Work-in-progress directory.
 /wip
 

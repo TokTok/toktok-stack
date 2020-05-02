@@ -1,0 +1,118 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright © 2020 The TokTok team.
+"""Run an oomer-enabled program with an increasing number of max_allocs.
+
+Usage: run_oomer <exe> [range-begin] [range-end]
+
+exe: either a bazel target, e.g. //c-toxcore/auto_tests:tox_one_test or an
+  executable path, e.g. bazel-bin/c-toxcore/auto_tests/tox_one_test
+range-begin: start with this many allowed allocations.
+range-end: end the test loop at this many allocations.
+
+If oomer determines that additional tests are not needed, it will stop, so you
+can pass a very large number for range-end without worrying it will take
+forever (it may still take a really long time if your range is large).
+
+This program runs the passed <exe> with an increasing number of allowed mallocs.
+Once the number is reached, oomer will stop allocating and only return NULLs
+from then on. In one-shot mode, it will reject only that one single allocation
+and then allow all others. In flaky mode, it will reject one, and then randomly
+reject with a configurable probability between 0 and 1.
+
+You can set these behaviour flags in the "env" dict below.
+"""
+
+import os
+import subprocess
+import sys
+
+from typing import Dict, List
+
+import malloc_debug
+
+
+# Set oomer parameters here.
+ENV = {
+    "OOMER_ONE_SHOT": "1",
+    "OOMER_FLAKY": "0",
+}
+
+
+def run(args: List[str], env: Dict[str, str]) -> None:
+    """Run a program with environment and print the env and args to stdout."""
+    print("-" * 60, "\x1b[0;32m")
+    for k in sorted(env.keys()):
+        print(f"{k}={env[k]} \\")
+    print(" ".join(args))
+    print("\x1b[0m", "-" * 60)
+    subprocess.run(args, env=env)
+
+
+def run_oomer(exe: str, max_allocs: int, env: Dict[str, str]) -> bool:
+    """Run an oomer-enabled program with the provided max_allocs."""
+    print(f"\x1b[0;33mmax_allocs = {max_allocs}\x1b[0m")
+    done_file = f"oomer-{max_allocs}"
+    env["OOMER_MAX_ALLOCS"] = str(max_allocs)
+    env["OOMER_DONE_FILE"] = done_file
+    proc = subprocess.run([exe], env=env)
+
+    # The done_file is created by oomer.c when it considers the test complete.
+    if os.path.exists(done_file):
+        os.unlink(done_file)
+        return True
+
+    if proc.returncode >= 0:
+        # Process exited cleanly (success or failure).
+        pass
+    elif proc.returncode == -6:
+        # Assertion failed.
+        pass
+    elif proc.returncode == -14:
+        print(f"\x1b[1;31mProcess timed out at "
+              f"max_allocs = {max_allocs}\x1b[0m")
+        del env["OOMER_DONE_FILE"]
+        env["OOMER_TRAP_ON_FAIL"] = "1"
+        run(["gdb", "--eval-command=r", exe], env=env)
+        return True
+    else:
+        print(f"Process exited with signal {-proc.returncode} at "
+              f"max_allocs = {max_allocs}")
+        del env["OOMER_DONE_FILE"]
+        run(["gdb", "--eval-command=r", exe], env=env)
+        return True
+
+    return False
+
+
+def check_oomer(exe: str) -> bool:
+    """Check whether the binary was built with oomer support."""
+    proc = subprocess.run(
+        [exe], env={"OOMER_SYN": "1"},
+        capture_output=True, check=True)
+    return proc.stderr.decode("utf-8") == "oomer: ack"
+
+
+def main(args: List[str]) -> None:
+    """Run an oomer-enabled program with an increasing number of max_allocs."""
+    if len(args) < 2:
+        print("Usage: run_oomer <exe> [range-begin] [range-end]")
+        sys.exit(1)
+
+    exe = malloc_debug.build(args[1], "oomer")
+    range_begin = int(args[2]) if len(args) > 2 else 0
+    range_end = int(args[3]) if len(args) > 3 else 1000
+
+    if not check_oomer(exe):
+        print(f"executable '{exe}' was not compiled with oomer support")
+        sys.exit(1)
+
+    ENV["OOMER_TIMEOUT"] = str(malloc_debug.timeout(exe))
+
+    for max_allocs in range(range_begin, range_end):
+        if run_oomer(exe, max_allocs, ENV):
+            break
+
+
+if __name__ == "__main__":
+    main(sys.argv)
