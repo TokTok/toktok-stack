@@ -1,0 +1,87 @@
+#!/usr/bin/env python3
+"""Run a test repeatedly with mallocfail.
+
+Usage: run_mallocfail <exe>
+
+exe: either a bazel target, e.g. //c-toxcore/auto_tests:tox_one_test or an
+  executable path, e.g. bazel-bin/c-toxcore/auto_tests/tox_one_test
+
+This runs the program with mallocfail until there are no more additional stack
+hashes for mallocfail to try out.
+
+You need to build mallocfail (https://github.com/ralight/mallocfail) at
+wip/mallocfail so you end up with wip/mallocfail/mallocfail.so. Change
+_MALLOCFAIL_SO if you want it elsewhere.
+"""
+
+import os
+import shutil
+import sys
+import subprocess
+
+from typing import List
+
+import malloc_debug
+
+
+_MALLOCFAIL_SO = "wip/mallocfail/mallocfail.so"
+_HASHES = "mallocfail_hashes"
+_HASHES_PREV = "mallocfail_hashes.prev"
+
+
+def run_mallocfail(exe: str, timeout: int) -> bool:
+    """Run a program with mallocfail."""
+    if os.path.exists(_HASHES):
+        shutil.copy(_HASHES, _HASHES_PREV)
+    proc = subprocess.run([exe], env={
+        "LD_PRELOAD": _MALLOCFAIL_SO,
+        "MALLOCFAIL_TIMEOUT": str(timeout),
+    })
+    if (os.path.exists(_HASHES_PREV) and os.path.exists(_HASHES)):
+        with open(_HASHES_PREV, "r") as prev:
+            with open(_HASHES, "r") as cur:
+                if prev.read() == cur.read():
+                    # Done: no new stack hashes.
+                    return False
+
+    if proc.returncode >= 0:
+        # Process exited cleanly (success or failure).
+        pass
+    elif proc.returncode == -6:
+        # Assertion failed.
+        pass
+    elif proc.returncode == -14:
+        print(f"\x1b[1;31mProcess timed out\x1b[0m")
+    else:
+        print(f"\x1b[1;31mProcess exited with signal {-proc.returncode}\x1b[0m")
+        # Copy the previous state over the current one so we can repeat the
+        # crash in gdb.
+        shutil.copy(_HASHES_PREV, _HASHES)
+        subprocess.run([
+            "gdb",
+            f"-ex=set environment LD_PRELOAD {_MALLOCFAIL_SO}",
+            # We need to run the program 3 times in gdb, because the stack
+            # hashes are slightly different and mallocfail needs to record the
+            # ones from gdb. The third one is the one that actually caused the
+            # crash we're investigating.
+            "-ex=r", "-ex=r", "-ex=r", exe])
+        return False
+
+    return True
+
+
+def main(args: List[str]) -> None:
+    """Run a program repeatedly under mallocfail."""
+    if len(args) < 2:
+        print("Usage: run_mallocfail <exe>")
+        sys.exit(1)
+
+    exe = malloc_debug.build(args[1], "mallocfail")
+    timeout = malloc_debug.timeout(exe)
+
+    while run_mallocfail(exe, timeout):
+        pass
+
+
+if __name__ == "__main__":
+    main(sys.argv)
