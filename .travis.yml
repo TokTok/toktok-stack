@@ -17,6 +17,7 @@ before_cache:
     $OUTPUT_BASE/bazel-workers/worker-*.log
     $OUTPUT_BASE/command.log
     $OUTPUT_BASE/command.profile.gz
+    $OUTPUT_BASE/execroot/toktok/bazel-out/_tmp/actions/stderr-*
     $OUTPUT_BASE/execroot/toktok/bazel-out/stable-status.txt
     $OUTPUT_BASE/execroot/toktok/bazel-out/volatile-status.txt
     $OUTPUT_BASE/java.log*
