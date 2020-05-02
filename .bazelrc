@@ -179,6 +179,9 @@ build --per_file_copt='//c-toxcore/@-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_TRACE'
 # protocol (all packet ids are shifted).
 build:testnet --per_file_copt='//c-toxcore[:/]@-DUSE_TEST_NETWORK=1'
 
+# Always build debugging tools with debug info.
+build:gnulike --per_file_copt='//tools/debug[:/]@-g'
+
 test --test_output=errors
 test --test_verbose_timeout_warnings=true
 
