@@ -1,0 +1,13 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary")
+
+cc_library(
+    name = "oomer",
+    srcs = ["oomer.c"],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "mallocfail",
+    srcs = ["mallocfail.c"],
+    visibility = ["//visibility:public"],
+)
