@@ -12,11 +12,8 @@ def build(exe: str, malloc: str) -> str:
             capture_output=True,
             check=True,
         )
-        exe = next(
-            line
-            for line in proc.stderr.decode("utf-8").split("\n")
-            if line.startswith("  bazel-bin/")
-        ).strip()
+        exe = next(line for line in proc.stderr.decode("utf-8").split("\n")
+                   if line.startswith("  bazel-bin/")).strip()
 
     return exe
 
