@@ -10,10 +10,14 @@ def build(exe: str, malloc: str) -> str:
     if exe.startswith("//"):
         proc = subprocess.run(
             ["bazel", "build", exe, "--custom_malloc=//tools/debug:" + malloc],
-            capture_output=True, check=True)
+            capture_output=True,
+            check=True,
+        )
         exe = next(
-            line for line in proc.stderr.decode("utf-8").split("\n")
-            if line.startswith("  bazel-bin/")).strip()
+            line
+            for line in proc.stderr.decode("utf-8").split("\n")
+            if line.startswith("  bazel-bin/")
+        ).strip()
 
     return exe
 
