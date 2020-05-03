@@ -40,10 +40,7 @@ def parse_cabal(cabal):
             if res:
                 if key:
                     values = value.split(", ")
-                    if len(values) > 1:
-                        section[key] = values
-                    else:
-                        section[key] = value
+                    section[key] = values if len(values) > 1 else value
                     key = None
                 key, value = res.group(1, 2)
                 continue
@@ -51,10 +48,7 @@ def parse_cabal(cabal):
             if res:
                 if key:
                     values = value.split(", ")
-                    if len(values) > 1:
-                        section[key] = values
-                    else:
-                        section[key] = value
+                    section[key] = values if len(values) > 1 else value
                     key = None
                 section = data[res.group(1)][res.group(2)]
                 section["__name__"] = line
@@ -62,10 +56,7 @@ def parse_cabal(cabal):
             value += line.strip()
         if key:
             values = value.split(", ")
-            if len(values) > 1:
-                section[key] = values
-            else:
-                section[key] = value
+            section[key] = values if len(values) > 1 else value
             key = None
     return json.loads(json.dumps(data))
 
