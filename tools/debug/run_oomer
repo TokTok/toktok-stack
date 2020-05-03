@@ -22,11 +22,11 @@ reject with a configurable probability between 0 and 1.
 
 You can set these behaviour flags in the "env" dict below.
 """
-
 import os
 import subprocess
 import sys
-from typing import Dict, List
+from typing import Dict
+from typing import List
 
 import malloc_debug
 
