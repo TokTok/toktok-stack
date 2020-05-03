@@ -26,11 +26,9 @@ You can set these behaviour flags in the "env" dict below.
 import os
 import subprocess
 import sys
-
 from typing import Dict, List
 
 import malloc_debug
-
 
 # Set oomer parameters here.
 ENV = {
