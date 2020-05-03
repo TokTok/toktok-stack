@@ -67,16 +67,15 @@ def run_oomer(exe: str, max_allocs: int, env: Dict[str, str]) -> bool:
         # Assertion failed.
         pass
     elif proc.returncode == -14:
-        print(f"\x1b[1;31mProcess timed out at " f"max_allocs = {max_allocs}\x1b[0m")
+        print(f"\x1b[1;31mProcess timed out at "
+              f"max_allocs = {max_allocs}\x1b[0m")
         del env["OOMER_DONE_FILE"]
         env["OOMER_TRAP_ON_FAIL"] = "1"
         run(["gdb", "--eval-command=r", exe], env=env)
         return True
     else:
-        print(
-            f"Process exited with signal {-proc.returncode} at "
-            f"max_allocs = {max_allocs}"
-        )
+        print(f"Process exited with signal {-proc.returncode} at "
+              f"max_allocs = {max_allocs}")
         del env["OOMER_DONE_FILE"]
         run(["gdb", "--eval-command=r", exe], env=env)
         return True
@@ -86,9 +85,10 @@ def run_oomer(exe: str, max_allocs: int, env: Dict[str, str]) -> bool:
 
 def check_oomer(exe: str) -> bool:
     """Check whether the binary was built with oomer support."""
-    proc = subprocess.run(
-        [exe], env={"OOMER_SYN": "1"}, capture_output=True, check=True
-    )
+    proc = subprocess.run([exe],
+                          env={"OOMER_SYN": "1"},
+                          capture_output=True,
+                          check=True)
     return proc.stderr.decode("utf-8") == "oomer: ack"
 
 
