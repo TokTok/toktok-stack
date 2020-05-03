@@ -16,13 +16,11 @@ _MALLOCFAIL_SO if you want it elsewhere.
 
 import os
 import shutil
-import sys
 import subprocess
-
+import sys
 from typing import List
 
 import malloc_debug
-
 
 _MALLOCFAIL_SO = "wip/mallocfail/mallocfail.so"
 _HASHES = "mallocfail_hashes"
