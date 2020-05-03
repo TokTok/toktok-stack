@@ -79,9 +79,6 @@ def main(args: List[str]) -> None:
     exe = malloc_debug.build(args[1], "mallocfail")
     timeout = malloc_debug.timeout(exe)
 
-    while run_mallocfail(exe, timeout):
-        pass
-
 
 if __name__ == "__main__":
     main(sys.argv)
