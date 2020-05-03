@@ -53,7 +53,8 @@ def run_mallocfail(exe: str, timeout: int) -> bool:
     elif proc.returncode == -14:
         print(f"\x1b[1;31mProcess timed out\x1b[0m")
     else:
-        print(f"\x1b[1;31mProcess exited with signal {-proc.returncode}\x1b[0m")
+        print(
+            f"\x1b[1;31mProcess exited with signal {-proc.returncode}\x1b[0m")
         # Copy the previous state over the current one so we can repeat the
         # crash in gdb.
         shutil.copy(_HASHES_PREV, _HASHES)
