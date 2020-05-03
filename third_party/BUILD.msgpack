@@ -1,0 +1,60 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+
+cc_library(
+    name = "msgpack",
+    srcs = glob(["src/*.c"]),
+    hdrs = glob([
+        "include/**/*.h",
+        "include/**/*.hpp",
+    ]),
+    includes = [
+        "include",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+cc_test(
+    name = "msgpack_test",
+    size = "small",
+    srcs = [
+        "test/array_ref.cpp",
+        "test/buffer.cpp",
+        "test/carray.cpp",
+        "test/cases.cpp",
+        "test/convert.cpp",
+        "test/fixint_c.cpp",
+        "test/iterator_cpp11.cpp",
+        "test/json.cpp",
+        "test/limit.cpp",
+        "test/msgpack_basic.cpp",
+        "test/msgpack_c.cpp",
+        "test/msgpack_container.cpp",
+        "test/msgpack_cpp11.cpp",
+        "test/msgpack_cpp17.cpp",
+        "test/msgpack_stream.cpp",
+        "test/msgpack_tuple.cpp",
+        "test/msgpack_vref.cpp",
+        "test/msgpack_x3_parse.cpp",
+        "test/multi_file1.cpp",
+        "test/object.cpp",
+        "test/object_with_zone.cpp",
+        "test/pack_unpack_c.cpp",
+        "test/raw.cpp",
+        "test/reference_cpp11.cpp",
+        "test/reference_wrapper_cpp11.cpp",
+        "test/shared_ptr_cpp11.cpp",
+        "test/size_equal_only.cpp",
+        "test/streaming_c.cpp",
+        "test/test_allocator.hpp",
+        "test/unique_ptr_cpp11.cpp",
+        "test/user_class.cpp",
+        "test/version.cpp",
+        "test/visitor.cpp",
+    ],
+    copts = ["-fexceptions"],
+    deps = [
+        ":msgpack",
+        "@com_google_googletest//:gtest_main",
+        "@zlib",
+    ],
+)

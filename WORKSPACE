@@ -346,6 +346,13 @@ new_github_archive(
 )
 
 new_github_archive(
+    name = "msgpack",
+    repo = "msgpack/msgpack-c",
+    sha256 = "149ff1107ff133db5778a8b4e29fff30b6237cf2bf084afb35c2928c582d8fbd",
+    version = "cpp-3.2.1",
+)
+
+new_github_archive(
     name = "openal",
     repo = "kcat/openal-soft",
     sha256 = "4acd4cdd3295658c8cfdf53b67782f6812ab9499913ed2dc9acc03c6cf7329c5",
