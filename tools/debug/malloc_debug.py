@@ -1,5 +1,4 @@
 """Common functions for run_mallocfail and run_oomer."""
-
 import math
 import subprocess
 import time

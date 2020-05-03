@@ -13,7 +13,6 @@ You need to build mallocfail (https://github.com/ralight/mallocfail) at
 wip/mallocfail so you end up with wip/mallocfail/mallocfail.so. Change
 _MALLOCFAIL_SO if you want it elsewhere.
 """
-
 import os
 import shutil
 import subprocess
