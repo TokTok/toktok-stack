@@ -33,11 +33,10 @@ def run_mallocfail(exe: str, timeout: int) -> bool:
     """Run a program with mallocfail."""
     if os.path.exists(_HASHES):
         shutil.copy(_HASHES, _HASHES_PREV)
-    proc = subprocess.run([exe], env={
-        "LD_PRELOAD": _MALLOCFAIL_SO,
-        "MALLOCFAIL_TIMEOUT": str(timeout),
-    })
-    if (os.path.exists(_HASHES_PREV) and os.path.exists(_HASHES)):
+    proc = subprocess.run(
+        [exe], env={"LD_PRELOAD": _MALLOCFAIL_SO, "MALLOCFAIL_TIMEOUT": str(timeout),}
+    )
+    if os.path.exists(_HASHES_PREV) and os.path.exists(_HASHES):
         with open(_HASHES_PREV, "r") as prev:
             with open(_HASHES, "r") as cur:
                 if prev.read() == cur.read():
@@ -53,19 +52,24 @@ def run_mallocfail(exe: str, timeout: int) -> bool:
     elif proc.returncode == -14:
         print(f"\x1b[1;31mProcess timed out\x1b[0m")
     else:
-        print(
-            f"\x1b[1;31mProcess exited with signal {-proc.returncode}\x1b[0m")
+        print(f"\x1b[1;31mProcess exited with signal {-proc.returncode}\x1b[0m")
         # Copy the previous state over the current one so we can repeat the
         # crash in gdb.
         shutil.copy(_HASHES_PREV, _HASHES)
-        subprocess.run([
-            "gdb",
-            f"-ex=set environment LD_PRELOAD {_MALLOCFAIL_SO}",
-            # We need to run the program 3 times in gdb, because the stack
-            # hashes are slightly different and mallocfail needs to record the
-            # ones from gdb. The third one is the one that actually caused the
-            # crash we're investigating.
-            "-ex=r", "-ex=r", "-ex=r", exe])
+        subprocess.run(
+            [
+                "gdb",
+                f"-ex=set environment LD_PRELOAD {_MALLOCFAIL_SO}",
+                # We need to run the program 3 times in gdb, because the stack
+                # hashes are slightly different and mallocfail needs to record the
+                # ones from gdb. The third one is the one that actually caused the
+                # crash we're investigating.
+                "-ex=r",
+                "-ex=r",
+                "-ex=r",
+                exe,
+            ]
+        )
         return False
 
     return True
