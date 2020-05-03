@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import collections
 import json
 import re
