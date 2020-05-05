@@ -120,7 +120,7 @@ our %REPOS = (
       repo 'iphydf',
    }],
    'jtox' => ['jtox', {
-      origin => 'toktok',
+      upstream => 'toktok',
       repo 'iphydf',
    }],
    'jvm-macros' => ['jvm-macros', {

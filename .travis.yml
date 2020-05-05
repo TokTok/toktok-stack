@@ -112,6 +112,6 @@ git:
   depth: 1
   submodules_depth: 5
 
-branches:
-  only:
-    - master
+# Only build pull requests and releases, don't build master on pushes,
+# except through api or cron.
+if: type IN (pull_request, api, cron) OR tag IS present
