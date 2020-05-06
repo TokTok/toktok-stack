@@ -11,3 +11,10 @@ cc_library(
     srcs = ["mallocfail.c"],
     visibility = ["//visibility:public"],
 )
+
+cc_binary(
+    name = "flakynet.so",
+    srcs = ["flakynet.c"],
+    linkshared = True,
+    visibility = ["//visibility:public"],
+)
