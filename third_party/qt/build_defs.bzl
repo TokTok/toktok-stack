@@ -346,7 +346,7 @@ def qt_import(name, module):
         linkopts = select({
             "@toktok//tools/config:linux": [],
             "@toktok//tools/config:osx": [
-                "-F/usr/local/Cellar/qt/5.14.1/lib",
+                "-F/usr/local/Cellar/qt/5.14.2/lib",
                 "-framework Qt%s" % module,
             ],
             "@toktok//tools/config:windows": [],

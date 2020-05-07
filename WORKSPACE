@@ -219,7 +219,7 @@ local_library_repository(
         "crypto",
         "ssl",
     ],
-    version = "1.1.1f",
+    version = "1.1.1g",
 )
 
 new_local_repository(
@@ -671,7 +671,7 @@ load("//tools/workspace:qt.bzl", "qt_repository")
 
 qt_repository(
     name = "qt",
-    version = "5.14.1",
+    version = "5.14.2",
 )
 
 # Python

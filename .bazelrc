@@ -28,12 +28,14 @@ build --experimental_profile_cpu_usage
 
 build --experimental_local_memory_estimate
 build --experimental_objc_include_scanning
-build --experimental_omitfp
 build --experimental_remotable_source_manifests
 
 build --experimental_android_compress_java_resources=true
 build --experimental_android_resource_shrinking=true
 #build --experimental_desugar_java8_libs=true
+
+# This doesn't work on macOS.
+build:linux --experimental_omitfp
 
 ##############################################################################
 #
