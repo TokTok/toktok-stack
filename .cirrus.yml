@@ -5,10 +5,11 @@ cirrus-ci_task:
     cpu: 8
     memory: 12G
   configure_script:
-    - apt-get update && apt-get install -y --no-install-recommends make libgmp-dev
     - git submodule update --init --depth=50 --recursive
   test_all_script:
     - TEST="bazel test -k
+      --build_tag_filters=-haskell
+      --test_tag_filters=-haskell
       --config=ci
       --config=clang
       --config=release
