@@ -1,9 +1,6 @@
 [submodule "apidsl"]
 	path = apidsl
 	url = https://github.com/TokTok/apidsl
-[submodule "cedar"]
-	path = cedar
-	url = https://github.com/TokTok/cedar
 [submodule "ci-tools"]
 	path = ci-tools
 	url = https://github.com/TokTok/ci-tools
@@ -52,9 +49,6 @@
 [submodule "hs-toxcore"]
 	path = hs-toxcore
 	url = https://github.com/TokTok/hs-toxcore
-[submodule "js-bugz"]
-	path = js-bugz
-	url = https://github.com/TokTok/js-bugz
 [submodule "js-toxcore-c"]
 	path = js-toxcore-c
 	url = https://github.com/TokTok/js-toxcore-c

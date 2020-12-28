@@ -35,10 +35,6 @@ our %REPOS = (
       upstream => 'toktok',
       repo 'iphydf',
    }],
-   'cedar' => ['cedar', {
-      upstream => 'toktok',
-      repo 'iphydf',
-   }],
    'ci-tools' => ['ci-tools', {
       upstream => 'toktok',
       repo 'iphydf',
@@ -108,10 +104,6 @@ our %REPOS = (
       repo 'zugz',
    }],
    'hs-toxcore-c' => ['hs-toxcore-c', {
-      upstream => 'toktok',
-      repo 'iphydf',
-   }],
-   'js-bugz' => ['js-bugz', {
       upstream => 'toktok',
       repo 'iphydf',
    }],

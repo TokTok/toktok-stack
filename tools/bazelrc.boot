@@ -8,7 +8,6 @@ build --color=yes
 build --experimental_disable_external_package
 build --experimental_ninja_actions
 build --experimental_repository_cache_hardlinks
-build --record_rule_instantiation_callstack
 
 # We enable these to get Bazel deprecation warnings for future feature changes.
 # Disable them if you're running with an older version of Bazel that doesn't
@@ -30,7 +29,6 @@ build --incompatible_depset_for_libraries_to_link_getter
 build --incompatible_disable_cc_configuration_make_variables
 build --incompatible_disable_cc_toolchain_label_from_crosstool_proto
 build --incompatible_disable_crosstool_file
-build --incompatible_disable_deprecated_attr_params
 build --incompatible_disable_depset_in_cc_user_flags
 build --incompatible_disable_depset_items
 build --incompatible_disable_expand_if_all_available_in_flag_set
@@ -75,8 +73,6 @@ build --incompatible_new_actions_api
 build --incompatible_no_attr_license
 build --incompatible_no_implicit_file_export="false"
 build --incompatible_no_rule_outputs_param="false"
-build --incompatible_no_support_tools_in_action_inputs
-build --incompatible_no_target_output_group
 build --incompatible_objc_compile_info_migration
 build --incompatible_prohibit_aapt1
 build --incompatible_provide_cc_toolchain_info_from_cc_toolchain_suite
@@ -89,7 +85,6 @@ build --incompatible_remove_cpu_and_compiler_attributes_from_cc_toolchain
 build --incompatible_remove_legacy_whole_archive
 build --incompatible_remove_local_resources
 build --incompatible_remove_old_python_version_api
-build --incompatible_remove_ram_utilization_factor
 build --incompatible_require_ctx_in_configure_features
 build --incompatible_require_feature_configuration_for_pic
 build --incompatible_require_java_toolchain_header_compiler_direct
@@ -98,7 +93,6 @@ build --incompatible_restrict_string_escapes="false"  # kythe
 build --incompatible_run_shell_command_string
 build --incompatible_skip_genfiles_symlink
 build --incompatible_strict_action_env
-build --incompatible_symlinked_sandbox_expands_tree_artifacts_in_runfiles_tree
 build --incompatible_use_cc_configure_from_rules_cc
 build --incompatible_use_native_patch
 build --incompatible_use_platforms_repo_for_constraints="false"
