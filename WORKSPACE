@@ -13,8 +13,8 @@ github_archive(
 github_archive(
     name = "rules_cc",
     repo = "bazelbuild/rules_cc",
-    sha256 = "eb828d67ad115cf589529335d02408cd956047e9e09d44bfab6dd1a09b3fd7ed",
-    version = "4c3e410486a078d6492baeaebb406ce4d20e3164",
+    sha256 = "ade76b9d3be1e88e77c0d377396cbb69fd40bab48dd62de76015aa07cd2f9d24",
+    version = "9ec8187d589e7554e8cfe8d14b3917ebe4b94940",
 )
 
 github_archive(
@@ -54,8 +54,8 @@ github_archive(
 github_archive(
     name = "com_google_protobuf",
     repo = "protocolbuffers/protobuf",
-    sha256 = "9748c0d90e54ea09e5e75fb7fac16edce15d2028d4356f32211cfa3c0e956564",
-    version = "v3.11.4",
+    sha256 = "bf0e5070b4b99240183b29df78155eee335885e53a8af8683964579c214ad301",
+    version = "v3.14.0",
 )
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
@@ -75,8 +75,8 @@ github_archive(
 github_archive(
     name = "rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "c55f89c620d2dbe031f3a0e22090cb950723e81b9e15e1482de3b2c5bdb13ae5",
-    version = "0b86a258ce2ebe56cd50279d38a41f5bf2c68175",
+    sha256 = "54f0f58ee94e868e9f1383b7dcd8cfb1dead35fdc04a8e2adf8ec068b7967934",
+    version = "f69edf3786e0f48fc004b1dfda2c25ab346e8afe",
 )
 
 load("@rules_haskell//haskell:ghc_bindist.bzl", "haskell_register_ghc_bindists")
@@ -656,8 +656,8 @@ android_ndk_repository(
 github_archive(
     name = "android_test_support",
     repo = "android/android-test",
-    sha256 = "4e24acc717d499ed869d58398e4beb19fa1e37e6a4a1dc23409d1b214cab3d81",
-    version = "1bc5f8803f8b70c7a4426d3e890a0d80eeaba60c",
+    sha256 = "7930de62d7abafe4e408380b4b3260315eaf7cca55992aa3589cc9816d952e67",
+    version = "9bfdb27753645d1bbf09e0894e577d46913d06d5",
 )
 
 load("@android_test_support//:repo.bzl", "android_test_repositories")

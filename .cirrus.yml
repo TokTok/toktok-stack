@@ -1,7 +1,7 @@
 ---
 cirrus-ci_task:
   container:
-    image: l.gcr.io/google/bazel:3.1.0
+    image: l.gcr.io/google/bazel:3.3.1
     cpu: 8
     memory: 12G
   configure_script:
