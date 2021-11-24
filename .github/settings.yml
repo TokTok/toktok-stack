@@ -11,9 +11,8 @@ branches:
     protection:
       required_status_checks:
         contexts:
-          - "Codacy/PR Quality Review"
+          - "cirrus-ci"
+          - "Codacy Static Code Analysis"
+          - "code-review/reviewable"
           - "LGTM analysis: Go"
           - "LGTM analysis: Python"
-          - "Travis CI - Pull Request"
-          - "cirrus-ci"
-          - "code-review/reviewable"

@@ -11,14 +11,13 @@ git clone --recursive https://github.com/TokTok/toktok-stack
 ## Configuring
 
 You may pass a compiler config for additional compiler-specific warnings and
-optimisations. If you use Clang (default on OSX), pass `--config=clang`. If
-you use GCC, pass `--config=gcc`. On Windows, you don't need any compiler flag
+optimisations. If you use Clang (default on OSX), pass `--config=clang`. If you
+use GCC, pass `--config=gcc`. On Windows, you don't need any compiler flag
 because we assume it's MSVC.
 
-There are also `--config=release` and `--config=debug` and more. See
-`.bazelrc` in this repository for more config flags you can pass. If you're
-using the Docker build, then `--config=asan`, `tsan`, and `msan` are also
-available.
+There are also `--config=release` and `--config=debug` and more. See `.bazelrc`
+in this repository for more config flags you can pass. If you're using the
+Docker build, then `--config=asan`, `tsan`, and `msan` are also available.
 
 We recommend copying `.bazelrc.local.example` to `.bazelrc.local` and
 customising it according to the comments in that file.
@@ -34,10 +33,10 @@ bazel build //...
 
 ### Installing prerequisites
 
-To build the stack, first you need to install some software. This guide
-assumes an installation of Debian GNU/Linux version 9 and that you are in the
-`toktok-stack` directory. There is partial support for Mac OS X and FreeBSD,
-but not all targets can be built on those systems.
+To build the stack, first you need to install some software. This guide assumes
+an installation of Debian GNU/Linux version 9 and that you are in the
+`toktok-stack` directory. There is partial support for Mac OS X and FreeBSD, but
+not all targets can be built on those systems.
 
 #### Bazel
 
@@ -45,8 +44,8 @@ Install the latest version of
 [Bazel](https://github.com/bazelbuild/bazel/releases), e.g.:
 
 ```sh
-wget https://github.com/bazelbuild/bazel/releases/download/3.1.0/bazel_3.1.0-linux-x86_64.deb
-sudo dpkg -i bazel_3.1.0-linux-x86_64.deb
+wget https://github.com/bazelbuild/bazel/releases/download/4.2.1/bazel_4.2.1-linux-x86_64.deb
+sudo dpkg -i bazel_4.2.1-linux-x86_64.deb
 ```
 
 On OSX:
@@ -94,8 +93,8 @@ On Windows:
 choco install qt
 ```
 
-If your Qt installation doesn't live in a standard location, make changes to
-the detector script in `tools/workspace/qt.bzl` and consider sending us a pull
+If your Qt installation doesn't live in a standard location, make changes to the
+detector script in `tools/workspace/qt.bzl` and consider sending us a pull
 request. If your version of Qt is different, edit `WORKSPACE` and adjust it in
 the `qt_repository` declaration.
 
@@ -134,8 +133,8 @@ install its development files.
 #### Python
 
 To build `py-toxcore-c` and other programs using Python FFI, you need Python
-development headers. `py-toxcore-c` and `toxic` both need Python 3. Any of
-3.5, 3.6, or 3.7 works.
+development headers. `py-toxcore-c` and `toxic` both need Python 3. Any of 3.5,
+3.6, or 3.7 works.
 
 ```sh
 sudo apt install python3.5-dev
@@ -162,36 +161,35 @@ If you want to build Android apps such as `toktok-android`, you need the
 [Android SDK](https://developer.android.com/studio/index.html). E.g.:
 
 ```sh
-wget https://dl.google.com/android/repository/commandlinetools-linux-6200805_latest.zip
-unzip -d third_party/android/sdk/ commandlinetools-linux-6200805_latest.zip
-rm commandlinetools-linux-6200805_latest.zip
+wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
+unzip -d third_party/android/sdk/ commandlinetools-linux-7583922_latest.zip
+rm commandlinetools-linux-7583922_latest.zip
 ```
 
 On OSX, replace `linux` with `mac` in the above instructions.
 
 You will need to install the latest build tools (`aapt` and friends) and
-platform 28 (targeted by our Android apps) using the SDK manager. Press "y"
-to accept all the licenses as you are asked. Use `sdkmanager --list` to see
-the latest versions of each package after updating.
+platform 28 (targeted by our Android apps) using the SDK manager. Press "y" to
+accept all the licenses as you are asked. Use `sdkmanager --list` to see the
+latest versions of each package after updating.
 
 ```sh
-third_party/android/sdk/tools/bin/sdkmanager --update
-third_party/android/sdk/tools/bin/sdkmanager 'build-tools;29.0.2'
-third_party/android/sdk/tools/bin/sdkmanager 'platforms;android-28'
+third_party/android/sdk/cmdline-tools/bin/sdkmanager --sdk_root=third_party/android/sdk --update
+third_party/android/sdk/cmdline-tools/bin/sdkmanager --sdk_root=third_party/android/sdk 'build-tools;30.0.0'
+third_party/android/sdk/cmdline-tools/bin/sdkmanager --sdk_root=third_party/android/sdk 'platforms;android-28'
 ```
 
 If you want to run instrumentation tests, also install an emulator image:
 
 ```sh
-third_party/android/sdk/tools/bin/sdkmanager 'system-images;android-28;default;x86'
+third_party/android/sdk/cmdline-tools/bin/sdkmanager --sdk_root=third_party/android/sdk 'system-images;android-28;default;x86'
 ```
 
 If you get `Warning: Could not create settings` and an exception, run the
-following steps instead of the `--update` step:
+following step after the `--update` step above:
 
 ```sh
-third_party/android/sdk/tools/bin/sdkmanager --sdk_root=third_party/android/sdk --update
-third_party/android/sdk/tools/bin/sdkmanager --sdk_root=third_party/android/sdk 'tools'
+third_party/android/sdk/cmdline-tools/bin/sdkmanager --sdk_root=third_party/android/sdk 'tools'
 ```
 
 From then on, you won't need the `--sdk_root` flag anymore. See

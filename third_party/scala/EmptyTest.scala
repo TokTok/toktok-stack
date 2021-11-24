@@ -1,13 +1,13 @@
 import org.scalacheck.Gen
 import org.scalatest.WordSpec
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
 /**
  * This test really just exists to exercise scala_test in third_party before
  * we're able to load the full source tree. It forces Bazel to instantiate the
  * Scala rules and download its dependencies.
  */
-final class EmptyTest extends WordSpec with PropertyChecks {
+final class EmptyTest extends WordSpec with ScalaCheckPropertyChecks {
 
   "generated value" should {
     "be between 0 and 10 (inclusive)" in {

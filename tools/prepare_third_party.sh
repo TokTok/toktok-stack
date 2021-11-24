@@ -2,11 +2,11 @@
 
 set -eux
 
-if [ ! -d third_party/android/android-ndk-r16b ]; then
-  wget https://dl.google.com/android/repository/android-ndk-r16b-linux-x86_64.zip
+if [ ! -d third_party/android/android-ndk-r21d ]; then
+  wget https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip
   mkdir -p third_party/android/
-  unzip -d third_party/android/ android-ndk-r16b-linux-x86_64.zip
-  rm android-ndk-r16b-linux-x86_64.zip
+  unzip -d third_party/android/ android-ndk-r21d-linux-x86_64.zip
+  rm android-ndk-r21d-linux-x86_64.zip
 fi
 
 if ! which javac; then
@@ -21,15 +21,15 @@ if ! which javac; then
 fi
 
 if [ ! -d third_party/android/sdk/tools ]; then
-  wget https://dl.google.com/android/repository/commandlinetools-linux-6200805_latest.zip
+  wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
   mkdir -p third_party/android/sdk/
-  unzip -d third_party/android/sdk/ commandlinetools-linux-6200805_latest.zip
-  rm commandlinetools-linux-6200805_latest.zip
-  yes | third_party/android/sdk/tools/bin/sdkmanager --sdk_root=third_party/android/sdk --licenses
+  unzip -d third_party/android/sdk/ commandlinetools-linux-7583922_latest.zip
+  rm commandlinetools-linux-7583922_latest.zip
+  yes | third_party/android/sdk/cmdline-tools/bin/sdkmanager --sdk_root=third_party/android/sdk --licenses
   touch "$HOME/.android/repositories.cfg"
-  third_party/android/sdk/tools/bin/sdkmanager --sdk_root=third_party/android/sdk tools
-  third_party/android/sdk/tools/bin/sdkmanager "build-tools;29.0.2"
-  third_party/android/sdk/tools/bin/sdkmanager "platforms;android-28"
+  third_party/android/sdk/cmdline-tools/bin/sdkmanager --sdk_root=third_party/android/sdk "tools"
+  third_party/android/sdk/cmdline-tools/bin/sdkmanager --sdk_root=third_party/android/sdk "build-tools;30.0.0"
+  third_party/android/sdk/cmdline-tools/bin/sdkmanager --sdk_root=third_party/android/sdk "platforms;android-28"
 fi
 
 mkdir -p third_party/javacpp/ffmpeg/jar

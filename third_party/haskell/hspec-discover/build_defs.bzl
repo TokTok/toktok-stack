@@ -53,6 +53,7 @@ def hspec_test(name, **kwargs):
     haskell_test(
         name = name,
         srcs = srcs + [name + "_hspec_driver"],
+        main_file = "test/Spec.hs",
         src_strip_prefix = "test",
         **kwargs
     )
