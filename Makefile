@@ -1,10 +1,11 @@
-IMAGE		= toxchat/toktok-stack:0.0.10
+IMAGE		= toxchat/toktok-stack:0.0.12
 
 CACHE		= /tmp/build_cache
 OUTPUT		= /dev/shm/build_output
 
-# You can override with e.g. "make run ACTION=test".
+# You can override with e.g. "make run ACTION=test TARGET=//c-toxcore/...".
 ACTION		= build
+TARGET		= //...
 
 #######################################
 # The main build targets
@@ -14,7 +15,7 @@ build: build-workspace
 
 # Run the Bazel build in the built image without persisting any state.
 run:
-	docker run --rm -it $(IMAGE) bazel $(ACTION) //...
+	docker run --rm -it $(IMAGE) bazel $(ACTION) $(TARGET)
 
 run-local: $(CACHE) $(OUTPUT)
 	docker run -v $(CURDIR):/src/workspace $(DOCKERFLAGS)
@@ -29,7 +30,7 @@ DOCKERFLAGS := --rm -it					\
 	$(IMAGE) bazel					\
 	--output_user_root=/tmp/build_cache		\
 	--output_base=/tmp/build_output			\
-	$(ACTION) //...
+	$(ACTION) $(TARGET)
 
 #######################################
 # Implementation details follow

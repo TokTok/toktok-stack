@@ -49,7 +49,6 @@ build --incompatible_disable_third_party_license_checking
 build --incompatible_disable_tools_defaults_package
 build --incompatible_disallow_empty_glob
 build --incompatible_disallow_legacy_javainfo
-build --incompatible_disallow_legacy_java_provider
 build --incompatible_disallow_legacy_py_provider
 build --incompatible_disallow_resource_jars
 build --incompatible_disallow_struct_provider_syntax="false"
@@ -83,7 +82,6 @@ build --incompatible_remote_symlinks
 build --incompatible_remove_binary_profile
 build --incompatible_remove_cpu_and_compiler_attributes_from_cc_toolchain
 build --incompatible_remove_legacy_whole_archive
-build --incompatible_remove_local_resources
 build --incompatible_remove_old_python_version_api
 build --incompatible_require_ctx_in_configure_features
 build --incompatible_require_feature_configuration_for_pic

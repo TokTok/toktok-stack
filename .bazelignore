@@ -1,1 +1,3 @@
+cyclone
 dockerfiles/buildfarm/test
+third_party/android/android-ndk-r21d

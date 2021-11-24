@@ -319,6 +319,8 @@ build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-pointer-bool-conversion'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-shorten-64-to-32'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-sometimes-uninitialized'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-string-plus-int'
+#build:clang --per_file_copt='external/vpx[:/]@-Wno-documentation-unknown-command'
+#build:clang --per_file_copt='external/vpx[:/]@-Wno-duplicate-enum'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-bool-operation'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-discarded-qualifiers'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-format-truncation'
@@ -409,20 +411,11 @@ build:ci --jobs=50
 build:ci --show_timestamps
 build:ci --verbose_failures
 
-# Docker image build toxchat/toktok-stack running clang-11.
-build:docker --config=clang
-
-# Clang 11 has some extra warnings we need to selectively disable.
-build:docker --per_file_copt='c-toxcore@-Wno-c99-extensions'
-build:docker --per_file_copt='external/ffmpeg@-Wno-bool-operation'
-build:docker --per_file_copt='external/ffmpeg@-Wno-implicit-int-float-conversion'
-build:docker --per_file_copt='external/ffmpeg@-Wno-misleading-indentation'
-build:docker --per_file_copt='external/portaudio@-Wno-implicit-int-float-conversion'
-build:docker --per_file_copt='external/yasm@-Wno-misleading-indentation'
-build:docker --per_file_copt='(moc_.*.cpp|_test.cpp)@-Wno-extra-semi-stmt'
+# Docker image build toxchat/toktok-stack running gcc-9.
+build:docker --config=gcc
 
 # Docker build doesn't support IPv6.
-build:docker --per_file_copt='//c-toxcore/auto_tests@-DUSE_IPV6=0'
+build:docker --config=ci
 
 try-import %workspace%/.bazelrc.local
 

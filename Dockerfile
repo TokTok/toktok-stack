@@ -1,5 +1,26 @@
-FROM l.gcr.io/google/bazel:3.1.0
+FROM ubuntu:20.04
 # hadolint ignore=DL3008
+
+# bazel dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+ curl \
+ default-jdk \
+ git \
+ gnupg \
+ python \
+ python3-dev \
+ wget \
+ && curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg \
+ && mv bazel.gpg /etc/apt/trusted.gpg.d/ \
+ && echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list \
+ && apt-get update && apt-get install -y --no-install-recommends \
+ bazel \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
+ENV DEBIAN_FRONTEND="noninteractive"
+
+# toktok-stack dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
  libasound2-dev \
  libgmp-dev \
@@ -8,6 +29,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  libqt5opengl5-dev \
  libqt5svg5-dev \
  libssl-dev \
+ libtinfo5 \
+ libx11-xcb-dev \
  libx264-dev \
  libxss-dev \
  make \
@@ -41,7 +64,7 @@ USER builder
 # minimum number of files to avoid rebuilding this when making changes to the
 # toktok-stack tools.
 COPY workspace/tools/bazelrc.boot /src/workspace/.bazelrc
-COPY workspace/BUILD.bazel workspace/WORKSPACE /src/workspace/
+COPY workspace/BUILD.bazel workspace/WORKSPACE workspace/.bazelignore /src/workspace/
 COPY workspace/third_party /src/workspace/third_party
 COPY workspace/tools/config /src/workspace/tools/config
 COPY workspace/tools/workspace /src/workspace/tools/workspace

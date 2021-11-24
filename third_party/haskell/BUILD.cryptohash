@@ -13,6 +13,7 @@ cc_library(
     ]),
     copts = [
         "-Dasm=__asm__",
+        "-Wno-format-overflow",
         "-Wno-strict-aliasing",
         "-Wno-unused-variable",
     ],

@@ -4,5 +4,8 @@ scala_test(
     name = "EmptyTest",
     size = "small",
     srcs = ["EmptyTest.scala"],
-    deps = ["@maven//:org_scalacheck_scalacheck_2_11"],
+    deps = [
+        "@maven//:org_scalacheck_scalacheck_2_11",
+        "@maven//:org_scalatestplus_scalacheck_1_14_2_11",
+    ],
 )

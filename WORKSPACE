@@ -13,36 +13,36 @@ github_archive(
 github_archive(
     name = "rules_cc",
     repo = "bazelbuild/rules_cc",
-    sha256 = "ade76b9d3be1e88e77c0d377396cbb69fd40bab48dd62de76015aa07cd2f9d24",
-    version = "9ec8187d589e7554e8cfe8d14b3917ebe4b94940",
+    sha256 = "68cece0593cca62ba7bcf47b6627f97d55fb9127041572767606f984c2c6ee9e",
+    version = "081771d4a0e9d7d3aa0eed2ef389fa4700dfb23e",
 )
 
 github_archive(
     name = "rules_java",
     repo = "bazelbuild/rules_java",
-    sha256 = "7f4772b0ee2b46a042870c844e9c208e8a0960a953a079236a4bbd785e471275",
-    version = "9eb38ebffbaf4414fa3d2292b28e604a256dd5a5",
+    sha256 = "b686171f549c737d630522cad7d455ffc9e5ba69d1b135a6c376014dd569cf89",
+    version = "7a3c520737581f13691ad94a0f798a3518d869d1",
 )
 
 github_archive(
     name = "rules_proto",
     repo = "bazelbuild/rules_proto",
-    sha256 = "c3b774ebcf2a86ccf684c89862a05519002ce2a77a38f8bb7be08eeb84ecab34",
-    version = "8b81c3ccfdd0e915e46ffa888d3cdb6116db6fa5",
+    sha256 = "810d02d1c016bea9743161f42323e59000c0690e4bf18d94e4f44e361b48645b",
+    version = "11bf7c25e666dd7ddacbcd4d4c4a9de7a25175f8",
 )
 
 github_archive(
     name = "rules_python",
     repo = "bazelbuild/rules_python",
-    sha256 = "98c9b903f6e8fe20b7e56d19c4822c8c49a11b475bd4ec0ca6a564e8bc5d5fa2",
-    version = "a0fbf98d4e3a232144df4d0d80b577c7a693b570",
+    sha256 = "c3b3c7a72b928fe8c50e20a20dc9d8e520ad3ae11edb2fa803c8267b3b73faf3",
+    version = "2b1d6beb4d5d8f59d629597e30e9aa519182d9a9",
 )
 
 github_archive(
     name = "bazel_skylib",
     repo = "bazelbuild/bazel-skylib",
-    sha256 = "154f4063d96a4e47b17a917108eaabdfeb4ef08383795cf936b3be6f8179c9fc",
-    version = "560d7b2359aecb066d81041cb532b82d7354561b",
+    sha256 = "247361e64b2a85b40cb45b9c071e42433467c6c87546270cbe2672eb9f317b5a",
+    version = "6e30a77347071ab22ce346b6d20cf8912919f644",
 )
 
 # Protobuf
@@ -54,8 +54,8 @@ github_archive(
 github_archive(
     name = "com_google_protobuf",
     repo = "protocolbuffers/protobuf",
-    sha256 = "bf0e5070b4b99240183b29df78155eee335885e53a8af8683964579c214ad301",
-    version = "v3.14.0",
+    sha256 = "25f1292d4ea6666f460a2a30038eef121e6c3937ae0f61d610611dfb14b0bd32",
+    version = "v3.19.1",
 )
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
@@ -75,8 +75,8 @@ github_archive(
 github_archive(
     name = "rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "54f0f58ee94e868e9f1383b7dcd8cfb1dead35fdc04a8e2adf8ec068b7967934",
-    version = "f69edf3786e0f48fc004b1dfda2c25ab346e8afe",
+    sha256 = "e5e5c3312fe9ccb3b911fafbf9921ad1cdff091fbbe3349a81c634c0ff35710d",
+    version = "222cfc286a120e18cc70acc0bc20fd002c3c39cb",
 )
 
 load("@rules_haskell//haskell:ghc_bindist.bzl", "haskell_register_ghc_bindists")
@@ -135,15 +135,15 @@ load("//third_party/haskell:packages.bzl", "core_packages", "packages")
 github_archive(
     name = "io_bazel_rules_go",
     repo = "bazelbuild/rules_go",
-    sha256 = "7ea3e1f1438efabb1781eaddc3a392afc5491b3aaace700ba06510a9db54a171",
-    version = "v0.22.4",
+    sha256 = "3ae57b41d31f7add95babb4b9cff431672b2eac3d97727f7472a634c4ff1fec2",
+    version = "v0.29.0",
 )
 
 github_archive(
     name = "bazel_gazelle",
     repo = "bazelbuild/bazel-gazelle",
-    sha256 = "8d2880d411e8461bab87c8bd239bf1b7ac2301f1af49f2b581ecc5cdc24b7206",
-    version = "v0.20.0",
+    sha256 = "b5b1bf61e25709be1badcbc574fce36aa3376120f9b84a3cdb30c963e5b7629b",
+    version = "v0.24.0",
 )
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
@@ -151,7 +151,7 @@ load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 
 go_rules_dependencies()
 
-go_register_toolchains()
+go_register_toolchains(version = "1.17")
 
 gazelle_dependencies()
 
@@ -557,8 +557,8 @@ junit_platform_java_repositories()
 github_archive(
     name = "rules_jvm_external",
     repo = "bazelbuild/rules_jvm_external",
-    sha256 = "9508c97baa2b3a5a952b4d3acaa06ee71e6b36bed7d62db2d919d6e450078862",
-    version = "b500b01137f75e0f8442bb4429ef5ce59135864a",
+    sha256 = "a508c97baa2b3a5a952b4d3acaa06ee71e6b36bed7d62db2d919d6e450078862",
+    version = "3f1fb4056207b253542d00ae55736eb613e44731",
 )
 
 load("@rules_jvm_external//:defs.bzl", "maven_install")
@@ -596,6 +596,8 @@ maven_install(
         "org.bytedeco:javacv-platform:1.4",
         "org.jetbrains:annotations:13.0",
         "org.scalacheck:scalacheck_2.11:1.14.0",
+        "org.scalatestplus:scalacheck-1-14_2.11:3.1.0.1",
+        "org.scalatestplus:junit-4-13_2.11:3.2.10.0",
         "org.scala-lang.modules:scala-swing_2.11:2.1.1",
         "org.slf4j:slf4j-android:1.7.30",
         "org.slf4j:slf4j-api:1.7.25",
@@ -613,14 +615,18 @@ maven_install(
 github_archive(
     name = "io_bazel_rules_scala",
     repo = "bazelbuild/rules_scala",
-    sha256 = "91458687d11e0643b6e82a5b68dc7ed1db9383940e107638dc9d7230d3832238",
-    version = "73c0dbb55d1ab2905c3d97923efc415623f67ac6",
+    sha256 = "ccf19e8f966022eaaca64da559c6140b23409829cb315f2eff5dc3e757fb6ad8",
+    version = "e4560ac332e9da731c1e50a76af2579c55836a5c",
 )
+
+load("@io_bazel_rules_scala//:scala_config.bzl", "scala_config")
+scala_config(scala_version = "2.11.12")
 
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories")
 load("@io_bazel_rules_scala//scala:toolchains.bzl", "scala_register_toolchains")
 load("@io_bazel_rules_scala//scala_proto:scala_proto.bzl", "scala_proto_repositories")
 load("@io_bazel_rules_scala//scala_proto:toolchains.bzl", "scala_proto_register_enable_all_options_toolchain")
+load("@io_bazel_rules_scala//testing:scalatest.bzl", "scalatest_repositories", "scalatest_toolchain")
 
 scala_register_toolchains()
 
@@ -629,6 +635,10 @@ scala_repositories()
 scala_proto_repositories()
 
 scala_proto_register_enable_all_options_toolchain()
+
+scalatest_repositories()
+
+scalatest_toolchain()
 
 # Android
 # =========================================================
@@ -643,21 +653,21 @@ github_archive(
 android_sdk_repository(
     name = "androidsdk",
     api_level = 28,
-    build_tools_version = "29.0.2",
+    build_tools_version = "30.0.0",
     path = "third_party/android/sdk",
 )
 
 android_ndk_repository(
     name = "androidndk",
     api_level = 25,
-    path = "third_party/android/android-ndk-r16b",
+    path = "third_party/android/android-ndk-r21d",
 )
 
 github_archive(
     name = "android_test_support",
     repo = "android/android-test",
-    sha256 = "7930de62d7abafe4e408380b4b3260315eaf7cca55992aa3589cc9816d952e67",
-    version = "9bfdb27753645d1bbf09e0894e577d46913d06d5",
+    sha256 = "b5fbd977ff1c764121ce943d6f4f1c41a84c9b1504c536c44bd2ca3deba96e3d",
+    version = "a9910dd4e248f2e0a5f5a705ad129ac07244b2f9",
 )
 
 load("@android_test_support//:repo.bzl", "android_test_repositories")

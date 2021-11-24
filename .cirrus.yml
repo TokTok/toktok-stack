@@ -1,24 +1,17 @@
 ---
 cirrus-ci_task:
   container:
-    image: l.gcr.io/google/bazel:3.3.1
+    image: ubuntu:latest
     cpu: 8
     memory: 12G
   configure_script:
-    - git submodule update --init --depth=50 --recursive
+    - make
   test_all_script:
-    - TEST="bazel test -k
-      --build_tag_filters=-haskell
-      --test_tag_filters=-haskell
-      --config=ci
-      --config=clang
-      --config=release
+    - make run TARGET="
       //c-toxcore/...
       //go-toxcore-c/...
       //jtox/...
-      //jvm-macros/...
       //jvm-toxcore-api/...
       //jvm-toxcore-c/...
       //py_toxcore_c/...
       //toxins/..."
-    - $TEST || $TEST || $TEST || $TEST
