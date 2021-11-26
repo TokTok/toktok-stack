@@ -11,14 +11,13 @@ git clone --recursive https://github.com/TokTok/toktok-stack
 ## Configuring
 
 You may pass a compiler config for additional compiler-specific warnings and
-optimisations. If you use Clang (default on OSX), pass `--config=clang`. If
-you use GCC, pass `--config=gcc`. On Windows, you don't need any compiler flag
+optimisations. If you use Clang (default on OSX), pass `--config=clang`. If you
+use GCC, pass `--config=gcc`. On Windows, you don't need any compiler flag
 because we assume it's MSVC.
 
-There are also `--config=release` and `--config=debug` and more. See
-`.bazelrc` in this repository for more config flags you can pass. If you're
-using the Docker build, then `--config=asan`, `tsan`, and `msan` are also
-available.
+There are also `--config=release` and `--config=debug` and more. See `.bazelrc`
+in this repository for more config flags you can pass. If you're using the
+Docker build, then `--config=asan`, `tsan`, and `msan` are also available.
 
 We recommend copying `.bazelrc.local.example` to `.bazelrc.local` and
 customising it according to the comments in that file.
@@ -34,10 +33,10 @@ bazel build //...
 
 ### Installing prerequisites
 
-To build the stack, first you need to install some software. This guide
-assumes an installation of Debian GNU/Linux version 9 and that you are in the
-`toktok-stack` directory. There is partial support for Mac OS X and FreeBSD,
-but not all targets can be built on those systems.
+To build the stack, first you need to install some software. This guide assumes
+an installation of Debian GNU/Linux version 9 and that you are in the
+`toktok-stack` directory. There is partial support for Mac OS X and FreeBSD, but
+not all targets can be built on those systems.
 
 #### Bazel
 
@@ -94,8 +93,8 @@ On Windows:
 choco install qt
 ```
 
-If your Qt installation doesn't live in a standard location, make changes to
-the detector script in `tools/workspace/qt.bzl` and consider sending us a pull
+If your Qt installation doesn't live in a standard location, make changes to the
+detector script in `tools/workspace/qt.bzl` and consider sending us a pull
 request. If your version of Qt is different, edit `WORKSPACE` and adjust it in
 the `qt_repository` declaration.
 
@@ -134,8 +133,8 @@ install its development files.
 #### Python
 
 To build `py-toxcore-c` and other programs using Python FFI, you need Python
-development headers. `py-toxcore-c` and `toxic` both need Python 3. Any of
-3.5, 3.6, or 3.7 works.
+development headers. `py-toxcore-c` and `toxic` both need Python 3. Any of 3.5,
+3.6, or 3.7 works.
 
 ```sh
 sudo apt install python3.5-dev
@@ -170,9 +169,9 @@ rm commandlinetools-linux-7583922_latest.zip
 On OSX, replace `linux` with `mac` in the above instructions.
 
 You will need to install the latest build tools (`aapt` and friends) and
-platform 28 (targeted by our Android apps) using the SDK manager. Press "y"
-to accept all the licenses as you are asked. Use `sdkmanager --list` to see
-the latest versions of each package after updating.
+platform 28 (targeted by our Android apps) using the SDK manager. Press "y" to
+accept all the licenses as you are asked. Use `sdkmanager --list` to see the
+latest versions of each package after updating.
 
 ```sh
 third_party/android/sdk/cmdline-tools/bin/sdkmanager --sdk_root=third_party/android/sdk --update
