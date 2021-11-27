@@ -1,5 +1,5 @@
 IMAGE		= toxchat/toktok-stack
-IMAGE_VERSION	= $(IMAGE):0.0.12
+IMAGE_VERSION	= $(IMAGE):0.0.13
 IMAGE_LATEST	= $(IMAGE):latest
 
 CACHE		= /tmp/build_cache

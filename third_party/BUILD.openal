@@ -8,6 +8,7 @@ COPTS = [
     "-fexceptions",
     "-Wno-unused-function",
     "-Wno-switch",
+    "-msse4.1",
 ]
 
 genrule(
