@@ -4,7 +4,7 @@ export THIS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 set -eux
 
-$THIS_DIR/prepare_android_sdk.sh
+"$THIS_DIR"/prepare_android_sdk.sh
 
 if [ ! -d third_party/android/android-ndk-r21d ]; then
   wget https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip
