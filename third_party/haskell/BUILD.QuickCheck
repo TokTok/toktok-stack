@@ -6,8 +6,9 @@ PACKAGE_NAME = "QuickCheck"
 
 haskell_library(
     name = PACKAGE_NAME,
-    srcs = glob(["Test/**/*.*hs"]),
+    srcs = glob(["src/**/*.*hs"]),
     compiler_flags = [
+        "-DOLD_RANDOM",
         "-Wno-incomplete-patterns",
         "-Wno-missing-signatures",
         "-Wno-name-shadowing",

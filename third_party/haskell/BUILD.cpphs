@@ -5,6 +5,17 @@ load("@toktok//third_party/haskell:packages.bzl", "packages")
 PACKAGE_NAME = "cpphs"
 
 haskell_library(
+    name = "time-compat",
+    srcs = glob(["new/**/*.*hs"]),
+    src_strip_prefix = "new",
+    version = packages[PACKAGE_NAME].version,
+    deps = [
+        hazel_library("base"),
+        hazel_library("time"),
+    ],
+)
+
+haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["Language/**/*.*hs"]),
     compiler_flags = [
@@ -19,10 +30,11 @@ haskell_library(
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
+        ":time-compat",
         hazel_library("base"),
         hazel_library("directory"),
         hazel_library("old-locale"),
-        hazel_library("old-time"),
         hazel_library("polyparse"),
+        hazel_library("time"),
     ],
 )

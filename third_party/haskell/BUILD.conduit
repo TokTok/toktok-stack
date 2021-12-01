@@ -16,6 +16,7 @@ haskell_library(
     compiler_flags = [
         "-Wno-deprecations",
         "-Wno-inline-rule-shadowing",
+        "-Wno-name-shadowing",
         "-Wno-unused-imports",
     ],
     src_strip_prefix = "src",

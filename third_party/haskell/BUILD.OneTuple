@@ -3,40 +3,25 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
-PACKAGE_NAME = "free"
-
-cc_library(
-    name = "cbits",
-    hdrs = ["include/free-common.h"],
-)
+PACKAGE_NAME = "OneTuple"
 
 haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["src/**/*.*hs"]),
-    compiler_flags = [
-        "-XCPP",
-        "-Iexternal/%s/include" % hazel_workspace(PACKAGE_NAME),
-    ],
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
+    compiler_flags = [
+        "-Wno-unused-imports",
+    ],
     deps = [
-        ":cbits",
         hazel_library("base"),
-        hazel_library("bifunctors"),
-        hazel_library("comonad"),
-        hazel_library("containers"),
-        hazel_library("distributive"),
-        hazel_library("exceptions"),
-        hazel_library("indexed-traversable"),
-        hazel_library("mtl"),
-        hazel_library("profunctors"),
-        hazel_library("semigroupoids"),
+        hazel_library("base-orphans"),
+        hazel_library("ghc-prim"),
+        hazel_library("hashable"),
         hazel_library("semigroups"),
         hazel_library("template-haskell"),
-        hazel_library("th-abstraction"),
         hazel_library("transformers"),
-        hazel_library("transformers-base"),
         hazel_library("transformers-compat"),
     ],
 )

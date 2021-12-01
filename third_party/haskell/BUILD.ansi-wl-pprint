@@ -9,6 +9,7 @@ haskell_library(
     srcs = glob(["Text/**/*.*hs"]),
     compiler_flags = [
         "-Wno-name-shadowing",
+        "-Wno-unused-imports",
         "-Wno-unused-matches",
     ],
     version = packages[PACKAGE_NAME].version,

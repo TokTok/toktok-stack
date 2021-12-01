@@ -2,7 +2,7 @@ load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
 load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
-PACKAGE_NAME = "th-lift-instances"
+PACKAGE_NAME = "indexed-traversable"
 
 haskell_library(
     name = PACKAGE_NAME,
@@ -10,13 +10,20 @@ haskell_library(
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
+    compiler_flags = [
+        #"-Wno-unused-imports",
+    ],
     deps = [
+        hazel_library("array"),
         hazel_library("base"),
-        hazel_library("bytestring"),
+        hazel_library("base-orphans"),
         hazel_library("containers"),
-        hazel_library("template-haskell"),
-        hazel_library("text"),
-        hazel_library("th-lift"),
-        hazel_library("vector"),
+        hazel_library("generic-deriving"),
+        hazel_library("ghc-prim"),
+        hazel_library("semigroups"),
+        hazel_library("tagged"),
+        hazel_library("transformers"),
+        hazel_library("transformers-compat"),
+        hazel_library("void"),
     ],
 )

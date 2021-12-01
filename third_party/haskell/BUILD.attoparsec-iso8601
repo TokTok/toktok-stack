@@ -16,5 +16,6 @@ haskell_library(
         hazel_library("base-compat"),
         hazel_library("text"),
         hazel_library("time"),
+        hazel_library("time-compat"),
     ],
 )

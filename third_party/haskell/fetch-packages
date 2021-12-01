@@ -1,0 +1,64 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings FATAL => 'all';
+use utf8;
+
+my $RESOLVER = "https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/17/2.yaml";
+my @PACKAGES = map { (/([^.]+)$/)[0] } <BUILD.*>;
+
+print <<EOF;
+"""Generated from resolver: lts-17.2"""
+
+core_packages = [
+    "Cabal",
+    "array",
+    "base",
+    "binary",
+    "bytestring",
+    "containers",
+    "deepseq",
+    "directory",
+    "filepath",
+    "ghc",
+    "ghc-boot",
+    "ghc-boot-th",
+    "ghc-compact",
+    "ghc-heap",
+    "ghc-prim",
+    "ghci",
+    "haskeline",
+    "hpc",
+    "integer-gmp",
+    "mtl",
+    "parsec",
+    "pretty",
+    "process",
+    "rts",
+    "stm",
+    "template-haskell",
+    "terminfo",
+    "text",
+    "time",
+    "transformers",
+    "unix",
+    "xhtml",
+]
+packages = (
+    {
+EOF
+for (`curl -s "$RESOLVER" | grep "^- hackage:"`) {
+   my ($package, $version, undef) = /- hackage: (.+)-([^-]+)\@sha256:([0-9a-f]+),\d+$/;
+   next unless grep { $_ eq $package } @PACKAGES;
+   my $tar = "$package-$version";
+   my $sha256 = `curl -s https://hackage.haskell.org/package/$tar/$tar.tar.gz | sha256sum`;
+   $sha256 =~ s/([0-9a-f]+).*\n/$1/;
+   print <<EOF;
+        "$package": struct(
+            sha256 = "$sha256",
+            version = "$version",
+        ),
+EOF
+}
+print "    }\n";
+print ")\n";

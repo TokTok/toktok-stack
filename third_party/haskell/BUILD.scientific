@@ -10,6 +10,9 @@ haskell_library(
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
+    compiler_flags = [
+        "-Wno-unused-imports",
+    ],
     deps = [
         hazel_library("base"),
         hazel_library("binary"),

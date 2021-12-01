@@ -1,8 +1,9 @@
 load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
-PACKAGE_NAME = "bytestring-arbitrary"
+PACKAGE_NAME = "strict"
 
 haskell_library(
     name = PACKAGE_NAME,
@@ -11,9 +12,18 @@ haskell_library(
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
-        hazel_library("QuickCheck"),
+        hazel_library("assoc"),
         hazel_library("base"),
+        hazel_library("bifunctors"),
+        hazel_library("binary"),
         hazel_library("bytestring"),
-        hazel_library("cryptohash"),
+        hazel_library("deepseq"),
+        hazel_library("ghc-prim"),
+        hazel_library("hashable"),
+        hazel_library("semigroups"),
+        hazel_library("text"),
+        hazel_library("these"),
+        hazel_library("transformers"),
+        hazel_library("transformers-compat"),
     ],
 )

@@ -327,6 +327,7 @@ build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-format-truncation'
 build:gcc --per_file_copt='external/tcl[:/]@-Wno-unused-but-set-variable'
 build:gcc --per_file_copt='external/yasm[:/]@-Wno-misleading-indentation'
 build:gcc --per_file_copt='external/yasm[:/]@-Wno-tautological-compare'
+build:gcc --per_file_copt='external/haskell_cryptohash@-Wno-format-overflow'
 
 # Haskell rules pass '-headerpad_max_install_names' on compile and link, but
 # it's only needed on link.

@@ -1,8 +1,9 @@
-load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library", "hazel_workspace")
+load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
-PACKAGE_NAME = "time-locale-compat"
+PACKAGE_NAME = "assoc"
 
 haskell_library(
     name = PACKAGE_NAME,
@@ -10,9 +11,12 @@ haskell_library(
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
+    compiler_flags = [
+        "-Wno-unused-imports",
+    ],
     deps = [
         hazel_library("base"),
-        hazel_library("deepseq"),
-        hazel_library("time"),
+        hazel_library("bifunctors"),
+        hazel_library("tagged"),
     ],
 )

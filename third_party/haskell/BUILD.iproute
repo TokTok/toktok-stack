@@ -13,7 +13,9 @@ haskell_library(
         hazel_library("appar"),
         hazel_library("base"),
         hazel_library("byteorder"),
+        hazel_library("bytestring"),
         hazel_library("containers"),
         hazel_library("network"),
+        hazel_library("semigroups"),
     ],
 )

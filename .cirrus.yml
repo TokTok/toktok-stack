@@ -2,6 +2,7 @@
 cirrus-ci_docker_builder:
   dependencies_script:
     - git submodule update --init --depth=20 --recursive
+    - tools/project/update_versions.sh
   docker_build_script:
     - make
   bazel_build_script:
