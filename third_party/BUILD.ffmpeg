@@ -1,4 +1,4 @@
-load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "objc_library")
 load("@toktok//third_party/yasm:build_defs.bzl", "asm_library")
 
 asm_library(
@@ -190,8 +190,8 @@ genrule(
           cp $$DIR/`echo $$i | sed -e 's|$(GENDIR)/external/ffmpeg/||'` $$i
         done
     """,
-    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
     exec_tools = ["@yasm"],
+    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
 )
 
 genrule(

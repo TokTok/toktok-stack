@@ -1,5 +1,6 @@
 IMAGE		= toxchat/toktok-stack
-IMAGE_VERSION	= $(IMAGE):0.0.13
+IMAGE_VERSION	= 0.0.19
+IMAGE_VERSIONED	= $(IMAGE):$(IMAGE_VERSION)
 IMAGE_LATEST	= $(IMAGE):latest
 
 CACHE		= /tmp/build_cache
@@ -15,9 +16,12 @@ TARGET		= //...
 # Build the Docker image.
 build: build-workspace
 
+version:
+	@echo $(IMAGE_VERSION)
+
 # Run the Bazel build in the built image without persisting any state.
 run:
-	docker run --rm -it $(IMAGE_VERSION) bazel $(ACTION) $(TARGET)
+	docker run --rm -it $(IMAGE_VERSIONED) bazel $(ACTION) $(TARGET)
 
 run-local: $(CACHE) $(OUTPUT)
 	docker run -v $(CURDIR):/src/workspace $(DOCKERFLAGS)
@@ -29,7 +33,7 @@ run-persistent: $(CACHE) $(OUTPUT)
 DOCKERFLAGS := --rm -it					\
 	-v $(CACHE):/tmp/build_cache			\
 	-v $(OUTPUT):/tmp/build_output			\
-	$(IMAGE_VERSION) bazel				\
+	$(IMAGE_VERSIONED) bazel			\
 	--output_user_root=/tmp/build_cache		\
 	--output_base=/tmp/build_output			\
 	$(ACTION) $(TARGET)
@@ -67,8 +71,9 @@ DOCKER_BUILD = docker build --ulimit memlock=67108864
 # We use an intermediate target here so "make" does the cleanup of workspace.tar
 # for us. It has to be 2 levels deep, otherwise it's considered "precious".
 build-%: %.tar
-	$(DOCKER_BUILD) -t $(IMAGE_VERSION) -t $(IMAGE_LATEST) - < $<
+	$(DOCKER_BUILD) -t $(IMAGE_VERSIONED) -t $(IMAGE_LATEST) - < $<
 
+.INTERMEDIATE: kythe.tar
 build-kythe: kythe.tar tools/kythe/Dockerfile
 	$(DOCKER_BUILD) -t toxchat/kythe-tables -f kythe/tools/kythe/Dockerfile - < $<
 	$(DOCKER_BUILD) -t toxchat/kythe-serving dockerfiles/kythe/serving

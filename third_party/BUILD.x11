@@ -3,8 +3,8 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 # TODO(iphydf): Build x11 in bazel.
 cc_library(
     name = "x11",
-    linkopts = ["-lX11"],
     includes = ["include"],
-#    hdrs = ["include/X11/Xos.h"],
+    linkopts = ["-lX11"],
+    # hdrs = ["include/X11/Xos.h"],
     visibility = ["//visibility:public"],
 )

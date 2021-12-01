@@ -32,6 +32,7 @@ def _python_config(repository_ctx, versions):
         result = repository_ctx.execute([python_config, "--help"])
         if result.return_code == 0:
             python_config = [python_config]
+
             # From version 3.8, we need to pass --embed to get -lpython3.8.
             if version in ["3.8"]:
                 python_config.append("--embed")
@@ -104,7 +105,9 @@ def _impl(repository_ctx):
         )
 
         hdrs.append("include/x86_64-linux-gnu/python%s%s/pyconfig.h" % (
-                version, abiflags_result.stdout.strip()))
+            version,
+            abiflags_result.stdout.strip(),
+        ))
         includes.append("include")
 
     file_content = """

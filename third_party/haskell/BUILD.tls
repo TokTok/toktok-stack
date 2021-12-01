@@ -23,6 +23,7 @@ haskell_library(
         hazel_library("cereal"),
         hazel_library("cryptonite"),
         hazel_library("data-default-class"),
+        hazel_library("hourglass"),
         hazel_library("memory"),
         hazel_library("mtl"),
         hazel_library("network"),

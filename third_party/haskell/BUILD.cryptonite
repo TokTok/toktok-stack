@@ -67,6 +67,7 @@ cc_library(
         "-Iexternal/%s/cbits/decaf/p448/arch_ref64" % hazel_workspace(PACKAGE_NAME),
         "-Iexternal/%s/cbits/blake2/ref" % hazel_workspace(PACKAGE_NAME),
         "-Iexternal/%s/cbits/argon2" % hazel_workspace(PACKAGE_NAME),
+        "-Iexternal/%s/cbits/include64" % hazel_workspace(PACKAGE_NAME),
         "-Wno-strict-aliasing",
         "-Wno-unused-variable",
     ],

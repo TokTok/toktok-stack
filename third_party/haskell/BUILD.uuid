@@ -7,6 +7,9 @@ PACKAGE_NAME = "uuid"
 haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["Data/**/*.*hs"]),
+    compiler_flags = [
+        "-Wno-unused-imports",
+    ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [

@@ -2,23 +2,22 @@ load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
 load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
-PACKAGE_NAME = "binary-bits"
+PACKAGE_NAME = "nats"
 
 haskell_library(
     name = PACKAGE_NAME,
-    srcs = glob(["Data/**/*.hs"]),
+    srcs = glob(["src/**/*.*hs"]),
     compiler_flags = [
-        "-Wno-incomplete-patterns",
-        "-Wno-missing-signatures",
-        "-Wno-name-shadowing",
-        "-Wno-unused-imports",
-        "-Wno-unused-top-binds",
+        "-Wno-missing-methods",
+        "-Wno-trustworthy-safe",
     ],
+    src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         hazel_library("base"),
         hazel_library("binary"),
-        hazel_library("bytestring"),
+        hazel_library("hashable"),
+        hazel_library("template-haskell"),
     ],
 )

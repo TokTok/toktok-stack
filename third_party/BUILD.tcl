@@ -128,6 +128,10 @@ cc_library(
             "generic/tclUniData.c",
         ],
     ) + select({
+        "@toktok//tools/config:linux": UNIX_SRCS,
+        "@toktok//tools/config:osx": UNIX_SRCS + [
+            "macosx/tclMacOSXNotify.c",
+        ],
         "@toktok//tools/config:windows": [
             "generic/tclMainW.c",
         ] + glob(
@@ -137,10 +141,6 @@ cc_library(
             ],
             exclude = ["win/tclWinTest.c"],
         ),
-        "@toktok//tools/config:linux": UNIX_SRCS,
-        "@toktok//tools/config:osx": UNIX_SRCS + [
-            "macosx/tclMacOSXNotify.c",
-        ],
     }),
     copts = [
         "-DBUILD_tcl",
@@ -234,7 +234,6 @@ cc_library(
             "-Wno-typedef-redefinition",
         ],
     }) + select({
-        "@toktok//tools/config:windows": [],
         "@toktok//tools/config:linux": [
             "-D_DEFAULT_SOURCE",
             "-DHAVE_GETHOSTBYADDR_R=1",
@@ -250,6 +249,7 @@ cc_library(
             "-DHAVE_LIBKERN_OSATOMIC_H=1",
             "-DHAVE_OSSPINLOCKLOCK=1",
         ],
+        "@toktok//tools/config:windows": [],
     }),
     defines = ["STATIC_BUILD"],
     includes = ["generic"],

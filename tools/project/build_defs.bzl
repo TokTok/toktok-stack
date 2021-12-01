@@ -4,31 +4,68 @@ It checks constraints such as the use of the correct license and the presence
 and correctness of the license text.
 """
 
-def _haskell_travis_impl(ctx):
+def _haskell_ci_impl(ctx):
+    output = ctx.actions.declare_file(ctx.attr.name + ".expected")
     ctx.actions.expand_template(
-        template = ctx.file._template,
-        output = ctx.outputs.source_file,
+        template = ctx.file.template,
+        output = output,
         substitutions = {
             "{PACKAGE}": ctx.attr.package,
         },
     )
 
-    outs = [ctx.outputs.source_file]
+    outs = [output]
     return DefaultInfo(files = depset(outs), runfiles = ctx.runfiles(files = outs))
 
-_haskell_travis = rule(
+_haskell_ci = rule(
     attrs = {
         "package": attr.string(mandatory = True),
-        "_template": attr.label(
-            default = Label("//tools/project:haskell_travis.yml.in"),
+        "template": attr.label(
+            mandatory = True,
             allow_single_file = True,
         ),
     },
-    outputs = {"source_file": ".travis-expected.yml"},
-    implementation = _haskell_travis_impl,
+    implementation = _haskell_ci_impl,
 )
 
-def _haskell_project(standard_travis = True):
+def _haskell_ci_tests(haskell_package, custom_cirrus, custom_github):
+    if not custom_github and native.glob([".github/workflows/ci.yml"], allow_empty = True):
+        native.sh_test(
+            name = "github_ci_test",
+            size = "small",
+            srcs = ["//tools/project:diff_test.sh"],
+            data = [
+                ".github/workflows/ci.yml",
+                "//tools/project:haskell_ci.yml.in",
+            ],
+            args = [
+                "$(location .github/workflows/ci.yml)",
+                "$(location //tools/project:haskell_ci.yml.in)",
+            ],
+        )
+
+    if not custom_cirrus:
+        _haskell_ci(
+            name = "cirrus_ci",
+            package = haskell_package,
+            template = "//tools/project:haskell_cirrus.yml.in",
+        )
+
+        native.sh_test(
+            name = "cirrus_test",
+            size = "small",
+            srcs = ["//tools/project:diff_test.sh"],
+            data = [
+                ".cirrus.yml",
+                ":cirrus_ci",
+            ],
+            args = [
+                "$(location .cirrus.yml)",
+                "$(location :cirrus_ci)",
+            ],
+        )
+
+def _haskell_project(custom_cirrus, custom_github):
     haskell_package = native.package_name()[3:]
     cabal_file = haskell_package + ".cabal"
     native.sh_test(
@@ -45,27 +82,13 @@ def _haskell_project(standard_travis = True):
         ],
     )
 
-    if standard_travis:
-        _haskell_travis(
-            name = "travis",
-            package = haskell_package,
-        )
+    _haskell_ci_tests(
+        haskell_package = haskell_package,
+        custom_cirrus = custom_cirrus,
+        custom_github = custom_github,
+    )
 
-        native.sh_test(
-            name = "travis_test",
-            size = "small",
-            srcs = ["//tools/project:diff_test.sh"],
-            data = [
-                ".travis.yml",
-                ":travis",
-            ],
-            args = [
-                "$(location .travis.yml)",
-                "$(location :travis)",
-            ],
-        )
-
-def project(license = "gpl3", standard_travis = False):
+def project(license = "gpl3", custom_cirrus = False, custom_github = False):
     """Adds some checks to make sure the project is uniform."""
     native.sh_test(
         name = "license_test",
@@ -101,10 +124,10 @@ def project(license = "gpl3", standard_travis = False):
         data = [".github/settings.yml"],
     )
 
-    if (native.package_name().startswith("hs-") and
-        any([f for f in native.glob(["*"]) if f.endswith(".cabal")])):
+    if native.package_name().startswith("hs-") and native.glob(["*.cabal"], allow_empty = True):
         _haskell_project(
-            standard_travis = standard_travis,
+            custom_cirrus = custom_cirrus,
+            custom_github = custom_github,
         )
 
 def workspace(projects):

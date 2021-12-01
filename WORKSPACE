@@ -62,6 +62,20 @@ load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
 protobuf_deps()
 
+# Rust
+# =========================================================
+
+github_archive(
+    name = "rules_rust",
+    repo = "bazelbuild/rules_rust",
+    sha256 = "3b0f5c479c66f7854cc25d72227599647643af7c09141d4a301d2077fefa6649",
+    version = "9d70a5ac013561d04e3ded34f383aea22842cbeb",
+)
+
+load("@rules_rust//rust:repositories.bzl", "rust_repositories")
+
+rust_repositories()
+
 # Haskell
 # =========================================================
 
@@ -92,7 +106,7 @@ haskell_register_ghc_bindists(
         "-optP=-Wno-trigraphs",
         "-fdiagnostics-color=always",
     ],
-    version = "8.6.5",
+    version = "8.10.3",
 )
 
 github_archive(
@@ -103,23 +117,14 @@ github_archive(
 )
 
 load("@ai_formation_hazel//tools:mangling.bzl", "hazel_workspace")
-
-#load("@ai_formation_hazel//:hazel.bzl", "hazel_repositories")
 load("//third_party/haskell:haskell.bzl", "new_cabal_package")
 load("//third_party/haskell:packages.bzl", "core_packages", "packages")
-
-# TODO(iphydf): Enable this once hazel is good enough to do automatically what
-# we do manually in third_party/haskell.
-#hazel_repositories(
-#    core_packages = core_packages,
-#    packages = packages,
-#)
 
 [new_local_repository(
     name = hazel_workspace(pkg),
     build_file = "third_party/haskell/BUILD.bazel",
     path = "third_party/haskell",
-) for pkg in core_packages.keys()]
+) for pkg in core_packages]
 
 [new_cabal_package(
     package = "%s-%s" % (
@@ -146,8 +151,8 @@ github_archive(
     version = "v0.24.0",
 )
 
-load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
+load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 
 go_rules_dependencies()
 
@@ -620,6 +625,7 @@ github_archive(
 )
 
 load("@io_bazel_rules_scala//:scala_config.bzl", "scala_config")
+
 scala_config(scala_version = "2.11.12")
 
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories")

@@ -2,22 +2,20 @@ load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
 load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
-PACKAGE_NAME = "uri-bytestring"
+PACKAGE_NAME = "assoc"
 
 haskell_library(
     name = PACKAGE_NAME,
-    srcs = glob(["src/**/*.hs"]),
+    srcs = glob(["src/**/*.*hs"]),
+    compiler_flags = [
+        "-Wno-unused-imports",
+    ],
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
-        hazel_library("attoparsec"),
         hazel_library("base"),
-        hazel_library("blaze-builder"),
-        hazel_library("bytestring"),
-        hazel_library("containers"),
-        hazel_library("template-haskell"),
-        hazel_library("th-lift"),
-        hazel_library("th-lift-instances"),
+        hazel_library("bifunctors"),
+        hazel_library("tagged"),
     ],
 )

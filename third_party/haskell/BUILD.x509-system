@@ -13,6 +13,9 @@ haskell_library(
             "System/X509/Win32.hs",
         ],
     ),
+    compiler_flags = [
+        "-Wno-unused-imports",
+    ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
