@@ -47,7 +47,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Dependencies installed with apt above should never change, as we should be
 # building most things inside Bazel.
 WORKDIR /src/workspace
-COPY workspace/tools/prepare_third_party.sh /tmp/
+COPY workspace/tools/prepare_*.sh /tmp/
 RUN ["/tmp/prepare_third_party.sh"]
 
 # We set up a builder user with uid/gid 1000. This is what will run on the CI,

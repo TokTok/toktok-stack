@@ -14,7 +14,7 @@ module Paths_github where
 import Data.Version (Version, makeVersion)
 
 version :: Version
-version = makeVersion [0, 25]
+version = makeVersion [0, 26]
 EOF
     """,
 )
@@ -30,6 +30,7 @@ haskell_library(
         "-XOverloadedStrings",
         "-XRankNTypes",
         "-XScopedTypeVariables",
+        "-Wno-unused-imports",
     ],
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,

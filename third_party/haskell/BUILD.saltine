@@ -14,6 +14,7 @@ haskell_library(
     deps = [
         hazel_library("base"),
         hazel_library("bytestring"),
+        hazel_library("hashable"),
         hazel_library("profunctors"),
         "@libsodium",
     ],

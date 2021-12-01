@@ -15,6 +15,9 @@ haskell_library(
     ),
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
+    compiler_flags = [
+        "-Wno-unused-imports",
+    ],
     deps = [
         hazel_library("base"),
         hazel_library("bytestring"),

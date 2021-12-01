@@ -1,8 +1,9 @@
-load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library", "hazel_workspace")
+load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
-PACKAGE_NAME = "Diff"
+PACKAGE_NAME = "void"
 
 haskell_library(
     name = PACKAGE_NAME,
@@ -11,8 +12,11 @@ haskell_library(
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
-        hazel_library("array"),
         hazel_library("base"),
-        hazel_library("pretty"),
+        hazel_library("deepseq"),
+        hazel_library("ghc-prim"),
+        hazel_library("hashable"),
+        hazel_library("semigroups"),
+        hazel_library("template-haskell"),
     ],
 )

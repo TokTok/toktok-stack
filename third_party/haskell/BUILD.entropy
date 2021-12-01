@@ -4,6 +4,14 @@ load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 PACKAGE_NAME = "entropy"
 
+cc_library(
+    name = "cbits",
+    srcs = glob([
+        "cbits/*.c",
+        "cbits/*.h",
+    ]),
+)
+
 haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(
@@ -14,10 +22,14 @@ haskell_library(
             "System/EntropyWindows.hs",
         ],
     ),
-    compiler_flags = ["-Wno-unused-imports"],
+    compiler_flags = [
+        "-Wno-unused-do-bind",
+        "-Wno-unused-imports",
+    ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
+        ":cbits",
         hazel_library("base"),
         hazel_library("bytestring"),
         hazel_library("unix"),

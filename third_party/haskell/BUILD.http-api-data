@@ -17,6 +17,9 @@ haskell_library(
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
+    compiler_flags = [
+        "-Wno-unused-imports",
+    ],
     deps = [
         ":cbits",
         hazel_library("attoparsec"),

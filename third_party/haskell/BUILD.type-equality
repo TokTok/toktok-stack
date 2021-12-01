@@ -1,20 +1,21 @@
-load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library", "hazel_workspace")
+load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
-PACKAGE_NAME = "asn1-parse"
+PACKAGE_NAME = "type-equality"
 
 haskell_library(
     name = PACKAGE_NAME,
-    srcs = glob(["Data/**/*.hs"]),
+    srcs = glob(["src-hetero/**/*.*hs"]),
+    src_strip_prefix = "src-hetero",
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     compiler_flags = [
-        "-Wno-unused-imports",
+        "-Wno-missing-methods",
+        "-Wno-trustworthy-safe",
     ],
     deps = [
-        hazel_library("asn1-encoding"),
-        hazel_library("asn1-types"),
         hazel_library("base"),
     ],
 )

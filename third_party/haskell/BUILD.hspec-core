@@ -26,6 +26,7 @@ haskell_library(
         hazel_library("HUnit"),
         hazel_library("QuickCheck"),
         hazel_library("ansi-terminal"),
+        hazel_library("array"),
         hazel_library("async"),
         hazel_library("base"),
         hazel_library("call-stack"),

@@ -6,7 +6,7 @@ package(default_visibility = ["//visibility:public"])
 
 licenses(["notice"])
 
-[haskell_toolchain_library(name = name) for name in core_packages.keys()]
+[haskell_toolchain_library(name = name) for name in core_packages]
 
 # A filegroup that depends on all Haskell packages, just so our Docker build
 # sees them in the first aquery and can download the dependencies.
