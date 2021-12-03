@@ -15,6 +15,7 @@ TARGET		= //...
 
 # Build the Docker image.
 build: build-workspace
+	$(MAKE) -C tools/built
 
 version:
 	@echo $(IMAGE_VERSION)

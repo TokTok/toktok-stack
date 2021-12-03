@@ -96,6 +96,7 @@ cc_library(
             "**/x86/*_avx512.c",
             "vp8/encoder/mr_dissim.c",
             "vpx_ports/arm_cpudetect.c",
+            "vpx_ports/mips_cpudetect.c",
             "vpx_ports/ppc_cpudetect.c",
             "vpx_ports/emms_mmx.c",
         ],
