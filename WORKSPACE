@@ -3,11 +3,14 @@ workspace(name = "toktok")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
 
-github_archive(
+http_archive(
     name = "bazel_toolchains",
-    repo = "bazelbuild/bazel-toolchains",
-    sha256 = "d02d5f766a47b25b355a79e391871d1e824ee116861972962315fe28315d974d",
-    version = "3.1.1",
+    sha256 = "1adf5db506a7e3c465a26988514cfc3971af6d5b3c2218925cd6e71ee443fc3f",
+    strip_prefix = "bazel-toolchains-4.0.0",
+    urls = [
+        "https://github.com/bazelbuild/bazel-toolchains/releases/download/4.0.0/bazel-toolchains-4.0.0.tar.gz",
+        "https://mirror.bazel.build/github.com/bazelbuild/bazel-toolchains/releases/download/4.0.0/bazel-toolchains-4.0.0.tar.gz",
+    ],
 )
 
 github_archive(
@@ -244,8 +247,8 @@ http_archive(
 github_archive(
     name = "com_google_googletest",
     repo = "google/googletest",
-    sha256 = "a6ab7c7d6fd4dd727f6012b5d85d71a73d3aa1274f529ecd4ad84eb9ec4ff767",
-    version = "dcc92d0ab6c4ce022162a23566d44f673251eee4",
+    sha256 = "84bf0acb4a7ed172ffdd806bb3bef76ad705f4ea63ac7175cd7c86df2a017d17",
+    version = "3e0e32ba300ce8afe695ad3ba7e81b21b7cf237a",
 )
 
 new_github_archive(
@@ -265,9 +268,9 @@ new_github_archive(
 http_archive(
     name = "ffmpeg",
     build_file = "@toktok//third_party:BUILD.ffmpeg",
-    sha256 = "b620d187c26f76ca19e74210a0336c3b8380b97730df5cdf45f3e69e89000e5c",
-    strip_prefix = "ffmpeg-4.2.2",
-    urls = ["https://ffmpeg.org/releases/ffmpeg-4.2.2.tar.bz2"],
+    sha256 = "8fc9f20ac5ed95115a9e285647add0eedd5cc1a98a039ada14c132452f98ac42",
+    strip_prefix = "ffmpeg-4.4.1",
+    urls = ["https://ffmpeg.org/releases/ffmpeg-4.4.1.tar.bz2"],
 )
 
 #new_local_repository(
@@ -339,8 +342,8 @@ new_github_archive(
 new_github_archive(
     name = "libvpx",
     repo = "webmproject/libvpx",
-    sha256 = "27d082899b60dea79c596affc68341522db1f72c241f6d6096fc46bcf774f217",
-    version = "3d28ff98039134325cf689d8d08996fc8dabb225",
+    sha256 = "a1f3a0d2549b535807f711b223cecc1d65d24c322f25a35d9c7cb98acb0e217d",
+    version = "13f984c2162d8392d3fd0ffb8666ee518f60665a",
 )
 
 new_github_archive(
@@ -367,8 +370,8 @@ new_github_archive(
 new_github_archive(
     name = "opus",
     repo = "xiph/opus",
-    sha256 = "09366bf588b02b76bda3fd1428a30b55ca995d6d2eac509a39919f337690329e",
-    version = "5c94ec3205c30171ffd01056f5b4622b7c0ab54c",
+    sha256 = "dd991a0a8ecf885b147297290b3585c16d236e2c2283272ecaa7778dae524292",
+    version = "a8e6a77c5fe0c37aa6788f939f24f8cd22ae2652",
 )
 
 http_archive(
@@ -604,7 +607,7 @@ maven_install(
         "org.scalatestplus:scalacheck-1-14_2.11:3.1.0.1",
         "org.scalatestplus:junit-4-13_2.11:3.2.10.0",
         "org.scala-lang.modules:scala-swing_2.11:2.1.1",
-        "org.slf4j:slf4j-android:1.7.30",
+        "org.slf4j:slf4j-android:1.7.32",
         "org.slf4j:slf4j-api:1.7.25",
         "org.slf4j:slf4j-log4j12:1.7.22",
     ],

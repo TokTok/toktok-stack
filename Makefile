@@ -1,5 +1,5 @@
 IMAGE		= toxchat/toktok-stack
-IMAGE_VERSION	= 0.0.19
+IMAGE_VERSION	= 0.0.21
 IMAGE_VERSIONED	= $(IMAGE):$(IMAGE_VERSION)
 IMAGE_LATEST	= $(IMAGE):latest
 
@@ -15,6 +15,12 @@ TARGET		= //...
 
 # Build the Docker image.
 build: build-workspace
+	$(MAKE) -C tools/built
+
+push:
+	docker push $(IMAGE_VERSIONED)
+	docker push $(IMAGE_LATEST)
+	$(MAKE) -C tools/built push-third_party
 
 version:
 	@echo $(IMAGE_VERSION)

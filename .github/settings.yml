@@ -13,6 +13,5 @@ branches:
         contexts:
           - "cirrus-ci"
           - "Codacy Static Code Analysis"
-          - "code-review/reviewable"
           - "LGTM analysis: Go"
           - "LGTM analysis: Python"

@@ -4,19 +4,10 @@ set -eux
 
 REPO="$1"
 
-# Symlink the toktok-stack source tree to the location where cirrus-ci expects
-# it to be. Cirrus chdir's into /tmp/cirrus-ci-build on every action, so it must
-# always exist.
-cd /
-mv /tmp/cirrus-ci-build /tmp/cirrus-ci-repo
+cd /src/workspace
+rm -rf "$REPO"
+mv /tmp/cirrus-ci-build "$REPO"
 mkdir /tmp/cirrus-ci-build
-cd /tmp/cirrus-ci-build
-for i in /src/workspace/* /src/workspace/.??*; do
-  ln -s "$i" .
-done
-rm "$REPO"
-mv /tmp/cirrus-ci-repo "$REPO"
-cd /tmp/cirrus-ci-build
 
 if [ -f "$REPO/.bazelrc.local" ]; then
   # If the repo has customisations, add those here.

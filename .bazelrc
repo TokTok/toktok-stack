@@ -47,9 +47,9 @@ build --strategy=Javac=worker
 build --strategy=Scalac=worker
 
 # toxchat/builder toolchain used by Docker and remote execution.
-build:builder-toolchain --crosstool_top=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_3.1.0/cc:toolchain
-build:builder-toolchain --host_javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_3.1.0/java:jdk
-build:builder-toolchain --javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_3.1.0/java:jdk
+build:builder-toolchain --crosstool_top=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_4.0.0/cc:toolchain
+build:builder-toolchain --host_javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_4.0.0/java:jdk
+build:builder-toolchain --javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_4.0.0/java:jdk
 
 build:libc++ --action_env=CXXFLAGS=-stdlib=libc++
 build:libc++ --action_env=LDFLAGS=-stdlib=libc++
@@ -313,21 +313,26 @@ build:gnulike --per_file_copt='/go_default_library%@-w'
 build:gnulike --per_file_copt='\\.pb\\.cc$@-w'
 
 # Disable some clang warnings on ffmpeg.
-build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-incompatible-pointer-types-discards-qualifiers'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-braced-scalar-init'
+build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-incompatible-pointer-types-discards-qualifiers'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-pointer-bool-conversion'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-shorten-64-to-32'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-sometimes-uninitialized'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-string-plus-int'
+build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-tautological-constant-out-of-range-compare'
 #build:clang --per_file_copt='external/vpx[:/]@-Wno-documentation-unknown-command'
 #build:clang --per_file_copt='external/vpx[:/]@-Wno-duplicate-enum'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-bool-operation'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-discarded-qualifiers'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-format-truncation'
-build:gcc --per_file_copt='external/tcl[:/]@-Wno-unused-but-set-variable'
-build:gcc --per_file_copt='external/yasm[:/]@-Wno-misleading-indentation'
-build:gcc --per_file_copt='external/yasm[:/]@-Wno-tautological-compare'
+build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-maybe-uninitialized'
+build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-stringop-truncation'
 build:gcc --per_file_copt='external/haskell_cryptohash@-Wno-format-overflow'
+build:gcc --per_file_copt='external/tcl[:/]@-Wno-unused-but-set-variable'
+build:gcc --per_file_copt='external/xcb[:/]@-Wno-unused-but-set-variable'
+build:gcc --per_file_copt='external/yasm[:/]@-Wno-misleading-indentation'
+build:gcc --per_file_copt='external/yasm[:/]@-Wno-stringop-truncation'
+build:gcc --per_file_copt='external/yasm[:/]@-Wno-tautological-compare'
 
 # Haskell rules pass '-headerpad_max_install_names' on compile and link, but
 # it's only needed on link.

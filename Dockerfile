@@ -34,6 +34,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  libxcb-xfixes0-dev \
  libx264-dev \
  libxss-dev \
+ libxxf86vm-dev \
  make \
  maven \
  qtmultimedia5-dev \
@@ -73,7 +74,7 @@ RUN bazel aquery --output=proto --show_timestamps //... > /dev/null
 
 # Now we can copy the entire tree. This is expected to change very often, as it
 # includes all of the sources of all projects.
-COPY workspace /src/workspace/
+COPY --chown=builder:builder workspace /src/workspace/
 
 # Append the Docker image default configs to .bazelrc. This allows child images
 # to have their own .bazelrc.local. We have to temporarily change back to root
