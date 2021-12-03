@@ -631,4 +631,5 @@ static const AVCodec * const codec_list[] = {
     &ff_xbin_decoder,
     &ff_idf_decoder,
     &ff_av1_decoder,
-    NULL };
+    NULL
+};
