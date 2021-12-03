@@ -34,6 +34,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  libxcb-xfixes0-dev \
  libx264-dev \
  libxss-dev \
+ libxxf86vm-dev \
  make \
  maven \
  qtmultimedia5-dev \
