@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && mv bazel.gpg /etc/apt/trusted.gpg.d/ \
  && echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list \
  && apt-get update && apt-get install -y --no-install-recommends \
- bazel \
+ bazel=4.2.2 \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 

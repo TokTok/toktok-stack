@@ -77,7 +77,7 @@ DOCKER_BUILD = docker build --ulimit memlock=67108864
 # We use an intermediate target here so "make" does the cleanup of workspace.tar
 # for us. It has to be 2 levels deep, otherwise it's considered "precious".
 build-%: %.tar
-	$(DOCKER_BUILD) -t $(IMAGE_VERSIONED) -t $(IMAGE_LATEST) - < $<
+	$(DOCKER_BUILD) --cache-from "$(IMAGE_LATEST)" -t $(IMAGE_VERSIONED) -t $(IMAGE_LATEST) - < $<
 
 .INTERMEDIATE: kythe.tar
 build-kythe: kythe.tar tools/kythe/Dockerfile
