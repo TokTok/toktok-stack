@@ -4,7 +4,7 @@ set -eux
 
 VERSION=$(make version)
 sed -i \
-  -e "s!image: toxchat/toktok-stack:.*!image: toxchat/toktok-stack:$VERSION!" \
+  -e "s!image: toxchat/toktok-stack:.*!image: toxchat/toktok-stack:$VERSION-third_party!" \
   ./*/.cirrus.yml \
   tools/project/haskell_cirrus.yml.in
 
