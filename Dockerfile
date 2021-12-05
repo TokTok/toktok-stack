@@ -58,7 +58,7 @@ RUN ["/tmp/prepare_third_party.sh"]
 RUN groupadd -r -g 1000 builder \
  && useradd --no-log-init -r -g builder -u 1000 builder \
  && mkdir -p /src/workspace /home/builder \
- && chown builder:builder /home/builder
+ && chown builder:builder /home/builder /src/workspace
 USER builder
 
 # Next, we copy the bare minimum to run a successful aquery. The aquery will
