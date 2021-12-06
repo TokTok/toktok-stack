@@ -11,6 +11,7 @@ branches:
     protection:
       required_status_checks:
         contexts:
+          - "buildifier"
           - "docker"
           - "Codacy Static Code Analysis"
           - "LGTM analysis: Go"
