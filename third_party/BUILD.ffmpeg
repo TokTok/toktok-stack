@@ -239,7 +239,6 @@ COPTS = [
         "-Wno-absolute-value",
         "-Wno-cpp",
         "-Wno-deprecated-declarations",
-        "-Wno-int-in-bool-context",
         "-Wno-missing-braces",
         "-Wno-parentheses",
         "-Wno-pointer-sign",

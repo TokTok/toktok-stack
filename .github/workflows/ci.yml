@@ -24,8 +24,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Pull latest toktok-stack image
         run: docker pull toxchat/toktok-stack:latest
-      - name: Build toktok-stack image
-        run: make
+      - name: Build toktok-stack base image
+        run: make build-workspace
+      - name: Build //third_party
+        if: ${{ github.event_name == 'push' }}
+        run: make -C tools/built
       - name: Push images to DockerHub
         if: ${{ github.event_name == 'push' }}
         run: make push
