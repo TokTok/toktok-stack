@@ -92,8 +92,8 @@ github_archive(
 github_archive(
     name = "rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "e5e5c3312fe9ccb3b911fafbf9921ad1cdff091fbbe3349a81c634c0ff35710d",
-    version = "222cfc286a120e18cc70acc0bc20fd002c3c39cb",
+    sha256 = "51efd446f05c3f8a7ae76f5304bb3213a801dc0464102615e2da08d2c997a2d6",
+    version = "a4fedf6d7517bcc48b49f0ed0ca51dd8c9bcc157",
 )
 
 load("@rules_haskell//haskell:ghc_bindist.bzl", "haskell_register_ghc_bindists")

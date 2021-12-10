@@ -9,6 +9,6 @@ build-%: built/Dockerfile.%
 push-%: build-%
 	docker push toxchat/toktok-stack:$(VERSION)-$*
 
-built/Dockerfile.%: src/Dockerfile.in Makefile
+built/Dockerfile.%: src/Dockerfile.in Makefile ../../Makefile
 	mkdir -p $(@D)
 	sed -e 's/$$VERSION/$(VERSION)/g;s/$$TARGET/$*/g' $< > $@
