@@ -6,12 +6,14 @@ set -eux
 
 "$THIS_DIR/prepare_android_sdk.sh"
 
-if [ ! -d third_party/android/android-ndk-r21d ]; then
-  wget -q https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip
-  mkdir -p third_party/android/
-  unzip -q -d third_party/android/ android-ndk-r21d-linux-x86_64.zip
-  rm android-ndk-r21d-linux-x86_64.zip
-fi
+# TODO(iphydf): Re-enable this when we're ready to build native binaries for
+# Android with Bazel.
+#if [ ! -d third_party/android/android-ndk-r21d ]; then
+#  wget -q https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip
+#  mkdir -p third_party/android/
+#  unzip -q -d third_party/android/ android-ndk-r21d-linux-x86_64.zip
+#  rm android-ndk-r21d-linux-x86_64.zip
+#fi
 
 if ! which javac; then
   if which apk; then

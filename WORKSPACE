@@ -666,11 +666,13 @@ android_sdk_repository(
     path = "third_party/android/sdk",
 )
 
-android_ndk_repository(
-    name = "androidndk",
-    api_level = 25,
-    path = "third_party/android/android-ndk-r21d",
-)
+# TODO(iphydf): Re-enable this when we're ready to build native binaries for
+# Android with Bazel.
+#android_ndk_repository(
+#    name = "androidndk",
+#    api_level = 25,
+#    path = "third_party/android/android-ndk-r21d",
+#)
 
 github_archive(
     name = "android_test_support",
