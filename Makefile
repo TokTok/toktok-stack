@@ -1,5 +1,5 @@
 IMAGE		= toxchat/toktok-stack
-IMAGE_VERSION	= 0.0.27
+IMAGE_VERSION	= 0.0.28
 IMAGE_VERSIONED	= $(IMAGE):$(IMAGE_VERSION)
 IMAGE_LATEST	= $(IMAGE):latest
 
@@ -92,6 +92,7 @@ TAR = tar --mode=ugo+rx --transform 's,^,$*/,;s,^$*/Dockerfile,Dockerfile,'
 # permissions to everyone. We make everything executable, because some things
 # need to be, and we have no easy way to be selective.
 %.tar: Makefile
+	tools/project/update_versions.sh
 	$(TAR) -hcf $@ $$($(FILES))
 
 # Bazel build products will end up here.

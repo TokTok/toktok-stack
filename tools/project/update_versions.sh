@@ -2,7 +2,7 @@
 
 set -eux
 
-VERSION=$(make version)
+VERSION=$(make -s version)
 sed -i \
   -e "s!image: toxchat/toktok-stack:.*!image: toxchat/toktok-stack:$VERSION-third_party!" \
   ./*/.cirrus.yml \
