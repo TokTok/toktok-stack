@@ -3,7 +3,6 @@
 import logging
 import os
 import shlex
-
 from typing import Any, Dict, List, Optional
 
 import builder

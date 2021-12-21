@@ -9,7 +9,6 @@ import re
 import shlex
 import subprocess  # nosec
 import sys
-
 from typing import Dict, Generator, List
 
 KYTHE_REPO = "io_kythe"
