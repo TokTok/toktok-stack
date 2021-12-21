@@ -1,10 +1,11 @@
 """Support module for YouCompleteMe."""
-
 import logging
 import os
 import shlex
-
-from typing import Any, Dict, List, Optional
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Optional
 
 import builder
 
@@ -28,12 +29,13 @@ def Settings(
     # Generate a compilation database with a single file in it.
     db = bazel.generate_compilation_database([filename])
     if not db:
-        raise Exception(filename)
+        raise Exception(f"unable to build compilation database for {filename}")
     flags = builder.flags_for_clang(bazel.execution_root(),
                                     shlex.split(db[0]["command"])[1:])
     return {"flags": flags}
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import sys
-    print(Settings(language='cfamily', filename=os.path.abspath(sys.argv[1])))
+
+    print(Settings(language="cfamily", filename=os.path.abspath(sys.argv[1])))

@@ -16,3 +16,4 @@ branches:
           - "Codacy Static Code Analysis"
           - "LGTM analysis: Go"
           - "LGTM analysis: Python"
+          - "youcompleteme"

@@ -9,7 +9,7 @@ import sys
 
 if sys.version_info.major == 3:
     SELF_DIR = os.path.dirname(os.path.abspath(__file__))
-    sys.path.append(os.path.join(SELF_DIR, "tools", "kythe"))
+    sys.path.insert(0, os.path.join(SELF_DIR, "tools", "kythe"))
     # pylint: disable=wrong-import-position,unused-import
     from ycm_extra_conf import Settings
 
