@@ -28,7 +28,7 @@ def Settings(
     # Generate a compilation database with a single file in it.
     db = bazel.generate_compilation_database([filename])
     if not db:
-        raise Exception(filename)
+        raise Exception(f"unable to build compilation database for {filename}")
     flags = builder.flags_for_clang(bazel.execution_root(),
                                     shlex.split(db[0]["command"])[1:])
     return {"flags": flags}

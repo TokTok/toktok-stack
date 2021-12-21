@@ -134,7 +134,7 @@ class Builder:
         """Return the absolute path to the directory with compile commands."""
         return os.path.join(
             os.path.dirname(self._info["bazel-bin"]),
-            "extra_actions/external", KYTHE_REPO, KYTHE_TOOLS, "extra_action")
+            "extra_actions", KYTHE_TOOLS, "extra_action")
 
     def bazel_info(self) -> Dict[str, str]:
         """Query bazel for the execution root and bazel-bin paths."""
