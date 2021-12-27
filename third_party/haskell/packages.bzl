@@ -460,6 +460,10 @@ packages = (
             sha256 = "b718a41057e25a3a71df693ab0fe2263d492e759679b3c2fea6ea33b171d3a5a",
             version = "1.1",
         ),
+        "recursion-schemes": struct(
+            sha256 = "66c3492a2fb10cea81348d0828c518b96b39f354d9e37d028a3fa279933c1405",
+            version = "5.2.2.2",
+        ),
         "resourcet": struct(
             sha256 = "17f20842043ad199961a801b6efb1233b9098eb3537f8395844268f6a223eb87",
             version = "1.2.4.2",

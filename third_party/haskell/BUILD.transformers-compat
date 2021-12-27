@@ -6,7 +6,10 @@ PACKAGE_NAME = "transformers-compat"
 
 haskell_library(
     name = PACKAGE_NAME,
-    srcs = glob(["src/**/*.hs*"]),
+    srcs = glob([
+        "generics/**/*.hs*",
+        "src/**/*.hs*",
+    ]),
     compiler_flags = [
         "-Wno-trustworthy-safe",
         "-Wno-unused-imports",
