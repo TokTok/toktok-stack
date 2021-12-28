@@ -35,7 +35,7 @@ run-local: $(CACHE) $(OUTPUT)
 run-persistent: $(CACHE) $(OUTPUT)
 	docker run $(DOCKERFLAGS)
 
-# Common flags for the rules above.
+# Common flags for the local and persistent rules above.
 DOCKERFLAGS := --rm -it					\
 	-v $(CACHE):/tmp/build_cache			\
 	-v $(OUTPUT):/tmp/build_output			\

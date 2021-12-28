@@ -5,9 +5,11 @@ push: push-third_party
 
 build-%: built/Dockerfile.%
 	docker build -t toxchat/toktok-stack:$(VERSION)-$* built -f $<
+	docker build -t toxchat/toktok-stack:latest-$* built -f $<
 
 push-%: build-%
 	docker push toxchat/toktok-stack:$(VERSION)-$*
+	docker push toxchat/toktok-stack:latest-$*
 
 built/Dockerfile.%: src/Dockerfile.in Makefile ../../Makefile
 	mkdir -p $(@D)
