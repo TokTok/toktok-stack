@@ -1,0 +1,51 @@
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "unix-time"
+
+genrule(
+    name = "config",
+    srcs = [
+        "configure",
+        "cbits/config.h.in",
+        "cbits/conv.c",
+    ],
+    outs = ["cbits/config.h"],
+    cmd = """
+        cd `dirname $(location configure)`
+        ./configure CC=$(CC)
+        DIR=`pwd`
+        cd -
+        cp $$DIR/cbits/config.h $@
+    """,
+    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
+)
+
+cc_library(
+    name = "cbits",
+    srcs = [
+        "cbits/config.h",
+        "cbits/conv.c",
+    ],
+    copts = ["-w"],
+    includes = ["cbits"],
+)
+
+haskell_library(
+    name = PACKAGE_NAME,
+    srcs = glob(["Data/**/*.hs*"]),
+    compiler_flags = [
+        "-Wno-unused-imports",
+    ],
+    version = packages[PACKAGE_NAME].version,
+    visibility = ["//visibility:public"],
+    deps = [
+        ":cbits",
+        hazel_library("base"),
+        hazel_library("binary"),
+        hazel_library("bytestring"),
+        hazel_library("old-time"),
+    ],
+)
