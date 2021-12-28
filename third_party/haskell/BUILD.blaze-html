@@ -1,0 +1,25 @@
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "blaze-html"
+
+haskell_library(
+    name = PACKAGE_NAME,
+    srcs = glob(["src/**/*.*hs"]),
+    compiler_flags = [
+        "-Wno-unused-imports",
+    ],
+    version = packages[PACKAGE_NAME].version,
+    visibility = ["//visibility:public"],
+    deps = [
+        hazel_library("base"),
+        hazel_library("blaze-builder"),
+        hazel_library("blaze-markup"),
+        hazel_library("bytestring"),
+        hazel_library("containers"),
+        hazel_library("directory"),
+        hazel_library("filepath"),
+        hazel_library("text"),
+    ],
+)

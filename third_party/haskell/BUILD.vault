@@ -1,0 +1,25 @@
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "vault"
+
+haskell_library(
+    name = PACKAGE_NAME,
+    srcs = glob([
+        "src/**/*.*h",
+        "src/**/*.*hs",
+    ]),
+    compiler_flags = [
+        "-XCPP",
+        "-DUseGHC",
+        "-Wno-unused-imports",
+    ],
+    version = packages[PACKAGE_NAME].version,
+    visibility = ["//visibility:public"],
+    deps = [
+        hazel_library("base"),
+        hazel_library("hashable"),
+        hazel_library("unordered-containers"),
+    ],
+)

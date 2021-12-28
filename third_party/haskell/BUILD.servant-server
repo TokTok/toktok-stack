@@ -1,0 +1,42 @@
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "servant-server"
+
+haskell_library(
+    name = PACKAGE_NAME,
+    srcs = glob(["src/**/*.*hs"]),
+    compiler_flags = [
+        "-Wno-unused-imports",
+    ],
+    version = packages[PACKAGE_NAME].version,
+    visibility = ["//visibility:public"],
+    deps = [
+        hazel_library("base"),
+        hazel_library("base64-bytestring"),
+        hazel_library("base-compat"),
+        hazel_library("bytestring"),
+        hazel_library("containers"),
+        hazel_library("exceptions"),
+        hazel_library("filepath"),
+        hazel_library("http-api-data"),
+        hazel_library("http-media"),
+        hazel_library("http-types"),
+        hazel_library("monad-control"),
+        hazel_library("mtl"),
+        hazel_library("network"),
+        hazel_library("network-uri"),
+        hazel_library("resourcet"),
+        hazel_library("servant"),
+        hazel_library("sop-core"),
+        hazel_library("string-conversions"),
+        hazel_library("tagged"),
+        hazel_library("text"),
+        hazel_library("transformers"),
+        hazel_library("transformers-base"),
+        hazel_library("wai"),
+        hazel_library("wai-app-static"),
+        hazel_library("word8"),
+    ],
+)

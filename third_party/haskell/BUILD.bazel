@@ -8,12 +8,14 @@ licenses(["notice"])
 
 [haskell_toolchain_library(name = name) for name in core_packages]
 
+PACKAGES = [pkg[len("BUILD."):] for pkg in glob(
+    ["BUILD.*"],
+    exclude = ["BUILD.bazel"],
+)]
+
 # A filegroup that depends on all Haskell packages, just so our Docker build
 # sees them in the first aquery and can download the dependencies.
 filegroup(
     name = "haskell",
-    srcs = [hazel_library(pkg[len("BUILD."):]) for pkg in glob(
-        ["BUILD.*"],
-        exclude = ["BUILD.bazel"],
-    )],
+    srcs = [hazel_library(pkg) for pkg in PACKAGES],
 )

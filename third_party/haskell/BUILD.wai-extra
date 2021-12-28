@@ -1,0 +1,46 @@
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "wai-extra"
+
+haskell_library(
+    name = PACKAGE_NAME,
+    srcs = glob(["Network/**/*.*hs"]),
+    compiler_flags = [
+        "-XOverloadedStrings",
+        "-Wno-deprecations",
+        "-Wno-unused-imports",
+    ],
+    version = packages[PACKAGE_NAME].version,
+    visibility = ["//visibility:public"],
+    deps = [
+        hazel_library("aeson"),
+        hazel_library("ansi-terminal"),
+        hazel_library("base"),
+        hazel_library("base64-bytestring"),
+        hazel_library("bytestring"),
+        hazel_library("call-stack"),
+        hazel_library("case-insensitive"),
+        hazel_library("containers"),
+        hazel_library("cookie"),
+        hazel_library("data-default-class"),
+        hazel_library("directory"),
+        hazel_library("fast-logger"),
+        hazel_library("http2"),
+        hazel_library("http-types"),
+        hazel_library("HUnit"),
+        hazel_library("iproute"),
+        hazel_library("network"),
+        hazel_library("resourcet"),
+        hazel_library("streaming-commons"),
+        hazel_library("text"),
+        hazel_library("time"),
+        hazel_library("transformers"),
+        hazel_library("unix"),
+        hazel_library("vault"),
+        hazel_library("wai"),
+        hazel_library("wai-logger"),
+        hazel_library("word8"),
+    ],
+)

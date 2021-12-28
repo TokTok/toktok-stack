@@ -1,0 +1,23 @@
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "http-media"
+
+haskell_library(
+    name = PACKAGE_NAME,
+    srcs = glob(["src/**/*.*hs"]),
+    compiler_flags = [
+        "-XOverloadedStrings",
+        "-Wno-unused-imports",
+    ],
+    version = packages[PACKAGE_NAME].version,
+    visibility = ["//visibility:public"],
+    deps = [
+        hazel_library("base"),
+        hazel_library("bytestring"),
+        hazel_library("case-insensitive"),
+        hazel_library("containers"),
+        hazel_library("utf8-string"),
+    ],
+)

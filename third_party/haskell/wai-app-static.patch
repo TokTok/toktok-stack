@@ -1,0 +1,14 @@
+diff -ur a/Network/Wai/Application/Static.hs b/Network/Wai/Application/Static.hs
+--- Network/Wai/Application/Static.hs	2020-07-04 16:06:28.000000000 +0000
++++ Network/Wai/Application/Static.hs	2021-12-28 12:03:30.170285674 +0000
+@@ -233,8 +233,8 @@
+         H.status405
+         [("Content-Type", "text/plain")]
+         "Only GET or HEAD is supported"
+-staticAppPieces _ [".hidden", "folder.png"] _ sendResponse = sendResponse $ W.responseLBS H.status200 [("Content-Type", "image/png")] $ L.fromChunks [$(embedFile "images/folder.png")]
+-staticAppPieces _ [".hidden", "haskell.png"] _ sendResponse = sendResponse $ W.responseLBS H.status200 [("Content-Type", "image/png")] $ L.fromChunks [$(embedFile "images/haskell.png")]
++staticAppPieces _ [".hidden", "folder.png"] _ sendResponse = sendResponse $ W.responseLBS H.status200 [("Content-Type", "image/png")] $ L.fromChunks [$(embedFile "external/haskell_wai_app_static__1453541560/images/folder.png")]
++staticAppPieces _ [".hidden", "haskell.png"] _ sendResponse = sendResponse $ W.responseLBS H.status200 [("Content-Type", "image/png")] $ L.fromChunks [$(embedFile "external/haskell_wai_app_static__1453541560/images/haskell.png")]
+ staticAppPieces ss rawPieces req sendResponse = liftIO $ do
+     case toPieces rawPieces of
+         Just pieces -> checkPieces ss pieces req >>= response
