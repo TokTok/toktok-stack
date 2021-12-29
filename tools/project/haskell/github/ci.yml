@@ -1,0 +1,9 @@
+name: ci
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    uses: TokTok/ci-tools/.github/workflows/haskell-ci.yml@master
