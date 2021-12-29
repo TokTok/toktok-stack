@@ -30,25 +30,28 @@ _haskell_ci = rule(
 
 def _haskell_ci_tests(haskell_package, custom_cirrus, custom_github):
     if not custom_github and native.glob([".github/workflows/ci.yml"], allow_empty = True):
-        native.sh_test(
-            name = "github_ci_test",
-            size = "small",
-            srcs = ["//tools/project:diff_test.sh"],
-            data = [
-                ".github/workflows/ci.yml",
-                "//tools/project:haskell_ci.yml.in",
-            ],
-            args = [
-                "$(location .github/workflows/ci.yml)",
-                "$(location //tools/project:haskell_ci.yml.in)",
-            ],
-        )
+        for workflow in ["checks", "ci", "publish"]:
+            yml_cur = ".github/workflows/%s.yml" % workflow
+            yml_ref = "//tools/project:haskell/github/%s.yml" % workflow
+            native.sh_test(
+                name = "github_%s_test" % workflow,
+                size = "small",
+                srcs = ["//tools/project:diff_test.sh"],
+                data = [
+                    yml_cur,
+                    yml_ref,
+                ],
+                args = [
+                    "$(location %s)" % yml_cur,
+                    "$(location %s)" % yml_ref,
+                ],
+            )
 
     if not custom_cirrus:
         _haskell_ci(
             name = "cirrus_ci",
             package = haskell_package,
-            template = "//tools/project:haskell_cirrus.yml.in",
+            template = "//tools/project:haskell/cirrus.yml.in",
         )
 
         native.sh_test(
