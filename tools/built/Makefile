@@ -1,7 +1,11 @@
 VERSION = $(shell make -s -C ../.. version)
 
-build: build-release build-debug
-push: push-release push-debug
+build: build-release
+push: push-release
+
+# TODO(iphydf): Fix debug build for Haskell.
+#build: build-debug
+#push: push-debug
 
 build-%: built/Dockerfile.%
 	docker build -t toxchat/toktok-stack:$(VERSION)-$* built -f $<
