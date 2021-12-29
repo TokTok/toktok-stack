@@ -1,0 +1,54 @@
+name: publish
+
+on:
+  push:
+    branches: [master]
+  release:
+    types: [released]
+
+jobs:
+  hackage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Checkout TokTok/ci-tools
+        uses: actions/checkout@v2
+        with:
+          repository: TokTok/ci-tools
+          path: ci-tools
+
+      - uses: actions/setup-haskell@v1
+        with:
+          ghc-version: "8.10.3"
+          cabal-version: "3.2"
+
+      - name: Cache
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-cabal
+        with:
+          path: |
+            ~/.cabal/packages
+            ~/.cabal/store
+            dist-newstyle
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.cabal') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build haddock documentation
+        run: cabal haddock --haddock-for-hackage --enable-doc
+
+      - name: Publish package candidate to Hackage
+        if: ${{ github.event_name == 'push' }}
+        env:
+          API_TOKEN_HACKAGE: ${{ secrets.API_TOKEN_HACKAGE }}
+        run: $GITHUB_WORKSPACE/ci-tools/bin/hackage_upload candidate
+
+      - name: Publish package to Hackage
+        if: ${{ github.event_name == 'release' }}
+        env:
+          API_TOKEN_HACKAGE: ${{ secrets.API_TOKEN_HACKAGE }}
+        run: $GITHUB_WORKSPACE/ci-tools/bin/hackage_upload

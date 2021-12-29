@@ -1,0 +1,66 @@
+name: ci
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-cabal:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-haskell@v1
+        with:
+          ghc-version: "9.2.1"
+          cabal-version: "3.6.2.0"
+
+      - name: Cache
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-cabal
+        with:
+          path: |
+            ~/.cabal/packages
+            ~/.cabal/store
+            dist-newstyle
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.cabal') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install non-Haskell dependencies
+        run: if [ -f tools/prepare_third_party.sh ]; then tools/prepare_third_party.sh; fi
+      - name: Run tests
+        run: cabal test --enable-doc all
+
+  build-stack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-haskell@v1
+        with:
+          ghc-version: "9.2.1"
+          enable-stack: true
+          stack-version: "latest"
+
+      - name: Cache
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-stack
+        with:
+          path: |
+            ~/.stack
+            .stack-work
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('stack.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install non-Haskell dependencies
+        run: if [ -f tools/prepare_third_party.sh ]; then tools/prepare_third_party.sh; fi
+      - name: Run tests
+        run: stack test
