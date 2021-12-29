@@ -11,6 +11,6 @@ sed -i \
 
 for i in hs-*/.github/workflows/ci.yml; do
   for wf in tools/project/haskell/github/*.yml; do
-    cp "$wf" "$(dirname $i)/$(basename $wf)"
+    cp "$wf" "$(dirname "$i")/$(basename "$wf")"
   done
 done
