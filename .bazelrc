@@ -122,6 +122,12 @@ build:release -c opt
 # NDEBUG disables asserts.
 #build:release --copt='-Wno-unused-variable'
 
+build:asan --copt='-fsanitize=address,undefined'
+build:asan --linkopt='-fsanitize=address,undefined'
+
+build:tsan --copt='-fsanitize=thread'
+build:tsan --linkopt='-fsanitize=thread'
+
 # Link-time optimization.
 build:lto --copt='-flto'
 build:lto --linkopt='-flto'

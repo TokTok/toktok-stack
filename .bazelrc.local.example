@@ -31,3 +31,7 @@ build --config=clang
 # Use this config to put tox into a test network that speaks an incompatible
 # protocol (all packet ids are shifted).
 #build --config=testnet
+
+# Run with LLVM sanitizers.
+#build --config=asan
+#build --config=tsan

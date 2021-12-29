@@ -1,5 +1,5 @@
 FROM toxchat/toktok-stack:$VERSION
 RUN ["bazel", "build", "-k", \
  "--config=remote", \
- "--config=release", \
- "//$TARGET/..."]
+ "--config=$CONFIG", \
+ "//third_party/..."]

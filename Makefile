@@ -20,7 +20,7 @@ build: build-workspace
 push:
 	docker push $(IMAGE_VERSIONED)
 	docker push $(IMAGE_LATEST)
-	$(MAKE) -C tools/built push-third_party
+	$(MAKE) -C tools/built push
 
 version:
 	@echo $(IMAGE_VERSION)

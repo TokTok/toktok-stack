@@ -1,7 +1,7 @@
 VERSION = $(shell make -s -C ../.. version)
 
-build: build-third_party
-push: push-third_party
+build: build-release build-debug
+push: push-release push-debug
 
 build-%: built/Dockerfile.%
 	docker build -t toxchat/toktok-stack:$(VERSION)-$* built -f $<
@@ -13,4 +13,4 @@ push-%: build-%
 
 built/Dockerfile.%: src/Dockerfile.in Makefile ../../Makefile
 	mkdir -p $(@D)
-	sed -e 's/$$VERSION/$(VERSION)/g;s/$$TARGET/$*/g' $< > $@
+	sed -e 's/$$VERSION/$(VERSION)/g;s/$$CONFIG/$*/g' $< > $@

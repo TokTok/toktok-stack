@@ -36,7 +36,7 @@ jobs:
       - name: Build the whole toktok-stack
         if: github.event_name == 'pull_request' && contains(github.event.pull_request.title, 'chore(deps)')
         run:
-          docker run --rm toxchat/toktok-stack:latest-third_party
+          docker run --rm toxchat/toktok-stack:latest-release
             bazel build
               --config=remote
               --config=release
