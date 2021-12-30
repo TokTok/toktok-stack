@@ -16,5 +16,5 @@ for i in hs-*/.github/workflows/ci.yml; do
 done
 
 for i in hs-*/; do
-  sed -e "s/hs-{PACKAGE}/${i}g" tools/project/haskell/cirrus.yml.in > "$i".cirrus.yml
+  sed -e "s/hs-{PACKAGE}/${i}g" tools/project/haskell/cirrus.yml.in >"$i".cirrus.yml
 done
