@@ -61,14 +61,53 @@ LS_FILES_RECURSIVE :=						\
 
 # Filter out Makefile (because we're ofter changing it when developing the
 # Docker image) and sbt project directories, because we've got some hacks in
-# there using symlinks and we don't need them for Bazel builds.
-FILES :=					\
-	($(LS_FILES_RECURSIVE))			\
-	| sed -e 's@^$(CURDIR)/@@'		\
-	| egrep -v '^jvm-[^/]*/project'		\
-	| egrep -v '^Makefile'			\
-	| egrep -v '.gitignore'			\
-	| egrep -v $(FILTER)			\
+# there using symlinks and we don't need them for Bazel builds. Also filter out
+# some other files not needed for Bazel builds.
+FILES :=						\
+	($(LS_FILES_RECURSIVE))				\
+	| sed -e 's@^$(CURDIR)/@@'			\
+	| grep -E -v '^\.github'			\
+	| grep -E -v '^c-toxcore/\.github/workflows'	\
+	| grep -E -v '^c-toxcore/other/analysis'	\
+	| grep -E -v '^c-toxcore/other/astyle'		\
+	| grep -E -v '^c-toxcore/other/docker'		\
+	| grep -E -v '^jvm-[^/]*/project'		\
+	| grep -E -v '^tools/built'			\
+	| grep -E -v '^tools/debug'			\
+	| grep -E -v '^tools/kythe'			\
+	| grep -E -v '^Makefile'			\
+	| grep -E -v '^README.md'			\
+	| grep -E -v '^\.bazelrc.local.example'		\
+	| grep -E -v '^\.ycm_extra_conf.py'		\
+	| grep -E -v '/\.circleci'			\
+	| grep -E -v '/\.clang-format'			\
+	| grep -E -v '/\.editorconfig'			\
+	| grep -E -v '/\.eslintrc\.json'		\
+	| grep -E -v '/\.github/dependabot\.yml'	\
+	| grep -E -v '/\.github/release-drafter\.yml'	\
+	| grep -E -v '/\.hadolint\.yaml'		\
+	| grep -E -v '/\.hlint\.yaml'			\
+	| grep -E -v '/\.md-style\.rb'			\
+	| grep -E -v '/\.prettier'			\
+	| grep -E -v '/\.restyled.yaml'			\
+	| grep -E -v '/\.travis'			\
+	| grep -E -v '/Gruntfile\.js'			\
+	| grep -E -v '/Procfile'			\
+	| grep -E -v '/Makefile'			\
+	| grep -E -v '/appveyor\.yml'			\
+	| grep -E -v '/checkstyle-config\.xml'		\
+	| grep -E -v '/configure'			\
+	| grep -E -v '/netlify.toml'			\
+	| grep -E -v '/package-lock\.json'		\
+	| grep -E -v '/stack\.yaml'			\
+	| grep -E -v 'CMake'				\
+	| grep -E -v '\.cmake$$'			\
+	| grep -E -v '\.gitattributes$$'		\
+	| grep -E -v '\.gitignore$$'			\
+	| grep -E -v '\.gitmodules$$'			\
+	| grep -E -v '\.m4$$'				\
+	| grep -E -v '\.sbt$$'				\
+	| grep -E -v $(FILTER)				\
 	| sort -u
 
 # https://github.com/golang/go/issues/37436
