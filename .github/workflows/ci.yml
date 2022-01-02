@@ -27,13 +27,16 @@ jobs:
         run: docker pull toxchat/toktok-stack:latest
       - name: Build toktok-stack base image
         run: make build-workspace
-      - name: Build //third_party
+      - name: Build //third_party in release mode
         if: github.event_name == 'push' || contains(github.event.pull_request.title, 'chore(deps)')
-        run: make -C tools/built
+        run: make -C tools/built build-release
+      - name: Build //third_party in debug mode
+        if: github.event_name == 'push' || contains(github.event.pull_request.title, 'chore(deps)')
+        run: make -C tools/built build-debug
       - name: Push images to DockerHub
         if: github.event_name == 'push'
         run: make push
-      - name: Build the whole toktok-stack
+      - name: Build the whole toktok-stack in release mode
         if: github.event_name == 'pull_request' && contains(github.event.pull_request.title, 'chore(deps)')
         run:
           docker run --rm toxchat/toktok-stack:latest-release
