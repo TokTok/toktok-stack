@@ -336,6 +336,11 @@ packages = (
             version = "0.2.2",
             patches = None,
         ),
+        "edit-distance": struct(
+            sha256 = "3e8885ee2f56ad4da940f043ae8f981ee2fe336b5e8e4ba3f7436cff4f526c4a",
+            version = "0.2.2.1",
+            patches = None,
+        ),
         "entropy": struct(
             sha256 = "adc759ff756a6d71a450422ba511177632f43a33bf673901fd2334f53ef8bf62",
             version = "0.4.1.6",

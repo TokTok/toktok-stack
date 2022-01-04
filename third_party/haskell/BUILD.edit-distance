@@ -1,0 +1,29 @@
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "edit-distance"
+
+haskell_library(
+    name = PACKAGE_NAME,
+    srcs = glob(
+        ["Text/**/*.*hs"],
+        exclude = [
+            "Text/EditDistance/Benchmark.hs",
+            "Text/EditDistance/Tests.hs",
+            "Text/EditDistance/Tests/*.hs",
+        ],
+    ),
+    compiler_flags = [
+        "-Wno-overlapping-patterns",
+        "-Wno-unused-imports",
+    ],
+    version = packages[PACKAGE_NAME].version,
+    visibility = ["//visibility:public"],
+    deps = [
+        hazel_library("array"),
+        hazel_library("base"),
+        hazel_library("containers"),
+        hazel_library("random"),
+    ],
+)
