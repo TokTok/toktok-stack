@@ -4,6 +4,7 @@ set -eux
 
 VERSION=$(make -s version)
 sed -i \
+  -e "s!image: toxchat/toktok-stack:.*-third_party!image: toxchat/toktok-stack:$VERSION-release!" \
   -e "s!image: toxchat/toktok-stack:.*-release!image: toxchat/toktok-stack:$VERSION-release!" \
   -e "s!image: toxchat/toktok-stack:.*-debug!image: toxchat/toktok-stack:$VERSION-debug!" \
   ./*/.cirrus.yml \
