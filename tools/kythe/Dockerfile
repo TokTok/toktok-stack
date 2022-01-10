@@ -1,5 +1,7 @@
-# hadolint ignore=DL3007
+# Extract index.
 FROM toxchat/kythe-buildenv:latest
 
+# From: https://kythe.io/examples/#extracting-other-bazel-based-repositories
 COPY kythe /src/workspace
+
 RUN ["/opt/build_index.sh"]

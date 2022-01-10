@@ -123,6 +123,9 @@ build-kythe: kythe.tar tools/kythe/Dockerfile
 	$(DOCKER_BUILD) -t toxchat/kythe-tables -f kythe/tools/kythe/Dockerfile - < $<
 	$(DOCKER_BUILD) -t toxchat/kythe-serving dockerfiles/kythe/serving
 
+push-kythe:
+	docker push toxchat/kythe-serving:latest
+
 TAR = tar --mode=ugo+rx --transform 's,^,$*/,;s,^$*/Dockerfile,Dockerfile,'
 
 # Build a .tar with the workspace in it. This will be unpacked in the
