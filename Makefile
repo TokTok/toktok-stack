@@ -67,6 +67,7 @@ FILES :=						\
 	($(LS_FILES_RECURSIVE))				\
 	| sed -e 's@^$(CURDIR)/@@'			\
 	| grep -E -v '^\.github'			\
+	| grep -E -v '^c-toxcore/\.github/scripts'	\
 	| grep -E -v '^c-toxcore/\.github/workflows'	\
 	| grep -E -v '^c-toxcore/other/analysis'	\
 	| grep -E -v '^c-toxcore/other/astyle'		\
