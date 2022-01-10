@@ -16,6 +16,7 @@ build --process_headers_in_dependencies
 build --strict_filesets=true
 build --enable_platform_specific_config
 build --watchfs
+build --local_cpu_resources=HOST_CPUS
 
 # TODO(https://github.com/tweag/rules_haskell/issues/1312): Remove this once
 # rules_haskell is happy without it.
@@ -25,9 +26,12 @@ build --experimental_generate_json_trace_profile
 build --experimental_json_trace_compression
 build --experimental_profile_cpu_usage
 
+build --experimental_inmemory_dotd_files
+build --experimental_inmemory_jdeps_files
 build --experimental_local_memory_estimate
 build --experimental_objc_include_scanning
 build --experimental_remotable_source_manifests
+build --experimental_repository_cache_hardlinks
 
 build --experimental_android_compress_java_resources=true
 build --experimental_android_resource_shrinking=true
@@ -45,11 +49,10 @@ build:linux --experimental_omitfp
 # Use persistent workers for Java and Scala compilers (much faster).
 build --strategy=Javac=worker
 build --strategy=Scalac=worker
+build --worker_sandboxing
 
-# toxchat/builder toolchain used by Docker and remote execution.
-build:builder-toolchain --crosstool_top=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_4.0.0/cc:toolchain
-build:builder-toolchain --host_javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_4.0.0/java:jdk
-build:builder-toolchain --javabase=@bazel_toolchains//configs/ubuntu16_04_clang/11.0.0/bazel_4.0.0/java:jdk
+# Also use persistent workers for Haskell.
+build --define use_worker=True
 
 build:libc++ --action_env=CXXFLAGS=-stdlib=libc++
 build:libc++ --action_env=LDFLAGS=-stdlib=libc++
@@ -64,7 +67,7 @@ build:remote --remote_http_cache=https://code.tox.chat/bazel
 # Use remote execution. Disabled by default, because we don't want everyone to
 # use the remote executors (and they might be down sometimes).
 build:remote-exec --remote_executor=grpc://code.tox.chat:8980
-build:remote-exec --config=builder-toolchain
+build:remote-exec --config=docker
 
 # Use local docker sandbox. This is a lot slower than linux-sandbox, but is more
 # hermetic and reproducible, so it is used on our CI.
@@ -72,7 +75,7 @@ build:docker-sandbox --experimental_docker_image=toxchat/builder:latest
 build:docker-sandbox --experimental_docker_verbose
 build:docker-sandbox --experimental_enable_docker_sandbox
 build:docker-sandbox --define=EXECUTOR=remote
-build:docker-sandbox --config=builder-toolchain
+build:docker-sandbox --config=docker
 
 build:docker-sandbox --genrule_strategy=docker
 build:docker-sandbox --spawn_strategy=docker
@@ -250,6 +253,7 @@ build:clang --per_file_copt='_test\\.cpp$@-Wno-redundant-parens'
 build:clang --per_file_copt='_test\\.cpp$@-Wno-undefined-reinterpret-cast'
 build:clang --per_file_copt='rcc_.*\\.cpp$@-Wno-global-constructors,-Wno-exit-time-destructors'
 build:clang --per_file_copt='moc_.*\\.cpp$@-Wno-deprecated'
+build:clang --per_file_copt='moc_.*\\.cpp$@-Wno-extra-semi-stmt'
 build:clang --per_file_copt='moc_.*\\.cpp$@-Wno-gnu-zero-variadic-macro-arguments'
 build:clang --per_file_copt='moc_.*\\.cpp$@-Wno-redundant-parens'
 build:clang --per_file_copt='moc_.*\\.cpp$@-Wno-undefined-reinterpret-cast'
@@ -276,6 +280,8 @@ build:clang --per_file_copt='//qtox@-Wno-non-virtual-dtor'
 build:clang --per_file_copt='//qtox@-Wno-error=range-loop-analysis'
 build:clang --per_file_copt='//qtox@-Wno-shadow'
 build:clang --per_file_copt='//qtox@-Wno-shadow-field'
+build:clang --per_file_copt='//qtox@-Wno-suggest-destructor-override'
+build:clang --per_file_copt='//qtox@-Wno-suggest-override'
 build:clang --per_file_copt='//qtox@-Wno-switch-enum'
 build:clang --per_file_copt='//qtox@-Wno-undef'
 build:clang --per_file_copt='//qtox@-Wno-unreachable-code-break'
@@ -286,7 +292,6 @@ build:clang --per_file_copt='//qtox@-Wno-weak-vtables'
 build:clang --per_file_copt='//toxic@-Wno-cast-align'
 build:clang --per_file_copt='//toxic@-Wno-cast-qual'
 build:clang --per_file_copt='//toxic@-Wno-format-nonliteral'
-build:clang --per_file_copt='//toxic@-Wno-missing-braces'
 build:clang --per_file_copt='//toxic@-Wno-missing-noreturn'
 build:clang --per_file_copt='//toxic@-Wno-missing-prototypes'
 build:clang --per_file_copt='//toxic@-Wno-missing-variable-declarations'
@@ -319,15 +324,16 @@ build:gnulike --per_file_copt='/go_default_library%@-w'
 build:gnulike --per_file_copt='\\.pb\\.cc$@-w'
 
 # Disable some clang warnings on ffmpeg.
+build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-bool-operation'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-braced-scalar-init'
+build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-implicit-const-int-float-conversion'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-incompatible-pointer-types-discards-qualifiers'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-pointer-bool-conversion'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-shorten-64-to-32'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-sometimes-uninitialized'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-string-plus-int'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-tautological-constant-out-of-range-compare'
-#build:clang --per_file_copt='external/vpx[:/]@-Wno-documentation-unknown-command'
-#build:clang --per_file_copt='external/vpx[:/]@-Wno-duplicate-enum'
+build:clang --per_file_copt='external/portaudio[:/]@-Wno-implicit-const-int-float-conversion'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-bool-operation'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-discarded-qualifiers'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-format-truncation'
@@ -337,14 +343,9 @@ build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-stringop-truncation'
 build:gcc --per_file_copt='external/haskell_cryptohash@-Wno-format-overflow'
 build:gcc --per_file_copt='external/tcl[:/]@-Wno-unused-but-set-variable'
 build:gcc --per_file_copt='external/xcb[:/]@-Wno-unused-but-set-variable'
-build:gcc --per_file_copt='external/yasm[:/]@-Wno-misleading-indentation'
 build:gcc --per_file_copt='external/yasm[:/]@-Wno-stringop-truncation'
 build:gcc --per_file_copt='external/yasm[:/]@-Wno-tautological-compare'
-
-# Haskell rules pass '-headerpad_max_install_names' on compile and link, but
-# it's only needed on link.
-# TODO(https://github.com/tweag/rules_haskell/issues/1295): Remove.
-#build:gnulike --copt='-Wno-unused-command-line-argument'
+build:gnulike --per_file_copt='external/yasm[:/]@-Wno-misleading-indentation'
 
 build:windows --copt='/WX' --linkopt='/WX'
 build:windows --per_file_copt='^external/libqrencode[:/]@/wd4273'
@@ -425,8 +426,8 @@ build:ci --jobs=50
 build:ci --show_timestamps
 build:ci --verbose_failures
 
-# Docker image build toxchat/toktok-stack running gcc-9.
-build:docker --config=gcc
+# Docker image build toxchat/toktok-stack running clang-12.
+build:docker --config=clang
 
 # Docker build doesn't support IPv6.
 build:docker --config=ci
