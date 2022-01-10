@@ -1,28 +1,25 @@
-FROM ubuntu:20.04
+FROM l.gcr.io/google/rbe-ubuntu16-04:latest
 
-# bazel dependencies
+# Upgrade existing system packages.
 # hadolint ignore=DL3008
-RUN apt-get update && apt-get install -y --no-install-recommends \
- curl \
- default-jdk \
- git \
- gnupg \
- python \
- python3-dev \
- wget \
+RUN apt-get update \
+ && DEBIAN_FRONTEND="noninteractive" apt-get upgrade -y \
+ && rm -rf /var/lib/apt/lists/*
+
+# Install Bazel dependencies.
+# hadolint ignore=DL3008
+RUN apt-get update \
+ && DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends apt-transport-https \
  && curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg \
  && mv bazel.gpg /etc/apt/trusted.gpg.d/ \
  && echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list \
- && apt-get update && apt-get install -y --no-install-recommends \
- bazel=4.2.2 \
- && apt-get clean \
+ && apt-get update && apt-get install -y --no-install-recommends bazel=4.2.2 \
  && rm -rf /var/lib/apt/lists/*
 
-ENV DEBIAN_FRONTEND="noninteractive"
-
-# toktok-stack dependencies
+# Install toktok-stack dependencies.
 # hadolint ignore=DL3008
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update \
+ && DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends \
  libasound2-dev \
  libgmp-dev \
  libncurses5-dev \
@@ -40,7 +37,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  qtmultimedia5-dev \
  qttools5-dev \
  qttools5-dev-tools \
- && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
 # First, we copy all the unpacked third_party downloads into the image. These
@@ -69,19 +65,17 @@ COPY workspace/tools/bazelrc.boot /src/workspace/.bazelrc
 COPY workspace/BUILD.bazel workspace/WORKSPACE workspace/.bazelignore /src/workspace/
 COPY workspace/third_party /src/workspace/third_party
 COPY workspace/tools/config /src/workspace/tools/config
+COPY workspace/tools/toolchain /src/workspace/tools/toolchain
 COPY workspace/tools/workspace /src/workspace/tools/workspace
-RUN bazel aquery --output=proto --show_timestamps //... > /dev/null
+RUN bazel aquery --config=docker --output=proto --show_timestamps //... > /dev/null
 
 # Now we can copy the entire tree. This is expected to change very often, as it
 # includes all of the sources of all projects.
 COPY --chown=builder:builder workspace /src/workspace/
 
 # Append the Docker image default configs to .bazelrc. This allows child images
-# to have their own .bazelrc.local. We have to temporarily change back to root
-# here so we can write to the read-only part of the image.
-USER root
+# to have their own .bazelrc.local.
 RUN echo 'import %workspace%/tools/bazelrc.docker' >> /src/workspace/.bazelrc
-USER builder
 
 # Finally, we run another aquery. This will download some more dependencies, but
 # the most expensive ones should already have been downloaded above.
