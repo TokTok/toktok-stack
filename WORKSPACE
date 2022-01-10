@@ -3,16 +3,6 @@ workspace(name = "toktok")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
 
-http_archive(
-    name = "bazel_toolchains",
-    sha256 = "1adf5db506a7e3c465a26988514cfc3971af6d5b3c2218925cd6e71ee443fc3f",
-    strip_prefix = "bazel-toolchains-4.0.0",
-    urls = [
-        "https://github.com/bazelbuild/bazel-toolchains/releases/download/4.0.0/bazel-toolchains-4.0.0.tar.gz",
-        "https://mirror.bazel.build/github.com/bazelbuild/bazel-toolchains/releases/download/4.0.0/bazel-toolchains-4.0.0.tar.gz",
-    ],
-)
-
 github_archive(
     name = "rules_cc",
     repo = "bazelbuild/rules_cc",
@@ -92,14 +82,17 @@ github_archive(
 github_archive(
     name = "rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "51efd446f05c3f8a7ae76f5304bb3213a801dc0464102615e2da08d2c997a2d6",
-    version = "a4fedf6d7517bcc48b49f0ed0ca51dd8c9bcc157",
+    sha256 = "c598214243f4827ae131ac607ab06e630218a531e4f7d70c7bda400f996d0feb",
+    version = "26a966abf7328b08c449c682f07d0e00e6f14466",
 )
 
 load("@rules_haskell//haskell:ghc_bindist.bzl", "haskell_register_ghc_bindists")
 load("@rules_haskell//haskell:repositories.bzl", "haskell_repositories")
+load("@rules_haskell//tools:repositories.bzl", "rules_haskell_worker_dependencies")
 
 haskell_repositories()
+
+rules_haskell_worker_dependencies()
 
 # This repository rule creates @ghc repository.
 haskell_register_ghc_bindists(
@@ -624,8 +617,8 @@ maven_install(
 github_archive(
     name = "io_bazel_rules_scala",
     repo = "bazelbuild/rules_scala",
-    sha256 = "ccf19e8f966022eaaca64da559c6140b23409829cb315f2eff5dc3e757fb6ad8",
-    version = "e4560ac332e9da731c1e50a76af2579c55836a5c",
+    sha256 = "5456e8d90f6a45b698f26f2aee5f86e4380c0afc14cbcd0994b8e69857c0c525",
+    version = "72adeb585081c4cf53d033d554dbdddbb1e59fbc",
 )
 
 load("@io_bazel_rules_scala//:scala_config.bzl", "scala_config")
@@ -678,8 +671,8 @@ android_sdk_repository(
 github_archive(
     name = "android_test_support",
     repo = "android/android-test",
-    sha256 = "b5fbd977ff1c764121ce943d6f4f1c41a84c9b1504c536c44bd2ca3deba96e3d",
-    version = "a9910dd4e248f2e0a5f5a705ad129ac07244b2f9",
+    sha256 = "815f688ea2e5f87060b5f5619db6dee2e2be9bd06cce5466a7079b8b5914e328",
+    version = "abef1152633d27a1b80b67ba47fa521ae777e84b",
 )
 
 load("@android_test_support//:repo.bzl", "android_test_repositories")

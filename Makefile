@@ -131,9 +131,12 @@ TAR = tar --mode=ugo+rx --transform 's,^,$*/,;s,^$*/Dockerfile,Dockerfile,'
 # otherwise the command line will be too large. We use --mode to give read
 # permissions to everyone. We make everything executable, because some things
 # need to be, and we have no easy way to be selective.
-%.tar: Makefile
+%.tar: Makefile tools/toolchain/LICENSE
 	tools/project/update_versions.sh
-	$(TAR) -hcf $@ $$($(FILES))
+	$(TAR) -hcf $@ $$($(FILES)) $$(find tools/toolchain -type f)
+
+tools/toolchain/LICENSE: tools/prepare_toolchain.sh
+	$<
 
 # Bazel build products will end up here.
 $(CACHE):  ; mkdir $@
