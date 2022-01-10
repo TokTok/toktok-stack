@@ -86,5 +86,3 @@ USER builder
 # Finally, we run another aquery. This will download some more dependencies, but
 # the most expensive ones should already have been downloaded above.
 RUN bazel aquery --output=proto //... > /dev/null
-
-ENTRYPOINT ["/bin/bash"]

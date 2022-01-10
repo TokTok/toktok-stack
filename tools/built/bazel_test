@@ -1,0 +1,19 @@
+#!/bin/sh
+
+TEST="bazel test \
+  --config=remote \
+  --config=release \
+  -- \
+  //... \
+  -//go-toxcore-c/... \
+  -//toxins/echobot/... \
+  -//toxins/toxvpn/..."
+
+# Retry tests 4 times. There are a lot of non-hermetic tests in this codebase
+# that will make each other fail, but hopefully by the 4th attempt, there will
+# be a small enough number left so that they can run fairly independently.
+# Also note that this is only a problem for a completely fresh build. Most of
+# the time, successful test results will already be cached and we won't actually
+# run all of them.
+docker run --name bazel-test --rm toxchat/toktok-stack:latest \
+  /bin/bash -c "$TEST || $TEST || $TEST || $TEST"
