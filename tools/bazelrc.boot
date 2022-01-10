@@ -17,13 +17,15 @@ build --experimental_repository_cache_hardlinks
 # is laid out. We could figure out which ones do and which don't, but then we'd
 # need to split them between two files. It's better to keep them all here.
 #
-# https://docs.bazel.build/versions/master/skylark/backward-compatibility.html
-#build --all_incompatible_changes
+# https://docs.bazel.build/versions/main/backward-compatibility.html
+build --all_incompatible_changes
 
 build --incompatible_allow_python_version_transitions
 build --incompatible_always_check_depset_elements
 build --incompatible_applicable_licenses
 build --incompatible_auto_configure_host_platform
+build --incompatible_avoid_conflict_dlls
+build --incompatible_config_setting_private_default_visibility
 build --incompatible_default_to_explicit_init_py
 build --incompatible_depset_for_libraries_to_link_getter
 build --incompatible_disable_cc_configuration_make_variables
@@ -38,7 +40,7 @@ build --incompatible_disable_legacy_cpp_toolchain_skylark_api
 build --incompatible_disable_legacy_crosstool_fields
 build --incompatible_disable_legacy_flags_cc_toolchain_api
 build --incompatible_disable_legacy_proto_provider
-build --incompatible_disable_native_android_rules="false"
+build --incompatible_disable_native_android_rules="false"  # rules_android
 build --incompatible_disable_nocopts
 build --incompatible_disable_proto_source_root
 build --incompatible_disable_runtimes_filegroups
@@ -51,32 +53,40 @@ build --incompatible_disallow_empty_glob
 build --incompatible_disallow_legacy_javainfo
 build --incompatible_disallow_legacy_py_provider
 build --incompatible_disallow_resource_jars
-build --incompatible_disallow_struct_provider_syntax="false"
+build --incompatible_disallow_struct_provider_syntax="false"  # bazel_tools
 build --incompatible_do_not_emit_buggy_external_repo_import
 build --incompatible_do_not_split_linking_cmdline
 build --incompatible_dont_emit_static_libgcc
 build --incompatible_dont_enable_host_nonhost_crosstool_features
+build --incompatible_enable_android_toolchain_resolution="false"  # NullPointerException in bazel
 build --incompatible_enable_cc_toolchain_resolution="false"  # TODO(iphydf): This breaks remote-exec.
 build --incompatible_enable_legacy_cpp_toolchain_skylark_api
 build --incompatible_enable_profile_by_default
+build --incompatible_enforce_config_setting_visibility="false"  # rules_go
+build --incompatible_exclusive_test_sandboxed
+build --incompatible_force_strict_header_check_from_starlark
 build --incompatible_generated_protos_in_virtual_imports
+build --incompatible_java_common_parameters
+build --incompatible_legacy_local_fallback="false"
 build --incompatible_linkopts_in_user_link_flags
 build --incompatible_linkopts_to_linklibs
-build --incompatible_load_cc_rules_from_bzl="false"
-build --incompatible_load_java_rules_from_bzl="false"
+build --incompatible_load_cc_rules_from_bzl="false"  # bazel-toolchains
+build --incompatible_load_java_rules_from_bzl
 build --incompatible_load_proto_rules_from_bzl
 build --incompatible_load_python_rules_from_bzl
 build --incompatible_make_thinlto_command_lines_standalone
 build --incompatible_merge_genfiles_directory
 build --incompatible_new_actions_api
 build --incompatible_no_attr_license
-build --incompatible_no_implicit_file_export="false"
-build --incompatible_no_rule_outputs_param="false"
+build --incompatible_no_implicit_file_export
+build --incompatible_no_rule_outputs_param="false"  # rules_scala
 build --incompatible_objc_compile_info_migration
+build --incompatible_objc_provider_remove_compile_info
 build --incompatible_prohibit_aapt1
 build --incompatible_provide_cc_toolchain_info_from_cc_toolchain_suite
 build --incompatible_py2_outputs_are_suffixed
 build --incompatible_py3_is_default
+build --incompatible_remote_output_paths_relative_to_input_root
 build --incompatible_remote_results_ignore_disk
 build --incompatible_remote_symlinks
 build --incompatible_remove_binary_profile
@@ -91,9 +101,11 @@ build --incompatible_restrict_string_escapes="false"  # kythe
 build --incompatible_run_shell_command_string
 build --incompatible_skip_genfiles_symlink
 build --incompatible_strict_action_env
+build --incompatible_struct_has_no_methods="false"  # rules_haskell
+build --incompatible_top_level_aspects_require_providers
 build --incompatible_use_cc_configure_from_rules_cc
 build --incompatible_use_native_patch
-build --incompatible_use_platforms_repo_for_constraints="false"
+build --incompatible_use_platforms_repo_for_constraints="false"  # rules_android
 build --incompatible_use_python_toolchains
 build --incompatible_use_specific_tool_files
 build --incompatible_use_toolchain_resolution_for_java_rules="false"  # TODO(https://github.com/bazelbuild/bazel/issues/7849): Enable.
@@ -103,3 +115,21 @@ build --incompatible_visibility_private_attributes_at_definition
 # rules_apple uses old style list commands.
 # TODO(https://github.com/bazelbuild/rules_apple/issues/736): Remove.
 build:macos --incompatible_run_shell_command_string="false"
+
+# Set several flags related to specifying the platform, toolchain and java
+# properties.
+build:docker --extra_toolchains=//tools/toolchain/java:all
+build:docker --host_javabase=//tools/toolchain/java:jdk
+build:docker --javabase=//tools/toolchain/java:jdk
+
+# C/C++ toolchain.
+build:docker --crosstool_top=//tools/toolchain/cc:toolchain
+
+# Platform flags:
+# The toolchain container used for execution is defined in the target indicated
+# by "extra_execution_platforms", "host_platform" and "platforms".
+# More about platforms: https://docs.bazel.build/versions/master/platforms.html
+build:docker --extra_toolchains=//tools/toolchain/config:cc-toolchain
+build:docker --extra_execution_platforms=//tools/toolchain/config:platform
+build:docker --host_platform=//tools/toolchain/config:platform
+build:docker --platforms=//tools/toolchain/config:platform
