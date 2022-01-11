@@ -116,20 +116,19 @@ build --incompatible_visibility_private_attributes_at_definition
 # TODO(https://github.com/bazelbuild/rules_apple/issues/736): Remove.
 build:macos --incompatible_run_shell_command_string="false"
 
-# Set several flags related to specifying the platform, toolchain and java
-# properties.
+# Java toolchain.
 build:docker --extra_toolchains=//tools/toolchain/java:all
 build:docker --host_javabase=//tools/toolchain/java:jdk
 build:docker --javabase=//tools/toolchain/java:jdk
 
 # C/C++ toolchain.
+build:docker --extra_toolchains=//tools/toolchain/config:cc-toolchain
 build:docker --crosstool_top=//tools/toolchain/cc:toolchain
 
 # Platform flags:
 # The toolchain container used for execution is defined in the target indicated
 # by "extra_execution_platforms", "host_platform" and "platforms".
 # More about platforms: https://docs.bazel.build/versions/master/platforms.html
-build:docker --extra_toolchains=//tools/toolchain/config:cc-toolchain
 build:docker --extra_execution_platforms=//tools/toolchain/config:platform
 build:docker --host_platform=//tools/toolchain/config:platform
 build:docker --platforms=//tools/toolchain/config:platform

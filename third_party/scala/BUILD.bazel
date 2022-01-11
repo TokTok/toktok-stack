@@ -1,10 +1,23 @@
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_test")
+load("@io_bazel_rules_scala//scala_proto:scala_proto.bzl", "scalapb_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "test_proto",
+    srcs = ["test.proto"],
+)
+
+scalapb_proto_library(
+    name = "test_scala_proto",
+    deps = [":test_proto"],
+)
 
 scala_test(
     name = "EmptyTest",
     size = "small",
     srcs = ["EmptyTest.scala"],
     deps = [
+        ":test_scala_proto",
         "@maven//:org_scalacheck_scalacheck_2_11",
         "@maven//:org_scalatestplus_scalacheck_1_14_2_11",
     ],

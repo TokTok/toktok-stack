@@ -335,7 +335,11 @@ build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-shorten-64-to-32'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-sometimes-uninitialized'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-string-plus-int'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-tautological-constant-out-of-range-compare'
+build:clang --per_file_copt='external/libvpx[:/]@-Wno-unused-but-set-variable'
 build:clang --per_file_copt='external/portaudio[:/]@-Wno-implicit-const-int-float-conversion'
+build:clang --per_file_copt='external/portaudio[:/]@-Wno-unused-but-set-variable'
+build:clang --per_file_copt='external/tcl[:/]@-Wno-unused-but-set-variable'
+build:clang --per_file_copt='external/yasm[:/]@-Wno-misleading-indentation'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-bool-operation'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-discarded-qualifiers'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-format-truncation'
@@ -343,11 +347,9 @@ build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-int-in-bool-context'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-maybe-uninitialized'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-stringop-truncation'
 build:gcc --per_file_copt='external/haskell_cryptohash@-Wno-format-overflow'
-build:gcc --per_file_copt='external/tcl[:/]@-Wno-unused-but-set-variable'
 build:gcc --per_file_copt='external/xcb[:/]@-Wno-unused-but-set-variable'
 build:gcc --per_file_copt='external/yasm[:/]@-Wno-stringop-truncation'
 build:gcc --per_file_copt='external/yasm[:/]@-Wno-tautological-compare'
-build:gnulike --per_file_copt='external/yasm[:/]@-Wno-misleading-indentation'
 
 build:windows --copt='/WX' --linkopt='/WX'
 build:windows --per_file_copt='^external/libqrencode[:/]@/wd4273'
@@ -428,7 +430,7 @@ build:ci --jobs=50
 build:ci --show_timestamps
 build:ci --verbose_failures
 
-# Docker image build toxchat/toktok-stack running clang-12.
+# Docker image build toxchat/toktok-stack running clang-14.
 build:docker --config=clang
 
 # Docker build doesn't support IPv6.

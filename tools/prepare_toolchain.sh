@@ -7,12 +7,10 @@ chmod +x /tmp/rbe_configs_gen
 
 /tmp/rbe_configs_gen \
   --bazel_version="$(cat .bazelversion)" \
-  --toolchain_container=l.gcr.io/google/rbe-ubuntu18-04:latest \
+  --toolchain_container=toxchat/builder:latest \
   --output_src_root="$PWD" \
   --output_config_path=tools/toolchain \
   --exec_os=linux \
   --target_os=linux
-
-sed -i -e 's/java-8-openjdk/java-11-openjdk/g' tools/toolchain/java/BUILD
 
 rm -f /tmp/rbe_configs_gen

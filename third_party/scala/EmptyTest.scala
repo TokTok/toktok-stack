@@ -1,6 +1,7 @@
 import org.scalacheck.Gen
 import org.scalatest.WordSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import test.proto.SomeType
 
 /**
  * This test really just exists to exercise scala_test in third_party before
@@ -15,6 +16,12 @@ final class EmptyTest extends WordSpec with ScalaCheckPropertyChecks {
         assert(value <= 10)
         assert(value >= 0)
       }
+    }
+  }
+
+  "proto object" should {
+    "be constructible" in {
+      new SomeType
     }
   }
 
