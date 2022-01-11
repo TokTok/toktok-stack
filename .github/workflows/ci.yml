@@ -41,6 +41,7 @@ jobs:
         run: tools/built/bazel_test
 
   kythe:
+    if: github.event_name == 'push' || contains(github.event.pull_request.title, 'chore(deps)')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -92,4 +93,4 @@ jobs:
           tools/prepare_android_sdk.sh
           echo 'build --config=gcc' > .bazelrc.local
       - name: Run YouCompleteMe helper for one source file
-        run: python .ycm_extra_conf.py c-toxcore/other/fun/cracker.c
+        run: python .ycm_extra_conf.py c-toxcore/other/fun/cracker_simple.c

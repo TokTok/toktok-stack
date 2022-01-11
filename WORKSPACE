@@ -88,11 +88,8 @@ github_archive(
 
 load("@rules_haskell//haskell:ghc_bindist.bzl", "haskell_register_ghc_bindists")
 load("@rules_haskell//haskell:repositories.bzl", "haskell_repositories")
-load("@rules_haskell//tools:repositories.bzl", "rules_haskell_worker_dependencies")
 
 haskell_repositories()
-
-rules_haskell_worker_dependencies()
 
 # This repository rule creates @ghc repository.
 haskell_register_ghc_bindists(

@@ -25,10 +25,11 @@ build --build_runfile_links
 build --experimental_generate_json_trace_profile
 build --experimental_json_trace_compression
 build --experimental_profile_cpu_usage
+# This kills parallelism entirely, running 1 action at a time.
+#build --experimental_local_memory_estimate
 
 build --experimental_inmemory_dotd_files
 build --experimental_inmemory_jdeps_files
-build --experimental_local_memory_estimate
 build --experimental_objc_include_scanning
 build --experimental_remotable_source_manifests
 build --experimental_repository_cache_hardlinks
@@ -50,9 +51,6 @@ build:linux --experimental_omitfp
 build --strategy=Javac=worker
 build --strategy=Scalac=worker
 build --worker_sandboxing
-
-# Also use persistent workers for Haskell.
-build --define use_worker=True
 
 build:libc++ --action_env=CXXFLAGS=-stdlib=libc++
 build:libc++ --action_env=LDFLAGS=-stdlib=libc++
@@ -157,13 +155,13 @@ build:android --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 build:android --verbose_failures
 build:android --copt='-Wno-unused-macros'
 
-build:gnulike --per_file_copt='[-_]avx\\.c$@-mavx'
-build:gnulike --per_file_copt='[-_]avx2\\.c$@-mavx2'
-build:gnulike --per_file_copt='[-_]sse\\.c$@-mssse3,-msse4'
-build:gnulike --per_file_copt='[-_]sse4\\.c$@-msse4'
-build:gnulike --per_file_copt='[-_]sse41\\.c$@-msse4.1'
-build:gnulike --per_file_copt='[-_]sse4_1\\.c$@-msse4.1'
-build:gnulike --per_file_copt='[-_]ssse3\\.c$@-mssse3'
+build:gnulike --per_file_copt='external/.*[-_]avx\\.c$@-mavx,-w'
+build:gnulike --per_file_copt='external/.*[-_]avx2\\.c$@-mavx2,-w'
+build:gnulike --per_file_copt='external/.*[-_]sse\\.c$@-mssse3,-msse4,-w'
+build:gnulike --per_file_copt='external/.*[-_]sse4\\.c$@-msse4,-w'
+build:gnulike --per_file_copt='external/.*[-_]sse41\\.c$@-msse4.1,-w'
+build:gnulike --per_file_copt='external/.*[-_]sse4_1\\.c$@-msse4.1,-w'
+build:gnulike --per_file_copt='external/.*[-_]ssse3\\.c$@-mssse3,-w'
 
 # Colour diagnostics, even though bazel uses non-tty pipes.
 build:gnulike --copt='-fdiagnostics-color=always'
@@ -195,6 +193,7 @@ build:gnulike --per_file_copt='//tools/debug[:/]@-g'
 test --test_output=errors
 test --test_verbose_timeout_warnings=true
 
+# This breaks Kythe.
 #build --distinct_host_configuration=false
 
 ##############################################################################
@@ -229,7 +228,11 @@ build:gnulike --per_file_copt='//toxins/toxvpn:import/src/toxvpn-remote.cpp@-Wno
 build:clang --copt='-Wthread-safety-analysis'
 build:clang --copt='-Wno-error=thread-safety-analysis'
 build:clang --copt='-Wno-error=inconsistent-missing-override'
+# This isn't a useful warning and makes code uglier.
 build:clang --copt='-Wno-missing-braces'
+# This warning triggers when system header macros introduce reserved
+# identifiers, which is exactly the point of them being reserved.
+build:clang --copt='-Wno-reserved-identifier'
 
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Weverything'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-c++98-compat'
@@ -343,11 +346,16 @@ build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-int-in-bool-context'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-maybe-uninitialized'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-stringop-truncation'
 build:gcc --per_file_copt='external/haskell_cryptohash@-Wno-format-overflow'
-build:gcc --per_file_copt='external/tcl[:/]@-Wno-unused-but-set-variable'
-build:gcc --per_file_copt='external/xcb[:/]@-Wno-unused-but-set-variable'
 build:gcc --per_file_copt='external/yasm[:/]@-Wno-stringop-truncation'
 build:gcc --per_file_copt='external/yasm[:/]@-Wno-tautological-compare'
+build:gnulike --per_file_copt='external/libvpx[:/]@-Wno-unused-but-set-variable'
+build:gnulike --per_file_copt='external/portaudio[:/]@-Wno-unused-but-set-variable'
+build:gnulike --per_file_copt='external/sdl2[:/]@-Wno-unused-but-set-variable'
+build:gnulike --per_file_copt='external/tcl[:/]@-Wno-typedef-redefinition'
+build:gnulike --per_file_copt='external/tcl[:/]@-Wno-unused-but-set-variable'
+build:gnulike --per_file_copt='external/xcb[:/]@-Wno-unused-but-set-variable'
 build:gnulike --per_file_copt='external/yasm[:/]@-Wno-misleading-indentation'
+build:gnulike --per_file_copt='external/yasm[:/]@-Wno-unused-but-set-variable'
 
 build:windows --copt='/WX' --linkopt='/WX'
 build:windows --per_file_copt='^external/libqrencode[:/]@/wd4273'
@@ -428,7 +436,7 @@ build:ci --jobs=50
 build:ci --show_timestamps
 build:ci --verbose_failures
 
-# Docker image build toxchat/toktok-stack running clang-12.
+# Docker image build toxchat/toktok-stack running clang-14.
 build:docker --config=clang
 
 # Docker build doesn't support IPv6.

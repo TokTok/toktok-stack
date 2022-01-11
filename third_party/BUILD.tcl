@@ -229,9 +229,7 @@ cc_library(
             "-DHAVE_SYS_PARAM_H=1",
             "-DHAVE_UNISTD_H=1",
             "-Iexternal/tcl/unix",
-            "-Wno-int-to-void-pointer-cast",
             "-Wno-implicit-int",
-            "-Wno-typedef-redefinition",
         ],
     }) + select({
         "@toktok//tools/config:linux": [

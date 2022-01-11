@@ -80,9 +80,7 @@ cc_library(
         "vpx_dsp_rtcd.h",
         "vpx_scale_rtcd.h",
     ],
-    deps = [
-        "@toktok//third_party/libvpx:vpx_config",
-    ],
+    deps = ["@toktok//third_party/libvpx:vpx_config"],
 )
 
 cc_library(
@@ -104,15 +102,19 @@ cc_library(
         "@toktok//tools/config:windows": [],
         "//conditions:default": ["vpx_ports/emms_mmx.c"],
     }),
+    hdrs = [
+        "vpx/vp8cx.h",
+        "vpx/vp8dx.h",
+        "vpx/vpx_decoder.h",
+        "vpx/vpx_encoder.h",
+        "vpx/vpx_image.h",
+    ],
     copts = [
         "-I$(GENDIR)/external/libvpx",
         "-Iexternal/libvpx",
     ] + select({
         "@toktok//tools/config:windows": [],
-        "//conditions:default": [
-            "-fvisibility=protected",
-            "-Wno-overflow",
-        ],
+        "//conditions:default": ["-fvisibility=protected"],
     }),
     includes = ["."],
     linkopts = select({
