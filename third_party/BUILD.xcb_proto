@@ -1,6 +1,8 @@
 load("@rules_python//python:defs.bzl", "py_library")
 load("@toktok//third_party/xcb_proto:protos.bzl", "xcb_protos")
 
+package(features = ["layering_check"])
+
 py_library(
     name = "xcbgen",
     srcs = glob(["xcbgen/*.py"]),

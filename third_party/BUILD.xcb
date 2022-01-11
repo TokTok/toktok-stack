@@ -2,6 +2,8 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@rules_python//python:defs.bzl", "py_binary")
 load("@toktok//third_party/xcb_proto:protos.bzl", "xcb_protos")
 
+package(features = ["layering_check"])
+
 py_binary(
     name = "c_client",
     srcs = ["src/c_client.py"],
@@ -33,11 +35,11 @@ cc_library(
     name = "xcb",
     srcs = [
         ":xcb_proto",
-        "include/xcb/xcb.h",
     ] + glob([
         "src/*.c",
         "src/*.h",
     ]),
+    hdrs = ["include/xcb/xcb.h"],
     copts = [
         "-DHAVE_CONFIG_H",
         "-Iexternal/xcb/src",

@@ -1,5 +1,7 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "objc_library")
 
+package(features = ["layering_check"])
+
 COPTS = [
     "-DAL_ALEXT_PROTOTYPES",
     "-I$(GENDIR)/third_party/openal/platform",
@@ -61,12 +63,6 @@ genrule(
 )
 
 cc_library(
-    name = "public",
-    hdrs = glob(["include/AL/*.h"]),
-    includes = ["include"],
-)
-
-cc_library(
     name = "openal_generic",
     srcs = glob(
         [
@@ -106,10 +102,11 @@ cc_library(
         "@toktok//tools/config:osx": [],
         "@toktok//tools/config:windows": [],
     }),
+    hdrs = glob(["include/AL/*.h"]),
     copts = COPTS,
+    includes = ["include"],
     linkopts = ["-ldl"],
     deps = [
-        ":public",
         #"@sdl2",
         "@toktok//third_party/openal:config",
     ] + select({

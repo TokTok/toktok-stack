@@ -1,5 +1,7 @@
 load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
 
+package(features = ["layering_check"])
+
 cc_library(
     name = "msgpack",
     srcs = glob(["src/*.c"]),
