@@ -1,10 +1,7 @@
 VERSION = $(shell make -s -C ../.. version)
 
-build: build-release
-push: push-release
-
-build: build-debug
-push: push-debug
+build: build-release build-debug #build-asan build-msan build-tsan
+push: push-release push-debug #push-asan push-msan push-tsan
 
 build-%: built/Dockerfile.%
 	docker build -t toxchat/toktok-stack:$(VERSION)-$* built -f $<

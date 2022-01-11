@@ -1,5 +1,7 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
+package(features = ["layering_check"])
+
 genrule(
     name = "regen_config",
     srcs = glob(
@@ -49,10 +51,7 @@ cc_library(
     srcs = [
         "configmake.h",
         "unistring/array-mergesort.h",
-        "unistring/c-ctype.h",
-        "unistring/c-strcase.h",
         "unistring/c-strcasecmp.c",
-        "unistring/c-strcaseeq.h",
         "unistring/c-strncasecmp.c",
         "unistring/localcharset.c",
         "unistring/malloca.c",
@@ -112,6 +111,9 @@ cc_library(
         "unistring/xalloc-oversized.h",
     ],
     hdrs = [
+        "unistring/c-ctype.h",
+        "unistring/c-strcase.h",
+        "unistring/c-strcaseeq.h",
         "unistring/iconveh.h",
         "unistring/localcharset.h",
         "unistring/striconveha.h",
@@ -204,5 +206,6 @@ cc_library(
     deps = [
         ":gnulib",
         ":unistring",
+        "@toktok//third_party/libidn2:config",
     ],
 )

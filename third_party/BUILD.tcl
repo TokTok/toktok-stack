@@ -1,5 +1,8 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
 
+# TODO(iphydf): Enable once @zlib stops being so private.
+#package(features = ["layering_check"])
+
 filegroup(
     name = "library",
     srcs = ["library/init.tcl"],
@@ -142,6 +145,7 @@ cc_library(
             exclude = ["win/tclWinTest.c"],
         ),
     }),
+    hdrs = ["generic/tcl.h"],
     copts = [
         "-DBUILD_tcl",
         "-DCFG_INSTALL_BINDIR='\"CFG_INSTALL_BINDIR\"'",

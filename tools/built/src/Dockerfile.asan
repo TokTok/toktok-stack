@@ -1,0 +1,8 @@
+# Pre-build //third_party in asan mode for speedy PR builds on sub-repos.
+FROM toxchat/toktok-stack:$VERSION
+
+RUN echo 'build --config=remote'  > .bazelrc.local \
+ && echo 'build --config=release' > .bazelrc.local \
+ && echo 'build --config=asan'   >> .bazelrc.local
+
+RUN ["bazel", "build", "-k", "//third_party/..."]

@@ -1,5 +1,7 @@
 load("@toktok//third_party/qt:build_defs.bzl", "qt_import")
 
+package(features = ["layering_check"])
+
 [alias(
     name = name,
     actual = select({

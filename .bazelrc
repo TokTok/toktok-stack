@@ -126,6 +126,9 @@ build:release -c opt
 build:asan --copt='-fsanitize=address,undefined'
 build:asan --linkopt='-fsanitize=address,undefined'
 
+build:msan --copt='-fsanitize=memory'
+build:msan --linkopt='-fsanitize=memory'
+
 build:tsan --copt='-fsanitize=thread'
 build:tsan --linkopt='-fsanitize=thread'
 

@@ -1,5 +1,7 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
+package(features = ["layering_check"])
+
 # TODO(iphydf): Build asound in bazel.
 cc_library(
     name = "asound",
