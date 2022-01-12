@@ -20,6 +20,7 @@ def parse_bazel(build):
         open(build).read(),
         {
             "load": lambda bzl, *symbols: None,
+            "package": lambda **kwargs: None,
             "project": lambda **kwargs: None,
             "alex_lexer": lambda **kwargs: None,
             "happy_parser": lambda **kwargs: None,

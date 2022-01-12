@@ -72,6 +72,8 @@ jobs:
     needs: docker-release
     if: github.event_name == 'push'
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Build //third_party in debug mode and push to DockerHub
         run: make -C tools/built build-debug
       - name: Push debug image to DockerHub
@@ -82,6 +84,8 @@ jobs:
     needs: docker-release
     if: github.event_name == 'push'
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Build //third_party in asan mode and push to DockerHub
         run: make -C tools/built build-asan
       - name: Push asan image to DockerHub
@@ -92,6 +96,8 @@ jobs:
     needs: docker-release
     if: github.event_name == 'push'
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Build //third_party in msan mode and push to DockerHub
         run: make -C tools/built build-msan
       - name: Push msan image to DockerHub
@@ -102,6 +108,8 @@ jobs:
     needs: docker-release
     if: github.event_name == 'push'
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Build //third_party in tsan mode and push to DockerHub
         run: make -C tools/built build-tsan
       - name: Push tsan image to DockerHub
