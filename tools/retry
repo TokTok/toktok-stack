@@ -7,5 +7,8 @@ my $ATTEMPTS = shift @ARGV;
 
 for my $i (1 .. $ATTEMPTS) {
    print "=== Attempt $i ===\n";
-   last unless system @ARGV;
+   exit 0 unless system @ARGV;
 }
+
+print "Failed after $ATTEMPTS attempts: @ARGV\n";
+exit 1;
