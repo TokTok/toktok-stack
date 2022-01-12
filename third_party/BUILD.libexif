@@ -46,6 +46,7 @@ cc_library(
     hdrs = [
         "libexif/_stdint.h",
         "libexif/exif.h",
+        "libexif/exif-loader.h",
     ],
     copts = [
         "-w",  # disable all warnings.

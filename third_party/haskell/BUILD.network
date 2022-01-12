@@ -5,6 +5,8 @@ load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 PACKAGE_NAME = "network"
 
+package(features = ["-layering_check"])
+
 genrule(
     name = "config",
     srcs = [

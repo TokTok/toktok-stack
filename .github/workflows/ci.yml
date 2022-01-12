@@ -1,76 +1,13 @@
 ---
 name: ci
 
+# These checks only run on pull requests as they don't need to publish anything
+# on push. See docker.yml for jobs that run on both pull requests and pushes.
 on:
-  push:
-    branches: [master]
   pull_request:
     branches: [master]
 
 jobs:
-  docker:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Login to DockerHub
-        if: github.event_name == 'push'
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Pull latest toktok-stack image
-        run: docker pull toxchat/toktok-stack:latest
-      - name: Build toktok-stack base image
-        run: make build-workspace
-      - name: Build //third_party in release mode
-        if: github.event_name == 'push' || contains(github.event.pull_request.title, 'chore(deps)')
-        run: make -C tools/built build-release
-      - name: Build //third_party in debug mode
-        if: github.event_name == 'push' || contains(github.event.pull_request.title, 'chore(deps)')
-        run: make -C tools/built build-debug
-#     - name: Build //third_party in asan mode
-#       if: github.event_name == 'push' || contains(github.event.pull_request.title, 'chore(deps)')
-#       run: make -C tools/built build-asan
-#     - name: Build //third_party in msan mode
-#       if: github.event_name == 'push' || contains(github.event.pull_request.title, 'chore(deps)')
-#       run: make -C tools/built build-msan
-#     - name: Build //third_party in tsan mode
-#       if: github.event_name == 'push' || contains(github.event.pull_request.title, 'chore(deps)')
-#       run: make -C tools/built build-tsan
-      - name: Push images to DockerHub
-        if: github.event_name == 'push'
-        run: make push
-      - name: Build and test the whole toktok-stack in release mode
-        if: github.event_name == 'pull_request' && contains(github.event.pull_request.title, 'chore(deps)')
-        run: tools/built/bazel_test
-
-  kythe:
-    if: github.event_name == 'push' || contains(github.event.pull_request.title, 'chore(deps)')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Login to DockerHub
-        if: github.event_name == 'push'
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build Kythe tables
-        run: make build-kythe
-      - name: Push Kythe image to DockerHub
-        if: github.event_name == 'push'
-        run: make push-kythe
-
   buildifier:
     runs-on: ubuntu-latest
     steps:

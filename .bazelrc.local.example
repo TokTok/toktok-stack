@@ -34,4 +34,5 @@ build --config=clang
 
 # Run with LLVM sanitizers.
 #build --config=asan
+#build --config=msan
 #build --config=tsan

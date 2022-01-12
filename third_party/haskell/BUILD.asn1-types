@@ -4,6 +4,8 @@ load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 PACKAGE_NAME = "asn1-types"
 
+package(features = ["-layering_check"])
+
 haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["Data/**/*.hs"]),

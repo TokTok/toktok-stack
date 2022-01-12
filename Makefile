@@ -17,9 +17,7 @@ TARGET		= //...
 build: build-workspace
 	$(MAKE) -C tools/built
 
-push:
-	docker push $(IMAGE_VERSIONED)
-	docker push $(IMAGE_LATEST)
+push: push-workspace
 	$(MAKE) -C tools/built push
 
 version:
@@ -117,6 +115,12 @@ DOCKER_BUILD = docker build --ulimit memlock=67108864
 build-workspace: workspace.tar
 	$(DOCKER_BUILD) --cache-from "$(IMAGE_LATEST)" -t $(IMAGE_VERSIONED) -t $(IMAGE_LATEST) - < $<
 	#$(DOCKER_BUILD) -t $(IMAGE_VERSIONED) -t $(IMAGE_LATEST) - < $<
+	-docker rm $(docker ps -a | grep -o '^[0-9a-f]...........')
+	-docker rmi $(docker images -f "dangling=true" -q)
+
+push-workspace:
+	docker push $(IMAGE_VERSIONED)
+	docker push $(IMAGE_LATEST)
 
 .INTERMEDIATE: kythe.tar
 build-kythe: kythe.tar tools/kythe/Dockerfile

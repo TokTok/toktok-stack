@@ -2448,6 +2448,13 @@ cc_library(
         ":assemblies",
         ":regen_ffversion",
     ],
+    hdrs = [
+        "libavcodec/avcodec.h",
+        "libavdevice/avdevice.h",
+        "libavformat/avformat.h",
+        "libavutil/imgutils.h",
+        "libswscale/swscale.h",
+    ],
     copts = COPTS,
     includes = ["."],
     visibility = ["//visibility:public"],

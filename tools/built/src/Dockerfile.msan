@@ -1,8 +1,7 @@
 # Pre-build //third_party in msan mode for speedy PR builds on sub-repos.
 FROM toxchat/toktok-stack:$VERSION
 
-RUN echo 'build --config=remote'  >> .bazelrc.local \
- && echo 'build --config=release' >> .bazelrc.local \
+RUN echo 'build --config=release' >> .bazelrc.local \
  && echo 'build --config=msan'    >> .bazelrc.local
 
-RUN ["bazel", "build", "-k", "//third_party/..."]
+RUN ["bazel", "build", "-k", "--", "//third_party/...",  "-//third_party/haskell/..."]

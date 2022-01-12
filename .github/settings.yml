@@ -13,7 +13,7 @@ branches:
         contexts:
           - "buildifier"
           - "Codacy Static Code Analysis"
-          - "docker"
+          - "docker-release"
           - "kythe"
           - "LGTM analysis: Go"
           - "LGTM analysis: Python"

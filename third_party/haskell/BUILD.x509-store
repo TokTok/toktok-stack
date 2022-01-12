@@ -4,6 +4,8 @@ load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 PACKAGE_NAME = "x509-store"
 
+package(features = ["-layering_check"])
+
 haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["Data/**/*.hs"]),

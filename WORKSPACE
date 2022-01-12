@@ -47,8 +47,8 @@ github_archive(
 github_archive(
     name = "com_google_protobuf",
     repo = "protocolbuffers/protobuf",
-    sha256 = "25f1292d4ea6666f460a2a30038eef121e6c3937ae0f61d610611dfb14b0bd32",
-    version = "v3.19.1",
+    sha256 = "6b6bf5cd8d0cca442745c4c3c9f527c83ad6ef35a405f64db5215889ac779b42",
+    version = "v3.19.3",
 )
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
@@ -97,6 +97,7 @@ haskell_register_ghc_bindists(
         "-Wall",
         "-Werror",
         "-optP=-Wno-trigraphs",
+        "-optc=-Wno-unused-command-line-argument",
         "-fdiagnostics-color=always",
     ],
     version = "8.10.3",

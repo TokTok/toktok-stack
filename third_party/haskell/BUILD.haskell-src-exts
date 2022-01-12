@@ -5,6 +5,8 @@ load("@toktok//third_party/haskell/happy:build_defs.bzl", "happy_parser")
 
 PACKAGE_NAME = "haskell-src-exts"
 
+package(features = ["-layering_check"])
+
 happy_parser(
     name = "InternalParser",
     src = "src/Language/Haskell/Exts/InternalParser.ly",

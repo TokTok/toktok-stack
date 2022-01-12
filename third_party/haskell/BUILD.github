@@ -4,6 +4,8 @@ load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 PACKAGE_NAME = "github"
 
+package(features = ["-layering_check"])
+
 genrule(
     name = "paths",
     outs = ["src/Paths_github.hs"],

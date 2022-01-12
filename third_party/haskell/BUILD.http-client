@@ -4,6 +4,8 @@ load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 PACKAGE_NAME = "http-client"
 
+package(features = ["-layering_check"])
+
 haskell_library(
     name = "http-client-publicsuffixlist",
     srcs = glob(["publicsuffixlist/**/*.*hs"]),

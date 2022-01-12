@@ -22,6 +22,10 @@ build --local_cpu_resources=HOST_CPUS
 # rules_haskell is happy without it.
 build --build_runfile_links
 
+# TODO(https://github.com/protocolbuffers/protobuf/issues/9406): Enable once
+# protobuf has its layering fixed.
+#build --features=layering_check
+
 build --experimental_generate_json_trace_profile
 build --experimental_json_trace_compression
 build --experimental_profile_cpu_usage
@@ -123,12 +127,19 @@ build:release -c opt
 # NDEBUG disables asserts.
 #build:release --copt='-Wno-unused-variable'
 
+build:sanitizer --copt='-g'
+build:sanitizer --copt='-U_NDEBUG'
+build:sanitizer --strip=never
+
+build:asan --config=sanitizer
 build:asan --copt='-fsanitize=address,undefined'
 build:asan --linkopt='-fsanitize=address,undefined'
 
+build:msan --config=sanitizer
 build:msan --copt='-fsanitize=memory'
 build:msan --linkopt='-fsanitize=memory'
 
+build:tsan --config=sanitizer
 build:tsan --copt='-fsanitize=thread'
 build:tsan --linkopt='-fsanitize=thread'
 
@@ -185,6 +196,7 @@ build:musl --copt='-isystem/usr/lib/gcc/x86_64-linux-gnu/6/include'
 
 # Enable trace logging for toxcore.
 build --per_file_copt='//c-toxcore/@-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_TRACE'
+build --per_file_copt='//c-toxcore/@-DUSE_STDERR_LOGGER'
 
 # Use this config to put tox into a test network that speaks an incompatible
 # protocol (all packet ids are shifted).

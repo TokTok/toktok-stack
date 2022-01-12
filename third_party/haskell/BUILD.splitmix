@@ -4,6 +4,8 @@ load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 PACKAGE_NAME = "splitmix"
 
+package(features = ["-layering_check"])
+
 haskell_library(
     name = "splitmix-compat",
     srcs = glob(["src-compat/**/*.*hs"]),

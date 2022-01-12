@@ -5,6 +5,8 @@ load("@toktok//third_party/haskell:packages.bzl", "packages")
 
 PACKAGE_NAME = "ansi-terminal"
 
+package(features = ["-layering_check"])
+
 cc_library(
     name = "cbits",
     hdrs = glob(["src/includes/*.hs"]),

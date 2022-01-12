@@ -6,6 +6,8 @@ load("@toktok//third_party/haskell/happy:build_defs.bzl", "happy_parser")
 
 PACKAGE_NAME = "language-c"
 
+package(features = ["-layering_check"])
+
 alex_lexer(
     name = "Lexer",
     src = "src/Language/C/Parser/Lexer.x",

@@ -1,7 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
 
-# TODO(iphydf): Enable once @zlib stops being so private.
-#package(features = ["layering_check"])
+package(features = ["layering_check"])
 
 filegroup(
     name = "library",
@@ -254,6 +253,8 @@ cc_library(
         "@toktok//tools/config:windows": [],
     }),
     defines = ["STATIC_BUILD"],
+    # TODO(iphydf): Enable once @zlib stops being so private.
+    features = ["-layering_check"],
     includes = ["generic"],
     linkopts = select({
         "@toktok//tools/config:linux": [

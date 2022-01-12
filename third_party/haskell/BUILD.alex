@@ -2,6 +2,8 @@ load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
 load("@rules_haskell//haskell:defs.bzl", "haskell_binary")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
+package(features = ["-layering_check"])
+
 genrule(
     name = "paths",
     outs = ["Paths_alex.hs"],
