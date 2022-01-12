@@ -1,28 +1,5 @@
 FROM toxchat/bazel:latest
 
-# Install toktok-stack dependencies.
-RUN apt-get update \
- && DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends \
- libasound2-dev \
- libgmp-dev \
- libncurses5-dev \
- libncursesw5-dev \
- libqt5opengl5-dev \
- libqt5svg5-dev \
- libssl-dev \
- libtinfo5 \
- libxcb-xfixes0-dev \
- libx264-dev \
- libxss-dev \
- libxxf86vm-dev \
- make \
- maven \
- qtmultimedia5-dev \
- qttools5-dev \
- qttools5-dev-tools \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
-
 # First, we copy all the unpacked third_party downloads into the image. These
 # are rarely changing, so we won't need to rebuild this part of the image often.
 # Dependencies installed with apt above should never change, as we should be

@@ -65,7 +65,7 @@ build:remote --remote_http_cache=https://code.tox.chat/bazel
 # Use remote execution. Disabled by default, because we don't want everyone to
 # use the remote executors (and they might be down sometimes).
 build:remote-exec --remote_executor=grpc://code.tox.chat:8980
-build:remote-exec --config=docker
+build:remote-exec --config=rbe
 
 # Use local docker sandbox. This is a lot slower than linux-sandbox, but is more
 # hermetic and reproducible, so it is used on our CI.
@@ -73,7 +73,7 @@ build:docker-sandbox --experimental_docker_image=toxchat/builder:latest
 build:docker-sandbox --experimental_docker_verbose
 build:docker-sandbox --experimental_enable_docker_sandbox
 build:docker-sandbox --define=EXECUTOR=remote
-build:docker-sandbox --config=docker
+build:docker-sandbox --config=rbe
 
 build:docker-sandbox --genrule_strategy=docker
 build:docker-sandbox --spawn_strategy=docker
@@ -439,8 +439,8 @@ build:ci --jobs=50
 build:ci --show_timestamps
 build:ci --verbose_failures
 
-# Docker image build toxchat/toktok-stack running clang-14.
-build:docker --config=clang
+# The "rbe" config sets up the toolchains for clang-14.
+build:rbe --config=clang
 
 # Docker build doesn't support IPv6.
 build:docker --config=ci

@@ -40,18 +40,22 @@ build --incompatible_use_toolchain_resolution_for_java_rules="false"  # TODO(htt
 build:macos --incompatible_run_shell_command_string="false"
 
 # Java toolchain.
-build:docker --extra_toolchains=//tools/toolchain/java:all
-build:docker --host_javabase=//tools/toolchain/java:jdk
-build:docker --javabase=//tools/toolchain/java:jdk
+build:rbe --extra_toolchains=//tools/toolchain/java:all
+build:rbe --host_javabase=//tools/toolchain/java:jdk
+build:rbe --javabase=//tools/toolchain/java:jdk
 
 # C/C++ toolchain.
-build:docker --extra_toolchains=//tools/toolchain/config:cc-toolchain
-build:docker --crosstool_top=//tools/toolchain/cc:toolchain
+build:rbe --extra_toolchains=//tools/toolchain/config:cc-toolchain
+build:rbe --crosstool_top=//tools/toolchain/cc:toolchain
 
 # Platform flags:
 # The toolchain container used for execution is defined in the target indicated
 # by "extra_execution_platforms", "host_platform" and "platforms".
 # More about platforms: https://docs.bazel.build/versions/master/platforms.html
-build:docker --extra_execution_platforms=//tools/toolchain/config:platform
-build:docker --host_platform=//tools/toolchain/config:platform
-build:docker --platforms=//tools/toolchain/config:platform
+build:rbe --extra_execution_platforms=//tools/toolchain/config:platform
+build:rbe --host_platform=//tools/toolchain/config:platform
+build:rbe --platforms=//tools/toolchain/config:platform
+
+# Docker image build toxchat/toktok-stack running clang-14 in the
+# toxchat/builder image.
+build:docker --config=rbe
