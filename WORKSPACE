@@ -97,6 +97,7 @@ haskell_register_ghc_bindists(
         "-Wall",
         "-Werror",
         "-optP=-Wno-trigraphs",
+        "-optc=-Wno-unused-command-line-argument",
         "-fdiagnostics-color=always",
     ],
     version = "8.10.3",
