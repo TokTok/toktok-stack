@@ -1,0 +1,11 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+my $ATTEMPTS = shift @ARGV;
+
+for my $i (1 .. $ATTEMPTS) {
+   print "=== Attempt $i ===\n";
+   last unless system @ARGV;
+}
