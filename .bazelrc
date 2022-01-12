@@ -134,6 +134,8 @@ build:sanitizer --strip=never
 build:asan --config=sanitizer
 build:asan --copt='-fsanitize=address,undefined'
 build:asan --linkopt='-fsanitize=address,undefined'
+# https://github.com/bazelbuild/bazel/issues/11122
+build:asan --linkopt='-fsanitize-link-c++-runtime'
 
 build:msan --config=sanitizer
 build:msan --copt='-fsanitize=memory'
