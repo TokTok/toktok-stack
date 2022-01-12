@@ -1,8 +1,8 @@
 # Pre-build //third_party in debug mode for speedy PR builds on sub-repos.
 FROM toxchat/toktok-stack:$VERSION
 
-RUN echo 'build --config=remote'  > .bazelrc.local \
- && echo 'build --config=debug'   > .bazelrc.local
+RUN echo 'build --config=remote' >> .bazelrc.local \
+ && echo 'build --config=debug'  >> .bazelrc.local
 
 # TODO(iphydf): Fix debug build for Haskell.
 RUN ["bazel", "build", "-k", "--", "//third_party/...",  "-//third_party/haskell/..."]
