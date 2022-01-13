@@ -1,0 +1,36 @@
+diff -ur a/silk/decode_core.c b/silk/decode_core.c
+--- silk/decode_core.c	2021-09-27 21:52:22.000000000 +0000
++++ silk/decode_core.c	2022-01-13 14:10:53.487171175 +0000
+@@ -44,7 +44,7 @@
+ )
+ {
+     opus_int   i, k, lag = 0, start_idx, sLTP_buf_idx, NLSF_interpolation_flag, signalType;
+-    opus_int16 *A_Q12, *B_Q14, *pxq, A_Q12_tmp[ MAX_LPC_ORDER ];
++    opus_int16 *A_Q12, *B_Q14, *pxq, A_Q12_tmp[ MAX_LPC_ORDER ] = {0};
+     VARDECL( opus_int16, sLTP );
+     VARDECL( opus_int32, sLTP_Q15 );
+     opus_int32 LTP_pred_Q13, LPC_pred_Q10, Gain_Q10, inv_gain_Q31, gain_adj_Q16, rand_seed, offset_Q10;
+diff -ur a/silk/float/encode_frame_FLP.c b/silk/float/encode_frame_FLP.c
+--- silk/float/encode_frame_FLP.c	2021-09-27 21:52:22.000000000 +0000
++++ silk/float/encode_frame_FLP.c	2022-01-13 14:09:01.783404709 +0000
+@@ -388,7 +388,7 @@
+ {
+     opus_int     k;
+     opus_int32   Gains_Q16[ MAX_NB_SUBFR ];
+-    silk_float   TempGains[ MAX_NB_SUBFR ];
++    silk_float   TempGains[ MAX_NB_SUBFR ] = {0};
+     SideInfoIndices *psIndices_LBRR = &psEnc->sCmn.indices_LBRR[ psEnc->sCmn.nFramesEncoded ];
+     silk_nsq_state sNSQ_LBRR;
+ 
+diff -ur a/silk/float/pitch_analysis_core_FLP.c b/silk/float/pitch_analysis_core_FLP.c
+--- silk/float/pitch_analysis_core_FLP.c	2022-01-13 14:07:58.343559808 +0000
++++ silk/float/pitch_analysis_core_FLP.c	2022-01-13 14:07:32.835623379 +0000
+@@ -86,7 +86,7 @@
+     opus_int16 frame_4_FIX[ PE_MAX_FRAME_LENGTH_MS * 4 ];
+     opus_int32 filt_state[ 6 ];
+     silk_float threshold, contour_bias;
+-    silk_float C[ PE_MAX_NB_SUBFR][ (PE_MAX_LAG >> 1) + 5 ];
++    silk_float C[ PE_MAX_NB_SUBFR][ (PE_MAX_LAG >> 1) + 5 ] = {0};
+     opus_val32 xcorr[ PE_MAX_LAG_MS * 4 - PE_MIN_LAG_MS * 4 + 1 ];
+     silk_float CC[ PE_NB_CBKS_STAGE2_EXT ];
+     const silk_float *target_ptr, *basis_ptr;
