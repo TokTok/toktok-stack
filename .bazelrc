@@ -127,6 +127,12 @@ build:release -c opt
 # NDEBUG disables asserts.
 #build:release --copt='-Wno-unused-variable'
 
+build:valgrind --run_under="valgrind --track-origins=yes --error-exitcode=1 --fullpath-after=/proc/self/cwd/"
+build:valgrind --jobs=4
+build:valgrind --test_timeout=300
+build:valgrind --strip=never
+build:valgrind --per_file_copt='//c-toxcore[:/]@-g,-U_NDEBUG'
+
 build:sanitizer --copt='-g'
 build:sanitizer --copt='-U_NDEBUG'
 build:sanitizer --strip=never
