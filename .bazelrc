@@ -127,29 +127,42 @@ build:release -c opt
 # NDEBUG disables asserts.
 #build:release --copt='-Wno-unused-variable'
 
+build:dynamic-analysis --jobs=4
+build:dynamic-analysis --test_timeout=300
+build:dynamic-analysis --strip=never
+build:dynamic-analysis --per_file_copt='//c-toxcore[:/]@-g,-U_NDEBUG'
+
 build:valgrind --run_under="valgrind --track-origins=yes --error-exitcode=1 --fullpath-after=/proc/self/cwd/"
-build:valgrind --jobs=4
-build:valgrind --test_timeout=300
-build:valgrind --strip=never
-build:valgrind --per_file_copt='//c-toxcore[:/]@-g,-U_NDEBUG'
+build:valgrind --config=dynamic-analysis
+
+build:drmemory --run_under="drmemory --"
+build:drmemory --config=dynamic-analysis
 
 build:sanitizer --copt='-g'
 build:sanitizer --copt='-U_NDEBUG'
+build:sanitizer --copt='-fno-inline'
+build:sanitizer --copt='-fno-omit-frame-pointer'
 build:sanitizer --strip=never
+build:sanitizer --flaky_test_attempts=1
 
 build:asan --config=sanitizer
 build:asan --copt='-fsanitize=address,undefined'
 build:asan --linkopt='-fsanitize=address,undefined'
 # https://github.com/bazelbuild/bazel/issues/11122
 build:asan --linkopt='-fsanitize-link-c++-runtime'
+build:msan --test_env=ASAN_OPTIONS=color=always
 
 build:msan --config=sanitizer
+build:msan --config=libc++
 build:msan --copt='-fsanitize=memory'
+build:msan --copt='-fsanitize-memory-track-origins=2'
 build:msan --linkopt='-fsanitize=memory'
+build:msan --test_env=MSAN_OPTIONS=color=always
 
 build:tsan --config=sanitizer
 build:tsan --copt='-fsanitize=thread'
 build:tsan --linkopt='-fsanitize=thread'
+build:tsan --test_env=TSAN_OPTIONS=color=always
 
 # Link-time optimization.
 build:lto --copt='-flto'

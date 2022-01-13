@@ -326,6 +326,7 @@ new_github_archive(
 
 new_github_archive(
     name = "libsodium",
+    patches = ["@toktok//third_party/patches:libsodium.patch"],
     repo = "jedisct1/libsodium",
     sha256 = "1b72c0cdbc535ce42e14ac15e8fc7c089a3ee9ffe5183399fd77f0f3746ea794",
     version = "1.0.18",
@@ -361,6 +362,7 @@ new_github_archive(
 
 new_github_archive(
     name = "opus",
+    patches = ["@toktok//third_party/patches:opus.patch"],
     repo = "xiph/opus",
     sha256 = "dd991a0a8ecf885b147297290b3585c16d236e2c2283272ecaa7778dae524292",
     version = "a8e6a77c5fe0c37aa6788f939f24f8cd22ae2652",
