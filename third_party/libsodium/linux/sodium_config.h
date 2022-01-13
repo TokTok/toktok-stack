@@ -1,11 +1,11 @@
 #define PACKAGE_NAME "libsodium"
 #define PACKAGE_TARNAME "libsodium"
-#define PACKAGE_VERSION "1.0.16"
-#define PACKAGE_STRING "libsodium 1.0.16"
+#define PACKAGE_VERSION "1.0.18"
+#define PACKAGE_STRING "libsodium 1.0.18"
 #define PACKAGE_BUGREPORT "https://github.com/jedisct1/libsodium/issues"
 #define PACKAGE_URL "https://github.com/jedisct1/libsodium"
 #define PACKAGE "libsodium"
-#define VERSION "1.0.16"
+#define VERSION "1.0.18"
 #define HAVE_PTHREAD_PRIO_INHERIT 1
 #define HAVE_PTHREAD 1
 #define STDC_HEADERS 1
@@ -26,7 +26,7 @@
 #define HAVE_C_VARARRAYS 1
 #define HAVE_CATCHABLE_SEGV 1
 #define HAVE_CATCHABLE_ABRT 1
-#define TLS __thread
+#define TLS _Thread_local
 #define HAVE_DLFCN_H 1
 #define LT_OBJDIR ".libs/"
 #define HAVE_MMINTRIN_H 1
@@ -36,10 +36,13 @@
 #define HAVE_SMMINTRIN_H 1
 #define HAVE_AVXINTRIN_H 1
 #define HAVE_AVX2INTRIN_H 1
+#define HAVE_AVX512FINTRIN_H 1
 #define HAVE_WMMINTRIN_H 1
 #define HAVE_RDRAND 1
 #define HAVE_SYS_MMAN_H 1
+#define HAVE_SYS_RANDOM_H 1
 #define NATIVE_LITTLE_ENDIAN 1
+#define HAVE_INLINE_ASM 1
 #define HAVE_AMD64_ASM 1
 #define HAVE_AVX_ASM 1
 #define HAVE_TI_MODE 1
@@ -54,7 +57,10 @@
 #define HAVE_MLOCK 1
 #define HAVE_MADVISE 1
 #define HAVE_MPROTECT 1
-#define HAVE_NANOSLEEP 1
+#define HAVE_GETRANDOM 1
+#define HAVE_GETENTROPY 1
 #define HAVE_POSIX_MEMALIGN 1
 #define HAVE_GETPID 1
+#define HAVE_NANOSLEEP 1
+#define HAVE_EXPLICIT_BZERO 1
 #define CONFIGURED 1

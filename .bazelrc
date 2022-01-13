@@ -192,6 +192,7 @@ build:android --copt='-Wno-unused-macros'
 
 build:gnulike --per_file_copt='external/.*[-_]avx\\.c$@-mavx,-w'
 build:gnulike --per_file_copt='external/.*[-_]avx2\\.c$@-mavx2,-w'
+build:gnulike --per_file_copt='external/.*[-_]avx512f\\.c$@-mavx512f,-w'
 build:gnulike --per_file_copt='external/.*[-_]sse\\.c$@-mssse3,-msse4,-w'
 build:gnulike --per_file_copt='external/.*[-_]sse4\\.c$@-msse4,-w'
 build:gnulike --per_file_copt='external/.*[-_]sse41\\.c$@-msse4.1,-w'

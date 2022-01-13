@@ -3,18 +3,32 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 package(features = ["layering_check"])
 
 genrule(
-    name = "regen_version",
-    srcs = [
-        "configure",
+    name = "regen_config",
+    srcs = glob([
+        "m4/*",
+        "**/*.am",
+    ]) + [
+        "configure.ac",
         "libsodium.pc.in",
         "libsodium-uninstalled.pc.in",
         "src/libsodium/include/sodium/version.h.in",
         "src/libsodium/sodium/version.c",
     ],
-    outs = ["src/libsodium/include/sodium/version.h"],
+    outs = [
+        "src/libsodium/include/sodium/version.h",
+        "src/sodium_config.h",
+    ],
     cmd = """
-        $(location configure)
-        cp src/libsodium/include/sodium/version.h $@
+        cd $$(dirname $(location configure.ac))
+        autoreconf -fi
+        ./configure
+        cd -
+        find . -name sodium_config.h
+        cp $$(dirname $(location configure.ac))/src/libsodium/include/sodium/version.h $(location src/libsodium/include/sodium/version.h)
+        grep '^DEFS = ' $$(dirname $(location configure.ac))/Makefile $(location src/libsodium/include/sodium/version.h) \\
+          | grep -E -o -- '-D([^ ]|\\\\ )+' \\
+          | sed -e 's/^-D/#define /;s/=/ /;s/\\\\//g' \\
+          > $(location src/sodium_config.h)
     """,
 )
 
