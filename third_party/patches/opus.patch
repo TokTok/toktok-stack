@@ -21,7 +21,7 @@ diff -ur a/silk/float/encode_frame_FLP.c b/silk/float/encode_frame_FLP.c
 +    silk_float   TempGains[ MAX_NB_SUBFR ] = {0};
      SideInfoIndices *psIndices_LBRR = &psEnc->sCmn.indices_LBRR[ psEnc->sCmn.nFramesEncoded ];
      silk_nsq_state sNSQ_LBRR;
- 
+
 diff -ur a/silk/float/pitch_analysis_core_FLP.c b/silk/float/pitch_analysis_core_FLP.c
 --- silk/float/pitch_analysis_core_FLP.c	2022-01-13 14:07:58.343559808 +0000
 +++ silk/float/pitch_analysis_core_FLP.c	2022-01-13 14:07:32.835623379 +0000
