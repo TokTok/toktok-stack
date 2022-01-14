@@ -20,10 +20,12 @@ def parse_bazel(build: str) -> PackageData:
     data: PackageData = {}
 
     for stmt in bzl.body:
-        if (isinstance(stmt, ast.Expr)
-                and isinstance(stmt.value, ast.Call)
-                and isinstance(stmt.value.func, ast.Name)
-                and stmt.value.func.id in ("haskell_library", "hspec_test")):
+        if (
+            isinstance(stmt, ast.Expr)
+            and isinstance(stmt.value, ast.Call)
+            and isinstance(stmt.value.func, ast.Name)
+            and stmt.value.func.id in ("haskell_library", "hspec_test")
+        ):
             section: Dict[str, Union[str, List[str]]] = {}
             for arg in stmt.value.keywords:
                 if arg.arg == "name" and isinstance(arg.value, ast.Str):
@@ -33,7 +35,9 @@ def parse_bazel(build: str) -> PackageData:
                 if arg.arg == "deps" and isinstance(arg.value, ast.List):
                     deps = []
                     for dep in arg.value.elts:
-                        if isinstance(dep, ast.Call) and isinstance(dep.args[0], ast.Str):
+                        if isinstance(dep, ast.Call) and isinstance(
+                            dep.args[0], ast.Str
+                        ):
                             deps.append(dep.args[0].s)
                         elif isinstance(dep, ast.Str):
                             deps.append(dep.s)
@@ -46,7 +50,8 @@ def parse_bazel(build: str) -> PackageData:
 
 def parse_cabal(cabal: str) -> Dict[str, PackageData]:
     data: Dict[str, PackageData] = (
-        collections.defaultdict(lambda: collections.defaultdict(dict)))
+        collections.defaultdict(lambda: collections.defaultdict(dict))
+    )
     section = data[""][""]
     key = ""
     value = ""
@@ -78,11 +83,7 @@ def parse_cabal(cabal: str) -> Dict[str, PackageData]:
     return data
 
 
-def resolve_bazel_deps(
-    bazel: str,
-    data: PackageData,
-    name: str,
-) -> Set[str]:
+def resolve_bazel_deps(bazel: str, data: PackageData, name: str,) -> Set[str]:
     def go(name: str) -> List[str]:
         deps = []
         rule = data.get(name, None)
@@ -129,51 +130,53 @@ def check_deps(
 ) -> None:
     bazel_deps = resolve_bazel_deps(bazel, bazel_data, bazel_name)
     cabal_deps = {
-        dep.split(" ")[0]
-        for dep in must_list(cabal_section["build-depends"])
+        dep.split(" ")[0] for dep in must_list(cabal_section["build-depends"])
     }
 
     cabal_missing = sorted(bazel_deps - cabal_deps)
     section = cabal_section["__name__"]
     if cabal_missing:
-        print("{cabal} is missing deps for section "
-              "'{section}' from {bazel} '{bazel_name}': "
-              "{cabal_missing}".format(
-                  cabal=cabal,
-                  section=section,
-                  bazel=bazel,
-                  bazel_name=bazel_name,
-                  cabal_missing=cabal_missing,
-              ))
+        print(
+            "{cabal} is missing deps for section "
+            "'{section}' from {bazel} '{bazel_name}': "
+            "{cabal_missing}".format(
+                cabal=cabal,
+                section=section,
+                bazel=bazel,
+                bazel_name=bazel_name,
+                cabal_missing=cabal_missing,
+            )
+        )
         sys.exit(1)
 
     bazel_missing = sorted(cabal_deps - bazel_deps)
     if bazel_missing:
-        print("{bazel} is missing deps for '{bazel_name}' from "
-              "{cabal} section '{section}: "
-              "{bazel_missing}".format(
-                  bazel=bazel,
-                  bazel_name=bazel_name,
-                  cabal=cabal,
-                  section=section,
-                  bazel_missing=bazel_missing,
-              ))
+        print(
+            "{bazel} is missing deps for '{bazel_name}' from "
+            "{cabal} section '{section}: "
+            "{bazel_missing}".format(
+                bazel=bazel,
+                bazel_name=bazel_name,
+                cabal=cabal,
+                section=section,
+                bazel_missing=bazel_missing,
+            )
+        )
         sys.exit(1)
 
 
 def check_version(
-    root: PackageSection,
-    bazel_data: PackageData,
-    package_name: str,
+    root: PackageSection, bazel_data: PackageData, package_name: str,
 ) -> None:
     cabal_version = root["version"]
     bazel_version = bazel_data["hs-" + package_name]["version"]
     if cabal_version != bazel_version:
-        print("bazel version ({bazel_version}) and cabal version "
-              "({cabal_version}) disagree".format(
-                  bazel_version=bazel_version,
-                  cabal_version=cabal_version,
-              ))
+        print(
+            "bazel version ({bazel_version}) and cabal version "
+            "({cabal_version}) disagree".format(
+                bazel_version=bazel_version, cabal_version=cabal_version,
+            )
+        )
         sys.exit(1)
 
 
@@ -186,10 +189,12 @@ def main(args: List[str]) -> None:
     root = cabal_data[""][""]
     package_name = must_str(root["name"])
 
-    check_deps(bazel, cabal, bazel_data, "hs-" + package_name,
-               cabal_data["library"][""])
-    check_deps(bazel, cabal, bazel_data, "testsuite",
-               cabal_data["test-suite"]["testsuite"])
+    check_deps(
+        bazel, cabal, bazel_data, "hs-" + package_name, cabal_data["library"][""]
+    )
+    check_deps(
+        bazel, cabal, bazel_data, "testsuite", cabal_data["test-suite"]["testsuite"]
+    )
 
     check_version(root, bazel_data, package_name)
 

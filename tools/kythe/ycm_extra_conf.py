@@ -13,9 +13,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 # pylint: disable=invalid-name
 def Settings(
-        language: str,
-        filename: Optional[str] = None,
-        client_data: Optional[str] = None,
+    language: str, filename: Optional[str] = None, client_data: Optional[str] = None,
 ) -> Dict[str, List[str]]:
     """Return flags for the file loaded into vim."""
     del client_data
@@ -29,8 +27,9 @@ def Settings(
     db = bazel.generate_compilation_database([filename])
     if not db:
         raise Exception(f"unable to build compilation database for {filename}")
-    flags = builder.flags_for_clang(bazel.execution_root(),
-                                    shlex.split(db[0]["command"])[1:])
+    flags = builder.flags_for_clang(
+        bazel.execution_root(), shlex.split(db[0]["command"])[1:]
+    )
     return {"flags": flags}
 
 
