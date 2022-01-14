@@ -4,10 +4,7 @@ import ast
 import collections
 import re
 import sys
-from typing import Dict
-from typing import List
-from typing import Set
-from typing import Union
+from typing import Dict, List, Set, Union
 
 PackageSection = Dict[str, Union[str, List[str]]]
 PackageData = Dict[str, PackageSection]

@@ -6,11 +6,9 @@ import os
 import shutil
 import subprocess  # nosec
 import sys
-
 from typing import List
 
 import builder
-
 
 _CHECKS = [
     "-checks=-clang-analyzer-security.insecureAPI.strcpy",
