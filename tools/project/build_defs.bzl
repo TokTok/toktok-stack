@@ -74,7 +74,7 @@ def _haskell_project(custom_cirrus, custom_github):
     native.sh_test(
         name = "cabal_test",
         size = "small",
-        srcs = ["//tools/project:cabal_test.py"],
+        srcs = ["//tools/project:cabal_test"],
         args = [
             "$(location BUILD.bazel)",
             "$(location %s)" % cabal_file,

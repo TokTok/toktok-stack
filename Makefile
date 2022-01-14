@@ -47,7 +47,9 @@ DOCKERFLAGS := --rm -it					\
 
 # Filter out all submodule names, because otherwise we tar up entire
 # directories, not just the files. git ls-files lists submodules as "files".
-FILTER := "^($(shell echo $(shell git submodule --quiet foreach --recursive pwd | sed -e "s@^$(CURDIR)/@@") | sed -e 's/ /|/g'))$$"
+LS_SUBMODULES := if [ -f .gitmodules ]; then grep "path = " .gitmodules | sed -e "s|	path = |$$(pwd)/|"; fi
+SUBMODULES := $(patsubst $(CURDIR)/%,%,$(shell $(LS_SUBMODULES) && git submodule --quiet foreach --recursive '$(LS_SUBMODULES)'))
+FILTER := "^($(shell echo $(SUBMODULES) | sed -e 's/ /|/g'))$$"
 
 # git ls-files --recurse-submodules doesn't quite work. For some reason it
 # completely ignores ci-tools. This may have been because the git repo is
@@ -64,6 +66,7 @@ LS_FILES_RECURSIVE :=						\
 FILES :=						\
 	($(LS_FILES_RECURSIVE))				\
 	| sed -e 's@^$(CURDIR)/@@'			\
+	| grep -E -v $(FILTER)				\
 	| grep -E -v '^\.github'			\
 	| grep -E -v '^c-toxcore/\.github/scripts'	\
 	| grep -E -v '^c-toxcore/\.github/workflows'	\
@@ -105,7 +108,6 @@ FILES :=						\
 	| grep -E -v '\.gitmodules$$'			\
 	| grep -E -v '\.m4$$'				\
 	| grep -E -v '\.sbt$$'				\
-	| grep -E -v $(FILTER)				\
 	| sort -u
 
 # https://github.com/golang/go/issues/37436
@@ -150,3 +152,22 @@ $(OUTPUT): ; mkdir $@
 
 # We need this for $(...) to work.
 SHELL = bash
+
+#######################################
+# MyPy type checking
+
+THIS_REPO_FILES := $(shell $(LS_FILES) | sed -e 's@^$(CURDIR)/@@' | grep -E -v $(FILTER))
+PYTHON_LIB_FILES := $(filter-out .%,$(sort $(shell ls $(filter %.py,$(THIS_REPO_FILES)))))
+PYTHON_BIN_FILES := $(shell ls $(THIS_REPO_FILES) | xargs grep -l '^\#!/usr/bin/.*python3')
+
+MYPY_FLAGS :=				\
+	--disallow-any-explicit		\
+	--disallow-redefinition		\
+	--color-output			\
+	--strict
+
+mypy: $(PYTHON_BIN_FILES:=.mypy)
+
+%.mypy: % $(PYTHON_LIB_FILES)
+	@echo "  MYPY  $<"
+	@mypy $(MYPY_FLAGS) $+

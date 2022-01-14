@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
 """Generates a compilation database and runs clang-tidy on it."""
-
 import logging
 import os
 import shutil
 import subprocess  # nosec
 import sys
-
 from typing import List
 
 import builder
-
 
 _CHECKS = [
     "-checks=-clang-analyzer-security.insecureAPI.strcpy",
@@ -58,7 +55,8 @@ def run_clang_tidy(bazel: builder.Builder, sources: List[str]) -> int:
             "-p=" + bazel.execution_root(),
             "-header-filter=-external",
             "-warnings-as-errors=*",
-            os.path.join(bazel.source_root(), source)] + _CHECKS)
+            os.path.join(bazel.source_root(), source),
+        ] + _CHECKS)
         if res.returncode != 0:
             errors += 1
     return errors
@@ -70,8 +68,8 @@ def analyse(bazel: builder.Builder, target: str) -> None:
     bazel.generate_compilation_database(sources)
     errors = run_clang_tidy(bazel, sources)
     if errors != 0:
-        logging.error("found %d error(s) in %s source file(s)",
-                      errors, len(sources))
+        logging.error("found %d error(s) in %s source file(s)", errors,
+                      len(sources))
         sys.exit(1)
 
 

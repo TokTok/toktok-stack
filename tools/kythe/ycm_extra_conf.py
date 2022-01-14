@@ -2,7 +2,6 @@
 import logging
 import os
 import shlex
-from typing import Any
 from typing import Dict
 from typing import List
 from typing import Optional
@@ -16,7 +15,7 @@ logging.basicConfig(level=logging.DEBUG)
 def Settings(
         language: str,
         filename: Optional[str] = None,
-        client_data: Any = None,
+        client_data: Optional[str] = None,
 ) -> Dict[str, List[str]]:
     """Return flags for the file loaded into vim."""
     del client_data
