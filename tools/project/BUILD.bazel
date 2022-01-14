@@ -1,6 +1,5 @@
 exports_files(srcs = [
-    "cabal_test.pl",
-    "cabal_test.py",
+    "cabal_test",
     "diff_test.sh",
     "haskell/cirrus.yml.in",
     "haskell/github/checks.yml",
