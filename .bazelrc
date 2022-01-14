@@ -12,15 +12,11 @@ build --show_progress_rate_limit=0.5
 
 build --check_licenses=true
 build --process_headers_in_dependencies
-#build --remote_download_minimal
+build --remote_download_minimal
 build --strict_filesets=true
 build --enable_platform_specific_config
 build --watchfs
 build --local_cpu_resources=HOST_CPUS
-
-# TODO(https://github.com/tweag/rules_haskell/issues/1312): Remove this once
-# rules_haskell is happy without it.
-build --build_runfile_links
 
 # TODO(https://github.com/protocolbuffers/protobuf/issues/9406): Enable once
 # protobuf has its layering fixed.
