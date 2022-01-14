@@ -12,6 +12,7 @@ from typing import Union
 PackageSection = Dict[str, Union[str, List[str]]]
 PackageData = Dict[str, PackageSection]
 
+
 def parse_bazel(build: str) -> PackageData:
     with open(build, "r") as fh:
         bzl = ast.parse(fh.read(), filename=build)
@@ -45,7 +46,7 @@ def parse_bazel(build: str) -> PackageData:
 
 def parse_cabal(cabal: str) -> Dict[str, PackageData]:
     data: Dict[str, PackageData] = (
-            collections.defaultdict(lambda: collections.defaultdict(dict)))
+        collections.defaultdict(lambda: collections.defaultdict(dict)))
     section = data[""][""]
     key = ""
     value = ""
@@ -78,10 +79,10 @@ def parse_cabal(cabal: str) -> Dict[str, PackageData]:
 
 
 def resolve_bazel_deps(
-        bazel: str,
-        data: PackageData,
-        name: str,
-    ) -> Set[str]:
+    bazel: str,
+    data: PackageData,
+    name: str,
+) -> Set[str]:
     def go(name: str) -> List[str]:
         deps = []
         rule = data.get(name, None)
@@ -111,6 +112,7 @@ def must_list(maybe_list: Union[str, List[str]]) -> List[str]:
     else:
         return [maybe_list]
 
+
 def must_str(maybe_list: Union[str, List[str]]) -> str:
     if isinstance(maybe_list, list):
         raise Exception(f"got list, expected str: {maybe_list}")
@@ -119,12 +121,12 @@ def must_str(maybe_list: Union[str, List[str]]) -> str:
 
 
 def check_deps(
-        bazel: str,
-        cabal: str,
-        bazel_data: PackageData,
-        bazel_name: str,
-        cabal_section: PackageSection,
-    ) -> None:
+    bazel: str,
+    cabal: str,
+    bazel_data: PackageData,
+    bazel_name: str,
+    cabal_section: PackageSection,
+) -> None:
     bazel_deps = resolve_bazel_deps(bazel, bazel_data, bazel_name)
     cabal_deps = {
         dep.split(" ")[0]
@@ -160,10 +162,10 @@ def check_deps(
 
 
 def check_version(
-        root: PackageSection,
-        bazel_data: PackageData,
-        package_name: str,
-    ) -> None:
+    root: PackageSection,
+    bazel_data: PackageData,
+    package_name: str,
+) -> None:
     cabal_version = root["version"]
     bazel_version = bazel_data["hs-" + package_name]["version"]
     if cabal_version != bazel_version:
