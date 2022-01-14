@@ -50,16 +50,13 @@ def run_clang_tidy(bazel: builder.Builder, sources: List[str]) -> int:
     errors = 0
     for source in sources:
         logging.info("running clang-tidy on '%s'", source)
-        res = subprocess.run(
-            [  # nosec
-                clang_tidy,
-                "-p=" + bazel.execution_root(),
-                "-header-filter=-external",
-                "-warnings-as-errors=*",
-                os.path.join(bazel.source_root(), source),
-            ]
-            + _CHECKS
-        )
+        res = subprocess.run([  # nosec
+            clang_tidy,
+            "-p=" + bazel.execution_root(),
+            "-header-filter=-external",
+            "-warnings-as-errors=*",
+            os.path.join(bazel.source_root(), source),
+        ] + _CHECKS)
         if res.returncode != 0:
             errors += 1
     return errors
@@ -71,7 +68,8 @@ def analyse(bazel: builder.Builder, target: str) -> None:
     bazel.generate_compilation_database(sources)
     errors = run_clang_tidy(bazel, sources)
     if errors != 0:
-        logging.error("found %d error(s) in %s source file(s)", errors, len(sources))
+        logging.error("found %d error(s) in %s source file(s)", errors,
+                      len(sources))
         sys.exit(1)
 
 
