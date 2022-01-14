@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Generates a compilation database and runs clang-tidy on it."""
-
 import logging
 import os
 import shutil
