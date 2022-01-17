@@ -28,6 +28,7 @@ build --incompatible_enable_android_toolchain_resolution="false"      # NullPoin
 build --incompatible_enable_cc_toolchain_resolution="false"           # TODO(iphydf): This breaks remote-exec.
 build --incompatible_enforce_config_setting_visibility="false"        # rules_go
 build --incompatible_load_cc_rules_from_bzl="false"                   # bazel-toolchains
+build --incompatible_load_python_rules_from_bzl=false                 # cython
 build --incompatible_no_rule_outputs_param="false"                    # rules_scala
 build --incompatible_require_linker_input_cc_api="false"              # io_bazel_rules_go
 build --incompatible_restrict_string_escapes="false"                  # kythe

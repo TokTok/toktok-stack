@@ -698,6 +698,13 @@ python_repository(
     name = "python3",
 )
 
+github_archive(
+    name = "cython",
+    repo = "cython/cython",
+    sha256 = "cff4d1667bf1d6d3e60b093a78c515cc76d6c13a93520252a4a412db15d6db8a",
+    version = "3.0.0a10",
+)
+
 # Node.js
 # =========================================================
 

@@ -246,6 +246,15 @@ build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-pedant
 build:gnulike --cxxopt='-std=c++14'
 build:gnulike --conlyopt='-std=c99'
 
+# Cython code isn't very clean.
+build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-conditional-uninitialized'
+build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-extra-semi-stmt'
+build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-undef'
+build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-unused-macros'
+build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-used-but-marked-unused'
+build:gnulike --per_file_copt='//py_toxcore_c[:/]@-Wno-cast-align'
+build:gnulike --per_file_copt='//py_toxcore_c[:/]@-Wno-shadow'
+
 # GCC warning flags.
 #build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.c$@-Wsuggest-attribute=const'
 #build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.c$@-Wsuggest-attribute=pure'
