@@ -477,6 +477,7 @@ build:ci --curses=no
 build:ci --jobs=50
 build:ci --show_timestamps
 build:ci --verbose_failures
+build:ci --flaky_test_attempts=6  # try a bit harder - toxcore tests are flaky
 
 # The "rbe" config sets up the toolchains for clang-14.
 build:rbe --config=clang
