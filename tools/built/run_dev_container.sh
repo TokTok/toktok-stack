@@ -31,6 +31,6 @@ docker build -t iphydf/toktok-dev -f workspace/tools/built/Dockerfile .
 sudo systemctl stop docker-toktok || true
 docker run --name=toktok-dev --rm -it \
   -p 2223:22 \
-  -v $PWD/workspace:/src/workspace \
-  -v $HOME/.local/share/zsh/toktok:/home/builder/.local/share/zsh \
+  -v "$PWD"/workspace:/src/workspace \
+  -v "$HOME"/.local/share/zsh/toktok:/home/builder/.local/share/zsh \
   iphydf/toktok-dev
