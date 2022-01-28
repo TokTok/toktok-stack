@@ -3,6 +3,12 @@ workspace(name = "toktok")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
 
+new_local_repository(
+    name = "bazel_toolchain",
+    build_file = "third_party/BUILD.bazel_toolchain",
+    path = "/src/toolchain",
+)
+
 github_archive(
     name = "rules_cc",
     repo = "bazelbuild/rules_cc",

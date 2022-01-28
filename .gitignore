@@ -5,6 +5,7 @@
 /stack.yaml.lock
 /bazel-*
 /cov-analysis*
+/toolchain
 /.mypy_cache
 *.jar
 *.tar

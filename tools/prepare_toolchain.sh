@@ -11,7 +11,7 @@ chmod +x /tmp/rbe_configs_gen
   --bazel_version="$(cat .bazelversion)" \
   --toolchain_container=toxchat/bazel:latest \
   --output_src_root="$PWD" \
-  --output_config_path=tools/toolchain \
+  --output_config_path=toolchain \
   --exec_os=linux \
   --target_os=linux
 

@@ -2,13 +2,12 @@ FROM toxchat/bazel:latest
 
 WORKDIR /src/workspace
 
-# We set up a builder user with uid/gid 1000. This is what will run on the CI,
+# We set up a builder user with uid 1000. This is what will run on the CI,
 # and if our outside user has the same uid, "make run-local" will work well. We
 # must run aquery as this user so that the cache is built in the right home
 # directory.
-RUN groupadd -r -g 1000 builder \
- && useradd -m --no-log-init -r -g builder -G sudo -u 1000 builder \
- && chown builder:builder /src/workspace \
+RUN useradd -m -g users -G sudo -u 1000 builder \
+ && chown builder:users /src/workspace \
  && echo "%sudo ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 USER builder
 
@@ -25,17 +24,18 @@ RUN ["/tmp/prepare_third_party.sh"]
 # download GHC and some other large dependencies that rarely change. We copy the
 # minimum number of files to avoid rebuilding this when making changes to the
 # toktok-stack tools.
+COPY toolchain /src/toolchain/toolchain
+RUN find /src/toolchain
 COPY workspace/tools/bazelrc.boot /src/workspace/.bazelrc
-COPY workspace/BUILD.bazel workspace/WORKSPACE workspace/.bazelignore /src/workspace/
+COPY workspace/BUILD.bazel workspace/WORKSPACE workspace/.bazelignore workspace/.bazelversion /src/workspace/
 COPY workspace/third_party /src/workspace/third_party
 COPY workspace/tools/config /src/workspace/tools/config
-COPY workspace/tools/toolchain /src/workspace/tools/toolchain
 COPY workspace/tools/workspace /src/workspace/tools/workspace
 RUN bazel aquery --config=docker --output=proto --show_timestamps //... > /dev/null
 
 # Now we can copy the entire tree. This is expected to change very often, as it
 # includes all of the sources of all projects.
-COPY --chown=builder:builder workspace /src/workspace/
+COPY --chown=builder:users workspace /src/workspace/
 
 # Append the Docker image default configs to .bazelrc. This allows child images
 # to have their own .bazelrc.local.

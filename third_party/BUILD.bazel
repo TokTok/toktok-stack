@@ -4,7 +4,7 @@ filegroup(
     name = "third_party",
     srcs = ["@{pkg}//:{pkg}".format(pkg = pkg[len("BUILD."):]) for pkg in glob(
         ["BUILD.*"],
-        exclude = ["BUILD.bazel"],
+        exclude = ["BUILD.bazel*"],
     )] + [
         "@com_google_googletest//:gtest",
         "@com_google_googletest//:gtest_main",
