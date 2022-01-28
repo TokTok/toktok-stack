@@ -5,3 +5,5 @@ RUN echo 'build --config=remote'  >> .bazelrc.local \
  && echo 'build --config=release' >> .bazelrc.local
 
 RUN ["bazel", "build", "-k", "//third_party/..."]
+
+# vim:ft=dockerfile
