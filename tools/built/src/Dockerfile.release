@@ -1,5 +1,5 @@
 # Pre-build //third_party in release mode for speedy PR builds on sub-repos.
-FROM toxchat/toktok-stack:$VERSION
+FROM toxchat/toktok-stack:latest
 
 RUN echo 'build --config=remote'  >> .bazelrc.local \
  && echo 'build --config=release' >> .bazelrc.local
