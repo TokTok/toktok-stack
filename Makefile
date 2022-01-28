@@ -132,7 +132,7 @@ build-kythe: kythe.tar tools/kythe/Dockerfile
 push-kythe:
 	docker push toxchat/kythe-serving:latest
 
-TAR = tar --mode=ugo+rx --transform 's,^,$*/,;s,^$*/Dockerfile,Dockerfile,'
+TAR = tar --mode=ugo+rx --transform 's,^,$*/,;s,^$*/Dockerfile,Dockerfile,;s,$*/tools/toolchain,toolchain,'
 
 # Build a .tar with the workspace in it. This will be unpacked in the
 # Dockerfile. We use $(...) in bash instead of $(shell) in make because

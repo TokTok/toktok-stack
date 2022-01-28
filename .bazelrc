@@ -142,11 +142,9 @@ build:sanitizer --strip=never
 build:sanitizer --flaky_test_attempts=1
 
 build:asan --config=sanitizer
-build:asan --copt='-fsanitize=address,undefined'
-build:asan --linkopt='-fsanitize=address,undefined'
-# https://github.com/bazelbuild/bazel/issues/11122
-build:asan --linkopt='-fsanitize-link-c++-runtime'
-build:msan --test_env=ASAN_OPTIONS=color=always
+build:asan --copt='-fsanitize=address'
+build:asan --linkopt='-fsanitize=address'
+build:asan --test_env=ASAN_OPTIONS=color=always
 
 build:msan --config=sanitizer
 build:msan --config=libc++
@@ -159,6 +157,16 @@ build:tsan --config=sanitizer
 build:tsan --copt='-fsanitize=thread'
 build:tsan --linkopt='-fsanitize=thread'
 build:tsan --test_env=TSAN_OPTIONS=color=always
+
+build:ubsan --config=sanitizer
+build:ubsan --copt='-fno-sanitize-recover'
+build:ubsan --copt='-fsanitize=undefined,nullability,integer'
+build:ubsan --linkopt='-fsanitize=undefined,nullability,integer'
+# https://github.com/bazelbuild/bazel/issues/11122
+build:ubsan --linkopt='-fsanitize-link-c++-runtime'
+build:ubsan --per_file_copt='external/libsodium[:/]@-fno-sanitize=integer'
+build:ubsan --per_file_copt='external/opus[:/]@-fno-sanitize=integer'
+build:ubsan --test_env=UBSAN_OPTIONS=color=always,print_stacktrace=1
 
 # Link-time optimization.
 build:lto --copt='-flto'
