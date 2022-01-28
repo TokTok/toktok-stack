@@ -40,7 +40,7 @@ jobs:
         with:
           submodules: recursive
       - name: Pull latest toktok-stack image
-        if: ${{ !contains(github.event.pull_request.title, 'chore(rebuild)') }}
+        if: ${{ !(contains(github.event.pull_request.title, 'chore(rebuild)') || contains(github.event.head_commit.message, 'chore(rebuild)')) }}
         run: docker pull toxchat/toktok-stack:latest
       - name: Build toktok-stack base image
         run: make build-workspace
@@ -63,6 +63,23 @@ jobs:
       - name: Push release image to DockerHub
         if: ${{ github.event_name == 'push' }}
         run: make -C tools/built push-release
+
+  docker-fastbuild:
+    runs-on: ubuntu-latest
+    needs: docker-release
+    if: ${{ github.event_name == 'push' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build //third_party in fastbuild mode
+        run: make -C tools/built build-fastbuild
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Push fastbuild image to DockerHub
+        run: make -C tools/built push-fastbuild
 
   docker-debug:
     runs-on: ubuntu-latest

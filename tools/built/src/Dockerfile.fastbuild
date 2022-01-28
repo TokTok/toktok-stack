@@ -1,0 +1,6 @@
+# Pre-build //... in fastbuild mode for dev containers.
+FROM toxchat/toktok-stack:$VERSION
+
+RUN echo 'build --config=remote' >> .bazelrc.local
+
+RUN ["bazel", "build", "-k", "//..."]

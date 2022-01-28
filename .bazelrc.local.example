@@ -8,9 +8,17 @@
 # you'll want to change this number to at least `$(($(nproc) + 4))`.
 build --jobs=16
 
-# You may set one of "gcc" or "clang" (unless you are on Windows) to enable
-# additional warning flags specific to these compilers.
-build --config=clang
+# You may set one "rbe", "gcc", or "clang" (unless you are on Windows) to
+# enable additional warning flags specific to these compilers.
+#
+# "rbe" implies "clang" and is set by default, assuming you're using a dev
+# container or have set up your local environment the same way. If you're not
+# using a dev container, comment out "rbe" and pick one of the other two.
+#
+# For guidance on how the dev container environment is set up, see
+# https://github.com/TokTok/dockerfiles/blob/master/buildfarm/bazel/Dockerfile
+build --config=rbe
+#build --config=clang
 #build --config=gcc
 
 # You may choose one of the possible sandboxing technologies.
