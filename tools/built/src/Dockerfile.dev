@@ -4,7 +4,7 @@
 # contains a few basic tools and has built and ran all the tests once, so the
 # results are cached. This is the quickest way to get started with TokTok
 # development.
-FROM toxchat/toktok-stack:$VERSION-fastbuild
+FROM toxchat/toktok-stack:latest-fastbuild
 
 USER root
 
@@ -12,11 +12,13 @@ USER root
 # also install an SSH server so we can connect to our dev container.
 RUN apt-get update && apt-get install -y --no-install-recommends \
  cmake \
+ dumb-init \
  gnupg \
  less \
  locales \
  netcat \
  openssh-server \
+ patch \
  screen \
  vim \
  zsh \
@@ -36,8 +38,7 @@ USER builder
 # Build YCM before everything else, because this one doesn't change much and
 # takes a while to compile.
 RUN git clone --jobs=8 --depth=1 --recurse-submodules --shallow-submodules https://github.com/ycm-core/YouCompleteMe ~/.vim/bundle/YouCompleteMe \
- && cd ~/.vim/bundle/YouCompleteMe && python3 install.py --clangd-completer \
- && git submodule deinit --all
+ && cd ~/.vim/bundle/YouCompleteMe && python3 install.py --clangd-completer
 
 # Prepare builder's home with oh-my-zsh.
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
@@ -45,11 +46,17 @@ RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/inst
  && echo "cd /src/workspace" >> "$HOME/.zprofile"
 
 # Build everything in default (fastbuild) mode. Use remote here in the initial
-# build, but not later when `builder` is interactively working.
-RUN ["bazel", "build", "--show_timestamps", "--config=remote", "//..."]
+# build, but not later when `builder` is interactively working. "remote" is set
+# in the base -fastbuild image.
+#
 # Run tests afterwards, because those can be retried, while the build must
 # succeed first time. We exclude ToxCryptoImplTest because it times out in
 # unoptimised builds.
-RUN ["tools/retry", "5", "bazel", "test", "--show_timestamps", "--config=remote", "//...", "-//jvm-toxcore-c:ToxCryptoImplTest"]
+#
+# Initialise YCM once here so startup in the container is fast.
+# Can't use JSON syntax because this needs $PWD.
+RUN bazel build --show_timestamps //... \
+ && tools/retry 5 bazel test --show_timestamps -- //... -//jvm-toxcore-c:ToxCryptoImplTest \
+ && python3 .ycm_extra_conf.py c-toxcore/toxcore/DHT.c
 
 # vim:ft=dockerfile

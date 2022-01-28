@@ -1,5 +1,5 @@
 # Pre-build //third_party in debug mode for speedy PR builds on sub-repos.
-FROM toxchat/toktok-stack:$VERSION
+FROM toxchat/toktok-stack:latest
 
 RUN echo 'build --config=debug'  >> .bazelrc.local
 

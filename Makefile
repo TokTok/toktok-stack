@@ -79,7 +79,6 @@ FILES :=						\
 	| grep -E -v '^Makefile'			\
 	| grep -E -v '^README.md'			\
 	| grep -E -v '^\.bazelrc.local.example'		\
-	| grep -E -v '^\.ycm_extra_conf.py'		\
 	| grep -E -v '/\.circleci'			\
 	| grep -E -v '/\.clang-format'			\
 	| grep -E -v '/\.editorconfig'			\
