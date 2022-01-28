@@ -45,11 +45,12 @@ RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/inst
  && echo "cd /src/workspace" >> "$HOME/.zprofile"
 
 # Build everything in default (fastbuild) mode. Use remote here in the initial
-# build, but not later when `builder` is interactively working.
-RUN ["bazel", "build", "--show_timestamps", "--config=remote", "//..."]
+# build, but not later when `builder` is interactively working. "remote" is set
+# in the base -fastbuild image.
+RUN ["bazel", "build", "--show_timestamps", "//..."]
 # Run tests afterwards, because those can be retried, while the build must
 # succeed first time. We exclude ToxCryptoImplTest because it times out in
 # unoptimised builds.
-RUN ["tools/retry", "5", "bazel", "test", "--show_timestamps", "--config=remote", "//...", "-//jvm-toxcore-c:ToxCryptoImplTest"]
+RUN ["tools/retry", "5", "bazel", "test", "--show_timestamps", "--", "//...", "-//jvm-toxcore-c:ToxCryptoImplTest"]
 
 # vim:ft=dockerfile
