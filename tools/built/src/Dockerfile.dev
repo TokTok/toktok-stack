@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  gnupg \
  less \
  locales \
+ mypy \
  netcat \
  openssh-server \
  patch \

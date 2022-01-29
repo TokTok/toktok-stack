@@ -6,10 +6,10 @@
 /bazel-*
 /cov-analysis*
 /toolchain
-/.mypy_cache
 *.jar
 *.tar
 __pycache__
+.mypy_cache
 
 # Work files for tools/debug/run_mallocfail.
 mallocfail_hashes*
