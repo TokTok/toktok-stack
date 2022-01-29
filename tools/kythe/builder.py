@@ -50,7 +50,7 @@ def flags_for_clang(execroot: str, args: List[str]) -> List[str]:
             i += 2
         else:
             clang_args.append(re.sub('="([^"]+)"', "='\"\\1\"'", args[i])
-                    .replace("=external/", "=bazel-workspace/external/"))
+                              .replace("=external/", "=bazel-workspace/external/"))
             i += 1
     return clang_args
 
