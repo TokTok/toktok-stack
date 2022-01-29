@@ -8,7 +8,9 @@ import re
 import shlex
 import subprocess  # nosec
 import sys
-from typing import Dict, Generator, List
+from typing import Dict
+from typing import Generator
+from typing import List
 
 KYTHE_REPO = "io_kythe"
 KYTHE_TOOLS = "kythe/cxx/tools/generate_compile_commands"
