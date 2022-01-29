@@ -256,6 +256,7 @@ build:gnulike --conlyopt='-std=c99'
 
 # Cython code isn't very clean.
 build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-conditional-uninitialized'
+build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-deprecated-declarations'
 build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-extra-semi-stmt'
 build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-undef'
 build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-unused-macros'
