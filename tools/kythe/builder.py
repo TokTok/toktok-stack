@@ -49,8 +49,11 @@ def flags_for_clang(execroot: str, args: List[str]) -> List[str]:
                 clang_args.append(os.path.join(execroot, args[i + 1]))
             i += 2
         else:
-            clang_args.append(re.sub('="([^"]+)"', "='\"\\1\"'", args[i])
-                              .replace("=external/", "=bazel-workspace/external/"))
+            clang_args.append(
+                re.sub('="([^"]+)"', "='\"\\1\"'", args[i]).replace(
+                    "=external/", "=bazel-workspace/external/"
+                )
+            )
             i += 1
     return clang_args
 
@@ -86,7 +89,8 @@ def _ancestors(path: str) -> Generator[str, None, None]:
 def _workspace_dir() -> str:
     for path in _ancestors(os.environ["PWD"]):
         if os.path.exists(os.path.join(path, "WORKSPACE")) and os.path.exists(
-                os.path.join(path, ".ycm_extra_conf.py")):
+            os.path.join(path, ".ycm_extra_conf.py")
+        ):
             return path
     raise Exception("could not determine the project root")
 
@@ -121,10 +125,7 @@ class Builder:
         return os.path.dirname(os.path.relpath(build_file, self.source_root()))
 
     def _build_targets_for(self, sources: List[str]) -> List[str]:
-        builds = {
-            _build_file_for(os.path.join(self.source_root(), x))
-            for x in sources
-        }
+        builds = {_build_file_for(os.path.join(self.source_root(), x)) for x in sources}
         return ["//" + self._package_name(build) + ":all" for build in builds]
 
     def execution_root(self) -> str:
@@ -148,9 +149,7 @@ class Builder:
         """Query bazel for the execution root and bazel-bin paths."""
         logging.info("querying bazel for execution root and bazel-bin paths")
         res = subprocess.run(
-            [self._bazel, "info"],
-            capture_output=True,
-            check=True  # nosec
+            [self._bazel, "info"], capture_output=True, check=True  # nosec
         )
         lines = res.stdout.strip().decode("utf-8").split("\n")
         return {kv[0]: kv[1] for kv in (line.split(": ") for line in lines)}
@@ -170,7 +169,8 @@ class Builder:
         return sorted(
             target.replace(":", "/")[2:]
             for target in self.query(f"kind('source file', deps({target}, 1))")
-            if target.endswith(suffix))
+            if target.endswith(suffix)
+        )
 
     def collect_commands(self, sources: List[str]) -> List[Dict[str, str]]:
         """Read the compile_command.json files and parse them into one list."""
@@ -183,17 +183,20 @@ class Builder:
                 # TODO(iphydf): Use shlex.join when Python 3.8 becomes more
                 # widely available.
                 command["command"] = " ".join(
-                    flags_for_clang(self.execution_root(),
-                                    shlex.split(command["command"])))
+                    flags_for_clang(
+                        self.execution_root(), shlex.split(command["command"])
+                    )
+                )
                 command["directory"] = command["directory"].replace(
-                    "@BAZEL_ROOT@", self.execution_root())
+                    "@BAZEL_ROOT@", self.execution_root()
+                )
                 file_name = command["file"]
                 if file_name in commands:
-                    diff = diff_commands(commands[file_name]["command"],
-                                         command["command"])
+                    diff = diff_commands(
+                        commands[file_name]["command"], command["command"]
+                    )
                     if self._strict and diff:
-                        print(f"file {file_name} already in compilation "
-                              "database:")
+                        print(f"file {file_name} already in compilation " "database:")
                         print(diff)
                         sys.exit(1)
                 elif os.path.splitext(file_name)[0] in stems:
@@ -209,11 +212,9 @@ class Builder:
         ] + targets
         subprocess.run(cmd, check=True)  # nosec
 
-    def generate_compilation_database(self, sources: List[str]
-                                      ) -> List[Dict[str, str]]:
+    def generate_compilation_database(self, sources: List[str]) -> List[Dict[str, str]]:
         """Generate a compile_commands.json file using bazel and kythe."""
-        logging.info("generating compile_commands.json for %d sources",
-                     len(sources))
+        logging.info("generating compile_commands.json for %d sources", len(sources))
         commands = self.collect_commands(sources)
 
         if len(commands) != len(sources):
