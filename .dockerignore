@@ -3,6 +3,7 @@
 # submodule CI builds. When using the dev container, we expect to mount the
 # user's local workspace directory so these excluded files will be present.
 .github
+**/*.jar
 **/*.tar
 **/.bazelrc.local
 **/.cache
@@ -15,6 +16,3 @@
 **/_install
 **/bazel-*
 **/compile_commands.json
-**/third_party/android/android-ndk-r*
-**/third_party/android/sdk
-**/third_party/javacpp

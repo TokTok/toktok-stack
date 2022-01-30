@@ -28,7 +28,6 @@ workspace(projects = [
     "qtox",
     "spec",
     "streambot-jvm",
-    "toktok-android",
     "tools/.github",
     "toxic",
     "toxins",

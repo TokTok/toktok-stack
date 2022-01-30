@@ -15,9 +15,7 @@ USER builder
 # are rarely changing, so we won't need to rebuild this part of the image often.
 # Dependencies installed with apt above should never change, as we should be
 # building most things inside Bazel.
-COPY tools/prepare_android_sdk.sh \
-     tools/prepare_third_party.sh \
-     /tmp/
+COPY tools/prepare_third_party.sh /tmp/
 RUN ["/tmp/prepare_third_party.sh"]
 
 # Next, we copy the bare minimum to run a successful aquery. The aquery will

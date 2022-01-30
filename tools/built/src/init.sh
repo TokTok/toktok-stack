@@ -10,7 +10,7 @@ fi
 
 # Re-initialise third party and git remotes if this is an external volume
 # mounted the first time.
-if [ ! -d third_party/android/sdk ]; then
+if [ ! -d third_party/javacpp/ffmpeg/jar ]; then
   tools/prepare_third_party.sh
 fi
 

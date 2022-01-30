@@ -47,7 +47,7 @@ RUN git clone --jobs=8 --depth=1 --recurse-submodules --shallow-submodules https
 # Prepare builder's home with oh-my-zsh.
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
  && sed -i -e 's/^ZSH_THEME=.*/ZSH_THEME="cypher"/' "$HOME/.zshrc" \
- && echo "cd /src/workspace" >> "$HOME/.zprofile"
+ && echo "cd /src/workspace" >> "$HOME/.zshrc"
 
 # Build everything in default (fastbuild) mode. Use remote here in the initial
 # build, but not later when `builder` is interactively working. "remote" is set

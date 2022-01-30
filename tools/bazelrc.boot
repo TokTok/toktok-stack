@@ -22,9 +22,7 @@ build --all_incompatible_changes
 
 # Some incompatible_changes are incompatible with some of our dependencies,
 # including Bazel itself (woohoo).
-build --incompatible_disable_native_android_rules="false"             # rules_android
 build --incompatible_disallow_struct_provider_syntax="false"          # bazel_tools
-build --incompatible_enable_android_toolchain_resolution="false"      # NullPointerException in bazel
 build --incompatible_enable_cc_toolchain_resolution="false"           # TODO(iphydf): This breaks remote-exec.
 build --incompatible_enforce_config_setting_visibility="false"        # rules_go
 build --incompatible_load_cc_rules_from_bzl="false"                   # bazel-toolchains
@@ -33,7 +31,7 @@ build --incompatible_no_rule_outputs_param="false"                    # rules_sc
 build --incompatible_require_linker_input_cc_api="false"              # io_bazel_rules_go
 build --incompatible_restrict_string_escapes="false"                  # kythe
 build --incompatible_struct_has_no_methods="false"                    # rules_haskell
-build --incompatible_use_platforms_repo_for_constraints="false"       # rules_android
+build --incompatible_use_platforms_repo_for_constraints="false"       # bazel_toolchain
 build --incompatible_use_toolchain_resolution_for_java_rules="false"  # TODO(https://github.com/bazelbuild/bazel/issues/7849): Enable.
 
 # rules_apple uses old style list commands.

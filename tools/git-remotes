@@ -150,10 +150,6 @@ our %REPOS = (
       upstream => 'toktok',
       repo 'iphydf',
    }],
-   'toktok-android' => ['toktok-android', {
-      upstream => 'toktok',
-      repo 'iphydf',
-   }],
    'tools/.github' => ['.github', {
       upstream => 'toktok',
       repo 'iphydf',

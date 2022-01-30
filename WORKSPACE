@@ -589,17 +589,9 @@ local_repository(
 
 maven_install(
     artifacts = [
-        "androidx.appcompat:appcompat:1.1.0",
-        "androidx.cardview:cardview:1.0.0",
-        "androidx.constraintlayout:constraintlayout:1.1.3",
-        "androidx.test:rules:1.2.0",
-        "androidx.test.ext:junit:1.1.1",
-        "androidx.test.espresso:espresso-core:3.2.0",
-        "com.google.android.material:material:1.1.0",
         "com.chuusai:shapeless_2.11:2.3.3",
         "com.google.guava:guava:19.0",
         "com.typesafe.scala-logging:scala-logging_2.11:3.7.2",
-        "de.hdodenhof:circleimageview:3.1.0",
         "junit:junit:4.13",
         "log4j:log4j:1.2.17",
         "org.apache.commons:commons-lang3:3.4",
@@ -613,7 +605,6 @@ maven_install(
         "org.scalatestplus:scalacheck-1-14_2.11:3.1.0.1",
         "org.scalatestplus:junit-4-13_2.11:3.2.10.0",
         "org.scala-lang.modules:scala-swing_2.11:2.1.1",
-        "org.slf4j:slf4j-android:1.7.32",
         "org.slf4j:slf4j-api:1.7.25",
         "org.slf4j:slf4j-log4j12:1.7.22",
     ],
@@ -654,42 +645,6 @@ scala_proto_register_enable_all_options_toolchain()
 scalatest_repositories()
 
 scalatest_toolchain()
-
-# Android
-# =========================================================
-
-github_archive(
-    name = "rules_android",
-    repo = "bazelbuild/rules_android",
-    sha256 = "cd06d15dd8bb59926e4d65f9003bfc20f9da4b2519985c27e190cddc8b7a7806",
-    version = "v0.1.1",
-)
-
-android_sdk_repository(
-    name = "androidsdk",
-    api_level = 28,
-    build_tools_version = "30.0.0",
-    path = "third_party/android/sdk",
-)
-
-# TODO(iphydf): Re-enable this when we're ready to build native binaries for
-# Android with Bazel.
-#android_ndk_repository(
-#    name = "androidndk",
-#    api_level = 25,
-#    path = "third_party/android/android-ndk-r21d",
-#)
-
-github_archive(
-    name = "android_test_support",
-    repo = "android/android-test",
-    sha256 = "815f688ea2e5f87060b5f5619db6dee2e2be9bd06cce5466a7079b8b5914e328",
-    version = "abef1152633d27a1b80b67ba47fa521ae777e84b",
-)
-
-load("@android_test_support//:repo.bzl", "android_test_repositories")
-
-android_test_repositories()
 
 # Qt5
 # =========================================================
