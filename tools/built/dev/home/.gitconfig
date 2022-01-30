@@ -1,0 +1,12 @@
+[user]
+    email = iphydf@users.noreply.github.com
+    name = iphydf
+    signingkey = D74403C9
+[push]
+    default = simple
+[commit]
+    gpgsign = true
+[checkout]
+    defaultRemote = origin
+[pull]
+    rebase = true
