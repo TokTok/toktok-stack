@@ -15,3 +15,4 @@ branches:
           - "docker-test"
           - "LGTM analysis: Go"
           - "LGTM analysis: Python"
+          - "mypy"

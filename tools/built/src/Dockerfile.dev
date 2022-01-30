@@ -56,8 +56,8 @@ RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/inst
 # Run tests afterwards, because those can be retried, while the build must
 # succeed first time. We exclude ToxCryptoImplTest because it times out in
 # unoptimised builds.
-COPY --chown=builder:users setup-dev.sh /home/builder
-COPY bazel-nomodules /usr/local/bin/
+COPY tools/built/src/bazel-nomodules /usr/local/bin/
+COPY --chown=builder:users tools/built/src/setup-dev.sh /home/builder
 ENV BAZEL_COMPDB_BAZEL_PATH=bazel-nomodules
 RUN /home/builder/setup-dev.sh
 

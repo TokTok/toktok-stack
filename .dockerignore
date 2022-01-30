@@ -1,4 +1,8 @@
 # Avoid putting large local files into the Docker image.
+# Also avoid some files that are never needed in any of the Docker or
+# submodule CI builds. When using the dev container, we expect to mount the
+# user's local workspace directory so these excluded files will be present.
+.github
 **/*.tar
 **/.bazelrc.local
 **/.cache
