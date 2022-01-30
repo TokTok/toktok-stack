@@ -15,6 +15,7 @@ if [ ! -d third_party/android/sdk ]; then
   tools/git-remotes "$GITHUB_USER"
 fi
 
+chown -R builder:users /home/builder/.vscode-server /src/workspace/.vscode
 sudo -i -u builder bazel build //...
 
 nc -l 0.0.0.0 2000

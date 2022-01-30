@@ -1,0 +1,9 @@
+#!/bin/sh
+
+CMD="$1"
+shift
+if [ "$CMD" = "build" ]; then
+  exec bazel "$CMD" --features=-layering_check "$@"
+else
+  exec bazel "$CMD" "$@"
+fi

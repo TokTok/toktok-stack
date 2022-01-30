@@ -7,6 +7,8 @@
 
 set -eux
 
+IMAGE="$1"
+
 if [ ! -d workspace ]; then
   git clone https://github.com/TokTok/toktok-stack workspace
 fi
@@ -25,12 +27,11 @@ if [ ! -f home/.vimrc -a ! -f home/.config/nvim/init.vim ]; then
   exit 1
 fi
 
-docker build -t iphydf/toktok-dev -f workspace/tools/built/Dockerfile .
-# If a docker-toktok service is running, stop it now. If it doesn't exist,
-# we don't care.
-sudo systemctl stop docker-toktok || true
+docker build -t "$IMAGE" -f workspace/tools/built/dev/Dockerfile .
 docker run --name=toktok-dev --rm -it \
-  -p 2223:22 \
+  -p 2224:22 \
   -v "$PWD/workspace:/src/workspace" \
+  -v "$HOME/.local/share/vscode/config:/src/workspace/.vscode" \
+  -v "$HOME/.local/share/vscode/server:/home/builder/.vscode-server" \
   -v "$HOME/.local/share/zsh/toktok:/home/builder/.local/share/zsh" \
-  iphydf/toktok-dev
+  "$IMAGE"

@@ -1,6 +1,8 @@
 # Build artifacts.
+/.cache
 /.clangd
 /.vs
+/.vscode
 /.stack-work
 /stack.yaml.lock
 /bazel-*
@@ -10,6 +12,7 @@
 *.tar
 __pycache__
 .mypy_cache
+compile_commands.json
 
 # Work files for tools/debug/run_mallocfail.
 mallocfail_hashes*
