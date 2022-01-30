@@ -2,7 +2,7 @@ FROM toxchat/toktok-stack:latest-third_party
 
 # Now we can copy the entire tree. This is expected to change very often, as it
 # includes all of the sources of all projects.
-COPY --chown=builder:users workspace /src/workspace/
+COPY --chown=builder:users . /src/workspace/
 
 # Append the Docker image default configs to .bazelrc. This allows child images
 # to have their own .bazelrc.local.

@@ -2,12 +2,41 @@
 name: ci
 
 # These checks only run on pull requests as they don't need to publish anything
-# on push. See docker.yml for jobs that run on both pull requests and pushes.
+# on push. See docker.yml for jobs that run on pushes.
 on:
   pull_request:
     branches: [master]
 
 jobs:
+  docker-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Pull toxchat/toktok-stack:latest-third_party
+        if: ${{ !contains(github.event.pull_request.title, 'chore(rebuild)') }}
+        run: docker pull toxchat/toktok-stack:latest-third_party
+      - name: Build toxchat/toktok-stack:latest-third_party
+        run: docker build -f tools/built/src/Dockerfile.third_party .
+
+      - name: Pull toxchat/toktok-stack:latest
+        if: ${{ !contains(github.event.pull_request.title, 'chore(rebuild)') }}
+        run: docker pull toxchat/toktok-stack:latest
+      - name: Build toxchat/toktok-stack:latest
+        run: docker build -f tools/built/src/Dockerfile .
+
+      - name: Pull toxchat/toktok-stack:latest-release
+        if: ${{ !contains(github.event.pull_request.title, 'chore(rebuild)') }}
+        run: docker pull toxchat/toktok-stack:latest-release
+      - name: Build toxchat/toktok-stack:latest-release
+        run: docker build -f tools/built/src/Dockerfile.release .
+      - name: Build and test the whole toktok-stack in release mode
+        if: ${{ contains(github.event.pull_request.title, 'chore(deps)') }}
+        run: tools/built/bazel_test release
+
   buildifier:
     runs-on: ubuntu-latest
     steps:

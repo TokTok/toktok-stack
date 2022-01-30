@@ -1,4 +1,4 @@
-FROM toxchat/bazel:latest
+FROM toxchat/toolchain:latest
 
 WORKDIR /src/workspace
 
@@ -15,8 +15,8 @@ USER builder
 # are rarely changing, so we won't need to rebuild this part of the image often.
 # Dependencies installed with apt above should never change, as we should be
 # building most things inside Bazel.
-COPY workspace/tools/prepare_android_sdk.sh \
-     workspace/tools/prepare_third_party.sh \
+COPY tools/prepare_android_sdk.sh \
+     tools/prepare_third_party.sh \
      /tmp/
 RUN ["/tmp/prepare_third_party.sh"]
 
@@ -24,13 +24,11 @@ RUN ["/tmp/prepare_third_party.sh"]
 # download GHC and some other large dependencies that rarely change. We copy the
 # minimum number of files to avoid rebuilding this when making changes to the
 # toktok-stack tools.
-COPY toolchain /src/toolchain/toolchain
-RUN find /src/toolchain
-COPY workspace/tools/bazelrc.boot /src/workspace/.bazelrc
-COPY workspace/BUILD.bazel workspace/WORKSPACE workspace/.bazelignore workspace/.bazelversion /src/workspace/
-COPY workspace/third_party /src/workspace/third_party
-COPY workspace/tools/config /src/workspace/tools/config
-COPY workspace/tools/workspace /src/workspace/tools/workspace
+COPY tools/bazelrc.boot /src/workspace/.bazelrc
+COPY BUILD.bazel WORKSPACE .bazelignore .bazelversion /src/workspace/
+COPY third_party /src/workspace/third_party
+COPY tools/config /src/workspace/tools/config
+COPY tools/workspace /src/workspace/tools/workspace
 RUN bazel aquery --config=docker --output=proto --show_timestamps //... > /dev/null
 
 # vim:ft=dockerfile
