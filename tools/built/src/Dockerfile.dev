@@ -53,11 +53,9 @@ RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/inst
 # Run tests afterwards, because those can be retried, while the build must
 # succeed first time. We exclude ToxCryptoImplTest because it times out in
 # unoptimised builds.
-#
-# Initialise YCM once here so startup in the container is fast.
-# Can't use JSON syntax because this needs $PWD.
-RUN bazel build --show_timestamps //... \
- && tools/retry 5 bazel test --show_timestamps -- //... -//jvm-toxcore-c:ToxCryptoImplTest \
- && python3 .ycm_extra_conf.py c-toxcore/toxcore/DHT.c
+COPY --chown=builder:users setup-dev.sh /home/builder
+COPY bazel-nomodules /usr/local/bin/
+ENV BAZEL_COMPDB_BAZEL_PATH=bazel-nomodules
+RUN /home/builder/setup-dev.sh
 
 # vim:ft=dockerfile

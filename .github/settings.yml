@@ -17,4 +17,3 @@ branches:
           - "kythe"
           - "LGTM analysis: Go"
           - "LGTM analysis: Python"
-          - "youcompleteme"
