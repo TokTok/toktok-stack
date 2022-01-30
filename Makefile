@@ -1,7 +1,4 @@
-IMAGE		= toxchat/toktok-stack
-IMAGE_VERSION	= 0.0.31
-IMAGE_VERSIONED	= $(IMAGE):$(IMAGE_VERSION)
-IMAGE_LATEST	= $(IMAGE):latest
+IMAGE		= toxchat/toktok-stack:latest
 
 CACHE		= /tmp/build_cache
 OUTPUT		= /dev/shm/build_output
@@ -25,7 +22,7 @@ version:
 
 # Run the Bazel build in the built image without persisting any state.
 run:
-	docker run --rm -it $(IMAGE_VERSIONED) bazel $(ACTION) $(TARGET)
+	docker run --rm -it $(IMAGE) bazel $(ACTION) $(TARGET)
 
 run-local: $(CACHE) $(OUTPUT)
 	docker run -v $(CURDIR):/src/workspace $(DOCKERFLAGS)
@@ -37,7 +34,7 @@ run-persistent: $(CACHE) $(OUTPUT)
 DOCKERFLAGS := --rm -it					\
 	-v $(CACHE):/tmp/build_cache			\
 	-v $(OUTPUT):/tmp/build_output			\
-	$(IMAGE_VERSIONED) bazel			\
+	$(IMAGE) bazel					\
 	--output_user_root=/tmp/build_cache		\
 	--output_base=/tmp/build_output			\
 	$(ACTION) $(TARGET)
@@ -74,7 +71,6 @@ FILES :=						\
 	| grep -E -v '^c-toxcore/other/astyle'		\
 	| grep -E -v '^c-toxcore/other/docker'		\
 	| grep -E -v '^jvm-[^/]*/project'		\
-	| grep -E -v '^tools/built'			\
 	| grep -E -v '^tools/debug'			\
 	| grep -E -v '^Makefile'			\
 	| grep -E -v '^README.md'			\
@@ -114,14 +110,15 @@ DOCKER_BUILD = docker build --ulimit memlock=67108864
 
 .INTERMEDIATE: workspace.tar
 build-workspace: workspace.tar
-	$(DOCKER_BUILD) --cache-from "$(IMAGE_LATEST)" -t $(IMAGE_VERSIONED) -t $(IMAGE_LATEST) - < $<
-	#$(DOCKER_BUILD) -t $(IMAGE_VERSIONED) -t $(IMAGE_LATEST) - < $<
+	$(DOCKER_BUILD) --cache-from "$(IMAGE)-third_party" -t "$(IMAGE)-third_party" -f workspace/tools/built/src/Dockerfile.third_party - < $<
+	$(DOCKER_BUILD) --cache-from "$(IMAGE)" -t $(IMAGE) -f workspace/tools/built/src/Dockerfile - < $<
+	#$(DOCKER_BUILD) -t $(IMAGE) - < $<
 	-docker rm $(docker ps -a | grep -o '^[0-9a-f]...........')
 	-docker rmi $(docker images -f "dangling=true" -q)
 
 push-workspace:
-	docker push $(IMAGE_VERSIONED)
-	docker push $(IMAGE_LATEST)
+	docker push $(IMAGE)-third_party
+	docker push $(IMAGE)
 
 .INTERMEDIATE: kythe.tar
 build-kythe: kythe.tar tools/kythe/Dockerfile
@@ -131,7 +128,7 @@ build-kythe: kythe.tar tools/kythe/Dockerfile
 push-kythe:
 	docker push toxchat/kythe-serving:latest
 
-TAR = tar --mode=ugo+rx --transform 's,^,$*/,;s,^$*/Dockerfile,Dockerfile,;s,$*/toolchain,toolchain,'
+TAR = tar --mode=ugo+rx --transform 's,^,$*/,;s,$*/toolchain,toolchain,'
 
 # Build a .tar with the workspace in it. This will be unpacked in the
 # Dockerfile. We use $(...) in bash instead of $(shell) in make because

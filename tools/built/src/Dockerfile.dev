@@ -34,6 +34,9 @@ RUN wget -q https://github.com/bazelbuild/bazel-watcher/releases/download/v0.15.
  && install -o root -g root -m 755 ibazel_linux_amd64 /usr/local/bin/ibazel \
  && rm -f ibazel_linux_amd64
 
+# Install Haskell Stack.
+RUN curl -sSL https://get.haskellstack.org/ | sh
+
 USER builder
 
 # Build YCM before everything else, because this one doesn't change much and
