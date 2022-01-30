@@ -3,20 +3,7 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 package(features = ["layering_check"])
 
 cc_library(
-    name = "pthreads_win32",
-    srcs = ["pthread.c"],
-    hdrs = glob(["*.h"]),
-    copts = ["-DPTW32_BUILD"],
-    defines = [
-        "HAVE_STRUCT_TIMESPEC=1",
-        "PTW32_STATIC_LIB",
-    ],
-    includes = ["."],
-    textual_hdrs = ["exit.c"],
-)
-
-cc_library(
-    name = "pthreads_posix",
+    name = "pthread_posix",
     linkopts = ["-lpthread"],
 )
 
@@ -24,7 +11,7 @@ cc_library(
     name = "pthread",
     visibility = ["//visibility:public"],
     deps = select({
-        "@toktok//tools/config:windows": [":pthreads_win32"],
-        "//conditions:default": [":pthreads_posix"],
+        "@toktok//tools/config:windows": ["@pthread_win32"],
+        "//conditions:default": [":pthread_posix"],
     }),
 )

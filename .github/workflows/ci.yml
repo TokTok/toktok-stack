@@ -21,26 +21,6 @@ jobs:
       - name: Check
         run: ./buildifier --lint=warn --warnings=all -mode diff WORKSPACE $(find . -type f -name "BUILD.*")
 
-  youcompleteme:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - name: Install bazel
-        run: |
-          curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg
-          sudo mv bazel.gpg /etc/apt/trusted.gpg.d/
-          echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
-          sudo apt-get update && sudo apt-get install bazel=4.2.2
-      - name: Prepare third_party components and setup .bazelrc.local
-        run: |
-          tools/prepare_android_sdk.sh
-          echo 'build --config=gcc' > .bazelrc.local
-      - name: Run YouCompleteMe helper for one source file
-        run: |
-          python .ycm_extra_conf.py c-toxcore/other/fun/cracker_simple.c | grep SODIUM_STATIC
-
   mypy:
     runs-on: ubuntu-latest
     steps:

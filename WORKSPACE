@@ -383,11 +383,17 @@ http_archive(
 )
 
 http_archive(
-    name = "pthread",
-    build_file = "@toktok//third_party:BUILD.pthread",
+    name = "pthread_w32",
+    build_file = "@toktok//third_party:BUILD.pthread_w32",
     sha256 = "e6aca7aea8de33d9c8580bcb3a0ea3ec0a7ace4ba3f4e263ac7c7b66bc95fb4d",
     strip_prefix = "pthreads-w32-2-9-1-release",
     urls = ["https://sourceware.org/pub/pthreads-win32/pthreads-w32-2-9-1-release.tar.gz"],
+)
+
+new_local_repository(
+    name = "pthread",
+    build_file = "third_party/BUILD.pthread",
+    path = "third_party",
 )
 
 new_local_repository(
