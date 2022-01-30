@@ -12,7 +12,6 @@ fi
 # mounted the first time.
 if [ ! -d third_party/android/sdk ]; then
   tools/prepare_third_party.sh
-  tools/git-remotes "$GITHUB_USER"
 fi
 
 if [ -d ~/.vscode-server ]; then sudo chown -R builder:users ~/.vscode-server; fi

@@ -3,9 +3,6 @@
 # See run_dev_container.sh for an example usage.
 FROM toxchat/toktok-stack:latest-dev
 
-# Set this to your GitHub username so the git remotes are set up correctly.
-ENV GITHUB_USER=iphydf
-
 # Add builder's editor configs and other dotfiles.
 COPY --chown=builder:users . /home/builder/
 # Set up Vundle and any plugins the user may want.
