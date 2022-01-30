@@ -79,9 +79,6 @@
 [submodule "streambot-jvm"]
 	path = streambot-jvm
 	url = https://github.com/TokTok/streambot-jvm
-[submodule "toktok-android"]
-	path = toktok-android
-	url = https://github.com/TokTok/toktok-android
 [submodule "tools/.github"]
 	path = tools/.github
 	url = https://github.com/TokTok/.github

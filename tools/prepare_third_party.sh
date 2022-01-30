@@ -4,8 +4,6 @@ export THIS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 set -eux
 
-"$THIS_DIR/prepare_android_sdk.sh"
-
 # TODO(iphydf): Re-enable this when we're ready to build native binaries for
 # Android with Bazel.
 #if [ ! -d third_party/android/android-ndk-r21d ]; then
