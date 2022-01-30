@@ -56,9 +56,16 @@ RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/inst
 # Run tests afterwards, because those can be retried, while the build must
 # succeed first time. We exclude ToxCryptoImplTest because it times out in
 # unoptimised builds.
-COPY tools/built/src/bazel-nomodules /usr/local/bin/
-COPY --chown=builder:users tools/built/src/setup-dev.sh /home/builder
 ENV BAZEL_COMPDB_BAZEL_PATH=bazel-nomodules
-RUN /home/builder/setup-dev.sh
+# For local development: the setup script might have changed and is an
+# extension of the Dockerfile, so we copy it here. On CI builds, they are
+# the same file.
+COPY tools/built/src/setup-dev.sh /src/workspace/tools/built/src/
+RUN /src/workspace/tools/built/src/setup-dev.sh
+
+# Also for local development: add this file again, so local changes are
+# reflected.
+COPY tools/built/src/init.sh /src/workspace/tools/built/src/
+CMD ["/src/workspace/tools/built/src/init.sh"]
 
 # vim:ft=dockerfile

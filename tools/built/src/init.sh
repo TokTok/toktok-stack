@@ -4,8 +4,8 @@ set -eux
 
 sudo service ssh start
 
-if grep "BEGIN" ~builder/key.pem; then
-  sudo -i -u builder gpg --import ~builder/key.pem
+if grep "BEGIN" ~/key.pem; then
+  gpg --import ~/key.pem
 fi
 
 # Re-initialise third party and git remotes if this is an external volume
@@ -15,7 +15,9 @@ if [ ! -d third_party/android/sdk ]; then
   tools/git-remotes "$GITHUB_USER"
 fi
 
-sudo chown -R builder:users /home/builder/.vscode-server /src/workspace/.vscode
-sudo -i -u builder bazel build //...
+if [ -d ~/.vscode-server ]; then sudo chown -R builder:users ~/.vscode-server; fi
+if [ -d /src/workspace/.vscode ]; then sudo chown -R builder:users /src/workspace/.vscode; fi
+
+bazel build --config=remote //...
 
 nc -l 0.0.0.0 2000

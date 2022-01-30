@@ -4,14 +4,12 @@
 #
 # You should create a "home" directory with some configs in it as you like
 # them. In particular, you will need a Vundle-enabled VIM or NeoVIM config.
+#
+# This assumes "toktok-stack" is cloned into the "workspace" subdirectory.
 
 set -eux
 
 IMAGE="$1"
-
-if [ ! -d workspace ]; then
-  git clone https://github.com/TokTok/toktok-stack workspace
-fi
 
 if [ ! -f home/.ssh/authorized_keys ]; then
   mkdir -f home/.ssh
@@ -27,7 +25,7 @@ if [ ! -f home/.vimrc -a ! -f home/.config/nvim/init.vim ]; then
   exit 1
 fi
 
-docker build -t "$IMAGE" -f workspace/tools/built/dev/Dockerfile .
+docker build -t "$IMAGE" -f workspace/tools/built/dev/Dockerfile home
 docker run --name=toktok-dev --rm -it \
   -p 2224:22 \
   -v "$PWD/workspace:/src/workspace" \
