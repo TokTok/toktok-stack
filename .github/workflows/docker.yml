@@ -1,155 +1,179 @@
 ---
 name: docker
 
-# docker-release and kythe run on pull request and push. The other docker builds
-# only run on push, as they take a long time and we're confident enough that
-# everything works for a pull request if the full release build works and tests
-# pass globally.
 on:
   push:
     branches: [master]
-  pull_request:
-    branches: [master]
 
 jobs:
-  docker-release:
+  docker-third_party:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
           submodules: recursive
-      - name: Pull latest toktok-stack image
-        if: ${{ !(contains(github.event.pull_request.title, 'chore(rebuild)') || contains(github.event.head_commit.message, 'chore(rebuild)')) }}
-        run: |
-          docker pull toxchat/toktok-stack:latest-third_party || true
-          docker pull toxchat/toktok-stack:latest
-      - name: Build toktok-stack base image
-        run: make build-workspace
       - name: Login to DockerHub
-        if: ${{ github.event_name == 'push' }}
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Push base image to DockerHub
-        if: ${{ github.event_name == 'push' }}
-        run: make push-workspace
+      - name: Pull toxchat/toktok-stack:latest-third_party
+        if: ${{ !contains(github.event.head_commit.message, 'chore(rebuild)') }}
+        run: docker pull toxchat/toktok-stack:latest-third_party
+      - name: Build toxchat/toktok-stack:latest-third_party
+        run: docker build -f tools/built/src/Dockerfile.third_party .
+      - name: Push toxchat/toktok-stack:latest-third_party
+        run: docker push toxchat/toktok-stack:latest-third_party
 
-      - name: Build //third_party in release mode
-        if: ${{ github.event_name == 'push' || contains(github.event.pull_request.title, 'chore(deps)') }}
-        run: make -C tools/built build-release
-      - name: Build and test the whole toktok-stack in release mode
-        if: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.title, 'chore(deps)') }}
-        run: tools/built/bazel_test release
-      - name: Push release image to DockerHub
-        if: ${{ github.event_name == 'push' }}
-        run: make -C tools/built push-release
+  docker:
+    runs-on: ubuntu-latest
+    needs: [docker-third_party]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Pull toxchat/toktok-stack:latest
+        if: ${{ !contains(github.event.head_commit.message, 'chore(rebuild)') }}
+        run: docker pull toxchat/toktok-stack:latest
+      - name: Build toxchat/toktok-stack:latest
+        run: docker build -f tools/built/src/Dockerfile .
+      - name: Push toxchat/toktok-stack:latest
+        run: docker push toxchat/toktok-stack:latest
+
+  docker-release:
+    runs-on: ubuntu-latest
+    needs: [docker]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build toxchat/toktok-stack:latest-release
+        run: docker build -f tools/built/src/Dockerfile.release .
+      - name: Push toxchat/toktok-stack:latest-release
+        run: docker push toxchat/toktok-stack:latest-release
 
   docker-fastbuild:
     runs-on: ubuntu-latest
-    needs: docker-release
-    if: ${{ github.event_name == 'push' }}
+    needs: [docker]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Build //third_party in fastbuild mode
-        run: make -C tools/built build-fastbuild
+        with:
+          submodules: recursive
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Push fastbuild image to DockerHub
-        run: make -C tools/built push-fastbuild
+      - name: Build toxchat/toktok-stack:latest-fastbuild
+        run: docker build -f tools/built/src/Dockerfile.fastbuild .
+      - name: Push toxchat/toktok-stack:latest-fastbuild
+        run: docker push toxchat/toktok-stack:latest-fastbuild
 
   docker-dev:
     runs-on: ubuntu-latest
-    needs: docker-fastbuild
-    if: ${{ github.event_name == 'push' }}
+    needs: [docker-fastbuild]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Build //third_party in dev mode
-        run: make -C tools/built build-dev
+        with:
+          submodules: recursive
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Push dev image to DockerHub
-        run: make -C tools/built push-dev
+      - name: Build toxchat/toktok-stack:latest-dev
+        run: docker build -f tools/built/src/Dockerfile.dev .
+      - name: Push toxchat/toktok-stack:latest-dev
+        run: docker push toxchat/toktok-stack:latest-dev
 
   docker-debug:
     runs-on: ubuntu-latest
-    needs: docker-release
-    if: ${{ github.event_name == 'push' }}
+    needs: [docker]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Build //third_party in debug mode
-        run: make -C tools/built build-debug
+        with:
+          submodules: recursive
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Push debug image to DockerHub
-        run: make -C tools/built push-debug
+      - name: Build toxchat/toktok-stack:latest-debug
+        run: docker build -f tools/built/src/Dockerfile.debug .
+      - name: Push toxchat/toktok-stack:latest-debug
+        run: docker push toxchat/toktok-stack:latest-debug
 
   docker-asan:
     runs-on: ubuntu-latest
-    needs: docker-release
-    if: ${{ github.event_name == 'push' }}
+    needs: [docker]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Build //third_party in asan mode
-        run: make -C tools/built build-asan
+        with:
+          submodules: recursive
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Push asan image to DockerHub
-        run: make -C tools/built push-asan
+      - name: Build toxchat/toktok-stack:latest-asan
+        run: docker build -f tools/built/src/Dockerfile.asan .
+      - name: Push toxchat/toktok-stack:latest-asan
+        run: docker push toxchat/toktok-stack:latest-asan
 
   docker-msan:
     runs-on: ubuntu-latest
-    needs: docker-release
-    if: ${{ github.event_name == 'push' }}
+    needs: [docker]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Build //third_party in msan mode
-        run: make -C tools/built build-msan
+        with:
+          submodules: recursive
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Push msan image to DockerHub
-        run: make -C tools/built push-msan
+      - name: Build toxchat/toktok-stack:latest-msan
+        run: docker build -f tools/built/src/Dockerfile.msan .
+      - name: Push toxchat/toktok-stack:latest-msan
+        run: docker push toxchat/toktok-stack:latest-msan
 
   docker-tsan:
     runs-on: ubuntu-latest
-    needs: docker-release
-    if: ${{ github.event_name == 'push' }}
+    needs: [docker]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Build //third_party in tsan mode
-        run: make -C tools/built build-tsan
+        with:
+          submodules: recursive
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Push tsan image to DockerHub
-        run: make -C tools/built push-tsan
+      - name: Build toxchat/toktok-stack:latest-tsan
+        run: docker build -f tools/built/src/Dockerfile.tsan .
+      - name: Push toxchat/toktok-stack:latest-tsan
+        run: docker push toxchat/toktok-stack:latest-tsan
 
   kythe:
-    if: ${{ github.event_name == 'push' || contains(github.event.pull_request.title, 'chore(deps)') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -159,11 +183,9 @@ jobs:
       - name: Build Kythe tables
         run: make build-kythe
       - name: Login to DockerHub
-        if: ${{ github.event_name == 'push' }}
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Push Kythe image to DockerHub
-        if: ${{ github.event_name == 'push' }}
         run: make push-kythe

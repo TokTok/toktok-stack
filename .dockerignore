@@ -1,0 +1,16 @@
+# Avoid putting large local files into the Docker image.
+**/*.tar
+**/.bazelrc.local
+**/.cache
+**/.git
+**/.mypy_cache
+**/.stack-work
+**/.vscode
+**/__pycache__
+**/_build
+**/_install
+**/bazel-*
+**/compile_commands.json
+**/third_party/android/android-ndk-r*
+**/third_party/android/sdk
+**/third_party/javacpp

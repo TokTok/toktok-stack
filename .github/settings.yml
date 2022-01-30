@@ -12,8 +12,6 @@ branches:
       required_status_checks:
         contexts:
           - "buildifier"
-          - "Codacy Static Code Analysis"
-          - "docker-release"
-          - "kythe"
+          - "docker-test"
           - "LGTM analysis: Go"
           - "LGTM analysis: Python"
