@@ -1,6 +1,9 @@
 [submodule "apidsl"]
 	path = apidsl
 	url = https://github.com/TokTok/apidsl
+[submodule "btox"]
+	path = btox
+	url = https://github.com/TokTok/bTox
 [submodule "ci-tools"]
 	path = ci-tools
 	url = https://github.com/TokTok/ci-tools
