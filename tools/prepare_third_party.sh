@@ -15,7 +15,17 @@ if ! which javac; then
   fi
 fi
 
-mkdir -p third_party/javacpp/ffmpeg/jar
-wget -q https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/ffmpeg/3.4.1-1.4/ffmpeg-3.4.1-1.4-linux-x86_64.jar -O third_party/javacpp/ffmpeg/jar/ffmpeg-3.4.1-1.4-linux-x86_64.jar
-mkdir -p third_party/javacpp/opencv/jar
-wget -q https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/3.4.0-1.4/opencv-3.4.0-1.4-linux-x86_64.jar -O third_party/javacpp/opencv/jar/opencv-3.4.0-1.4-linux-x86_64.jar
+FFMPEG_VERSION=3.4.1-1.4
+OPENCV_VERSION=3.4.0-1.4
+
+FFMPEG_JAR=ffmpeg-$FFMPEG_VERSION-linux-x86_64.jar
+OPENCV_JAR=opencv-$OPENCV_VERSION-linux-x86_64.jar
+
+if [ ! -f "third_party/javacpp/ffmpeg/jar/$FFMPEG_JAR" ]; then
+  mkdir -p third_party/javacpp/ffmpeg/jar
+  wget -q "https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/ffmpeg/$FFMPEG_VERSION/$FFMPEG_JAR" -O "third_party/javacpp/ffmpeg/jar/$FFMPEG_JAR"
+fi
+if [ ! -f "third_party/javacpp/opencv/jar/$OPENCV_JAR" ]; then
+  mkdir -p third_party/javacpp/opencv/jar
+  wget -q "https://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/$OPENCV_VERSION/$OPENCV_JAR" -O "third_party/javacpp/opencv/jar/$OPENCV_JAR"
+fi

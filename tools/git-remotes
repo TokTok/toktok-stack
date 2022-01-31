@@ -35,6 +35,12 @@ our %REPOS = (
       upstream => 'toktok',
       repo 'iphydf',
    }],
+   'btox' => ['bTox', {
+      upstream => 'toktok',
+      repo 'iphydf',
+      repo 'jfreegman',
+      repo 'robinlinden',
+   }],
    'ci-tools' => ['ci-tools', {
       upstream => 'toktok',
       repo 'iphydf',

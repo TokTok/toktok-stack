@@ -10,9 +10,7 @@ fi
 
 # Re-initialise third party and git remotes if this is an external volume
 # mounted the first time.
-if [ ! -d third_party/javacpp/ffmpeg/jar ]; then
-  tools/prepare_third_party.sh
-fi
+tools/prepare_third_party.sh
 
 # Install a default .bazelrc.local that works with the dev container.
 if [ ! -f .bazelrc.local ]; then ln -s .bazelrc.local.example .bazelrc.local; fi
