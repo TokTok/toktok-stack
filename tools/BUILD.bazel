@@ -2,6 +2,7 @@ load("//tools/project:build_defs.bzl", "workspace")
 
 workspace(projects = [
     "apidsl",
+    "btox",
     "c-toxcore",
     "c-toxcore-hs",
     "ci-tools",
