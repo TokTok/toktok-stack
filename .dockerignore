@@ -3,10 +3,12 @@
 # submodule CI builds. When using the dev container, we expect to mount the
 # user's local workspace directory so these excluded files will be present.
 .github
+**/*.gz
 **/*.jar
 **/*.tar
 **/.bazelrc.local
 **/.cache
+**/.dart_tool
 **/.git
 **/.mypy_cache
 **/.stack-work
@@ -15,4 +17,5 @@
 **/_build
 **/_install
 **/bazel-*
+**/build
 **/compile_commands.json

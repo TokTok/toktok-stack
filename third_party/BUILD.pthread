@@ -11,7 +11,7 @@ cc_library(
     name = "pthread",
     visibility = ["//visibility:public"],
     deps = select({
-        "@toktok//tools/config:windows": ["@pthread_win32"],
+        "@toktok//tools/config:windows": ["@pthread_w32"],
         "//conditions:default": [":pthread_posix"],
     }),
 )

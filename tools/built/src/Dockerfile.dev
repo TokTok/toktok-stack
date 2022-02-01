@@ -10,7 +10,7 @@ USER root
 
 # Install some common dev tools. We need cmake for the YCM build below. We
 # also install an SSH server so we can connect to our dev container.
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN yes | unminimize && apt-get update && apt-get install -y --no-install-recommends \
  cmake \
  dumb-init \
  gnupg \
