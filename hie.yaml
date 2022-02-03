@@ -1,0 +1,4 @@
+cradle:
+  bios:
+    program: ".hie-bios"
+    with-ghc: "bazel-workspace/external/rules_haskell_ghc_linux_amd64/bin/ghc"

@@ -19,6 +19,7 @@ RUN rm /etc/dpkg/dpkg.cfg.d/excludes \
  && dpkg-divert --quiet --remove --rename /usr/bin/man \
  && rm /etc/update-motd.d/60-unminimize \
  && apt-get update && apt-get install -y --no-install-recommends \
+ astyle \
  cmake \
  dumb-init \
  gnupg \
@@ -31,6 +32,7 @@ RUN rm /etc/dpkg/dpkg.cfg.d/excludes \
  openssh-server \
  patch \
  screen \
+ stylish-haskell \
  vim \
  zsh \
  && apt-get clean
@@ -43,9 +45,6 @@ RUN usermod -s /usr/bin/zsh builder \
 RUN wget -q https://github.com/bazelbuild/bazel-watcher/releases/download/v0.15.10/ibazel_linux_amd64 \
  && install -o root -g root -m 755 ibazel_linux_amd64 /usr/local/bin/ibazel \
  && rm -f ibazel_linux_amd64
-
-# Install Haskell Stack.
-RUN curl -sSL https://get.haskellstack.org/ | sh
 
 USER builder
 
