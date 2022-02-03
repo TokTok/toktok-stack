@@ -3,8 +3,8 @@ import os
 import subprocess
 
 subprocess.run(
-    ["bazel", "build", "//tools:hie-bios", "--output_groups=hie_bios"], check=True
-)
+    ["bazel", "build", "//tools:hie-bios", "--output_groups=hie_bios"],
+    check=True)
 with open(os.environ["HIE_BIOS_OUTPUT"], "w") as fh:
     fh.write("-hide-all-packages\n")
     with open("bazel-bin/tools/hie-bios@hie-bios", "r") as bios:
