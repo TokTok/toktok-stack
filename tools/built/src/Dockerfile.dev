@@ -19,9 +19,11 @@ RUN rm /etc/dpkg/dpkg.cfg.d/excludes \
  && dpkg-divert --quiet --remove --rename /usr/bin/man \
  && rm /etc/update-motd.d/60-unminimize \
  && apt-get update && apt-get install -y --no-install-recommends \
+ astyle \
  cmake \
  dumb-init \
  gnupg \
+ golang \
  less \
  locales \
  man-db \
@@ -31,6 +33,7 @@ RUN rm /etc/dpkg/dpkg.cfg.d/excludes \
  openssh-server \
  patch \
  screen \
+ stylish-haskell \
  vim \
  zsh \
  && apt-get clean
@@ -44,25 +47,27 @@ RUN wget -q https://github.com/bazelbuild/bazel-watcher/releases/download/v0.15.
  && install -o root -g root -m 755 ibazel_linux_amd64 /usr/local/bin/ibazel \
  && rm -f ibazel_linux_amd64
 
-# Install Haskell Stack.
-RUN curl -sSL https://get.haskellstack.org/ | sh
+# Install our wrapper for lhs support in stylish-haskell.
+RUN dpkg-divert --add --rename /usr/bin/stylish-haskell \
+ && ln -s /src/workspace/ci-tools/bin/stylish-haskell-lhs /usr/bin/stylish-haskell
 
 USER builder
 
 # Build YCM before everything else, because this one doesn't change much and
 # takes a while to compile.
 RUN git clone --jobs=8 --depth=1 --recurse-submodules --shallow-submodules https://github.com/ycm-core/YouCompleteMe ~/.vim/bundle/YouCompleteMe \
- && cd ~/.vim/bundle/YouCompleteMe && python3 install.py --clangd-completer
+ && cd ~/.vim/bundle/YouCompleteMe && python3 install.py --clangd-completer --go-completer
 
 # Install flutter development tools.
 ENV PATH=$PATH:/home/builder/flutter/bin
 RUN git clone --depth=1 https://github.com/flutter/flutter.git ~/flutter \
  && flutter doctor
 
-# Prepare builder's home with oh-my-zsh.
+# Prepare builder's home with oh-my-zsh and toxcore's astylerc.
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
  && sed -i -e 's/^ZSH_THEME=.*/ZSH_THEME="cypher"/' "$HOME/.zshrc" \
- && echo "cd /src/workspace" >> "$HOME/.zshrc"
+ && echo "cd /src/workspace" >> "$HOME/.zshrc" \
+ && ln -sf /src/workspace/c-toxcore/other/astyle/astylerc $HOME/.astylerc
 
 # Build everything in default (fastbuild) mode. Use remote here in the initial
 # build, but not later when `builder` is interactively working. "remote" is set
