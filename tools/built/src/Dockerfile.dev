@@ -10,12 +10,22 @@ USER root
 
 # Install some common dev tools. We need cmake for the YCM build below. We
 # also install an SSH server so we can connect to our dev container.
-RUN yes | unminimize && apt-get update && apt-get install -y --no-install-recommends \
+#
+# This first does a partial "unminimize" so manpages for the packages we
+# install here are not excluded. We don't fully unminimize because that would
+# blow up our docker image size and we don't need most of the docs it adds.
+RUN rm /etc/dpkg/dpkg.cfg.d/excludes \
+ && rm /usr/bin/man \
+ && dpkg-divert --quiet --remove --rename /usr/bin/man \
+ && rm /etc/update-motd.d/60-unminimize \
+ && apt-get update && apt-get install -y --no-install-recommends \
  cmake \
  dumb-init \
  gnupg \
  less \
  locales \
+ man-db \
+ manpages-dev \
  mypy \
  netcat \
  openssh-server \
@@ -43,6 +53,11 @@ USER builder
 # takes a while to compile.
 RUN git clone --jobs=8 --depth=1 --recurse-submodules --shallow-submodules https://github.com/ycm-core/YouCompleteMe ~/.vim/bundle/YouCompleteMe \
  && cd ~/.vim/bundle/YouCompleteMe && python3 install.py --clangd-completer
+
+# Install flutter development tools.
+ENV PATH=$PATH:/home/builder/flutter/bin
+RUN git clone --depth=1 https://github.com/flutter/flutter.git ~/flutter \
+ && flutter doctor
 
 # Prepare builder's home with oh-my-zsh.
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
