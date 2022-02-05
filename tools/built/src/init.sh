@@ -18,6 +18,7 @@ if [ ! -f .bazelrc.local ]; then ln -s .bazelrc.local.example .bazelrc.local; fi
 if [ -d ~/.vscode-server ]; then sudo chown -R builder:users ~/.vscode-server; fi
 if [ -d /src/workspace/.vscode ]; then sudo chown -R builder:users /src/workspace/.vscode; fi
 
+bazel-compdb
 bazel build --config=remote //...
 
 nc -l 0.0.0.0 2000

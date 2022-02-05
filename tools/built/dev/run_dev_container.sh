@@ -25,7 +25,8 @@ if [ ! -f home/.vimrc -a ! -f home/.config/nvim/init.vim ]; then
   exit 1
 fi
 
-docker build -t "$IMAGE" -f workspace/tools/built/dev/Dockerfile home
+tar c home workspace/tools/built/dev |
+  docker build -t "$IMAGE" -f workspace/tools/built/dev/Dockerfile -
 docker run --name=toktok-dev --rm -it \
   -p 2224:22 \
   -v "$PWD/workspace:/src/workspace" \
