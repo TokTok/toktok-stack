@@ -17,6 +17,10 @@ plugins=(bazel git)
 
 source $ZSH/oh-my-zsh.sh
 
+if [ -f "$HOME/.github-token" ]; then
+  export GITHUB_TOKEN="$(cat "$HOME/.github-token")"
+fi
+
 # User configuration
 
 #export PATH="$PATH:/src/workspace/bazel-workspace/external/rules_haskell_ghc_linux_amd64/bin"

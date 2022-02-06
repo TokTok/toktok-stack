@@ -10,7 +10,6 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " Plugins go here
-Plugin 'alx741/vim-stylishask'
 Plugin 'cappyzawa/starlark.vim'
 Plugin 'nanotech/jellybeans.vim'
 Plugin 'raichoo/haskell-vim'
