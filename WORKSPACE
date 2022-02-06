@@ -353,10 +353,11 @@ new_github_archive(
 )
 
 new_github_archive(
-    name = "msgpack",
+    name = "msgpack-c",
+    patches = ["@toktok//third_party/patches:msgpack-c.patch"],
     repo = "msgpack/msgpack-c",
-    sha256 = "149ff1107ff133db5778a8b4e29fff30b6237cf2bf084afb35c2928c582d8fbd",
-    version = "cpp-3.2.1",
+    sha256 = "fa6648361c9254ae7897be2b0731570dcae047d2f07f0b732f443ac7d11c37ec",
+    version = "c-4.0.0",
 )
 
 new_github_archive(

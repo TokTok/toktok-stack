@@ -1,0 +1,64 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+
+package(features = ["layering_check"])
+
+# Unused, just here for reference to implement the rules below.
+genrule(
+    name = "regen_config",
+    srcs = glob([
+        "cmake/*",
+        "**/CMake*.txt",
+        "**/*.c",
+        "**/*.h",
+    ]) + [
+        "msgpack-config.cmake.in",
+        "msgpack.pc.in",
+        "Files.cmake",
+    ],
+    outs = [
+        "cmake/include/msgpack/pack_template.h",
+        "cmake/include/msgpack/sysdep.h",
+    ],
+    cmd = "cmake -H$$(dirname $(location CMakeLists.txt)) -B$$(dirname $$(dirname $$(dirname $(location cmake/include/msgpack/sysdep.h))))",
+)
+
+[genrule(
+    name = name,
+    srcs = ["cmake/" + name + ".h.in"],
+    outs = [
+        "include/msgpack/" + name + ".h",
+    ],
+    cmd = "sed -e 's/@MSGPACK_ENDIAN_BIG_BYTE@/0/g;s/@MSGPACK_ENDIAN_LITTLE_BYTE@/1/g' $< > $@",
+) for name in [
+    "sysdep",
+    "pack_template",
+]]
+
+cc_library(
+    name = "msgpack-c",
+    srcs = glob(["src/*.c"]),
+    hdrs = glob(["include/**/*.h"]) + [
+        "include/msgpack/pack_template.h",
+        "include/msgpack/sysdep.h",
+    ],
+    includes = ["include"],
+    visibility = ["//visibility:public"],
+)
+
+cc_test(
+    name = "msgpack_test",
+    size = "small",
+    srcs = [
+        "test/buffer_c.cpp",
+        "test/fixint_c.cpp",
+        "test/msgpack_c.cpp",
+        "test/pack_unpack_c.cpp",
+        "test/streaming_c.cpp",
+    ],
+    deps = [
+        ":msgpack-c",
+        "@com_google_googletest//:gtest",
+        "@com_google_googletest//:gtest_main",
+        "@zlib",
+    ],
+)

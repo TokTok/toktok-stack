@@ -1,0 +1,36 @@
+diff --color -ur a/include/msgpack/pack.h b/include/msgpack/pack.h
+--- include/msgpack/pack.h	2021-08-31 19:10:58.000000000 +0000
++++ include/msgpack/pack.h	2022-02-06 22:07:06.699304622 +0000
+@@ -125,7 +125,7 @@
+ #define msgpack_pack_append_buffer(user, buf, len) \
+     return (*(user)->callback)((user)->data, (const char*)buf, len)
+ 
+-#include "pack_template.h"
++#include "msgpack/pack_template.h"
+ 
+ inline void msgpack_packer_init(msgpack_packer* pk, void* data, msgpack_packer_write callback)
+ {
+diff --color -ur a/include/msgpack/zbuffer.h b/include/msgpack/zbuffer.h
+--- include/msgpack/zbuffer.h	2021-08-31 19:10:58.000000000 +0000
++++ include/msgpack/zbuffer.h	2022-02-06 22:05:07.898633285 +0000
+@@ -10,7 +10,7 @@
+ #ifndef MSGPACK_ZBUFFER_H
+ #define MSGPACK_ZBUFFER_H
+ 
+-#include "sysdep.h"
++#include "msgpack/sysdep.h"
+ #include <stdlib.h>
+ #include <string.h>
+ #include <assert.h>
+diff --color -ur a/include/msgpack/zone.h b/include/msgpack/zone.h
+--- include/msgpack/zone.h	2021-08-31 19:10:58.000000000 +0000
++++ include/msgpack/zone.h	2022-02-06 22:05:10.943650387 +0000
+@@ -10,7 +10,7 @@
+ #ifndef MSGPACK_ZONE_H
+ #define MSGPACK_ZONE_H
+ 
+-#include "sysdep.h"
++#include "msgpack/sysdep.h"
+ 
+ #ifdef __cplusplus
+ extern "C" {
