@@ -4,10 +4,10 @@ diff --color -ur a/include/msgpack/pack.h b/include/msgpack/pack.h
 @@ -125,7 +125,7 @@
  #define msgpack_pack_append_buffer(user, buf, len) \
      return (*(user)->callback)((user)->data, (const char*)buf, len)
- 
+
 -#include "pack_template.h"
 +#include "msgpack/pack_template.h"
- 
+
  inline void msgpack_packer_init(msgpack_packer* pk, void* data, msgpack_packer_write callback)
  {
 diff --color -ur a/include/msgpack/zbuffer.h b/include/msgpack/zbuffer.h
@@ -16,7 +16,7 @@ diff --color -ur a/include/msgpack/zbuffer.h b/include/msgpack/zbuffer.h
 @@ -10,7 +10,7 @@
  #ifndef MSGPACK_ZBUFFER_H
  #define MSGPACK_ZBUFFER_H
- 
+
 -#include "sysdep.h"
 +#include "msgpack/sysdep.h"
  #include <stdlib.h>
@@ -28,9 +28,9 @@ diff --color -ur a/include/msgpack/zone.h b/include/msgpack/zone.h
 @@ -10,7 +10,7 @@
  #ifndef MSGPACK_ZONE_H
  #define MSGPACK_ZONE_H
- 
+
 -#include "sysdep.h"
 +#include "msgpack/sysdep.h"
- 
+
  #ifdef __cplusplus
  extern "C" {
