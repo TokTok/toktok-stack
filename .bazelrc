@@ -159,7 +159,7 @@ build:tsan --linkopt='-fsanitize=thread'
 build:tsan --test_env=TSAN_OPTIONS=color=always
 
 build:ubsan --config=sanitizer
-build:ubsan --copt='-fno-sanitize-recover'
+build:ubsan --copt='-fno-sanitize-recover=all'
 build:ubsan --copt='-fsanitize=undefined,nullability,integer'
 build:ubsan --linkopt='-fsanitize=undefined,nullability,integer'
 # https://github.com/bazelbuild/bazel/issues/11122
@@ -284,6 +284,9 @@ build:clang --copt='-Wno-missing-braces'
 # This warning triggers when system header macros introduce reserved
 # identifiers, which is exactly the point of them being reserved.
 build:clang --copt='-Wno-reserved-identifier'
+# __attribute__((nonnull)) causes these warnings on defensive null checks.
+build:clang --copt='-Wno-pointer-bool-conversion'
+build:clang --copt='-Wno-tautological-pointer-compare'
 
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Weverything'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-c++98-compat'
