@@ -265,6 +265,8 @@ build:gnulike --per_file_copt='//py_toxcore_c[:/]@-Wno-cast-align'
 build:gnulike --per_file_copt='//py_toxcore_c[:/]@-Wno-shadow'
 
 # GCC warning flags.
+# __attribute__((nonnull)) causes this warning on defensive null checks.
+build:gcc --copt='-Wno-nonnull-compare'
 #build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.c$@-Wsuggest-attribute=const'
 #build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.c$@-Wsuggest-attribute=pure'
 build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.c$@-Wold-style-declaration,-Wold-style-definition'
