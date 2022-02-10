@@ -9,5 +9,8 @@ for i in hs-*/.github/workflows/ci.yml; do
 done
 
 for i in hs-*/; do
-  sed -e "s/hs-{PACKAGE}/${i}g" tools/project/haskell/cirrus.yml.in >"$i".cirrus.yml
+  mkdir -p "$i".github/docker
+  PKG=$(echo "$i" | sed -e 's|^hs-||;s|/||')
+  sed -e "s/{PACKAGE}/$PKG/g" tools/project/haskell/cirrus.yml.in >"$i".cirrus.yml
+  sed -e "s/{PACKAGE}/$PKG/g" tools/project/haskell/github/Dockerfile >"$i".github/docker/Dockerfile
 done
