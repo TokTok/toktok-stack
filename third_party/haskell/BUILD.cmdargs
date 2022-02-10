@@ -1,0 +1,33 @@
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "cmdargs"
+
+package(features = ["-layering_check"])
+
+haskell_library(
+    name = PACKAGE_NAME,
+    srcs = glob([
+        "Data/**/*.*hs",
+        "System/**/*.*hs",
+    ]),
+    compiler_flags = [
+        "-Wno-incomplete-patterns",
+        "-Wno-missing-signatures",
+        "-Wno-name-shadowing",
+        "-Wno-type-defaults",
+        "-Wno-unused-do-bind",
+        "-Wno-unused-imports",
+        "-Wno-unused-matches",
+    ],
+    version = packages[PACKAGE_NAME].version,
+    visibility = ["//visibility:public"],
+    deps = [
+        hazel_library("base"),
+        hazel_library("filepath"),
+        hazel_library("process"),
+        hazel_library("template-haskell"),
+        hazel_library("transformers"),
+    ],
+)

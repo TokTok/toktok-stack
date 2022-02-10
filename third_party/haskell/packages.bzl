@@ -36,6 +36,11 @@ core_packages = [
 ]
 packages = (
     {
+        "Diff": struct(
+            sha256 = "7290ac098ad8b4748b9c10e494cc85ba54af688226ae69a465aa7b4c73f149c7",
+            version = "0.4.0",
+            patches = None,
+        ),
         "HUnit": struct(
             sha256 = "4384b38872dc1482db000e32af4808bb9a6fc0d1c39a9ad319db5f69b328f1e6",
             version = "1.6.1.0",
@@ -64,6 +69,11 @@ packages = (
         "aeson-compat": struct(
             sha256 = "e043941ba761c13a3854fc087521b864b56b2df874154e42aedb67b2a77f23c8",
             version = "0.3.9",
+            patches = None,
+        ),
+        "aeson-pretty": struct(
+            sha256 = "81cea61cb6dcf32c3f0529ea5cfc98dbea3894152d7f2d9fe1cb051f927ec726",
+            version = "0.8.8",
             patches = None,
         ),
         "alex": struct(
@@ -236,6 +246,11 @@ packages = (
             version = "0.8",
             patches = None,
         ),
+        "cmdargs": struct(
+            sha256 = "0e269dc48c3d4c0447c96ffd772a6fe69dfa1260c323f4cd7bf171cbf2ab7331",
+            version = "0.10.20",
+            patches = None,
+        ),
         "colour": struct(
             sha256 = "3b8d471979617dce7c193523743c9782df63433d8e87e3ef6d97922e0da104e7",
             version = "2.3.5",
@@ -354,6 +369,11 @@ packages = (
         "exceptions": struct(
             sha256 = "4d0bfb4355cffcd67d300811df9d5fe44ea3594ed63750795bfc1f797abd84cf",
             version = "0.10.4",
+            patches = None,
+        ),
+        "expiring-cache-map": struct(
+            sha256 = "0e3bc294978b46ee59bf0b4a7e7a5bd7ed5da7bc261ffebdb0cb1b60353c64b9",
+            version = "0.0.6.1",
             patches = None,
         ),
         "fail": struct(
