@@ -203,6 +203,10 @@ build:gnulike --per_file_copt='external/.*[-_]sse41\\.c$@-msse4.1,-w'
 build:gnulike --per_file_copt='external/.*[-_]sse4_1\\.c$@-msse4.1,-w'
 build:gnulike --per_file_copt='external/.*[-_]ssse3\\.c$@-mssse3,-w'
 
+# Under UBSAN, Clang won't inline c_tolower but also not emit it out of line,
+# resulting in undefined reference errors.
+build:gnulike --per_file_copt='external/libidn2/unistring/c-str.*casecmp.c@-Dinline=static,-Wno-unused-function'
+
 # Colour diagnostics, even though bazel uses non-tty pipes.
 build:gnulike --copt='-fdiagnostics-color=always'
 
@@ -223,6 +227,8 @@ build:musl --copt='-isystem/usr/lib/gcc/x86_64-linux-gnu/6/include'
 # Enable trace logging for toxcore.
 build --per_file_copt='//c-toxcore/@-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_TRACE'
 build --per_file_copt='//c-toxcore/@-DUSE_STDERR_LOGGER'
+build --per_file_copt='//c-toxcore/@-DMAX_VLA_SIZE=2048'
+#build --per_file_copt='//c-toxcore/@-Wframe-larger-than=3255'
 
 # Use this config to put tox into a test network that speaks an incompatible
 # protocol (all packet ids are shifted).
