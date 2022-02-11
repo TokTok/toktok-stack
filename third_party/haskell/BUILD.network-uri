@@ -23,5 +23,6 @@ haskell_library(
         hazel_library("deepseq"),
         hazel_library("parsec"),
         hazel_library("template-haskell"),
+        hazel_library("th-compat"),
     ],
 )

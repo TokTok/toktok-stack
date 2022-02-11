@@ -9,16 +9,14 @@ package(features = ["-layering_check"])
 
 cc_library(
     name = "cbits",
-    srcs = glob([
-        "cbits/*.c",
-        "cbits/*.h",
-    ]),
+    hdrs = ["cbits/sha1.h"],
+    includes = ["cbits"],
     deps = [hazel_library("rts")],
 )
 
 haskell_library(
     name = PACKAGE_NAME,
-    srcs = glob(["src/Crypto/**/*.*hs"]),
+    srcs = glob(["src/**/*.*hs"]),
     compiler_flags = ["-Wno-inline-rule-shadowing"],
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,

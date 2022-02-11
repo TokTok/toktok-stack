@@ -11,6 +11,8 @@ haskell_library(
     srcs = glob(["Network/**/*.*hs"]) + ["Imports.hs"],
     compiler_flags = [
         "-Wno-unused-imports",
+        "-XStrict",
+        "-XStrictData",
     ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
@@ -26,5 +28,6 @@ haskell_library(
         hazel_library("psqueues"),
         hazel_library("stm"),
         hazel_library("time-manager"),
+        hazel_library("unix-time"),
     ],
 )

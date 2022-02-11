@@ -106,7 +106,7 @@ haskell_register_ghc_bindists(
         "-optc=-Wno-unused-command-line-argument",
         "-fdiagnostics-color=always",
     ],
-    version = "8.10.3",
+    version = "8.10.7",
 )
 
 github_archive(

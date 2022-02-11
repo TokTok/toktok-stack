@@ -27,7 +27,6 @@ haskell_library(
         ":splitmix-compat",
         hazel_library("base"),
         hazel_library("deepseq"),
-        hazel_library("random"),
         hazel_library("time"),
     ],
 )

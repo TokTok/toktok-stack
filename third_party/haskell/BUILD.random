@@ -8,7 +8,7 @@ package(features = ["-layering_check"])
 
 haskell_library(
     name = PACKAGE_NAME,
-    srcs = glob(["System/**/*.*hs"]),
+    srcs = glob(["src/**/*.*hs"]),
     compiler_flags = [
         "-XCPP",
         "-Wno-tabs",
@@ -17,6 +17,10 @@ haskell_library(
     visibility = ["//visibility:public"],
     deps = [
         hazel_library("base"),
+        hazel_library("bytestring"),
+        hazel_library("deepseq"),
+        hazel_library("mtl"),
+        hazel_library("splitmix"),
         hazel_library("time"),
     ],
 )
