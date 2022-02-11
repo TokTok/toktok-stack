@@ -571,6 +571,11 @@ packages = (
             version = "0.7.2.5",
             patches = None,
         ),
+        "monad-validate": struct(
+            sha256 = "f50f12c6560b4bf22a968fd3d73163fad24556c2aa0348a1769588ca998b11f3",
+            version = "1.2.0.0",
+            patches = None,
+        ),
         "mono-traversable": struct(
             sha256 = "98b220f3313d74227a4249210c8818e839678343e62b3ebb1b8c867cf2b974b7",
             version = "1.0.15.3",
