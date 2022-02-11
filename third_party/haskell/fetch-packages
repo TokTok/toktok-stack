@@ -11,10 +11,15 @@ my @PACKAGES = map { (/([^.]+)$/)[0] } <BUILD.*>;
 my @PATCHES = map { (/([^.]+).patch/)[0] } <*.patch>;
 my @LTS_PACKAGES = `curl -s "$RESOLVER" | grep "^- hackage:"`;
 
+push @LTS_PACKAGES, (
+   '- hackage: timers-0.2.0.4@sha256:0000000000000000000000000000000000000000000000000000000000000000,0',
+   '- hackage: suspend-0.2.0.0@sha256:0000000000000000000000000000000000000000000000000000000000000000,0',
+);
+
 my $iter = iterate(sub {
    my (undef, $job) = @_;
 
-   my ($package, $version, undef) = $job =~ /- hackage: (.+)-([^-]+)\@sha256:([0-9a-f]+),\d+$/;
+   my ($package, $version) = $job =~ /- hackage: (.+)-([^-]+)\@sha256:(?:[0-9a-f]+),\d+$/;
    return unless grep { $_ eq $package } @PACKAGES;
    my $patches = do {
       my @patches = map { "[\"\@toktok//third_party/haskell:$_.patch\"]" } grep { $_ eq $package } @PATCHES;

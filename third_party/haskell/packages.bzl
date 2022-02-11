@@ -956,5 +956,15 @@ packages = (
             version = "0.6.2.2",
             patches = None,
         ),
+        "timers": struct(
+            sha256 = "4b057105fa485eb1d9d73b3dd3de0044a00c432efc4aca64c98f14bb9aa2320c",
+            version = "0.2.0.4",
+            patches = None,
+        ),
+        "suspend": struct(
+            sha256 = "2f4f5b64837e94859b75dd49b28cf77bc75d70d5ab4f9adacb46ada5da98f072",
+            version = "0.2.0.0",
+            patches = None,
+        ),
     }
 )

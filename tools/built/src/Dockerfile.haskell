@@ -1,0 +1,22 @@
+FROM toxchat/haskell:latest
+
+WORKDIR /work
+COPY --chown=builder:users c-toxcore/ /work/c-toxcore/
+RUN cmake -Bc-toxcore/_build -Hc-toxcore -GNinja -DBOOTSTRAP_DAEMON=OFF -DCMAKE_INSTALL_PREFIX:PATH="/usr" \
+ && cmake --build c-toxcore/_build --parallel "$(nproc)" \
+ && sudo cmake --build c-toxcore/_build --parallel "$(nproc)" --target install \
+ && rm -rf /work/c-toxcore
+
+COPY --chown=builder:users stack.yaml /work/
+COPY --chown=builder:users hs-cimple/ /work/hs-cimple/
+COPY --chown=builder:users hs-github-tools/ /work/hs-github-tools/
+COPY --chown=builder:users hs-msgpack-binary/ /work/hs-msgpack-binary/
+COPY --chown=builder:users hs-msgpack-rpc-conduit/ /work/hs-msgpack-rpc-conduit/
+COPY --chown=builder:users hs-msgpack-types/ /work/hs-msgpack-types/
+COPY --chown=builder:users hs-schema/ /work/hs-schema/
+COPY --chown=builder:users hs-tokstyle/ /work/hs-tokstyle/
+COPY --chown=builder:users hs-toxcore/ /work/hs-toxcore/
+COPY --chown=builder:users hs-toxcore-c/ /work/hs-toxcore-c/
+RUN ["stack", "build"]
+
+# vim:ft=dockerfile
