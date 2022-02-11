@@ -8,7 +8,7 @@ package(features = ["-layering_check"])
 
 haskell_library(
     name = PACKAGE_NAME,
-    srcs = glob(["Data/**/*.*hs"]),
+    srcs = glob(["src/**/*.*hs"]),
     compiler_flags = [
         "-Wno-unused-imports",
     ],

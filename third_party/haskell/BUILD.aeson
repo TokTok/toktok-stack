@@ -15,7 +15,7 @@ cc_library(
 
 haskell_library(
     name = "aeson-pure",
-    srcs = glob(["pure/**/*.*hs"]),
+    srcs = glob(["src-pure/**/*.*hs"]),
     src_strip_prefix = "pure",
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
@@ -44,7 +44,7 @@ haskell_library(
 
 haskell_library(
     name = PACKAGE_NAME,
-    srcs = glob(["Data/**/*.*hs"]),
+    srcs = glob(["src/**/*.*hs"]),
     compiler_flags = [
         "-Wno-inline-rule-shadowing",
         "-Wno-name-shadowing",

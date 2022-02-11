@@ -1,4 +1,4 @@
-"""Generated from resolver: lts-17.2"""
+"""Generated from resolver: lts-18.18"""
 
 core_packages = [
     "Cabal",
@@ -42,13 +42,13 @@ packages = (
             patches = None,
         ),
         "HUnit": struct(
-            sha256 = "4384b38872dc1482db000e32af4808bb9a6fc0d1c39a9ad319db5f69b328f1e6",
-            version = "1.6.1.0",
+            sha256 = "b0b7538871ffc058486fc00740886d2f3172f8fa6869936bfe83a5e10bd744ab",
+            version = "1.6.2.0",
             patches = None,
         ),
         "MonadRandom": struct(
-            sha256 = "603806756bb51391feab2bc0d690facb9654283643beb5f94a4bbce6ae8651e6",
-            version = "0.5.2",
+            sha256 = "27184dadda0a49abac0208a1e6576b14217a60dc45b6839cd9e90af25ee00a9f",
+            version = "0.5.3",
             patches = None,
         ),
         "OneTuple": struct(
@@ -62,18 +62,18 @@ packages = (
             patches = None,
         ),
         "aeson": struct(
-            sha256 = "a216ddcc4643b1fcbabb4b4e04f76d3ad54f4444a2e88de34e7d0bd813fc1647",
-            version = "1.5.5.1",
+            sha256 = "0361c34be3d2ec945201f02501693436fbda10dcc549469481a084b2de22bfe8",
+            version = "1.5.6.0",
             patches = None,
         ),
         "aeson-compat": struct(
-            sha256 = "e043941ba761c13a3854fc087521b864b56b2df874154e42aedb67b2a77f23c8",
-            version = "0.3.9",
+            sha256 = "3c9cccb69618751da0349fdd80c02ca8860f14e3ed724f1ee7f0e7759bc34345",
+            version = "0.3.10",
             patches = None,
         ),
         "aeson-pretty": struct(
-            sha256 = "81cea61cb6dcf32c3f0529ea5cfc98dbea3894152d7f2d9fe1cb051f927ec726",
-            version = "0.8.8",
+            sha256 = "5dbc4f451dfa1e667b2c6ec5170714fed1905dc9cae6a1134b3376f355fa2a08",
+            version = "0.8.9",
             patches = None,
         ),
         "alex": struct(
@@ -82,8 +82,8 @@ packages = (
             patches = None,
         ),
         "ansi-terminal": struct(
-            sha256 = "fa2e2e32dfad29835aa7fd442bbe233e07d97e933223a001fe5efa562535b57c",
-            version = "0.10.3",
+            sha256 = "c6611b9e51add41db3f79eac30066c06b33a6ca2a09e586b4b361d7f98303793",
+            version = "0.11",
             patches = None,
         ),
         "ansi-wl-pprint": struct(
@@ -117,13 +117,13 @@ packages = (
             patches = None,
         ),
         "async": struct(
-            sha256 = "4b4ab1ac82c45144d82c6daf6cb6ba45eab9957dad44787fa5e869e23d73bbff",
-            version = "2.2.2",
+            sha256 = "484df85be0e76c4fed9376451e48e1d0c6e97952ce79735b72d54297e7e0a725",
+            version = "2.2.4",
             patches = None,
         ),
         "attoparsec": struct(
-            sha256 = "ba66cd6de1749ec92568db1b9c905b43a849f0ad918d45d7b594407a02ebefb2",
-            version = "0.13.2.4",
+            sha256 = "21e0f38eaa1957bf471276afa17651c125a38924575f12c2cbd2fa534b45686f",
+            version = "0.13.2.5",
             patches = None,
         ),
         "attoparsec-iso8601": struct(
@@ -147,8 +147,8 @@ packages = (
             patches = None,
         ),
         "base-orphans": struct(
-            sha256 = "37b2b59356c03400a2d509862677393c5ff706a0aabf826c104f6fe03d93bbb3",
-            version = "0.8.4",
+            sha256 = "20a21c4b7adb0fd844b25e196241467406a28286b021f9b7a082ab03fa8015eb",
+            version = "0.8.6",
             patches = None,
         ),
         "base-unicode-symbols": struct(
@@ -157,8 +157,8 @@ packages = (
             patches = None,
         ),
         "base16-bytestring": struct(
-            sha256 = "525689679d5cc80fa532c1d5cfeace0f62bbb54134fad514f1ba00d0e7fe69ba",
-            version = "0.1.1.7",
+            sha256 = "1d5a91143ef0e22157536093ec8e59d226a68220ec89378d5dcaeea86472c784",
+            version = "1.0.2.0",
             patches = None,
         ),
         "base64-bytestring": struct(
@@ -167,13 +167,13 @@ packages = (
             patches = None,
         ),
         "basement": struct(
-            sha256 = "67582b3475a5547925399f719df21f8bbbd0ca4d4db27795c22a474f8ee6346b",
-            version = "0.0.11",
+            sha256 = "53c4435b17b7df398c730406263957977fe0616b66529dafa8d1a0fd66b7fa8b",
+            version = "0.0.12",
             patches = None,
         ),
         "bifunctors": struct(
-            sha256 = "e7729cfd8b6af5cecd7dd509e4e493eec0f1522876cc0ccf4f5805495c33a90d",
-            version = "5.5.10",
+            sha256 = "2b6b9672faab649995cf4c885f353b6638b6daee467a9ace40a7fc773831091c",
+            version = "5.5.11",
             patches = None,
         ),
         "binary-conduit": struct(
@@ -182,8 +182,8 @@ packages = (
             patches = None,
         ),
         "binary-instances": struct(
-            sha256 = "0006fec46a653db4fe7d914a6fd83eff907709f23952bf8ca31a67cce3971872",
-            version = "1.0.1",
+            sha256 = "24305e5cba9b286984ad66bdff43578d93e0fc9ad903275425075356c64ce283",
+            version = "1.0.2",
             patches = None,
         ),
         "binary-orphans": struct(
@@ -192,8 +192,8 @@ packages = (
             patches = None,
         ),
         "blaze-builder": struct(
-            sha256 = "6e6889bc9c3ff92062a17f3825dcc1b28510d261334d4d4e177232d904ea0b06",
-            version = "0.4.2.1",
+            sha256 = "2cdc998c021d3a5f2a66a95138b93386271c26a117e7676d78264a90e536af67",
+            version = "0.4.2.2",
             patches = None,
         ),
         "blaze-html": struct(
@@ -202,8 +202,8 @@ packages = (
             patches = None,
         ),
         "blaze-markup": struct(
-            sha256 = "8b6489ed422d98e4372f41be1f40f772b8d4ed925f3203b36be4078d918c8ee4",
-            version = "0.8.2.7",
+            sha256 = "43fc3f6872dc8d1be8d0fe091bd4775139b42179987f33d6490a7c5f1e07a349",
+            version = "0.8.2.8",
             patches = None,
         ),
         "bsb-http-chunked": struct(
@@ -227,8 +227,8 @@ packages = (
             patches = None,
         ),
         "call-stack": struct(
-            sha256 = "95c693c93958758d714dee22edc56d4ebb2dcefa4412264e941e32ccd6e4e0c7",
-            version = "0.2.0",
+            sha256 = "b80e8de2b87f01922b23b328655ad2f843f42495f3e1033ae907aade603c716a",
+            version = "0.3.0",
             patches = None,
         ),
         "case-insensitive": struct(
@@ -237,23 +237,23 @@ packages = (
             patches = None,
         ),
         "cereal": struct(
-            sha256 = "2d9e88ac934b9ebc058097c72011ff59f3f146176310e1c957a0e4cf63681bd7",
-            version = "0.5.8.1",
+            sha256 = "17121355b92feea2d66220daa0ebb604a774e0d6359e2fc53bab362c44a5764f",
+            version = "0.5.8.2",
             patches = None,
         ),
         "clock": struct(
-            sha256 = "08a35c5294009040f1e5eb721a21b60df7af6584092bb3d376ab1b2e57e26914",
-            version = "0.8",
+            sha256 = "0b5db110c703e68b251d5883253a934b012110b45393fc65df1b095eb9a4e461",
+            version = "0.8.2",
             patches = None,
         ),
         "cmdargs": struct(
-            sha256 = "0e269dc48c3d4c0447c96ffd772a6fe69dfa1260c323f4cd7bf171cbf2ab7331",
-            version = "0.10.20",
+            sha256 = "f7d8ea5c4e6af368d9b5d2eb994fc29235406fbe91916a6dc63bd883025eca75",
+            version = "0.10.21",
             patches = None,
         ),
         "colour": struct(
-            sha256 = "3b8d471979617dce7c193523743c9782df63433d8e87e3ef6d97922e0da104e7",
-            version = "2.3.5",
+            sha256 = "2cd35dcd6944a5abc9f108a5eb5ee564b6b1fa98a9ec79cefcc20b588991f871",
+            version = "2.3.6",
             patches = None,
         ),
         "comonad": struct(
@@ -262,8 +262,8 @@ packages = (
             patches = None,
         ),
         "conduit": struct(
-            sha256 = "9f02831aadea24489c1d1820018edadd6d97000e11f35d05da13fa8c216460f0",
-            version = "1.3.4",
+            sha256 = "2cb9832f27c7cd50daed1309f688afc4da1bd49697cbeda8ec3f81ab0bcf2197",
+            version = "1.3.4.2",
             patches = None,
         ),
         "conduit-extra": struct(
@@ -277,8 +277,8 @@ packages = (
             patches = None,
         ),
         "contravariant": struct(
-            sha256 = "44536f0e331fde471271937323dc90409e95d47f57e42657fdaf242a0fd65dc1",
-            version = "1.5.3",
+            sha256 = "062fd66580d7aad0b5ba93e644ffa7feee69276ef50f20d4ed9f1deb7642dffa",
+            version = "1.5.5",
             patches = None,
         ),
         "cookie": struct(
@@ -297,13 +297,13 @@ packages = (
             patches = None,
         ),
         "cryptohash-sha1": struct(
-            sha256 = "3c79af33542512442f8f87f6abb1faef7cd43bbfb2859260a33251d861eb0dab",
-            version = "0.11.100.1",
+            sha256 = "a4042c97ad02eb68e766577ca35c01970c33e96cfd74ccb4dd403e3476a23241",
+            version = "0.11.101.0",
             patches = None,
         ),
         "cryptonite": struct(
-            sha256 = "c82745a8930c36a81a0772dc18c86f8b7505e25fc2ab96b08c2f9125ece6c8b0",
-            version = "0.27",
+            sha256 = "d83a021cdaae90f3734b725a03ac7b555e999809779ec197011d2da8e1b8b08f",
+            version = "0.29",
             patches = None,
         ),
         "data-binary-ieee754": struct(
@@ -317,13 +317,13 @@ packages = (
             patches = None,
         ),
         "data-fix": struct(
-            sha256 = "9b45c040472922c197bb33190197b5895afac6318203b2afb30251d4df8bcc79",
-            version = "0.3.1",
+            sha256 = "3a172d3bc0639c327345e965f9d9023e099425814b28dcdb7b60ff66d66219cc",
+            version = "0.3.2",
             patches = None,
         ),
         "dec": struct(
-            sha256 = "d9b8701244e77354ba7800f290c05f705994e2cc3a6c09b6c02d9c212add0bf9",
-            version = "0.0.3",
+            sha256 = "ecfdbd681299b2653b4d5a17f4113ac156074761372bc119dcd3e1ea9473547b",
+            version = "0.0.4",
             patches = None,
         ),
         "deepseq-generics": struct(
@@ -337,8 +337,8 @@ packages = (
             patches = None,
         ),
         "dlist": struct(
-            sha256 = "7129cf18068d3384e305708a10426ab8f573bee1030b023a114f45f1d0ec496d",
-            version = "0.8.0.8",
+            sha256 = "173d637328bb173fcc365f30d29ff4a94292a1e0e5558aeb3dfc11de81510115",
+            version = "1.0",
             patches = None,
         ),
         "double-conversion": struct(
@@ -357,8 +357,8 @@ packages = (
             patches = None,
         ),
         "entropy": struct(
-            sha256 = "adc759ff756a6d71a450422ba511177632f43a33bf673901fd2334f53ef8bf62",
-            version = "0.4.1.6",
+            sha256 = "a9063dfeb566b443e6ea101fbcc22f23d8cec8b9600bfd1378b0ecadf04be9ee",
+            version = "0.4.1.7",
             patches = None,
         ),
         "errors": struct(
@@ -382,23 +382,23 @@ packages = (
             patches = None,
         ),
         "fast-logger": struct(
-            sha256 = "bfacda3111f3f795b5775f7ac681a122b225bff112c7b9dd9765f09dc0978b46",
-            version = "3.0.2",
+            sha256 = "a693bfda13ea7220dc4d516134880bc0ba5652639f0d5148222f52640d5476d5",
+            version = "3.0.5",
             patches = None,
         ),
         "file-embed": struct(
-            sha256 = "d13068abb0bd22c5d118164734a097dc591977b2c7561d912af9097803c6e1ea",
-            version = "0.0.13.0",
+            sha256 = "f066b85d537a20252faa59489f6a854e4e8f39080f08730c9e195e418cec5bdd",
+            version = "0.0.15.0",
             patches = None,
         ),
         "foundation": struct(
-            sha256 = "c158550f8429be8614e832aa0b5018b29a4e5a8429118bdca5f6d7e74fe9d360",
-            version = "0.0.25",
+            sha256 = "ad7024365e0b5d59314bca6106d64b03903db317d5bd308c81d01a87551e31c3",
+            version = "0.0.26.1",
             patches = None,
         ),
         "free": struct(
-            sha256 = "865b534c03d665fb6664efa912b49732171a6e2d66782b70b226fb38628df666",
-            version = "5.1.5",
+            sha256 = "b230d1e7e6bd0da6b8a1c83fe0c1609cb510bbec9fef7804b3604cd979402b88",
+            version = "5.1.7",
             patches = None,
         ),
         "generic-arbitrary": struct(
@@ -407,13 +407,13 @@ packages = (
             patches = None,
         ),
         "generic-deriving": struct(
-            sha256 = "e9b53a40eae58e18ee281858a1ba400f14128d5779858272b01c10d64aa09abe",
-            version = "1.13.1",
+            sha256 = "4713ed35a855af4ebdcbb62da9584188df9d97b71f296b36c63669e8185417a7",
+            version = "1.14.1",
             patches = None,
         ),
         "github": struct(
-            sha256 = "48b709ca876896e6e9a95ad22716207435f1df17810fcb981b8dfc0a679e7aed",
-            version = "0.26",
+            sha256 = "5591645d07c0e8c7ab21d6920f3f7bbb10c52b4331d85d264fdc590961d3986e",
+            version = "0.27",
             patches = None,
         ),
         "groom": struct(
@@ -442,13 +442,13 @@ packages = (
             patches = None,
         ),
         "hspec": struct(
-            sha256 = "d0faedb5cdbccf07e6d0f7c87d5fe04605da22ca559d74b4af274193a371cb6c",
-            version = "2.7.8",
+            sha256 = "3c1bbda1962b2a493ad0bea0039720011948ac194c4c63d1c9f44d9c6be6147c",
+            version = "2.7.10",
             patches = None,
         ),
         "hspec-core": struct(
-            sha256 = "6daf1a671e97496a293e7020561ff8bb577b4e20cff6e2b21dfe6626f7568781",
-            version = "2.7.8",
+            sha256 = "61d34e914b7c6bc01cac654de7bcb587f6b17969c0e49808512ddbffcaf5698a",
+            version = "2.7.10",
             patches = None,
         ),
         "hspec-expectations": struct(
@@ -462,8 +462,8 @@ packages = (
             patches = None,
         ),
         "http-api-data": struct(
-            sha256 = "d0aa13e2878e4b92edf71391e775476e7d36a4b5736bd5c701373002b7a823e9",
-            version = "0.4.1.1",
+            sha256 = "d4b2cf611ed4b4c1e7f4305914e02debc9112d4ba1d66fb3a53b8e017bdfee77",
+            version = "0.4.2",
             patches = None,
         ),
         "http-client": struct(
@@ -477,13 +477,13 @@ packages = (
             patches = None,
         ),
         "http-date": struct(
-            sha256 = "fa2722fe3cb013d230702144a9d0d5bb8faeac50a38b512dd3b992844a426bbc",
-            version = "0.0.10",
+            sha256 = "32f923ac1ad9bdfeadce7c52a03c9ba6225ba60dc14137cb1cdf32ea84ccf4d3",
+            version = "0.0.11",
             patches = None,
         ),
         "http-link-header": struct(
-            sha256 = "da26db73df1eaebb20df2837b0352cc62a6c151d467bea9442767fd3d51c2a2d",
-            version = "1.0.3.1",
+            sha256 = "8a89ccb89f84d6ebd2d3f9464ffabd11777f2a7b387b3f39de97c833cb56ec96",
+            version = "1.2.1",
             patches = None,
         ),
         "http-media": struct(
@@ -497,13 +497,13 @@ packages = (
             patches = None,
         ),
         "http2": struct(
-            sha256 = "e618d9c3946517f2250c6b0d1cfb936763a6babf6d877cd06dac7bd1a76de6e5",
-            version = "2.0.5",
+            sha256 = "a181092a3ac68c9719200bb117f3ca03b52d2f2bb695e7ef63b6c6f6caf8828d",
+            version = "3.0.2",
             patches = None,
         ),
         "indexed-traversable": struct(
-            sha256 = "7ac36ae3153cbe7a8e99eacffd065367b87544953cc92997f424a150db468139",
-            version = "0.1.1",
+            sha256 = "516858ee7198b1fed1b93c665157f9855fd947379db7f115d48c1b0d670e698d",
+            version = "0.1.2",
             patches = None,
         ),
         "integer-logarithms": struct(
@@ -512,8 +512,8 @@ packages = (
             patches = None,
         ),
         "iproute": struct(
-            sha256 = "b5b433c5c6cc7b90543b3f1f6daf850b14cedfcc39a847835ca6322176c12b52",
-            version = "1.7.10",
+            sha256 = "f1751d1579fcbc1d9f86d9d1c9ede48cb71cbeb1d7b2043491c6216e4f236b63",
+            version = "1.7.12",
             patches = None,
         ),
         "iso8601-time": struct(
@@ -527,8 +527,8 @@ packages = (
             patches = None,
         ),
         "language-c": struct(
-            sha256 = "f3d66c18abececb468f2b069f0c3274709456fde6938eace46dacf1c9b14202e",
-            version = "0.8.3",
+            sha256 = "d44cbb963fdea53ee9850af767a01137666044702938b57fda0c17644719d207",
+            version = "0.9.0.1",
             patches = None,
         ),
         "lens-family": struct(
@@ -557,23 +557,23 @@ packages = (
             patches = None,
         ),
         "mmorph": struct(
-            sha256 = "df2a4c0be2a9ac9b77f2622fc5726a62fe2e579c42cee0bc6e72a2d201f4bec3",
-            version = "1.1.4",
+            sha256 = "46fb450e3dedab419c47b0f154badb798c9e0e8cd097f78c40a12b47e1a8092f",
+            version = "1.1.5",
             patches = None,
         ),
         "monad-control": struct(
-            sha256 = "6c1034189d237ae45368c70f0e68f714dd3beda715dd265b6c8a99fcc64022b1",
-            version = "1.0.2.3",
+            sha256 = "ae0baea04d99375ef788140367179994a7178d400a8ce0d9026846546772713c",
+            version = "1.0.3.1",
             patches = None,
         ),
         "monad-parallel": struct(
-            sha256 = "128fb8c36be717f82aa3146d855303f48d04c56ba025078e6cd35d6050b45089",
-            version = "0.7.2.3",
+            sha256 = "3762165873745acb066022be29488298a61a59ae99576bcb0e0b7d649942567a",
+            version = "0.7.2.5",
             patches = None,
         ),
         "mono-traversable": struct(
-            sha256 = "c2df5b79ed2f88f2ee313e57c1d591d4463788e20d39e439297eec5ba5835ddf",
-            version = "1.0.15.1",
+            sha256 = "98b220f3313d74227a4249210c8818e839678343e62b3ebb1b8c867cf2b974b7",
+            version = "1.0.15.3",
             patches = None,
         ),
         "nats": struct(
@@ -597,8 +597,8 @@ packages = (
             patches = None,
         ),
         "network-uri": struct(
-            sha256 = "a01c1389f15d2cc2e847914737f706133bb11f0c5f8ee89711a36a25b7afa723",
-            version = "2.6.3.0",
+            sha256 = "57856db93608a4d419f681b881c9b8d4448800d5a687587dc37e8a9e0b223584",
+            version = "2.6.4.1",
             patches = None,
         ),
         "old-locale": struct(
@@ -612,8 +612,8 @@ packages = (
             patches = None,
         ),
         "optparse-applicative": struct(
-            sha256 = "4db3675fd1e0594afdf079db46f4cd412d483835d703e7c07e1a1a37d6f046f3",
-            version = "0.15.1.0",
+            sha256 = "6205278362f333c52256b9dd3edf5f8fe0f84f00cb9ee000291089f6eaccd69a",
+            version = "0.16.1.0",
             patches = None,
         ),
         "parallel": struct(
@@ -627,8 +627,8 @@ packages = (
             patches = None,
         ),
         "pointed": struct(
-            sha256 = "b8ba3d7c1e4a4fcb3f3c7f1c0a9f4d237bdf45e93ba7a2fad07ec5268c17e91e",
-            version = "5.0.2",
+            sha256 = "0b51078a589086082f89fa86726e3c41b1e35aa55a351f26c462ad07d45a2925",
+            version = "5.0.3",
             patches = None,
         ),
         "polyparse": struct(
@@ -637,18 +637,18 @@ packages = (
             patches = None,
         ),
         "primitive": struct(
-            sha256 = "6bebecfdf2a57787d9fd5231bfd612b65a92edd7b33a973b2a0f11312b89a3f0",
-            version = "0.7.1.0",
+            sha256 = "3c0cfda67f1ee6f7f65108ad6f973b5bbb35ddba34b3c87746a7448f787501dc",
+            version = "0.7.3.0",
             patches = None,
         ),
         "profunctors": struct(
-            sha256 = "5f1579aab8afae377c7c7c0d0ed95b0bc58003b6dad2d494045f7472a398af7c",
-            version = "5.5.2",
+            sha256 = "65955d7b50525a4a3bccdab1d982d2ae342897fd38140d5a94b5ef3800d8c92a",
+            version = "5.6.2",
             patches = None,
         ),
         "psqueues": struct(
-            sha256 = "26263b555d943f9b18bbebda6a090848fdba3c1b403a9b7c848f6bac99e893f9",
-            version = "0.2.7.2",
+            sha256 = "d09750ba3578d905b54d0b3a60a7b468910a60b3165e5de98bf6f4efae3ebfb2",
+            version = "0.2.7.3",
             patches = None,
         ),
         "quickcheck-io": struct(
@@ -662,18 +662,18 @@ packages = (
             patches = None,
         ),
         "random": struct(
-            sha256 = "b718a41057e25a3a71df693ab0fe2263d492e759679b3c2fea6ea33b171d3a5a",
-            version = "1.1",
+            sha256 = "e4519cf7c058bfd5bdbe4acc782284acc9e25e74487208619ca83cbcd63fb9de",
+            version = "1.2.0",
             patches = None,
         ),
         "recursion-schemes": struct(
-            sha256 = "f43d0e5545f3066375bd98a3dc3d0f22ab21beea5aaefeb4c4089a5b84bca77b",
-            version = "5.2.1",
+            sha256 = "66c3492a2fb10cea81348d0828c518b96b39f354d9e37d028a3fa279933c1405",
+            version = "5.2.2.2",
             patches = None,
         ),
         "resourcet": struct(
-            sha256 = "17f20842043ad199961a801b6efb1233b9098eb3537f8395844268f6a223eb87",
-            version = "1.2.4.2",
+            sha256 = "054152fec5cdc044dd9310c37e548913bcec67ec4e84998a1419a8c067b43b7f",
+            version = "1.2.4.3",
             patches = None,
         ),
         "safe": struct(
@@ -687,28 +687,28 @@ packages = (
             patches = None,
         ),
         "scientific": struct(
-            sha256 = "278d0afc87450254f8a76eab21b5583af63954efc9b74844a17a21a68013140f",
-            version = "0.3.6.2",
+            sha256 = "a3a121c4b3d68fb8b9f8c709ab012e48f090ed553609247a805ad070d6b343a9",
+            version = "0.3.7.0",
             patches = None,
         ),
         "semigroupoids": struct(
-            sha256 = "552f18e13ef347118911c950957e4adcda0a1f948e274f29ec449cc413d3c6b0",
-            version = "5.3.5",
+            sha256 = "3619241133f128aba7047dc0d1a2ae2569eba8a0bb0ff1da1abf44d413c3903e",
+            version = "5.3.6",
             patches = None,
         ),
         "semigroups": struct(
-            sha256 = "79e761e64b862564a3470d5d356cb6b060b14452d675859aed3b2d1e14646648",
-            version = "0.19.1",
+            sha256 = "a520b2d90b76e4e5a7526aa07f4e793ce9f67b2ec6df397ff19aa169e2a03a40",
+            version = "0.19.2",
             patches = None,
         ),
         "servant": struct(
-            sha256 = "65d697c2dafd854d47716cf84b3377d307478da7401a75e4cbe921f59394aea2",
-            version = "0.18.2",
+            sha256 = "b76bf198a4dddfa9b03d5ac750e5ed3a60fa24052dedb138932ba943519d7e0c",
+            version = "0.18.3",
             patches = None,
         ),
         "servant-server": struct(
-            sha256 = "30369ca071bb8551ad772e214bdc95a36c6ca5c08a7f920033f7aac0c7623117",
-            version = "0.18.2",
+            sha256 = "136acdd982769ab4450325783a2fe88ed747b1ea29789eaf2a44ab826c04cfbe",
+            version = "0.18.3",
             patches = None,
         ),
         "setenv": struct(
@@ -742,13 +742,13 @@ packages = (
             patches = None,
         ),
         "splitmix": struct(
-            sha256 = "46009f4b000c9e6613377767b8718bf38476469f2a8e2162d98cc246882d5a35",
-            version = "0.1.0.3",
+            sha256 = "6d065402394e7a9117093dbb4530a21342c9b1e2ec509516c8a8d0ffed98ecaa",
+            version = "0.1.0.4",
             patches = None,
         ),
         "streaming-commons": struct(
-            sha256 = "306940bf4878a0b714e6746a7f934d018100efc86332c176a648014bfe1e81dd",
-            version = "0.2.2.1",
+            sha256 = "786bddc912a7f7cc2e23bb91877b561def99340e62c77a13cfe47dd614e63048",
+            version = "0.2.2.2",
             patches = None,
         ),
         "strict": struct(
@@ -759,6 +759,11 @@ packages = (
         "string-conversions": struct(
             sha256 = "46bcce6d9ce62c558b7658a75d9c6a62f7259d6b0473d011d8078234ad6a1994",
             version = "0.4.0.1",
+            patches = None,
+        ),
+        "suspend": struct(
+            sha256 = "2f4f5b64837e94859b75dd49b28cf77bc75d70d5ab4f9adacb46ada5da98f072",
+            version = "0.2.0.0",
             patches = None,
         ),
         "syb": struct(
@@ -782,8 +787,13 @@ packages = (
             patches = None,
         ),
         "th-abstraction": struct(
-            sha256 = "ea06b2cda25fc4b52dac48cc23e5a756f997df8985ecaee5a554202508a11c40",
-            version = "0.4.2.0",
+            sha256 = "c8bb13e31d1d22a99168536a35c66e1091a6e4274b9841a023eac52c2bd3de06",
+            version = "0.4.3.0",
+            patches = None,
+        ),
+        "th-compat": struct(
+            sha256 = "6b5059caf6714f47da92953badf2f556119877e09708c14e206b3ae98b8681c6",
+            version = "0.1.3",
             patches = None,
         ),
         "th-lift": struct(
@@ -806,14 +816,19 @@ packages = (
             version = "0.0.0",
             patches = None,
         ),
+        "timers": struct(
+            sha256 = "4b057105fa485eb1d9d73b3dd3de0044a00c432efc4aca64c98f14bb9aa2320c",
+            version = "0.2.0.4",
+            patches = None,
+        ),
         "tls": struct(
-            sha256 = "ce42bfa581a50f62776581da4b86408ebb1a51bc6cb2f95ad0a2ac7caa19a437",
-            version = "1.5.4",
+            sha256 = "8a48b5ced43fac15c99158f0eedec458d77a6605c1a4302d41457f5a70ef3948",
+            version = "1.5.5",
             patches = None,
         ),
         "transformers-base": struct(
-            sha256 = "d0c80c63fdce6a077dd8eda4f1ff289b85578703a3f1272e141d400fe23245e8",
-            version = "0.4.5.2",
+            sha256 = "323bf8689eb691b122661cffa41a25e00fea7a768433fe2dde35d3da7d32cf90",
+            version = "0.4.6",
             patches = None,
         ),
         "transformers-compat": struct(
@@ -827,8 +842,8 @@ packages = (
             patches = None,
         ),
         "typed-process": struct(
-            sha256 = "31a2a81f33463fedc33cc519ad5b9679787e648fe2ec7efcdebd7d54bdbbc2b1",
-            version = "0.2.6.0",
+            sha256 = "8778ce29f84e8d1ef1c001a8fb03bb37fbaa146cd8a1f6a6633365ae80563c1e",
+            version = "0.2.7.0",
             patches = None,
         ),
         "unix-compat": struct(
@@ -841,14 +856,19 @@ packages = (
             version = "0.4.7",
             patches = None,
         ),
+        "unliftio": struct(
+            sha256 = "be9e9b29e492d8430ccd6b2b70da57553a9b312875d177e769d8847ce0297555",
+            version = "0.2.20",
+            patches = None,
+        ),
         "unliftio-core": struct(
             sha256 = "919f0d1297ea2f5373118553c1df2a9405d8b9e31a8307e829da67d4953c299a",
             version = "0.2.0.1",
             patches = None,
         ),
         "unordered-containers": struct(
-            sha256 = "86b01369ab8eb311383a052d389337e2cd71a63088323f02932754df4aa37b55",
-            version = "0.2.13.0",
+            sha256 = "6c92eaf080a2dcce5481674f5e8e42fb2c66da838eec55e72a3c960bfeacd368",
+            version = "0.2.15.0",
             patches = None,
         ),
         "utf8-string": struct(
@@ -857,23 +877,23 @@ packages = (
             patches = None,
         ),
         "uuid": struct(
-            sha256 = "dfac808a7026217d018b408eab18facc6a85c6183be308d4ac7877e80599b027",
-            version = "1.3.13",
+            sha256 = "f885958d8934930b7c0f9b91f980722f7f992c9383fc98f075cf9df64c800564",
+            version = "1.3.15",
             patches = None,
         ),
         "uuid-types": struct(
-            sha256 = "9276517ab24a9b06f39d6e3c33c6c2b4ace1fc2126dbc1cd9806866a6551b3fd",
-            version = "1.0.3",
+            sha256 = "ad68b89b7a64c07dd5c250a11be2033ee929318ff51ec7b4e4b54e1b4deba7dd",
+            version = "1.0.5",
             patches = None,
         ),
         "vault": struct(
-            sha256 = "5b1cd255de8f4addf7705f7b9bfd586b003bcace0dba0dbe1ae1986b8a0d4359",
-            version = "0.3.1.4",
+            sha256 = "ac2a6b6adf58598c5c8faa931ae961a8a2aa50ddb2f0f7a2044ff6e8c3d433a0",
+            version = "0.3.1.5",
             patches = None,
         ),
         "vector": struct(
-            sha256 = "3b6e27683f6f20b37b8a35d0fab9e34b57dad72ac64cb16f428726780d4011bd",
-            version = "0.12.1.2",
+            sha256 = "fb4a53c02bd4d7fdf155c0604da9a5bb0f3b3bfce5d9960aea11c2ae235b9f35",
+            version = "0.12.3.1",
             patches = None,
         ),
         "vector-algorithms": struct(
@@ -882,8 +902,8 @@ packages = (
             patches = None,
         ),
         "vector-binary-instances": struct(
-            sha256 = "3945b99f8efd319c837700b7cef5163ee23e656e89227357e0b7a41d2a66c512",
-            version = "0.2.5.1",
+            sha256 = "b72e3b2109a02c75cb8f07ef0aabba0dba6ec0148e21321a0a2b2197c9a2f54d",
+            version = "0.2.5.2",
             patches = None,
         ),
         "vector-instances": struct(
@@ -912,8 +932,8 @@ packages = (
             patches = None,
         ),
         "wai-extra": struct(
-            sha256 = "4632108eaf51242e30c3625d942e892cad59264f8365bd1edc51b0867c856b0d",
-            version = "3.1.6",
+            sha256 = "a4797c56b18edb3b0242ce0b0524b08535d1186873964ba7a1482fcde43a6eab",
+            version = "3.1.7",
             patches = None,
         ),
         "wai-logger": struct(
@@ -922,8 +942,8 @@ packages = (
             patches = None,
         ),
         "warp": struct(
-            sha256 = "2331da1ac67c644828883498301bee7bbf59f8b3d79b37850a621cba9a811572",
-            version = "3.3.14",
+            sha256 = "1c5327b51e2acd4a7c8927a5bf01dedb308bedd286ea385f7300fc2feed023d5",
+            version = "3.3.18",
             patches = None,
         ),
         "word8": struct(
@@ -952,18 +972,8 @@ packages = (
             patches = None,
         ),
         "zlib": struct(
-            sha256 = "04b5890dd69e992f8cd09570d81e9d5ecab19db8e82cbe47ba8e02c31c0631ba",
-            version = "0.6.2.2",
-            patches = None,
-        ),
-        "timers": struct(
-            sha256 = "4b057105fa485eb1d9d73b3dd3de0044a00c432efc4aca64c98f14bb9aa2320c",
-            version = "0.2.0.4",
-            patches = None,
-        ),
-        "suspend": struct(
-            sha256 = "2f4f5b64837e94859b75dd49b28cf77bc75d70d5ab4f9adacb46ada5da98f072",
-            version = "0.2.0.0",
+            sha256 = "807f6bddf9cb3c517ce5757d991dde3c7e319953a22c86ee03d74534bd5abc88",
+            version = "0.6.2.3",
             patches = None,
         ),
     }

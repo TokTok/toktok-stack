@@ -25,6 +25,7 @@ haskell_library(
         hazel_library("integer-gmp"),
         hazel_library("integer-logarithms"),
         hazel_library("primitive"),
+        hazel_library("template-haskell"),
         hazel_library("text"),
     ],
 )

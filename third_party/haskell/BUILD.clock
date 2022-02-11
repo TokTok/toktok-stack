@@ -10,7 +10,6 @@ package(features = ["-layering_check"])
 cc_library(
     name = "cbits",
     hdrs = [
-        "cbits/hs_clock_darwin.c",
         "cbits/hs_clock_win32.c",
     ],
     includes = ["cbits"],

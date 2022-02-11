@@ -11,6 +11,8 @@ done
 for i in hs-*/; do
   mkdir -p "$i".github/docker
   PKG=$(echo "$i" | sed -e 's|^hs-||;s|/||')
-  sed -e "s/{PACKAGE}/$PKG/g" tools/project/haskell/cirrus.yml.in >"$i".cirrus.yml
+  if ! grep custom_cirrus "$i"BUILD.bazel; then
+    sed -e "s/{PACKAGE}/$PKG/g" tools/project/haskell/cirrus.yml.in >"$i".cirrus.yml
+  fi
   sed -e "s/{PACKAGE}/$PKG/g" tools/project/haskell/github/Dockerfile >"$i".github/docker/Dockerfile
 done

@@ -6,15 +6,20 @@ use utf8;
 
 use Parallel::Iterator qw(iterate);
 
-my $RESOLVER = "https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/17/2.yaml";
+my $RESOLVER = "https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/18.yaml";
 my @PACKAGES = map { (/([^.]+)$/)[0] } <BUILD.*>;
 my @PATCHES = map { (/([^.]+).patch/)[0] } <*.patch>;
 my @LTS_PACKAGES = `curl -s "$RESOLVER" | grep "^- hackage:"`;
 
-push @LTS_PACKAGES, (
-   '- hackage: timers-0.2.0.4@sha256:0000000000000000000000000000000000000000000000000000000000000000,0',
-   '- hackage: suspend-0.2.0.0@sha256:0000000000000000000000000000000000000000000000000000000000000000,0',
-);
+push @LTS_PACKAGES, do {
+   open my $fh, "<", "../../stack.yaml" or die "../../stack.yaml: $!";
+   map { s/^  - /- hackage: /; $_ } grep { /^  - .*:/ } <$fh>
+};
+
+@LTS_PACKAGES = do {
+   my %map = map { /- hackage: ([^.]*?)-[0-9]+/, $_ } @LTS_PACKAGES;
+   sort values %map
+};
 
 my $iter = iterate(sub {
    my (undef, $job) = @_;
@@ -47,7 +52,7 @@ while (my ($index, $value) = $iter->()) {
 print STDERR "\n";
 
 print <<EOF;
-"""Generated from resolver: lts-17.2"""
+"""Generated from resolver: lts-18.18"""
 
 core_packages = [
     "Cabal",

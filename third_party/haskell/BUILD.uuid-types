@@ -8,7 +8,7 @@ package(features = ["-layering_check"])
 
 haskell_library(
     name = PACKAGE_NAME,
-    srcs = glob(["Data/**/*.*hs"]),
+    srcs = glob(["src/**/*.*hs"]),
     compiler_flags = [
         "-Wno-unused-imports",
     ],
@@ -21,6 +21,7 @@ haskell_library(
         hazel_library("deepseq"),
         hazel_library("hashable"),
         hazel_library("random"),
+        hazel_library("template-haskell"),
         hazel_library("text"),
     ],
 )
