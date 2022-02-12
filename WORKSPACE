@@ -162,6 +162,12 @@ go_register_toolchains(version = "1.17")
 gazelle_dependencies()
 
 go_repository(
+    name = "com_github_gorilla_websocket",
+    commit = "master",
+    importpath = "github.com/gorilla/websocket",
+)
+
+go_repository(
     name = "com_github_streamrail_concurrent_map",
     commit = "master",
     importpath = "github.com/streamrail/concurrent-map",
