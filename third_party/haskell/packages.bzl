@@ -656,6 +656,11 @@ packages = (
             version = "0.2.7.3",
             patches = None,
         ),
+        "quickcheck-instances": struct(
+            sha256 = "70ccf54c6553d6a23b4ee48dc02f1e4120cbb9a609e03af073b93541b35a1846",
+            version = "0.3.25.2",
+            patches = None,
+        ),
         "quickcheck-io": struct(
             sha256 = "fb779119d79fe08ff4d502fb6869a70c9a8d5fd8ae0959f605c3c937efd96422",
             version = "0.2.0",
@@ -784,6 +789,11 @@ packages = (
         "tagged": struct(
             sha256 = "f5e0fcf95f0bb4aa63f428f2c01955a41ea1a42cfcf39145ed631f59a9616c02",
             version = "0.8.6.1",
+            patches = None,
+        ),
+        "text-short": struct(
+            sha256 = "bf5b9fedb7d0301e8fdf33e3223d10ca940e9e72c18bac135be80b6016edd977",
+            version = "0.1.3",
             patches = None,
         ),
         "tf-random": struct(
