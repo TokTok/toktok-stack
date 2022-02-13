@@ -17,6 +17,6 @@ COPY --chown=builder:users hs-tokstyle/ /work/hs-tokstyle/
 COPY --chown=builder:users hs-toxcore/ /work/hs-toxcore/
 COPY --chown=builder:users hs-toxcore-c/ /work/hs-toxcore-c/
 COPY --chown=builder:users stack.yaml /work/
-RUN ["stack", "build"]
+RUN ["stack", "build", "--test"]
 
 # vim:ft=dockerfile
