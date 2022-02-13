@@ -4,10 +4,6 @@ set -eux
 
 sudo service ssh start
 
-if grep "BEGIN" ~/key.pem; then
-  gpg --import ~/key.pem
-fi
-
 # Re-initialise third party and git remotes if this is an external volume
 # mounted the first time.
 tools/prepare_third_party.sh

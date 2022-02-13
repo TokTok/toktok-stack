@@ -1,7 +1,0 @@
-# Dev container base image with Haskell Stack.
-#
-FROM toxchat/toktok-stack:latest-dev
-
-RUN stack build
-
-# vim:ft=dockerfile

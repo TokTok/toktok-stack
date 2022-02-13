@@ -51,6 +51,9 @@ RUN wget -q https://github.com/bazelbuild/bazel-watcher/releases/download/v0.15.
 RUN dpkg-divert --add --rename /usr/bin/stylish-haskell \
  && ln -s /src/workspace/ci-tools/bin/stylish-haskell-lhs /usr/bin/stylish-haskell
 
+# Install heroku CLI.
+RUN curl https://cli-assets.heroku.com/install.sh | sh
+
 USER builder
 
 # Build YCM before everything else, because this one doesn't change much and
@@ -85,7 +88,7 @@ RUN /src/workspace/tools/built/src/setup-dev.sh
 
 # Also for local development: add this file again, so local changes are
 # reflected.
-COPY tools/built/src/init.sh /src/workspace/tools/built/src/
+COPY tools/built/src/init.sh tools/built/src/setup-local.sh /src/workspace/tools/built/src/
 CMD ["/src/workspace/tools/built/src/init.sh"]
 
 # vim:ft=dockerfile

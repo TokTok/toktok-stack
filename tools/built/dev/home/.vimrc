@@ -32,7 +32,9 @@ au BufEnter *.h,*.cc,*.cpp					:set syntax=cpp.doxygen
 au BufEnter *.c							:set syntax=c.doxygen
 au BufEnter *.y							:set syntax=haskell noexpandtab
 
-au BufEnter *.hs						:set autoindent nocindent smartindent
+au BufEnter BUILD.*						:set ft=starlark
+
+au BufEnter *.hs,*.lhs						:set autoindent nocindent smartindent
 
 set nowrap
 set viminfo='500,\"800

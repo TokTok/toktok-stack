@@ -21,6 +21,10 @@ if [ -f "$HOME/.github-token" ]; then
   export GITHUB_TOKEN="$(cat "$HOME/.github-token")"
 fi
 
+if [ -f "$HOME/.heroku-api-key" ]; then
+  export HEROKU_API_KEY="$(cat "$HOME/.heroku-api-key")"
+fi
+
 # User configuration
 
 #export PATH="$PATH:/src/workspace/bazel-workspace/external/rules_haskell_ghc_linux_amd64/bin"
