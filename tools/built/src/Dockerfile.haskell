@@ -10,6 +10,7 @@ RUN cmake -Bc-toxcore/_build -Hc-toxcore -GNinja -DBOOTSTRAP_DAEMON=OFF -DCMAKE_
 
 COPY --chown=builder:users hs-cimple/ /work/hs-cimple/
 COPY --chown=builder:users hs-github-tools/ /work/hs-github-tools/
+COPY --chown=builder:users hs-msgpack-arbitrary/ /work/hs-msgpack-arbitrary/
 COPY --chown=builder:users hs-msgpack-binary/ /work/hs-msgpack-binary/
 COPY --chown=builder:users hs-msgpack-persist/ /work/hs-msgpack-persist/
 COPY --chown=builder:users hs-msgpack-rpc-conduit/ /work/hs-msgpack-rpc-conduit/

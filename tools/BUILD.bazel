@@ -13,6 +13,7 @@ workspace(projects = [
     "go-toxcore-c",
     "hs-cimple",
     "hs-github-tools",
+    "hs-msgpack-arbitrary",
     "hs-msgpack-binary",
     "hs-msgpack-persist",
     "hs-msgpack-rpc-conduit",
@@ -44,6 +45,7 @@ haskell_repl(
     deps = [
         "//hs-cimple",
         "//hs-github-tools",
+        "//hs-msgpack-arbitrary",
         "//hs-msgpack-binary",
         "//hs-msgpack-persist",
         "//hs-msgpack-rpc-conduit",

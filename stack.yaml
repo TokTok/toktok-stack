@@ -2,6 +2,7 @@
 packages:
   - hs-cimple/
   - hs-github-tools/
+  - hs-msgpack-arbitrary/
   - hs-msgpack-binary/
   - hs-msgpack-persist/
   - hs-msgpack-rpc-conduit/
