@@ -96,6 +96,10 @@ our %REPOS = (
       upstream => 'toktok',
       repo 'iphydf',
    }],
+   'hs-msgpack-testsuite' => ['hs-msgpack-testsuite', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
    'hs-msgpack-types' => ['hs-msgpack-types', {
       upstream => 'toktok',
       repo 'iphydf',

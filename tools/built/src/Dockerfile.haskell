@@ -12,6 +12,7 @@ COPY --chown=builder:users hs-github-tools/ /work/hs-github-tools/
 COPY --chown=builder:users hs-msgpack-binary/ /work/hs-msgpack-binary/
 COPY --chown=builder:users hs-msgpack-persist/ /work/hs-msgpack-persist/
 COPY --chown=builder:users hs-msgpack-rpc-conduit/ /work/hs-msgpack-rpc-conduit/
+COPY --chown=builder:users hs-msgpack-testsuite/ /work/hs-msgpack-testsuite/
 COPY --chown=builder:users hs-msgpack-types/ /work/hs-msgpack-types/
 COPY --chown=builder:users hs-schema/ /work/hs-schema/
 COPY --chown=builder:users hs-tokstyle/ /work/hs-tokstyle/
