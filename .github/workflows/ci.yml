@@ -8,6 +8,9 @@ on:
     branches: [master]
 
 jobs:
+  common:
+    uses: TokTok/ci-tools/.github/workflows/common-ci.yml@master
+
   docker-test:
     runs-on: ubuntu-latest
     steps:
@@ -37,19 +40,6 @@ jobs:
       - name: Build and test the whole toktok-stack in release mode
         if: ${{ contains(github.event.pull_request.title, 'chore(deps)') }}
         run: tools/built/bazel_test release
-
-  buildifier:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - name: Install
-        run: |
-          wget -O buildifier https://github.com/bazelbuild/buildtools/releases/download/4.2.4/buildifier-linux-amd64
-          chmod +x buildifier
-      - name: Check
-        run: ./buildifier --lint=warn --warnings=all -mode diff WORKSPACE $(find . -type f -name "BUILD.*")
 
   mypy:
     runs-on: ubuntu-latest

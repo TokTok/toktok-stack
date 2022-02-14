@@ -5,6 +5,7 @@ packages:
   - hs-msgpack-binary/
   - hs-msgpack-persist/
   - hs-msgpack-rpc-conduit/
+  - hs-msgpack-testsuite/
   - hs-msgpack-types/
   - hs-schema/
   - hs-tokstyle/

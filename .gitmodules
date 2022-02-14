@@ -40,6 +40,9 @@
 [submodule "hs-msgpack-rpc-conduit"]
 	path = hs-msgpack-rpc-conduit
 	url = https://github.com/TokTok/hs-msgpack-rpc-conduit
+[submodule "hs-msgpack-testsuite"]
+	path = hs-msgpack-testsuite
+	url = https://github.com/TokTok/hs-msgpack-testsuite
 [submodule "hs-msgpack-types"]
 	path = hs-msgpack-types
 	url = https://github.com/TokTok/hs-msgpack-types
