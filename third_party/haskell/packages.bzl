@@ -631,6 +631,11 @@ packages = (
             version = "0.2.4",
             patches = None,
         ),
+        "persist": struct(
+            sha256 = "238bbc5a40f3cfdd251512e22cc74b68e2b1c285f426fa2931cc68c5d69540a7",
+            version = "0.1.1.5",
+            patches = None,
+        ),
         "pointed": struct(
             sha256 = "0b51078a589086082f89fa86726e3c41b1e35aa55a351f26c462ad07d45a2925",
             version = "5.0.3",

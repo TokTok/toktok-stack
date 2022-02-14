@@ -34,6 +34,9 @@
 [submodule "hs-msgpack-binary"]
 	path = hs-msgpack-binary
 	url = https://github.com/TokTok/hs-msgpack-binary
+[submodule "hs-msgpack-persist"]
+	path = hs-msgpack-persist
+	url = https://github.com/TokTok/hs-msgpack-persist
 [submodule "hs-msgpack-rpc-conduit"]
 	path = hs-msgpack-rpc-conduit
 	url = https://github.com/TokTok/hs-msgpack-rpc-conduit

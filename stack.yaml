@@ -3,6 +3,7 @@ packages:
   - hs-cimple/
   - hs-github-tools/
   - hs-msgpack-binary/
+  - hs-msgpack-persist/
   - hs-msgpack-rpc-conduit/
   - hs-msgpack-types/
   - hs-schema/
