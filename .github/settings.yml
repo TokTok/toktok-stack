@@ -11,7 +11,7 @@ branches:
     protection:
       required_status_checks:
         contexts:
-          - "buildifier"
+          - "common / buildifier"
           - "docker-test"
           - "LGTM analysis: Go"
           - "LGTM analysis: Python"
