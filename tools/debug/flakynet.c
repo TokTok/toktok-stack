@@ -55,79 +55,79 @@ static bool verbose = false;
 static bool flaky_syscalls = false;
 
 static __attribute__((__constructor__)) void init(void) {
-    const char *env_headstart = getenv("FLAKYNET_HEADSTART");
-    if (env_headstart != NULL) {
-        char *end = NULL;
-        headstart = strtol(env_headstart, &end, 10);
-        if (end == NULL || *end != '\0') {
-            fprintf(stderr, "flakynet: invalid value for FLAKYNET_HEADSTART: %s\n", env_headstart);
-            abort();
-        }
+  const char *env_headstart = getenv("FLAKYNET_HEADSTART");
+  if (env_headstart != NULL) {
+    char *end = NULL;
+    headstart = strtol(env_headstart, &end, 10);
+    if (end == NULL || *end != '\0') {
+      fprintf(stderr, "flakynet: invalid value for FLAKYNET_HEADSTART: %s\n", env_headstart);
+      abort();
     }
+  }
 
-    const char *env_seed = getenv("FLAKYNET_SEED");
-    if (env_seed != NULL) {
-        char *end = NULL;
-        seed = strtol(env_seed, &end, 10);
-        if (end == NULL || *end != '\0') {
-            fprintf(stderr, "flakynet: invalid value for FLAKYNET_SEED: %s\n", env_seed);
-            abort();
-        }
+  const char *env_seed = getenv("FLAKYNET_SEED");
+  if (env_seed != NULL) {
+    char *end = NULL;
+    seed = strtol(env_seed, &end, 10);
+    if (end == NULL || *end != '\0') {
+      fprintf(stderr, "flakynet: invalid value for FLAKYNET_SEED: %s\n", env_seed);
+      abort();
     }
+  }
 
-    const char *env_flakiness = getenv("FLAKYNET_FLAKINESS");
-    if (env_flakiness != NULL) {
-        char *end = NULL;
-        flakiness = strtod(env_flakiness, &end);
-        if (end == NULL || *end != '\0') {
-            fprintf(stderr, "flakynet: invalid value for FLAKYNET_FLAKINESS: %s\n", env_flakiness);
-            abort();
-        }
+  const char *env_flakiness = getenv("FLAKYNET_FLAKINESS");
+  if (env_flakiness != NULL) {
+    char *end = NULL;
+    flakiness = strtod(env_flakiness, &end);
+    if (end == NULL || *end != '\0') {
+      fprintf(stderr, "flakynet: invalid value for FLAKYNET_FLAKINESS: %s\n", env_flakiness);
+      abort();
     }
+  }
 
-    const char *env_verbose = getenv("FLAKYNET_VERBOSE");
-    verbose = env_verbose != NULL && *env_verbose == '1';
+  const char *env_verbose = getenv("FLAKYNET_VERBOSE");
+  verbose = env_verbose != NULL && *env_verbose == '1';
 
-    const char *env_syscalls = getenv("FLAKYNET_SYSCALLS");
-    flaky_syscalls = env_syscalls != NULL && *env_syscalls == '1';
+  const char *env_syscalls = getenv("FLAKYNET_SYSCALLS");
+  flaky_syscalls = env_syscalls != NULL && *env_syscalls == '1';
 }
 
 static bool can_send(void) {
-    if (headstart > 0) {
-        fprintf(stderr, "flakynet: headstart = %u\n", headstart);
-        --headstart;
-        return true;
-    }
-    return (double)rand_r(&seed) / (double)RAND_MAX > flakiness;
+  if (headstart > 0) {
+    fprintf(stderr, "flakynet: headstart = %u\n", headstart);
+    --headstart;
+    return true;
+  }
+  return (double)rand_r(&seed) / (double)RAND_MAX > flakiness;
 }
 
 ssize_t sendto(int sockfd, const void *buf, size_t len, int flags, const struct sockaddr *dest_addr,
                socklen_t addrlen) {
-    typedef __typeof__(sendto) sendto_type;
-    static sendto_type *libc_sendto;
-    if (libc_sendto == NULL) {
-        libc_sendto = (sendto_type *)dlsym(RTLD_NEXT, "sendto");
-    }
+  typedef __typeof__(sendto) sendto_type;
+  static sendto_type *libc_sendto;
+  if (libc_sendto == NULL) {
+    libc_sendto = (sendto_type *)dlsym(RTLD_NEXT, "sendto");
+  }
 
-    if (can_send()) {
-        return libc_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
-    }
+  if (can_send()) {
+    return libc_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
+  }
 
-    if (flaky_syscalls) {
-        if (len > 0 && verbose) {
-            fprintf(stderr, "flakynet: rejecting packet of length %zu, packet[0] = 0x%02x\n", len,
-                    ((const char *)buf)[0]);
-        }
-
-        errno = 11;
-        return -1;
-    }
-
+  if (flaky_syscalls) {
     if (len > 0 && verbose) {
-        fprintf(stderr, "flakynet: dropping packet of length %zu, packet[0] = 0x%02x\n", len,
-                ((const char *)buf)[0]);
+      fprintf(stderr, "flakynet: rejecting packet of length %zu, packet[0] = 0x%02x\n", len,
+              ((const char *)buf)[0]);
     }
 
-    // Success, but we don't actually send.
-    return len;
+    errno = 11;
+    return -1;
+  }
+
+  if (len > 0 && verbose) {
+    fprintf(stderr, "flakynet: dropping packet of length %zu, packet[0] = 0x%02x\n", len,
+            ((const char *)buf)[0]);
+  }
+
+  // Success, but we don't actually send.
+  return len;
 }
