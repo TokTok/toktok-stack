@@ -17,6 +17,7 @@
  */
 #define _GNU_SOURCE
 #include <dlfcn.h>
+#include <errno.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -47,6 +48,11 @@ static unsigned int headstart = 0;
  * dropped.
  */
 static bool verbose = false;
+/**
+ * Set FLAKYNET_SYSCALLS=1 to return errors from the sendto syscall instead of
+ * dropping the packet.
+ */
+static bool flaky_syscalls = false;
 
 static __attribute__((__constructor__)) void init(void) {
   const char *env_headstart = getenv("FLAKYNET_HEADSTART");
@@ -81,6 +87,9 @@ static __attribute__((__constructor__)) void init(void) {
 
   const char *env_verbose = getenv("FLAKYNET_VERBOSE");
   verbose = env_verbose != NULL && *env_verbose == '1';
+
+  const char *env_syscalls = getenv("FLAKYNET_SYSCALLS");
+  flaky_syscalls = env_syscalls != NULL && *env_syscalls == '1';
 }
 
 static bool can_send(void) {
@@ -102,6 +111,16 @@ ssize_t sendto(int sockfd, const void *buf, size_t len, int flags, const struct 
 
   if (can_send()) {
     return libc_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
+  }
+
+  if (flaky_syscalls) {
+      if (len > 0 && verbose) {
+        fprintf(stderr, "flakynet: rejecting packet of length %zu, packet[0] = 0x%02x\n", len,
+                ((const char *)buf)[0]);
+      }
+
+      errno = 11;
+      return -1;
   }
 
   if (len > 0 && verbose) {

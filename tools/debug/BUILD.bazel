@@ -1,8 +1,17 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+load("@rules_python//python:defs.bzl", "py_binary")
+
+py_binary(
+    name = "run_flakynet",
+    srcs = ["run_flakynet.py"],
+    data = [":flakynet.so"],
+    visibility = ["//visibility:public"],
+)
 
 cc_binary(
     name = "flakynet.so",
     srcs = ["flakynet.c"],
+    linkopts = ["-ldl"],
     linkshared = True,
     visibility = ["//visibility:public"],
 )
