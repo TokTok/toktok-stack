@@ -33,7 +33,8 @@ import malloc_debug
 # Set oomer parameters here.
 ENV = {
     "OOMER_ONE_SHOT": "1",
-    "OOMER_FLAKY": "0",
+    "OOMER_FLAKY": "0.1",
+    "OOMER_VERBOSE": "1",
 }
 
 

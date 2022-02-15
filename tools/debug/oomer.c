@@ -22,7 +22,7 @@ typedef struct Oomer_Config {
    * OOMER_MAX_ALLOCS: the number of allocations to pass through until oomer
    * starts running one of its strategies.
    */
-  long max_allocs;
+  int32_t max_allocs;
   /**
    * OOMER_TIMEOUT: maximum time to run a single test for.
    */
@@ -52,9 +52,13 @@ typedef struct Oomer_Config {
    * when running in a debugger to have a breakpoint at the rejected allocation.
    */
   bool trap_on_fail;
+  /**
+   * OOMER_VERBOSE: print a message when rejecting an allocation.
+   */
+  bool verbose;
 } Oomer_Config;
 
-static Oomer_Config config = {-1, 5, 0, 0, 123456789, false, false};
+static Oomer_Config config = {INT32_MAX, 5, 0, 0, 123456789, false, false};
 
 uint32_t rand_u32(void) {
   // Numerical Recipes in C. The Art of Scientific Computing, 2nd Edition, 1992
@@ -105,14 +109,20 @@ static __attribute__((__constructor__)) void init_oomer(void) {
   const char *env_trap_on_fail = getenv("OOMER_TRAP_ON_FAIL");
   config.trap_on_fail = env_trap_on_fail != NULL && *env_trap_on_fail == '1';
 
+  const char *env_verbose = getenv("OOMER_VERBOSE");
+  config.verbose = env_verbose != NULL && *env_verbose == '1';
+
   config.done_file = getenv("OOMER_DONE_FILE");
 
   fprintf(stderr, "oomer: done_file    = %s\n",
           config.done_file != NULL ? config.done_file : "<unset>");
+  fprintf(stderr, "oomer: max_allocs   = %d\n", config.max_allocs);
+  fprintf(stderr, "oomer: timeout      = %ld\n", config.timeout);
   fprintf(stderr, "oomer: flaky        = %f\n", config.flaky);
   fprintf(stderr, "oomer: seed         = %u\n", config.seed);
   fprintf(stderr, "oomer: one_shot     = %s\n", config.one_shot ? "true" : "false");
   fprintf(stderr, "oomer: trap_on_fail = %s\n", config.trap_on_fail ? "true" : "false");
+  fprintf(stderr, "oomer: verbose      = %s\n", config.verbose ? "true" : "false");
 
   // We're going to be in a debugger, so we don't have a timeout anymore, since
   // there will be a person looking at the process now.
@@ -122,7 +132,7 @@ static __attribute__((__constructor__)) void init_oomer(void) {
 }
 
 static __attribute__((__destructor__)) void deinit_oomer(void) {
-  fprintf(stderr, "oomer: deinit_oomer: max_allocs = %ld\n", config.max_allocs);
+  fprintf(stderr, "oomer: deinit_oomer: max_allocs = %d\n", config.max_allocs);
   if (config.done_file != NULL && config.max_allocs > 0) {
     // Touch the done_file to signal to run_oomer that we've rejected at least
     // one malloc call.
@@ -131,18 +141,14 @@ static __attribute__((__destructor__)) void deinit_oomer(void) {
 }
 
 static bool can_alloc(void) {
-  if (config.max_allocs != 0) {
-    // This could theoretically underflow after 2**63 allocations. We could
-    // write `if (config.max_allocs > 0)`, but we'd lose the feature of
-    // deinit_oomer telling us how many allocations were performed after we hit
-    // 0 in one-shot mode.
+  if (config.max_allocs > 0) {
     --config.max_allocs;
     return true;
   }
 
   if (config.one_shot) {
     // Allow all mallocs except this one.
-    config.max_allocs = -2;
+    config.max_allocs = INT32_MAX;
   }
 
   if (config.trap_on_fail) {
@@ -160,6 +166,9 @@ void *malloc(size_t size) {
   if (can_alloc()) {
     return __libc_malloc(size);
   }
+  if (config.verbose) {
+    fprintf(stderr, "oomer: rejecting malloc of size %zu\n", size);
+  }
   return NULL;
 }
 
@@ -167,12 +176,18 @@ void *calloc(size_t nmemb, size_t size) {
   if (can_alloc()) {
     return __libc_calloc(nmemb, size);
   }
+  if (config.verbose) {
+    fprintf(stderr, "oomer: rejecting calloc of size %zu\n", size);
+  }
   return NULL;
 }
 
 void *realloc(void *ptr, size_t size) {
   if (can_alloc()) {
     return __libc_realloc(ptr, size);
+  }
+  if (config.verbose) {
+    fprintf(stderr, "oomer: rejecting realloc of size %zu on ptr %p\n", size, ptr);
   }
   return NULL;
 }
