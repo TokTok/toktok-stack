@@ -230,6 +230,10 @@ build --per_file_copt='//c-toxcore/@-DUSE_STDERR_LOGGER'
 build --per_file_copt='//c-toxcore/@-DMAX_VLA_SIZE=2048'
 #build --per_file_copt='//c-toxcore/@-Wframe-larger-than=3255'
 
+# Disable most logging when running with flakynet (we get lots of warnings).
+build:flakynet --per_file_copt='//c-toxcore/@-UMIN_LOGGER_LEVEL,-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_ERROR'
+build:flakynet --run_under="//tools/debug:run_flakynet --headstart=1000 --syscalls=1 --flakiness=0.1"
+
 # Use this config to put tox into a test network that speaks an incompatible
 # protocol (all packet ids are shifted).
 build:testnet --per_file_copt='//c-toxcore[:/]@-DUSE_TEST_NETWORK=1'
