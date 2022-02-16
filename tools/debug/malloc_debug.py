@@ -8,7 +8,7 @@ def build(exe: str, malloc: str) -> str:
     """Build a bazel target and return its bazel-bin executable path."""
     if exe.startswith("//"):
         proc = subprocess.run(  # nosec
-            ["bazel", "build", exe, "--custom_malloc=//tools/debug:" + malloc],
+            ["bazel", "build", exe, "--config=" + malloc],
             capture_output=True,
             check=True,
         )

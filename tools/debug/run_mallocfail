@@ -9,9 +9,9 @@ exe: either a bazel target, e.g. //c-toxcore/auto_tests:tox_one_test or an
 This runs the program with mallocfail until there are no more additional stack
 hashes for mallocfail to try out.
 
-You need to build mallocfail (https://github.com/ralight/mallocfail) at
-wip/mallocfail so you end up with wip/mallocfail/mallocfail.so. Change
-_MALLOCFAIL_SO if you want it elsewhere.
+You need to build mallocfail (https://github.com/ralight/mallocfail) and install
+it to /usr/local/lib/mallocfail. Change _MALLOCFAIL_SO below if you want it
+elsewhere.
 """
 import os
 import shutil
@@ -21,7 +21,7 @@ from typing import List
 
 import malloc_debug
 
-_MALLOCFAIL_SO = "wip/mallocfail/mallocfail.so"
+_MALLOCFAIL_SO = "/usr/local/lib/mallocfail.so"
 _HASHES = "mallocfail_hashes"
 _HASHES_PREV = "mallocfail_hashes.prev"
 

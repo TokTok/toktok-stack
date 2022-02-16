@@ -164,6 +164,8 @@ build:ubsan --copt='-fsanitize=undefined,nullability,integer'
 build:ubsan --linkopt='-fsanitize=undefined,nullability,integer'
 # https://github.com/bazelbuild/bazel/issues/11122
 build:ubsan --linkopt='-fsanitize-link-c++-runtime'
+build:ubsan --per_file_copt='//c-toxcore[:/]@-fno-sanitize=integer'
+build:ubsan --per_file_copt='//tools/debug[:/]@-fno-sanitize=integer'
 build:ubsan --per_file_copt='external/libsodium[:/]@-fno-sanitize=integer'
 build:ubsan --per_file_copt='external/opus[:/]@-fno-sanitize=integer'
 build:ubsan --test_env=UBSAN_OPTIONS=color=always,print_stacktrace=1
@@ -235,10 +237,17 @@ build:flakynet --per_file_copt='//c-toxcore/@-UMIN_LOGGER_LEVEL,-DMIN_LOGGER_LEV
 build:flakynet --run_under="//tools/debug:run_flakynet --headstart=1000 --syscalls=1 --flakiness=0.1"
 
 build:oomer --custom_malloc="//tools/debug:oomer"
-build:oomer --test_env=OOMER_MAX_ALLOCS=1000
-build:oomer --test_env=OOMER_FLAKY=0.01
-build:oomer --test_env=OOMER_TIMEOUT=60
+build:oomer --test_env=OOMER_MAX_ALLOCS=200
+build:oomer --test_env=OOMER_FLAKY=0.005
+build:oomer --test_env=OOMER_TIMEOUT=5
 build:oomer --test_env=OOMER_VERBOSE=1
+build:oomer --config=ubsan
+
+# while true; do bazel run --config=mallocfail //c-toxcore/auto_tests:tox_one_test; done
+build:mallocfail --custom_malloc="//tools/debug:mallocfail"
+build:mallocfail --test_env=MALLOCFAIL_TIMEOUT=5
+build:mallocfail --run_under="mallocfail"
+build:mallocfail --config=ubsan
 
 # Use this config to put tox into a test network that speaks an incompatible
 # protocol (all packet ids are shifted).
