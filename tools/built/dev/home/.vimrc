@@ -25,6 +25,15 @@ filetype plugin indent on	" required
 let c_minlines = 600
 let g:ycm_confirm_extra_conf = 0
 
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
+
+let g:haskell_indent_before_where = -2
+let g:haskell_indent_after_bare_where = 2
+
 set timeout timeoutlen=3000 ttimeoutlen=20
 set expandtab
 
@@ -69,3 +78,5 @@ set terse
 
 nnoremap <C-l> :noh<CR><C-l>
 map Q gqap
+
+" colorscheme is appended at the end so the initial PluginInstall works.
