@@ -236,6 +236,11 @@ packages = (
             version = "1.2.1.0",
             patches = None,
         ),
+        "casing": struct(
+            sha256 = "106271c00246b551f2ef6a2e511437c9f0e1f3bb920a283f6f9eaa0940b4f8ca",
+            version = "0.1.4.1",
+            patches = None,
+        ),
         "cereal": struct(
             sha256 = "17121355b92feea2d66220daa0ebb604a774e0d6359e2fc53bab362c44a5764f",
             version = "0.5.8.2",
