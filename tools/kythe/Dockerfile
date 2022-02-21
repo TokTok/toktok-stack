@@ -2,6 +2,6 @@
 FROM toxchat/kythe-buildenv:latest
 
 # From: https://kythe.io/examples/#extracting-other-bazel-based-repositories
-COPY kythe /src/workspace
+COPY . /src/workspace
 
 RUN ["/opt/build_index.sh"]
