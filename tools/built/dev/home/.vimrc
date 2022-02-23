@@ -12,6 +12,8 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " Plugins go here
+Plugin 'andy-morris/alex.vim'
+Plugin 'andy-morris/happy.vim'
 Plugin 'cappyzawa/starlark.vim'
 Plugin 'nanotech/jellybeans.vim'
 Plugin 'raichoo/haskell-vim'
@@ -32,17 +34,17 @@ let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
 
 let g:haskell_indent_before_where = -2
-let g:haskell_indent_after_bare_where = 2
+let g:haskell_indent_after_bare_where = 4
 
 set timeout timeoutlen=3000 ttimeoutlen=20
 set expandtab
 
-au BufEnter *.[ch],*.hs						:set sw=4 ts=4
+au BufEnter *.[ch],*.cc,*.hs,*.lhs				:set sw=4 ts=4 softtabstop=2
 au BufEnter *.yaml,*.yml,*.sh					:set sw=2 ts=2
 
 au BufEnter *.h,*.cc,*.cpp					:set syntax=cpp.doxygen
 au BufEnter *.c							:set syntax=c.doxygen
-au BufEnter *.y							:set syntax=haskell noexpandtab
+au BufEnter *.y,*.x						:set noexpandtab tw=150
 
 au BufEnter BUILD.*						:set ft=starlark
 

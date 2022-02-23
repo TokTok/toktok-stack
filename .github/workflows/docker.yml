@@ -239,5 +239,6 @@ jobs:
         with:
           push: true
           context: "{{defaultContext}}:dockerfiles/kythe/serving"
+          tags: toxchat/kythe-serving:latest
           cache-from: type=registry,ref=toxchat/kythe-serving:latest
           cache-to: type=inline
