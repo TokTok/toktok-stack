@@ -162,6 +162,12 @@ go_register_toolchains(version = "1.17")
 gazelle_dependencies()
 
 go_repository(
+    name = "com_github_things_go_go_socks5",
+    commit = "master",
+    importpath = "github.com/things-go/go-socks5",
+)
+
+go_repository(
     name = "com_github_gorilla_websocket",
     commit = "master",
     importpath = "github.com/gorilla/websocket",
