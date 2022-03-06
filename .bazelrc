@@ -160,14 +160,11 @@ build:tsan --test_env=TSAN_OPTIONS=color=always
 
 build:ubsan --config=sanitizer
 build:ubsan --copt='-fno-sanitize-recover=all'
-build:ubsan --copt='-fsanitize=undefined,nullability,integer'
+build:ubsan --copt='-fsanitize=undefined,nullability'
+#build:ubsan --per_file_copt='//c-toxcore[:/]@-fsanitize=integer'
 build:ubsan --linkopt='-fsanitize=undefined,nullability,integer'
 # https://github.com/bazelbuild/bazel/issues/11122
 build:ubsan --linkopt='-fsanitize-link-c++-runtime'
-build:ubsan --per_file_copt='//c-toxcore[:/]@-fno-sanitize=integer'
-build:ubsan --per_file_copt='//tools/debug[:/]@-fno-sanitize=integer'
-build:ubsan --per_file_copt='external/libsodium[:/]@-fno-sanitize=integer'
-build:ubsan --per_file_copt='external/opus[:/]@-fno-sanitize=integer'
 build:ubsan --test_env=UBSAN_OPTIONS=color=always,print_stacktrace=1
 
 # Link-time optimization.

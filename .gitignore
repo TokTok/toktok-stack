@@ -8,6 +8,7 @@
 /bazel-*
 /cov-analysis*
 /toolchain
+*.log
 *.jar
 *.tar
 __pycache__
