@@ -17,7 +17,7 @@ def happy_parser(name, src, glr = False, preproc = None):
         happy_flags = ["--glr"]
         outs = [driver_out, data_out]
     else:
-        happy_flags = []
+        happy_flags = ["--ghc", "--coerce"]
         outs = [driver_out]
 
     if preproc:
@@ -46,8 +46,7 @@ def happy_parser(name, src, glr = False, preproc = None):
             "$(location %s)" % hazel_binary("happy"),
             "-t third_party/haskell/happy/templates",
             "--array",
-            "--ghc",
-            "--coerce",
+            "--strict",
             "-o $(location %s)" % driver_out,
             "$(location %s)" % src,
         ] + happy_flags),
