@@ -1,0 +1,20 @@
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "parser-combinators"
+
+package(features = ["-layering_check"])
+
+haskell_library(
+    name = PACKAGE_NAME,
+    srcs = glob(["Control/**/*.*hs"]),
+    compiler_flags = [
+        "-Wno-unused-imports",
+    ],
+    version = packages[PACKAGE_NAME].version,
+    visibility = ["//visibility:public"],
+    deps = [
+        hazel_library("base"),
+    ],
+)

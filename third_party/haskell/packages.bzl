@@ -206,6 +206,11 @@ packages = (
             version = "0.8.2.8",
             patches = None,
         ),
+        "brick": struct(
+            sha256 = "66c01767de1942cd4f11ce451b36e0e3bb17a1e0fc422883ee6363de7daae4b8",
+            version = "0.62",
+            patches = None,
+        ),
         "bsb-http-chunked": struct(
             sha256 = "148309e23eb8b261c1de374712372d62d8c8dc8ee504c392809c7ec33c0a0e7c",
             version = "0.0.0.4",
@@ -276,6 +281,11 @@ packages = (
             version = "1.3.5",
             patches = None,
         ),
+        "config-ini": struct(
+            sha256 = "6e5194e8acb7d189f0904852138990d03b64f86b9fde8f591ee1341d5627d535",
+            version = "0.2.4.0",
+            patches = None,
+        ),
         "connection": struct(
             sha256 = "5d759589c532c34d87bfc4f6fcb732bf55b55a93559d3b94229e8347a15375d9",
             version = "0.3.1",
@@ -314,6 +324,11 @@ packages = (
         "data-binary-ieee754": struct(
             sha256 = "59975abed8f4caa602f0780c10a9b2493479e6feb71ad189bb10c3ac5678df0a",
             version = "0.4.4",
+            patches = None,
+        ),
+        "data-clist": struct(
+            sha256 = "356910406b1615819fefd87ff50f425bc41bd935750cfaa567718fb8ab858ed7",
+            version = "0.1.2.3",
             patches = None,
         ),
         "data-default-class": struct(
@@ -551,9 +566,29 @@ packages = (
             version = "0.2.3.12",
             patches = None,
         ),
+        "megaparsec": struct(
+            sha256 = "7228bc49d8636632b481eb13f16f2a9633007b8f55ebc0105f517ad7f71f2501",
+            version = "9.0.1",
+            patches = None,
+        ),
         "memory": struct(
             sha256 = "e3ff892c1a94708954d0bb2c4f4ab81bc0f505352d95095319c462db1aeb3529",
             version = "0.15.0",
+            patches = None,
+        ),
+        "microlens": struct(
+            sha256 = "b5427383c3fe24de378b07b50b0bee3d02e70e8cbfb7ae51b1946de5137d0783",
+            version = "0.4.12.0",
+            patches = None,
+        ),
+        "microlens-mtl": struct(
+            sha256 = "d79de8b228631525da3c17999d3b936eb8f919f2303348151b6cd1d27c3f5e46",
+            version = "0.2.0.1",
+            patches = None,
+        ),
+        "microlens-th": struct(
+            sha256 = "2c50100235949c00defcdb8c01d8eb5e2e45e524a9b552d3c0c8bb8224ece2b5",
+            version = "0.4.3.10",
             patches = None,
         ),
         "mime-types": struct(
@@ -629,6 +664,11 @@ packages = (
         "parallel": struct(
             sha256 = "170453a71a2a8b31cca63125533f7771d7debeb639700bdabdd779c34d8a6ef6",
             version = "3.2.2.0",
+            patches = None,
+        ),
+        "parser-combinators": struct(
+            sha256 = "03162e40cde50253529fa452165b681d5064d03ad07992800702156adfb6254d",
+            version = "1.2.1",
             patches = None,
         ),
         "pem": struct(
@@ -806,6 +846,11 @@ packages = (
             version = "0.1.3",
             patches = None,
         ),
+        "text-zipper": struct(
+            sha256 = "da93821a05663315e9f4f613abb14e15769544882d401e2c2b69bf91babf811e",
+            version = "0.11",
+            patches = None,
+        ),
         "tf-random": struct(
             sha256 = "2e30cec027b313c9e1794d326635d8fc5f79b6bf6e7580ab4b00186dadc88510",
             version = "0.5",
@@ -941,6 +986,11 @@ packages = (
             version = "0.7.3",
             patches = None,
         ),
+        "vty": struct(
+            sha256 = "8959b3ed13f2e1202d78ca3fcc556034b0585e4b39d47cb2e7d5dc4939255d63",
+            version = "5.33",
+            patches = None,
+        ),
         "wai": struct(
             sha256 = "5574d6541000988fe204d3032db87fd0a5404cdbde33ee4fa02e6006768229f8",
             version = "3.2.3",
@@ -969,6 +1019,11 @@ packages = (
         "warp": struct(
             sha256 = "1c5327b51e2acd4a7c8927a5bf01dedb308bedd286ea385f7300fc2feed023d5",
             version = "3.3.18",
+            patches = None,
+        ),
+        "word-wrap": struct(
+            sha256 = "eb72f91947c0c62cb862feb33cad9efdc5e720f456fa9ca68ef8ac9d1ec42c97",
+            version = "0.4.1",
             patches = None,
         ),
         "word8": struct(
