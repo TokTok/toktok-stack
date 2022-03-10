@@ -15,9 +15,9 @@
 
 -- Do not remove this comment. Required to fix CPP parsing when using GCC and a clang-compiled alex.
 #if __GLASGOW_HASKELL__ > 706
-#define LT(n,m) ((Happy_GHC_Exts.tagToEnum# (n Happy_GHC_Exts.<# m)) :: Bool)
-#define GTE(n,m) ((Happy_GHC_Exts.tagToEnum# (n Happy_GHC_Exts.>=# m)) :: Bool)
-#define EQ(n,m) ((Happy_GHC_Exts.tagToEnum# (n Happy_GHC_Exts.==# m)) :: Bool)
+#define LT(n,m) ((Happy_GHC_Exts.tagToEnum# (n Happy_GHC_Exts.<# m)) :: Prelude.Bool)
+#define GTE(n,m) ((Happy_GHC_Exts.tagToEnum# (n Happy_GHC_Exts.>=# m)) :: Prelude.Bool)
+#define EQ(n,m) ((Happy_GHC_Exts.tagToEnum# (n Happy_GHC_Exts.==# m)) :: Prelude.Bool)
 #else
 #define LT(n,m) (n Happy_GHC_Exts.<# m)
 #define GTE(n,m) (n Happy_GHC_Exts.>=# m)
@@ -153,7 +153,7 @@ happyLt x y = LT(x,y)
 
 
 readArrayBit arr bit =
-    Bits.testBit (Happy_GHC_Exts.I# (indexShortOffAddr arr ((unbox_int bit) `Happy_GHC_Exts.iShiftRA#` 4#))) (bit `mod` 16)
+    Bits.testBit (Happy_GHC_Exts.I# (indexShortOffAddr arr ((unbox_int bit) `Happy_GHC_Exts.iShiftRA#` 4#))) (bit `Prelude.mod` 16)
   where unbox_int (Happy_GHC_Exts.I# x) = x
 
 
@@ -297,7 +297,7 @@ happyFail explist i tk (HappyState (action)) sts stk =
 -- Internal happy errors:
 
 notHappyAtAll :: a
-notHappyAtAll = error "Internal Happy error\n"
+notHappyAtAll = Prelude.error "Internal Happy error\n"
 
 -----------------------------------------------------------------------------
 -- Hack to get the typechecker to accept our action functions
@@ -315,7 +315,7 @@ happyTcHack x y = y
 --      happySeq = happyDontSeq
 
 happyDoSeq, happyDontSeq :: a -> b -> b
-happyDoSeq   a b = a `seq` b
+happyDoSeq   a b = a `Prelude.seq` b
 happyDontSeq a b = b
 
 -----------------------------------------------------------------------------

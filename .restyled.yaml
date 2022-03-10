@@ -2,4 +2,5 @@
 exclude:
   - "**/BUILD.*"
   - "third_party/haskell/alex/templates/*.hs"
+  - "third_party/haskell/happy/templates/*"
   - "third_party/libsodium/version.h"
