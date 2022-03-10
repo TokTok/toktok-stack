@@ -99,7 +99,7 @@ happyParse start_state = happyNewToken start_state notHappyAtAll notHappyAtAll
 -- the stack in this case.
 happyAccept 0# tk st sts (_ `HappyStk` ans `HappyStk` _) =
         happyReturn1 ans
-happyAccept j tk st sts (HappyStk ans _) = 
+happyAccept j tk st sts (HappyStk ans _) =
         (happyTcHack j (happyTcHack st)) (happyReturn1 ans)
 
 -----------------------------------------------------------------------------
@@ -253,7 +253,7 @@ happyDropStk n (x `HappyStk` xs) = happyDropStk (n Happy_GHC_Exts.-# (1#::Happy_
 -- Moving to a new state after a reduction
 
 
-happyGoto nt j tk st = 
+happyGoto nt j tk st =
    {- nothing -}
    happyDoAction j tk new_state
    where off = happyAdjustOffset (indexShortOffAddr happyGotoOffsets st)
@@ -269,7 +269,7 @@ happyGoto nt j tk st =
 -- parse error if we are in recovery and we fail again
 happyFail explist 0# tk old_st _ stk@(x `HappyStk` _) =
      let i = (case x of { HappyErrorToken (Happy_GHC_Exts.I# (i)) -> i }) in
---      trace "failing" $ 
+--      trace "failing" $
         happyError_ explist i tk
 
 {-  We don't need state discarding for our restricted implementation of
@@ -277,7 +277,7 @@ happyFail explist 0# tk old_st _ stk@(x `HappyStk` _) =
     for now --SDM
 
 -- discard a state
-happyFail  ERROR_TOK tk old_st CONS(HAPPYSTATE(action),sts) 
+happyFail  ERROR_TOK tk old_st CONS(HAPPYSTATE(action),sts)
                                                 (saved_tok `HappyStk` _ `HappyStk` stk) =
 --      trace ("discarding state, depth " ++ show (length stk))  $
         DO_ACTION(action,ERROR_TOK,tk,sts,(saved_tok`HappyStk`stk))
@@ -304,7 +304,7 @@ happyTcHack x y = y
 
 
 -----------------------------------------------------------------------------
--- Seq-ing.  If the --strict flag is given, then Happy emits 
+-- Seq-ing.  If the --strict flag is given, then Happy emits
 --      happySeq = happyDoSeq
 -- otherwise it emits
 --      happySeq = happyDontSeq
