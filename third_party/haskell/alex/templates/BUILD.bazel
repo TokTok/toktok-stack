@@ -2,8 +2,6 @@ licenses(["notice"])
 
 filegroup(
     name = "templates",
-    srcs = glob([
-        "Alex*",
-    ]),
+    srcs = glob(["Alex*"]),
     visibility = ["//visibility:public"],
 )

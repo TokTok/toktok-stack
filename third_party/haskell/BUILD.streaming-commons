@@ -22,6 +22,9 @@ cc_library(
 haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["Data/**/*.*hs"]),
+    compiler_flags = [
+        "-Wno-missing-signatures",
+    ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [

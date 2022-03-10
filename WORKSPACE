@@ -132,6 +132,7 @@ load("//third_party/haskell:packages.bzl", "core_packages", "packages")
         data.version,
     ),
     patches = data.patches,
+    path = data.path,
     sha256 = data.sha256,
 ) for pkg, data in packages.items()]
 

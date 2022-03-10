@@ -6,7 +6,7 @@ use utf8;
 
 use Parallel::Iterator qw(iterate);
 
-my $RESOLVER = "https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/18.yaml";
+my $RESOLVER = "https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/27.yaml";
 my @PACKAGES = map { (/([^.]+)$/)[0] } <BUILD.*>;
 my @PATCHES = map { (/([^.]+).patch/)[0] } <*.patch>;
 my @LTS_PACKAGES = `curl -s "$RESOLVER" | grep "^- hackage:"`;
@@ -30,6 +30,7 @@ my $iter = iterate(sub {
       my @patches = map { "[\"\@toktok//third_party/haskell:$_.patch\"]" } grep { $_ eq $package } @PATCHES;
       @patches ? $patches[0] : "None"
    };
+   my $path = -f "$package/$package.cabal" ? "\"third_party/haskell/$package\"" : "None";
    my $tar = "$package-$version";
    my $sha256 = `curl -s https://hackage.haskell.org/package/$tar/$tar.tar.gz | sha256sum`;
    $sha256 =~ s/([0-9a-f]+).*\n/$1/;
@@ -38,6 +39,7 @@ my $iter = iterate(sub {
             sha256 = "$sha256",
             version = "$version",
             patches = $patches,
+            path = $path,
         ),
 EOF
 }, \@LTS_PACKAGES);
@@ -52,7 +54,7 @@ while (my ($index, $value) = $iter->()) {
 print STDERR "\n";
 
 print <<EOF;
-"""Generated from resolver: lts-18.18"""
+"""Generated from resolver: lts-18.27"""
 
 core_packages = [
     "Cabal",
