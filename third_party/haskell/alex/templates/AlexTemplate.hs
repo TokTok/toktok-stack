@@ -1,4 +1,3 @@
-{-# LINE 1 "templates/GenericTemplate.hs" #-}
 -- -----------------------------------------------------------------------------
 -- ALEX TEMPLATE
 --
@@ -8,49 +7,37 @@
 -- -----------------------------------------------------------------------------
 -- INTERNALS and main scanner engine
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef ALEX_GHC
+#  define ILIT(n) n#
+#  define IBOX(n) (I# (n))
+#  define FAST_INT Int#
 -- Do not remove this comment. Required to fix CPP parsing when using GCC and a clang-compiled alex.
-#if __GLASGOW_HASKELL__ > 706
-#define GTE(n,m) (tagToEnum# (n >=# m))
-#define EQ(n,m) (tagToEnum# (n ==# m))
+#  if __GLASGOW_HASKELL__ > 706
+#    define GTE(n,m) (tagToEnum# (n >=# m))
+#    define EQ(n,m) (tagToEnum# (n ==# m))
+#  else
+#    define GTE(n,m) (n >=# m)
+#    define EQ(n,m) (n ==# m)
+#  endif
+#  define PLUS(n,m) (n +# m)
+#  define MINUS(n,m) (n -# m)
+#  define TIMES(n,m) (n *# m)
+#  define NEGATE(n) (negateInt# (n))
+#  define IF_GHC(x) (x)
 #else
-#define GTE(n,m) (n >=# m)
-#define EQ(n,m) (n ==# m)
+#  define ILIT(n) (n)
+#  define IBOX(n) (n)
+#  define FAST_INT Int
+#  define GTE(n,m) (n >= m)
+#  define EQ(n,m) (n == m)
+#  define PLUS(n,m) (n + m)
+#  define MINUS(n,m) (n - m)
+#  define TIMES(n,m) (n * m)
+#  define NEGATE(n) (negate (n))
+#  define IF_GHC(x)
 #endif
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef ALEX_GHC
 data AlexAddr = AlexA# Addr#
 -- Do not remove this comment. Required to fix CPP parsing when using GCC and a clang-compiled alex.
 #if __GLASGOW_HASKELL__ < 503
@@ -58,6 +45,7 @@ uncheckedShiftL# = shiftL#
 #endif
 
 {-# INLINE alexIndexInt16OffAddr #-}
+alexIndexInt16OffAddr :: AlexAddr -> Int# -> Int#
 alexIndexInt16OffAddr (AlexA# arr) off =
 #ifdef WORDS_BIGENDIAN
   narrow16Int# i
@@ -67,14 +55,18 @@ alexIndexInt16OffAddr (AlexA# arr) off =
         low  = int2Word# (ord# (indexCharOffAddr# arr off'))
         off' = off *# 2#
 #else
-  indexInt16OffAddr# arr off
+#if __GLASGOW_HASKELL__ >= 901
+  int16ToInt#
+#endif
+    (indexInt16OffAddr# arr off)
+#endif
+#else
+alexIndexInt16OffAddr arr off = arr ! off
 #endif
 
-
-
-
-
+#ifdef ALEX_GHC
 {-# INLINE alexIndexInt32OffAddr #-}
+alexIndexInt32OffAddr :: AlexAddr -> Int# -> Int#
 alexIndexInt32OffAddr (AlexA# arr) off =
 #ifdef WORDS_BIGENDIAN
   narrow32Int# i
@@ -88,13 +80,16 @@ alexIndexInt32OffAddr (AlexA# arr) off =
    b0   = int2Word# (ord# (indexCharOffAddr# arr off'))
    off' = off *# 4#
 #else
-  indexInt32OffAddr# arr off
+#if __GLASGOW_HASKELL__ >= 901
+  int32ToInt#
+#endif
+    (indexInt32OffAddr# arr off)
+#endif
+#else
+alexIndexInt32OffAddr arr off = arr ! off
 #endif
 
-
-
-
-
+#ifdef ALEX_GHC
 
 #if __GLASGOW_HASKELL__ < 503
 quickIndex arr i = arr ! i
@@ -102,9 +97,9 @@ quickIndex arr i = arr ! i
 -- GHC >= 503, unsafeAt is available from Data.Array.Base.
 quickIndex = unsafeAt
 #endif
-
-
-
+#else
+quickIndex arr i = arr ! i
+#endif
 
 -- -----------------------------------------------------------------------------
 -- Main lexing routines
@@ -116,34 +111,34 @@ data AlexReturn a
   | AlexToken  !AlexInput !Int a
 
 -- alexScan :: AlexInput -> StartCode -> AlexReturn a
-alexScan input__ (I# (sc))
-  = alexScanUser undefined input__ (I# (sc))
+alexScan input__ IBOX(sc)
+  = alexScanUser undefined input__ IBOX(sc)
 
-alexScanUser user__ input__ (I# (sc))
-  = case alex_scan_tkn user__ input__ 0# input__ sc AlexNone of
+alexScanUser user__ input__ IBOX(sc)
+  = case alex_scan_tkn user__ input__ ILIT(0) input__ sc AlexNone of
   (AlexNone, input__') ->
     case alexGetByte input__ of
       Nothing ->
-
+#ifdef ALEX_DEBUG
                                    trace ("End of input.") $
-
+#endif
                                    AlexEOF
       Just _ ->
-
+#ifdef ALEX_DEBUG
                                    trace ("Error.") $
-
+#endif
                                    AlexError input__'
 
   (AlexLastSkip input__'' len, _) ->
-
+#ifdef ALEX_DEBUG
     trace ("Skipping.") $
-
+#endif
     AlexSkip input__'' len
 
   (AlexLastAcc k input__''' len, _) ->
-
+#ifdef ALEX_DEBUG
     trace ("Accept.") $
-
+#endif
     AlexToken input__''' len (alex_actions ! k)
 
 
@@ -153,49 +148,55 @@ alexScanUser user__ input__ (I# (sc))
 alex_scan_tkn user__ orig_input len input__ s last_acc =
   input__ `seq` -- strict in the input
   let
-  new_acc = (check_accs (alex_accept `quickIndex` (I# (s))))
+  new_acc = (check_accs (alex_accept `quickIndex` IBOX(s)))
   in
   new_acc `seq`
   case alexGetByte input__ of
      Nothing -> (new_acc, input__)
      Just (c, new_input) ->
-
-      trace ("State: " ++ show (I# (s)) ++ ", char: " ++ show c) $
-
-      case fromIntegral c of { (I# (ord_c)) ->
+#ifdef ALEX_DEBUG
+      trace ("State: " ++ show IBOX(s) ++ ", char: " ++ show c) $
+#endif
+      case fromIntegral c of { IBOX(ord_c) ->
         let
                 base   = alexIndexInt32OffAddr alex_base s
-                offset = (base +# ord_c)
+                offset = PLUS(base,ord_c)
                 check  = alexIndexInt16OffAddr alex_check offset
 
-                new_s = if GTE(offset,0#) && EQ(check,ord_c)
+                new_s = if GTE(offset,ILIT(0)) && EQ(check,ord_c)
                           then alexIndexInt16OffAddr alex_table offset
                           else alexIndexInt16OffAddr alex_deflt s
         in
         case new_s of
-            -1# -> (new_acc, input__)
+            ILIT(-1) -> (new_acc, input__)
                 -- on an error, we want to keep the input *before* the
                 -- character that failed, not after.
-            _ -> alex_scan_tkn user__ orig_input (if c < 0x80 || c >= 0xC0 then (len +# 1#) else len)
-                                                -- note that the length is increased ONLY if this is the 1st byte in a char encoding)
-                        new_input new_s new_acc
+            _ -> alex_scan_tkn user__ orig_input
+#ifdef ALEX_LATIN1
+                   PLUS(len,ILIT(1))
+                   -- issue 119: in the latin1 encoding, *each* byte is one character
+#else
+                   (if c < 0x80 || c >= 0xC0 then PLUS(len,ILIT(1)) else len)
+                   -- note that the length is increased ONLY if this is the 1st byte in a char encoding)
+#endif
+                   new_input new_s new_acc
       }
   where
         check_accs (AlexAccNone) = last_acc
-        check_accs (AlexAcc a  ) = AlexLastAcc a input__ (I# (len))
-        check_accs (AlexAccSkip) = AlexLastSkip  input__ (I# (len))
-
+        check_accs (AlexAcc a  ) = AlexLastAcc a input__ IBOX(len)
+        check_accs (AlexAccSkip) = AlexLastSkip  input__ IBOX(len)
+#ifndef ALEX_NOPRED
         check_accs (AlexAccPred a predx rest)
-           | predx user__ orig_input (I# (len)) input__
-           = AlexLastAcc a input__ (I# (len))
+           | predx user__ orig_input IBOX(len) input__
+           = AlexLastAcc a input__ IBOX(len)
            | otherwise
            = check_accs rest
         check_accs (AlexAccSkipPred predx rest)
-           | predx user__ orig_input (I# (len)) input__
-           = AlexLastSkip input__ (I# (len))
+           | predx user__ orig_input IBOX(len) input__
+           = AlexLastSkip input__ IBOX(len)
            | otherwise
            = check_accs rest
-
+#endif
 
 data AlexLastAcc
   = AlexNone
@@ -206,7 +207,7 @@ data AlexAcc user
   = AlexAccNone
   | AlexAcc Int
   | AlexAccSkip
-
+#ifndef ALEX_NOPRED
   | AlexAccPred Int (AlexAccPred user) (AlexAcc user)
   | AlexAccSkipPred (AlexAccPred user) (AlexAcc user)
 
@@ -227,11 +228,11 @@ alexPrevCharMatches f _ input__ _ _ = f (alexInputPrevChar input__)
 alexPrevCharIsOneOf arr _ input__ _ _ = arr ! alexInputPrevChar input__
 
 --alexRightContext :: Int -> AlexAccPred _
-alexRightContext (I# (sc)) user__ _ _ input__ =
-     case alex_scan_tkn user__ input__ 0# input__ sc AlexNone of
+alexRightContext IBOX(sc) user__ _ _ input__ =
+     case alex_scan_tkn user__ input__ ILIT(0) input__ sc AlexNone of
           (AlexNone, _) -> False
           _ -> True
         -- TODO: there's no need to find the longest
         -- match when checking the right context, just
         -- the first match will do.
-
+#endif

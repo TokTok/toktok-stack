@@ -16,11 +16,11 @@ cc_library(
 
 haskell_library(
     name = PACKAGE_NAME,
-    srcs = glob(["src/**/*.*hs"]),
-    compiler_flags = [
-        "-XScopedTypeVariables",
-        "-Wno-unused-imports",
-    ],
+    srcs = glob(
+        ["src/**/*.*hs"],
+        exclude = ["src/Data/Sequence/**/*.hs"],
+    ),
+    compiler_flags = ["-XScopedTypeVariables"],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
