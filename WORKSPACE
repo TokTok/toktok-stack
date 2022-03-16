@@ -208,9 +208,12 @@ local_library_repository(
     version = "2.0",
 )
 
-local_library_repository(
+http_archive(
     name = "ncurses",
-    version = "6.2",
+    build_file = "@toktok//third_party:BUILD.ncurses",
+    sha256 = "97fc51ac2b085d4cde31ef4d2c3122c21abc217e9090a43a30fc5ec21684e059",
+    strip_prefix = "ncurses-6.3",
+    urls = ["https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.3.tar.gz"],
 )
 
 local_library_repository(
@@ -218,18 +221,12 @@ local_library_repository(
     version = "r2917_1",
 )
 
-# TODO(iphydf): We can't build boringssl in bazel yet, because Qt links
-# against openssl from the system, while we link against our local boringssl.
-# This causes issues with global initialisation where one library thinks it's
-# initialised but the state is in the other library. Note that this only
-# happens with dynamic linking. If we link statically (we do for binaries, but
-# not for tests), this works fine.
-#github_archive(
-#    name = "boringssl",
-#    repo = "google/boringssl",
-#    sha256 = "99cf9dec3f789373a896531a267244e6853526084b9a32c2cf49faf16492c36c",
-#    version = "4984d802d95bb709ab824e07ffb2d61441b8348f",
-#)
+github_archive(
+    name = "boringssl",
+    repo = "google/boringssl",
+    sha256 = "99cf9dec3f789373a896531a267244e6853526084b9a32c2cf49faf16492c36c",
+    version = "4984d802d95bb709ab824e07ffb2d61441b8348f",
+)
 
 local_library_repository(
     name = "openssl",
@@ -239,12 +236,6 @@ local_library_repository(
         "ssl",
     ],
     version = "1.1.1g",
-)
-
-new_local_repository(
-    name = "boringssl",
-    build_file = "@toktok//third_party:BUILD.boringssl",
-    path = "third_party",
 )
 
 http_archive(

@@ -31,6 +31,15 @@ fi
 export PATH="$PATH:/src/workspace/hs-github-tools/tools"
 export PATH="$PATH:$HOME/flutter/bin"
 
+export ASAN_OPTIONS="color=always"
+export ASAN_OPTIONS="$ASAN_OPTIONS,detect_invalid_pointer_pairs=1"
+export ASAN_OPTIONS="$ASAN_OPTIONS,detect_stack_use_after_return=1"
+export ASAN_OPTIONS="$ASAN_OPTIONS,strict_init_order=1"
+export ASAN_OPTIONS="$ASAN_OPTIONS,strict_string_checks=1"
+export ASAN_OPTIONS="$ASAN_OPTIONS,symbolize=1"
+
+export MSAN_OPTIONS="color=always"
+
 alias gs=gst
 alias gsr="git ss"
 alias ls="ls -Fv --color=tty --group-directories-first --quoting-style=shell"
