@@ -1,25 +1,425 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
 
 package(features = ["layering_check"])
+
+genrule(
+    name = "regen_config",
+    srcs = glob([
+        "c++/**/*",
+        "include/**/*",
+        "man/**/*",
+        "misc/**/*",
+        "ncurses/**/*",
+        "progs/**/*",
+        "test/**/*",
+        "*.awk",
+    ]) + [
+        "Makefile.in",
+        "VERSION",
+        "config.guess",
+        "config.sub",
+        "configure",
+        "dist.mk",
+        "install-sh",
+    ],
+    outs = [
+        "include/MKterm.h.awk",
+        "include/curses.h",
+        "include/ncurses_cfg.h",
+        "include/ncurses_dll.h",
+        "include/termcap.h",
+        "include/unctrl.h",
+        "ncurses/Makefile",
+        "ncurses/expanded.c",
+        "ncurses/fallback.c",
+        "ncurses/init_keytry.h",
+        "ncurses/lib_gen.c",
+        "ncurses/lib_keyname.c",
+    ],
+    cmd = """
+        cd `dirname $(location configure)`
+        ./configure CC=$(CC) \
+            --datadir=/lib \
+            --enable-widec \
+            --without-cxx-binding \
+            --without-ada \
+            --without-manpages \
+            --without-progs \
+            --without-tack \
+            --without-tests
+        make -C include sources
+        make -C ncurses sources
+        DIR=`pwd`
+        cd -
+        for i in $(OUTS); do
+          cp $$DIR/`echo $$i | sed -e 's|$(GENDIR)/external/ncurses/||'` $$i
+        done
+    """,
+    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
+)
+
+filegroup(
+    name = "caplist",
+    srcs = [
+        "include/Caps",
+        "include/Caps-ncurses",
+    ],
+)
+
+genrule(
+    name = "term_h",
+    srcs = [
+        ":caplist",
+        "include/MKterm.h.awk",
+        "include/edit_cfg.sh",
+        "include/ncurses_cfg.h",
+    ],
+    outs = ["include/term.h"],
+    cmd = """
+        awk -f $(location include/MKterm.h.awk) $(locations :caplist) > $@
+        $(location include/edit_cfg.sh) $(location include/ncurses_cfg.h) $@
+    """,
+)
+
+genrule(
+    name = "hashsize_h",
+    srcs = [
+        ":caplist",
+        "include/MKhashsize.sh",
+    ],
+    outs = ["include/hashsize.h"],
+    cmd = """
+        $(location include/MKhashsize.sh) $(locations :caplist) > $@
+    """,
+)
+
+genrule(
+    name = "ncurses_def_h",
+    srcs = [
+        "include/MKncurses_def.sh",
+        "include/ncurses_defs",
+    ],
+    outs = ["include/ncurses_def.h"],
+    cmd = """
+        $(location include/MKncurses_def.sh) $(locations include/ncurses_defs) > $@
+    """,
+)
+
+genrule(
+    name = "parameterized_h",
+    srcs = [
+        ":caplist",
+        "include/MKparametrized.sh",
+    ],
+    outs = ["include/parameterized.h"],
+    cmd = """
+        $(location include/MKparametrized.sh) $(locations :caplist) > $@
+    """,
+)
+
+genrule(
+    name = "ncurses_h",
+    outs = ["include/ncurses.h"],
+    cmd = """
+        echo '#include <curses.h>' > $@
+    """,
+)
+
+genrule(
+    name = "codes_c",
+    srcs = [
+        ":caplist",
+        "ncurses/tinfo/MKcodes.awk",
+    ],
+    outs = ["ncurses/codes.c"],
+    cmd = "awk -f $(location ncurses/tinfo/MKcodes.awk) $(locations :caplist) > $@",
+)
+
+genrule(
+    name = "names_c",
+    srcs = [
+        ":caplist",
+        "ncurses/tinfo/MKnames.awk",
+    ],
+    outs = ["ncurses/names.c"],
+    cmd = "awk -f $(location ncurses/tinfo/MKnames.awk) $(locations :caplist) > $@",
+)
+
+genrule(
+    name = "unctrl_c",
+    srcs = ["ncurses/base/MKunctrl.awk"],
+    outs = ["ncurses/unctrl.c"],
+    cmd = "awk -f $< > $@",
+)
+
+cc_library(
+    name = "ncurses_internal",
+    hdrs = [
+        "include/capdefaults.c",
+        "ncurses/tinfo/doalloc.c",
+    ],
+)
+
+cc_binary(
+    name = "make_hash",
+    srcs = [
+        "include/curses.h",
+        "include/hashsize.h",
+        "include/nc_alloc.h",
+        "include/nc_string.h",
+        "include/ncurses_cfg.h",
+        "include/ncurses_def.h",
+        "include/ncurses_dll.h",
+        "include/tic.h",
+        "include/unctrl.h",
+        "ncurses/build.priv.h",
+        "ncurses/curses.priv.h",
+        "ncurses/tinfo/make_hash.c",
+    ],
+    copts = [
+        "-Iexternal/ncurses/ncurses",
+        "-D_DEFAULT_SOURCE",
+        "-D_XOPEN_SOURCE=600",
+    ],
+    includes = ["include"],
+    deps = [":ncurses_internal"],
+)
+
+genrule(
+    name = "comp_captab_c",
+    srcs = [
+        ":caplist",
+        "include/hashsize.h",
+        "ncurses/tinfo/MKcaptab.awk",
+        "ncurses/tinfo/MKcaptab.sh",
+    ],
+    outs = ["ncurses/comp_captab.c"],
+    cmd = """
+        cp $(location :make_hash) .
+        bash $(location ncurses/tinfo/MKcaptab.sh) awk 1 $(location ncurses/tinfo/MKcaptab.awk) $(locations :caplist) > $@
+    """,
+    tools = [":make_hash"],
+)
+
+genrule(
+    name = "comp_userdefs_c",
+    srcs = [
+        ":caplist",
+        "include/hashsize.h",
+        "ncurses/tinfo/MKuserdefs.sh",
+    ],
+    outs = ["ncurses/comp_userdefs.c"],
+    cmd = """
+        cp $(location :make_hash) .
+        bash $(location ncurses/tinfo/MKuserdefs.sh) awk 1 $(locations :caplist) > $@
+    """,
+    tools = [":make_hash"],
+)
 
 # TODO(iphydf): Build ncurses in bazel.
 cc_library(
     name = "ncurses",
-    srcs = select({
-        "@toktok//tools/config:linux": [
-            "lib/x86_64-linux-gnu/libncursesw.so",
-            "lib/x86_64-linux-gnu/libtinfo.so",
-        ],
-        "@toktok//tools/config:osx": ["lib/libncurses.dylib"],
-    }),
+    srcs = [
+        "include/hashed_db.h",
+        "include/hashsize.h",
+        "include/nc_access.h",
+        "include/nc_alloc.h",
+        "include/nc_panel.h",
+        "include/nc_string.h",
+        "include/nc_termios.h",
+        "include/nc_tparm.h",
+        "include/ncurses_cfg.h",
+        "include/ncurses_def.h",
+        "include/parameterized.h",
+        "include/term.h",
+        "include/term_entry.h",
+        "include/tic.h",
+        "ncurses/SigAction.h",
+        "ncurses/base/define_key.c",
+        "ncurses/base/key_defined.c",
+        "ncurses/base/keybound.c",
+        "ncurses/base/keyok.c",
+        "ncurses/base/legacy_coding.c",
+        "ncurses/base/lib_addch.c",
+        "ncurses/base/lib_addstr.c",
+        "ncurses/base/lib_beep.c",
+        "ncurses/base/lib_bkgd.c",
+        "ncurses/base/lib_box.c",
+        "ncurses/base/lib_chgat.c",
+        "ncurses/base/lib_clear.c",
+        "ncurses/base/lib_clearok.c",
+        "ncurses/base/lib_clrbot.c",
+        "ncurses/base/lib_clreol.c",
+        "ncurses/base/lib_color.c",
+        "ncurses/base/lib_colorset.c",
+        "ncurses/base/lib_delch.c",
+        "ncurses/base/lib_delwin.c",
+        "ncurses/base/lib_dft_fgbg.c",
+        "ncurses/base/lib_echo.c",
+        "ncurses/base/lib_endwin.c",
+        "ncurses/base/lib_erase.c",
+        "ncurses/base/lib_flash.c",
+        "ncurses/base/lib_freeall.c",
+        "ncurses/base/lib_getch.c",
+        "ncurses/base/lib_getstr.c",
+        "ncurses/base/lib_hline.c",
+        "ncurses/base/lib_immedok.c",
+        "ncurses/base/lib_inchstr.c",
+        "ncurses/base/lib_initscr.c",
+        "ncurses/base/lib_insch.c",
+        "ncurses/base/lib_insdel.c",
+        "ncurses/base/lib_insnstr.c",
+        "ncurses/base/lib_instr.c",
+        "ncurses/base/lib_isendwin.c",
+        "ncurses/base/lib_leaveok.c",
+        "ncurses/base/lib_mouse.c",
+        "ncurses/base/lib_move.c",
+        "ncurses/base/lib_mvwin.c",
+        "ncurses/base/lib_newterm.c",
+        "ncurses/base/lib_newwin.c",
+        "ncurses/base/lib_nl.c",
+        "ncurses/base/lib_overlay.c",
+        "ncurses/base/lib_pad.c",
+        "ncurses/base/lib_printw.c",
+        "ncurses/base/lib_redrawln.c",
+        "ncurses/base/lib_refresh.c",
+        "ncurses/base/lib_restart.c",
+        "ncurses/base/lib_scanw.c",
+        "ncurses/base/lib_screen.c",
+        "ncurses/base/lib_scroll.c",
+        "ncurses/base/lib_scrollok.c",
+        "ncurses/base/lib_scrreg.c",
+        "ncurses/base/lib_set_term.c",
+        "ncurses/base/lib_slk.c",
+        "ncurses/base/lib_slkatr_set.c",
+        "ncurses/base/lib_slkatrof.c",
+        "ncurses/base/lib_slkatron.c",
+        "ncurses/base/lib_slkatrset.c",
+        "ncurses/base/lib_slkattr.c",
+        "ncurses/base/lib_slkclear.c",
+        "ncurses/base/lib_slkcolor.c",
+        "ncurses/base/lib_slkinit.c",
+        "ncurses/base/lib_slklab.c",
+        "ncurses/base/lib_slkrefr.c",
+        "ncurses/base/lib_slkset.c",
+        "ncurses/base/lib_slktouch.c",
+        "ncurses/base/lib_touch.c",
+        "ncurses/base/lib_ungetch.c",
+        "ncurses/base/lib_vline.c",
+        "ncurses/base/lib_wattroff.c",
+        "ncurses/base/lib_wattron.c",
+        "ncurses/base/lib_winch.c",
+        "ncurses/base/lib_window.c",
+        "ncurses/base/nc_panel.c",
+        "ncurses/base/new_pair.c",
+        "ncurses/base/resizeterm.c",
+        "ncurses/base/safe_sprintf.c",
+        "ncurses/base/tries.c",
+        "ncurses/base/use_window.c",
+        "ncurses/base/version.c",
+        "ncurses/base/vsscanf.c",
+        "ncurses/base/wresize.c",
+        "ncurses/build.priv.h",
+        "ncurses/codes.c",
+        "ncurses/comp_captab.c",
+        "ncurses/comp_userdefs.c",
+        "ncurses/curses.priv.h",
+        "ncurses/expanded.c",
+        "ncurses/fallback.c",
+        "ncurses/fifo_defs.h",
+        "ncurses/init_keytry.h",
+        "ncurses/lib_gen.c",
+        "ncurses/lib_keyname.c",
+        "ncurses/names.c",
+        "ncurses/new_pair.h",
+        "ncurses/term.priv.h",
+        "ncurses/tinfo/access.c",
+        "ncurses/tinfo/add_tries.c",
+        "ncurses/tinfo/alloc_ttype.c",
+        "ncurses/tinfo/comp_error.c",
+        "ncurses/tinfo/comp_hash.c",
+        "ncurses/tinfo/db_iterator.c",
+        "ncurses/tinfo/doalloc.c",
+        "ncurses/tinfo/entries.c",
+        "ncurses/tinfo/free_ttype.c",
+        "ncurses/tinfo/getenv_num.c",
+        "ncurses/tinfo/hashed_db.c",
+        "ncurses/tinfo/home_terminfo.c",
+        "ncurses/tinfo/init_keytry.c",
+        "ncurses/tinfo/lib_acs.c",
+        "ncurses/tinfo/lib_baudrate.c",
+        "ncurses/tinfo/lib_cur_term.c",
+        "ncurses/tinfo/lib_data.c",
+        "ncurses/tinfo/lib_has_cap.c",
+        "ncurses/tinfo/lib_kernel.c",
+        "ncurses/tinfo/lib_longname.c",
+        "ncurses/tinfo/lib_napms.c",
+        "ncurses/tinfo/lib_options.c",
+        "ncurses/tinfo/lib_print.c",
+        "ncurses/tinfo/lib_raw.c",
+        "ncurses/tinfo/lib_setup.c",
+        "ncurses/tinfo/lib_termcap.c",
+        "ncurses/tinfo/lib_termname.c",
+        "ncurses/tinfo/lib_tgoto.c",
+        "ncurses/tinfo/lib_ti.c",
+        "ncurses/tinfo/lib_tparm.c",
+        "ncurses/tinfo/lib_tputs.c",
+        "ncurses/tinfo/lib_ttyflags.c",
+        "ncurses/tinfo/name_match.c",
+        "ncurses/tinfo/obsolete.c",
+        "ncurses/tinfo/read_entry.c",
+        "ncurses/tinfo/read_termcap.c",
+        "ncurses/tinfo/strings.c",
+        "ncurses/tinfo/trim_sgr0.c",
+        "ncurses/tinfo/use_screen.c",
+        "ncurses/trace/lib_trace.c",
+        "ncurses/trace/varargs.c",
+        "ncurses/trace/visbuf.c",
+        "ncurses/tty/hardscroll.c",
+        "ncurses/tty/hashmap.c",
+        "ncurses/tty/lib_mvcur.c",
+        "ncurses/tty/lib_tstp.c",
+        "ncurses/tty/lib_twait.c",
+        "ncurses/tty/lib_vidattr.c",
+        "ncurses/tty/tty_update.c",
+        "ncurses/unctrl.c",
+        "ncurses/widechar/charable.c",
+        "ncurses/widechar/lib_add_wch.c",
+        "ncurses/widechar/lib_box_set.c",
+        "ncurses/widechar/lib_cchar.c",
+        "ncurses/widechar/lib_erasewchar.c",
+        "ncurses/widechar/lib_get_wch.c",
+        "ncurses/widechar/lib_get_wstr.c",
+        "ncurses/widechar/lib_hline_set.c",
+        "ncurses/widechar/lib_in_wch.c",
+        "ncurses/widechar/lib_in_wchnstr.c",
+        "ncurses/widechar/lib_ins_wch.c",
+        "ncurses/widechar/lib_inwstr.c",
+        "ncurses/widechar/lib_key_name.c",
+        "ncurses/widechar/lib_pecho_wchar.c",
+        "ncurses/widechar/lib_slk_wset.c",
+        "ncurses/widechar/lib_unget_wch.c",
+        "ncurses/widechar/lib_vid_attr.c",
+        "ncurses/widechar/lib_vline_set.c",
+        "ncurses/widechar/lib_wacs.c",
+        "ncurses/widechar/lib_wunctrl.c",
+    ],
     hdrs = [
         "include/curses.h",
+        "include/ncurses.h",
         "include/ncurses_dll.h",
-        "include/ncursesw/curses.h",
-        "include/ncursesw/ncurses_dll.h",
-        "include/ncursesw/unctrl.h",
+        "include/termcap.h",
         "include/unctrl.h",
+    ],
+    copts = [
+        "-Iexternal/ncurses/ncurses",
+        "-I$(GENDIR)/external/ncurses/ncurses",
+        "-D_DEFAULT_SOURCE",
+        "-D_XOPEN_SOURCE=600",
+        "-DBUILDING_NCURSES",
+        "-DNCURSES_STATIC",
     ],
     includes = ["include"],
     visibility = ["//visibility:public"],
+    deps = [":ncurses_internal"],
 )

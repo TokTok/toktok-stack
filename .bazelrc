@@ -152,6 +152,7 @@ build:msan --copt='-fsanitize=memory'
 build:msan --copt='-fsanitize-memory-track-origins=2'
 build:msan --linkopt='-fsanitize=memory'
 build:msan --test_env=MSAN_OPTIONS=color=always
+build:msan --per_file_copt='//toxic[:/]@-UAUDIO,-UVIDEO,-UPYTHON'
 
 build:tsan --config=sanitizer
 build:tsan --copt='-fsanitize=thread'
