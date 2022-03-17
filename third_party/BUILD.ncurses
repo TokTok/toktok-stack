@@ -418,6 +418,7 @@ cc_library(
         "-D_XOPEN_SOURCE=600",
         "-DBUILDING_NCURSES",
         "-DNCURSES_STATIC",
+        "-Wno-unused",
     ],
     includes = ["include"],
     visibility = ["//visibility:public"],
