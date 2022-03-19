@@ -136,6 +136,7 @@ build:drmemory --config=dynamic-analysis
 
 build:sanitizer --copt='-g'
 build:sanitizer --copt='-U_NDEBUG'
+build:sanitizer --copt='-O2'
 build:sanitizer --copt='-fno-inline'
 build:sanitizer --copt='-fno-omit-frame-pointer'
 build:sanitizer --strip=never
@@ -202,10 +203,6 @@ build:gnulike --per_file_copt='external/.*[-_]sse4\\.c$@-msse4,-w'
 build:gnulike --per_file_copt='external/.*[-_]sse41\\.c$@-msse4.1,-w'
 build:gnulike --per_file_copt='external/.*[-_]sse4_1\\.c$@-msse4.1,-w'
 build:gnulike --per_file_copt='external/.*[-_]ssse3\\.c$@-mssse3,-w'
-
-# Under UBSAN, Clang won't inline c_tolower but also not emit it out of line,
-# resulting in undefined reference errors.
-build:gnulike --per_file_copt='external/libidn2/unistring/c-str.*casecmp.c@-Dinline=static,-Wno-unused-function'
 
 # Colour diagnostics, even though bazel uses non-tty pipes.
 build:gnulike --copt='-fdiagnostics-color=always'

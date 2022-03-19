@@ -109,6 +109,7 @@ cc_library(
         "unistring/unistr/u8-uctomb-aux.c",
         "unistring/verify.h",
         "unistring/xalloc-oversized.h",
+        "@toktok//third_party/libidn2:c_isupper.c",
     ],
     hdrs = [
         "unistring/c-ctype.h",
