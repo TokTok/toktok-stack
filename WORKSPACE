@@ -44,6 +44,23 @@ github_archive(
     version = "6e30a77347071ab22ce346b6d20cf8912919f644",
 )
 
+# Fuzzing
+# =========================================================
+
+http_archive(
+    name = "rules_fuzzing",
+    sha256 = "23bb074064c6f488d12044934ab1b0631e8e6898d5cf2f6bde087adb01111573",
+    strip_prefix = "rules_fuzzing-0.3.1",
+    urls = ["https://github.com/bazelbuild/rules_fuzzing/archive/v0.3.1.zip"],
+)
+
+load("@rules_fuzzing//fuzzing:init.bzl", "rules_fuzzing_init")
+load("@rules_fuzzing//fuzzing:repositories.bzl", "rules_fuzzing_dependencies")
+
+rules_fuzzing_dependencies()
+
+rules_fuzzing_init()
+
 # Protobuf
 # =========================================================
 
@@ -530,25 +547,23 @@ new_github_archive(
 
 github_archive(
     name = "build_bazel_rules_apple",
-    # TODO(https://github.com/bazelbuild/rules_apple/issues/737): Remove.
-    patches = ["@toktok//third_party/patches:rules_apple.patch"],
     repo = "bazelbuild/rules_apple",
-    sha256 = "49618def769ec2bf6f33d9f51479e5fdb8ef55f6ba156f2a14021e02d32f313a",
-    version = "524ea38c7c1f8a14bdea812f499aea7c5d3d1e13",
+    sha256 = "b6a45e2fc047e4da9f474259dc9ab5cd19391db0e0fbfe9acd0fc1ee361266ff",
+    version = "07f5f2dd14f56e54eaca176630450c2abcc52eb9",
 )
 
 github_archive(
     name = "build_bazel_rules_swift",
     repo = "bazelbuild/rules_swift",
-    sha256 = "1263206c029b7a162bda0092fca1ade2b8873e56bf122a1f15a0d6cb95d6f0e8",
-    version = "7336f68990c3a2779186a7157bf29036023d3246",
+    sha256 = "cf74bbd9dc803b9b551de03bdb43feb75666cdd74cd70513c07b950a12a829c8",
+    version = "7b8558cab8e402eb21e2fc655989bae378171486",
 )
 
 github_archive(
     name = "build_bazel_apple_support",
     repo = "bazelbuild/apple_support",
-    sha256 = "8aa07a6388e121763c0164624feac9b20841afa2dd87bac0ba0c3ed1d56feb70",
-    version = "501b4afb27745c4813a88ffa28acd901408014e4",
+    sha256 = "0c255725a9be81cde845fd3b9a936c4d5f46b0e1891c02082259f387e0db9e3c",
+    version = "2659bae1f561e34b89fcc230df26aaf6dada2646",
 )
 
 load("@build_bazel_apple_support//lib:repositories.bzl", "apple_support_dependencies")

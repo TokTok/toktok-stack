@@ -52,10 +52,8 @@ build --strategy=Javac=worker
 build --strategy=Scalac=worker
 build --worker_sandboxing
 
-build:libc++ --action_env=CXXFLAGS=-stdlib=libc++
-build:libc++ --action_env=LDFLAGS=-stdlib=libc++
-build:libc++ --action_env=BAZEL_CXXOPTS=-stdlib=libc++
-build:libc++ --action_env=BAZEL_LINKLIBS=-l%:libc++.a:-l%:libc++abi.a:-lm
+build:libc++ --cxxopt='-stdlib=libc++'
+build:libc++ --linkopt='-stdlib=libc++'
 
 # Use remote caching. This is disabled by default, because unless you have a
 # fairly fast connection (like on our CI systems), this is not very useful.
@@ -102,12 +100,11 @@ build:macos --build_tag_filters=-windows
 #
 ##############################################################################
 
-build --strict_java_deps=error
 build --experimental_guard_against_concurrent_changes
 build --experimental_import_deps_checking=warning
 build --experimental_run_validations
 build --experimental_strict_fileset_output
-build --experimental_strict_java_deps=warn
+build --experimental_strict_java_deps=error
 
 ##############################################################################
 #
@@ -133,6 +130,10 @@ build:valgrind --config=dynamic-analysis
 
 build:drmemory --run_under="drmemory --"
 build:drmemory --config=dynamic-analysis
+
+build:asan-libfuzzer --@rules_fuzzing//fuzzing:cc_engine=@rules_fuzzing//fuzzing/engines:libfuzzer
+build:asan-libfuzzer --@rules_fuzzing//fuzzing:cc_engine_instrumentation=libfuzzer
+build:asan-libfuzzer --@rules_fuzzing//fuzzing:cc_engine_sanitizer=asan
 
 build:sanitizer --copt='-g'
 build:sanitizer --copt='-U_NDEBUG'

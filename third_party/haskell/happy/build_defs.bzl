@@ -14,7 +14,7 @@ def happy_parser(name, src, glr = False, preproc = None):
     driver_out = src[:src.rindex(".")] + ".hs"
     data_out = src[:src.rindex(".")] + "Data.hs"
     if glr:
-        happy_flags = ["--glr"]
+        happy_flags = ["--glr", "--decode"]
         outs = [driver_out, data_out]
     else:
         happy_flags = ["--ghc", "--coerce"]

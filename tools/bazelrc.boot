@@ -29,7 +29,6 @@ build --incompatible_load_cc_rules_from_bzl="false"                   # bazel-to
 build --incompatible_load_python_rules_from_bzl=false                 # cython
 build --incompatible_no_rule_outputs_param="false"                    # rules_scala
 build --incompatible_require_linker_input_cc_api="false"              # io_bazel_rules_go
-build --incompatible_restrict_string_escapes="false"                  # kythe
 build --incompatible_struct_has_no_methods="false"                    # rules_haskell
 build --incompatible_use_platforms_repo_for_constraints="false"       # bazel_toolchain
 build --incompatible_use_toolchain_resolution_for_java_rules="false"  # TODO(https://github.com/bazelbuild/bazel/issues/7849): Enable.
@@ -40,8 +39,6 @@ build:macos --incompatible_run_shell_command_string="false"
 
 # Java toolchain.
 build:rbe --extra_toolchains=@bazel_toolchain//toolchain/java:all
-build:rbe --host_javabase=@bazel_toolchain//toolchain/java:jdk
-build:rbe --javabase=@bazel_toolchain//toolchain/java:jdk
 
 # C/C++ toolchain.
 build:rbe --extra_toolchains=@bazel_toolchain//toolchain/config:cc-toolchain
