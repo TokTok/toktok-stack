@@ -12,36 +12,36 @@ new_local_repository(
 github_archive(
     name = "rules_cc",
     repo = "bazelbuild/rules_cc",
-    sha256 = "68cece0593cca62ba7bcf47b6627f97d55fb9127041572767606f984c2c6ee9e",
-    version = "081771d4a0e9d7d3aa0eed2ef389fa4700dfb23e",
+    sha256 = "fe1e7b1801a63e79eb1b40dc44bf0590117a399e118ac44afd6fa07bf63e9ece",
+    version = "58f8e026c00a8a20767e3dc669f46ba23bc93bdb",
 )
 
 github_archive(
     name = "rules_java",
     repo = "bazelbuild/rules_java",
-    sha256 = "b686171f549c737d630522cad7d455ffc9e5ba69d1b135a6c376014dd569cf89",
-    version = "7a3c520737581f13691ad94a0f798a3518d869d1",
+    sha256 = "74d05fcd95df837a72cf2335b05586bbd77bd7f6725858a9fb262ef81f5a93e9",
+    version = "7a98cf2adcae6a0e2eae0d392f92ea19159fbef1",
 )
 
 github_archive(
     name = "rules_proto",
     repo = "bazelbuild/rules_proto",
-    sha256 = "810d02d1c016bea9743161f42323e59000c0690e4bf18d94e4f44e361b48645b",
-    version = "11bf7c25e666dd7ddacbcd4d4c4a9de7a25175f8",
+    sha256 = "ec3692776b2973954e22ed3b6ed346e3c43e67269eacc8cd43c7fc6aa47b710a",
+    version = "0bc8db13f8dc8f5d435be07e276712db1ca11a91",
 )
 
 github_archive(
     name = "rules_python",
     repo = "bazelbuild/rules_python",
-    sha256 = "c3b3c7a72b928fe8c50e20a20dc9d8e520ad3ae11edb2fa803c8267b3b73faf3",
-    version = "2b1d6beb4d5d8f59d629597e30e9aa519182d9a9",
+    sha256 = "18a8d97f706d768169f93e251d02eea6f8e1810bd90c2fe78cfdf036aa1772ef",
+    version = "fe30f1561e3afef59e3f8be6339c88444100de25",
 )
 
 github_archive(
     name = "bazel_skylib",
     repo = "bazelbuild/bazel-skylib",
-    sha256 = "247361e64b2a85b40cb45b9c071e42433467c6c87546270cbe2672eb9f317b5a",
-    version = "6e30a77347071ab22ce346b6d20cf8912919f644",
+    sha256 = "8d514db81bfba3d9eb2f77b4143118a8920d2c4987d3d0810e69177c00934b6e",
+    version = "8334f938c1574ef6f1f7a38a03550a31df65274e",
 )
 
 # Fuzzing
@@ -70,8 +70,8 @@ rules_fuzzing_init()
 github_archive(
     name = "com_google_protobuf",
     repo = "protocolbuffers/protobuf",
-    sha256 = "6b6bf5cd8d0cca442745c4c3c9f527c83ad6ef35a405f64db5215889ac779b42",
-    version = "v3.19.3",
+    sha256 = "25680843adf0c3302648d35f744e38cc3b6b05a6c77a927de5aea3e1c2e36106",
+    version = "v3.19.4",
 )
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
@@ -105,8 +105,8 @@ github_archive(
 github_archive(
     name = "rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "c598214243f4827ae131ac607ab06e630218a531e4f7d70c7bda400f996d0feb",
-    version = "26a966abf7328b08c449c682f07d0e00e6f14466",
+    sha256 = "1d60168daff6d0225b9c231b3622c31b91a7b37e2487bed1cde5b5990a5c3f29",
+    version = "26494b7bdcd7bd02463d6d6ebe32b7c00c607024",
 )
 
 load("@rules_haskell//haskell:ghc_bindist.bzl", "haskell_register_ghc_bindists")
@@ -159,8 +159,8 @@ load("//third_party/haskell:packages.bzl", "core_packages", "packages")
 github_archive(
     name = "io_bazel_rules_go",
     repo = "bazelbuild/rules_go",
-    sha256 = "3ae57b41d31f7add95babb4b9cff431672b2eac3d97727f7472a634c4ff1fec2",
-    version = "v0.29.0",
+    sha256 = "57bfd6a77a5be1fd9bce07d00afdfac232c06f303c1650053a794ab77ef1278f",
+    version = "v0.31.0",
 )
 
 github_archive(
@@ -241,8 +241,8 @@ local_library_repository(
 github_archive(
     name = "boringssl",
     repo = "google/boringssl",
-    sha256 = "99cf9dec3f789373a896531a267244e6853526084b9a32c2cf49faf16492c36c",
-    version = "4984d802d95bb709ab824e07ffb2d61441b8348f",
+    sha256 = "0842dd6dabeb4a039241148c3207eaa0306fd016714dbce7b8b50524e3389f2b",
+    version = "d7f01bfd845f17b6b6f8c7a754b9bb28bc6dc12d",
 )
 
 local_library_repository(
@@ -266,8 +266,8 @@ http_archive(
 github_archive(
     name = "com_google_googletest",
     repo = "google/googletest",
-    sha256 = "84bf0acb4a7ed172ffdd806bb3bef76ad705f4ea63ac7175cd7c86df2a017d17",
-    version = "3e0e32ba300ce8afe695ad3ba7e81b21b7cf237a",
+    sha256 = "420e5b0af464ae648e19f14a10af817f3a998fac52974676c842db10ded28666",
+    version = "0affd45b62371c1de44064a5a5f8817242208442",
 )
 
 new_github_archive(
@@ -588,13 +588,6 @@ junit_platform_java_repositories()
 # Maven dependencies
 # =========================================================
 
-github_archive(
-    name = "rules_jvm_external",
-    repo = "bazelbuild/rules_jvm_external",
-    sha256 = "a508c97baa2b3a5a952b4d3acaa06ee71e6b36bed7d62db2d919d6e450078862",
-    version = "3f1fb4056207b253542d00ae55736eb613e44731",
-)
-
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 local_repository(
@@ -774,13 +767,6 @@ http_archive(
     sha256 = "e6fc99c7df7f29995838a764dd68df87b71db360f7727ace467b21b82c85efda",
     strip_prefix = "rapidjson-8f4c021fa2f1e001d2376095928fc0532adf2ae6",
     url = "https://github.com/Tencent/rapidjson/archive/8f4c021fa2f1e001d2376095928fc0532adf2ae6.zip",
-)
-
-github_archive(
-    name = "com_google_absl",
-    repo = "abseil/abseil-cpp",
-    sha256 = "6668ada01192e2b95b42bb3668cfa5282c047de5176f5e567028e12f8bfb8aef",
-    version = "6e18c7115df9b7ca0987cc346b1b1d4b3cc829b3",
 )
 
 new_github_archive(

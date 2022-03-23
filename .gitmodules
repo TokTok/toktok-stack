@@ -94,6 +94,9 @@
 [submodule "tools/.github"]
 	path = tools/.github
 	url = https://github.com/TokTok/.github
+[submodule "tools/toktok-fuzzer"]
+	path = tools/toktok-fuzzer
+	url = https://github.com/TokTok/toktok-fuzzer
 [submodule "toxic"]
 	path = toxic
 	url = https://github.com/TokTok/toxic

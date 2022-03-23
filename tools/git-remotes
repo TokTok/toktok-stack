@@ -172,6 +172,10 @@ our %REPOS = (
       upstream => 'toktok',
       repo 'iphydf',
    }],
+   'tools/toktok-fuzzer' => ['toktok-fuzzer', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
    'toxic' => ['toxic', {
       upstream => 'toktok',
       repo 'iphydf',

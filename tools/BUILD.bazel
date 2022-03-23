@@ -34,6 +34,7 @@ workspace(projects = [
     "spec",
     "streambot-jvm",
     "tools/.github",
+    "tools/toktok-fuzzer",
     "toxic",
     "toxins",
     "website",
