@@ -41,6 +41,13 @@ build --experimental_android_resource_shrinking=true
 # This doesn't work on macOS.
 build:linux --experimental_omitfp
 
+# TODO(iphydf): Make this work somehow with clang.
+#coverage --combined_report=lcov
+#coverage --experimental_cc_coverage
+#coverage --experimental_use_llvm_covmap
+#coverage --experimental_generate_llvm_lcov
+#coverage --instrument_test_targets
+
 ##############################################################################
 #
 # :: Execution strategy flags.
@@ -268,6 +275,11 @@ build:gnulike --copt='-Wall'
 build:gnulike --copt='-Werror'
 build:gnulike --copt='-Wformat'
 build:gnulike --copt='-Wformat-security'
+
+# NO_FRAME_POINTER is set when compiling fuzzers (for some reason), causing absl to use the
+# libunwind stack trace implementation, which is Google internal-only, so fails to compile in Open
+# Source software.
+build:gnulike --per_file_copt='external/com_google_absl[:/]@-UNO_FRAME_POINTER,-fno-omit-frame-pointer'
 
 build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-ftrapv'
 build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-pedantic'
