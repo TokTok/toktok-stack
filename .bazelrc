@@ -138,8 +138,12 @@ build:valgrind --config=dynamic-analysis
 build:drmemory --run_under="drmemory --"
 build:drmemory --config=dynamic-analysis
 
-build:asan-libfuzzer --@rules_fuzzing//fuzzing:cc_engine=@rules_fuzzing//fuzzing/engines:libfuzzer
-build:asan-libfuzzer --@rules_fuzzing//fuzzing:cc_engine_instrumentation=libfuzzer
+build:libfuzzer --@rules_fuzzing//fuzzing:cc_engine=@rules_fuzzing//fuzzing/engines:libfuzzer
+build:libfuzzer --@rules_fuzzing//fuzzing:cc_engine_instrumentation=libfuzzer
+build:libfuzzer --copt='-g'
+build:libfuzzer --strip=never
+
+build:asan-libfuzzer --config=libfuzzer
 build:asan-libfuzzer --@rules_fuzzing//fuzzing:cc_engine_sanitizer=asan
 
 build:sanitizer --copt='-g'
