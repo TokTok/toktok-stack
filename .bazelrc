@@ -130,7 +130,7 @@ build:release -c opt
 build:dynamic-analysis --jobs=4
 build:dynamic-analysis --test_timeout=300
 build:dynamic-analysis --strip=never
-build:dynamic-analysis --per_file_copt='//c-toxcore[:/]@-g,-U_NDEBUG'
+build:dynamic-analysis --per_file_copt='//c-toxcore[:/]@-g,-UNDEBUG'
 
 build:valgrind --run_under="valgrind --track-origins=yes --error-exitcode=1 --fullpath-after=/proc/self/cwd/"
 build:valgrind --config=dynamic-analysis
@@ -147,7 +147,7 @@ build:asan-libfuzzer --config=libfuzzer
 build:asan-libfuzzer --@rules_fuzzing//fuzzing:cc_engine_sanitizer=asan
 
 build:sanitizer --copt='-g'
-build:sanitizer --copt='-U_NDEBUG'
+build:sanitizer --copt='-UNDEBUG'
 build:sanitizer --copt='-O2'
 build:sanitizer --copt='-fno-inline'
 build:sanitizer --copt='-fno-omit-frame-pointer'
@@ -339,6 +339,18 @@ build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-padd
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-reserved-id-macro'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-unused-parameter'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-vla'
+
+# CMP (C MessagePack implementation).
+# https://github.com/camgunz/cmp/pull/64
+build:clang --per_file_copt='//c-toxcore/third_party:cmp/cmp.c@-Wno-implicit-fallthrough'
+# https://github.com/camgunz/cmp/pull/63
+build:clang --per_file_copt='//c-toxcore/third_party:cmp/cmp.c@-Wno-float-equal'
+# https://github.com/camgunz/cmp/pull/61
+build:clang --per_file_copt='//c-toxcore/third_party:cmp/cmp.c@-Wno-missing-variable-declarations'
+build:clang --per_file_copt='//c-toxcore/third_party:cmp/cmp.c@-Wno-undef'
+# https://github.com/camgunz/cmp/pull/62
+build:clang --per_file_copt='//c-toxcore/third_party:cmp/cmp.c@-Wno-unreachable-code'
+build:clang --per_file_copt='//c-toxcore/third_party:cmp/cmp.c@-Wno-unreachable-code-return'
 
 build:clang --per_file_copt='//c-toxcore/toxav:video.c@-Wno-used-but-marked-unused'
 build:clang --per_file_copt='//c-toxcore/super_donators@-w'
