@@ -119,6 +119,8 @@ build --experimental_strict_java_deps=error
 #
 ##############################################################################
 
+build --per_file_copt='//c-toxcore[:/]@-D_DEBUG'
+
 # Debug mode.
 build:debug -c dbg
 
