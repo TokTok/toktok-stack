@@ -56,6 +56,11 @@ our %REPOS = (
       repo 'zoff99',
       repo 'zugz',
    }],
+   'c-toxcore/third_party/cmp' => ['cmp', {
+      upstream => 'toktok',
+      repo 'iphydf',
+      repo 'camgunz',
+   }],
    'c-toxcore-hs' => ['c-toxcore-hs', {
       upstream => 'toktok',
       repo 'iphydf',

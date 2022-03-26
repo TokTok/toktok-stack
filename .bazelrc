@@ -340,18 +340,6 @@ build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-rese
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-unused-parameter'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-vla'
 
-# CMP (C MessagePack implementation).
-# https://github.com/camgunz/cmp/pull/64
-build:clang --per_file_copt='//c-toxcore/third_party:cmp/cmp.c@-Wno-implicit-fallthrough'
-# https://github.com/camgunz/cmp/pull/63
-build:clang --per_file_copt='//c-toxcore/third_party:cmp/cmp.c@-Wno-float-equal'
-# https://github.com/camgunz/cmp/pull/61
-build:clang --per_file_copt='//c-toxcore/third_party:cmp/cmp.c@-Wno-missing-variable-declarations'
-build:clang --per_file_copt='//c-toxcore/third_party:cmp/cmp.c@-Wno-undef'
-# https://github.com/camgunz/cmp/pull/62
-build:clang --per_file_copt='//c-toxcore/third_party:cmp/cmp.c@-Wno-unreachable-code'
-build:clang --per_file_copt='//c-toxcore/third_party:cmp/cmp.c@-Wno-unreachable-code-return'
-
 build:clang --per_file_copt='//c-toxcore/toxav:video.c@-Wno-used-but-marked-unused'
 build:clang --per_file_copt='//c-toxcore/super_donators@-w'
 build:clang --per_file_copt='_test\\.(cc|cpp)$@-Wno-global-constructors,-Wno-exit-time-destructors'
