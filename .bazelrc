@@ -119,8 +119,6 @@ build --experimental_strict_java_deps=error
 #
 ##############################################################################
 
-build --per_file_copt='//c-toxcore[:/]@-D_DEBUG'
-
 # Debug mode.
 build:debug -c dbg
 
@@ -181,6 +179,7 @@ build:ubsan --copt='-fsanitize=undefined,nullability'
 build:ubsan --linkopt='-fsanitize=undefined,nullability,integer'
 # https://github.com/bazelbuild/bazel/issues/11122
 build:ubsan --linkopt='-fsanitize-link-c++-runtime'
+build:ubsan --per_file_copt='//c-toxcore[:/]@-D_DEBUG'
 build:ubsan --test_env=UBSAN_OPTIONS=color=always,print_stacktrace=1
 
 # Link-time optimization.
