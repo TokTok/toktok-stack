@@ -146,12 +146,11 @@ build:libfuzzer --strip=never
 build:asan-libfuzzer --config=libfuzzer
 build:asan-libfuzzer --@rules_fuzzing//fuzzing:cc_engine_sanitizer=asan
 
-build:sanitizer --copt='-g'
+build:sanitizer --config=debug
 build:sanitizer --copt='-UNDEBUG'
 build:sanitizer --copt='-O2'
 build:sanitizer --copt='-fno-inline'
 build:sanitizer --copt='-fno-omit-frame-pointer'
-build:sanitizer --strip=never
 build:sanitizer --flaky_test_attempts=1
 
 build:asan --config=sanitizer
@@ -236,9 +235,8 @@ build:musl --copt='-isystem/usr/lib/gcc/x86_64-linux-gnu/6/include'
 
 # Enable trace logging for toxcore.
 build --per_file_copt='//c-toxcore/@-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_TRACE'
-build --per_file_copt='//c-toxcore/@-DUSE_STDERR_LOGGER'
 build --per_file_copt='//c-toxcore/@-DMAX_VLA_SIZE=2048'
-#build --per_file_copt='//c-toxcore/@-Wframe-larger-than=3255'
+build --per_file_copt='//c-toxcore/@-Wframe-larger-than=20000'
 
 # Disable most logging when running with flakynet (we get lots of warnings).
 build:flakynet --per_file_copt='//c-toxcore/@-UMIN_LOGGER_LEVEL,-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_ERROR'
@@ -289,7 +287,7 @@ build:gnulike --per_file_copt='external/com_google_absl[:/]@-UNO_FRAME_POINTER,-
 build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-ftrapv'
 build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-pedantic'
 
-build:gnulike --cxxopt='-std=c++14'
+build:gnulike --cxxopt='-std=c++17'
 build:gnulike --conlyopt='-std=c99'
 
 # Cython code isn't very clean.
@@ -336,6 +334,7 @@ build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-cove
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-disabled-macro-expansion'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-documentation-deprecated-sync'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-missing-field-initializers'
+build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-missing-noreturn'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-padded'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-reserved-id-macro'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-unused-parameter'
@@ -372,7 +371,6 @@ build:clang --per_file_copt='//qtox@-Wno-float-equal'
 build:clang --per_file_copt='//qtox@-Wno-global-constructors,-Wno-exit-time-destructors'
 build:clang --per_file_copt='//qtox@-Wno-implicit-fallthrough'
 build:clang --per_file_copt='//qtox@-Wno-inconsistent-missing-destructor-override'
-build:clang --per_file_copt='//qtox@-Wno-missing-noreturn'
 build:clang --per_file_copt='//qtox@-Wno-missing-prototypes'
 build:clang --per_file_copt='//qtox@-Wno-non-virtual-dtor'
 build:clang --per_file_copt='//qtox@-Wno-error=range-loop-analysis'
@@ -391,7 +389,6 @@ build:clang --per_file_copt='//toxic@-Wno-cast-align'
 build:clang --per_file_copt='//toxic@-Wno-cast-qual'
 build:clang --per_file_copt='//toxic@-Wno-format-nonliteral'
 build:clang --per_file_copt='//toxic@-Wno-implicit-fallthrough'
-build:clang --per_file_copt='//toxic@-Wno-missing-noreturn'
 build:clang --per_file_copt='//toxic@-Wno-missing-prototypes'
 build:clang --per_file_copt='//toxic@-Wno-missing-variable-declarations'
 build:clang --per_file_copt='//toxic@-Wno-shadow'
