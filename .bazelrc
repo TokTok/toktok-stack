@@ -140,8 +140,7 @@ build:drmemory --config=dynamic-analysis
 
 build:libfuzzer --@rules_fuzzing//fuzzing:cc_engine=@rules_fuzzing//fuzzing/engines:libfuzzer
 build:libfuzzer --@rules_fuzzing//fuzzing:cc_engine_instrumentation=libfuzzer
-build:libfuzzer --copt='-g'
-build:libfuzzer --strip=never
+build:libfuzzer --config=sanitizer
 
 build:asan-libfuzzer --config=libfuzzer
 build:asan-libfuzzer --@rules_fuzzing//fuzzing:cc_engine_sanitizer=asan
@@ -289,6 +288,7 @@ build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-pedant
 
 build:gnulike --cxxopt='-std=c++17'
 build:gnulike --conlyopt='-std=c99'
+build:gnulike --per_file_copt='//c-toxcore[:/].*cc$@-std=c++20'
 
 # Cython code isn't very clean.
 build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-conditional-uninitialized'
