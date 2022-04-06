@@ -4,7 +4,12 @@ filegroup(
     name = "third_party",
     srcs = ["@{pkg}//:{pkg}".format(pkg = pkg[len("BUILD."):]) for pkg in glob(
         ["BUILD.*"],
-        exclude = ["BUILD.bazel*"],
+        exclude = [
+            "BUILD.bazel*",
+            # These depend on //c-toxcore, so can't be pre-built.
+            "BUILD.toxext",
+            "BUILD.tox_extension_messages",
+        ],
     )] + [
         "@com_google_googletest//:gtest",
         "@com_google_googletest//:gtest_main",

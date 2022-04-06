@@ -1,0 +1,12 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+package(features = ["layering_check"])
+
+cc_library(
+    name = "tox_extension_messages",
+    srcs = ["tox_extension_messages.c"],
+    hdrs = ["tox_extension_messages.h"],
+    includes = ["."],
+    visibility = ["//visibility:public"],
+    deps = ["@toxext"],
+)

@@ -783,3 +783,20 @@ new_github_archive(
 load("@io_kythe//:setup.bzl", "kythe_rule_repositories")
 
 kythe_rule_repositories()
+
+# Tox Extension modules
+# =========================================================
+
+new_github_archive(
+    name = "toxext",
+    repo = "toxext/toxext",
+    sha256 = "55c2aabc7ba87a435bb5c68d7ae0513aa3ada11c18a55a3fca2e42231d351a08",
+    version = "v0.0.3",
+)
+
+new_github_archive(
+    name = "tox_extension_messages",
+    repo = "toxext/tox_extension_messages",
+    sha256 = "f72da1fff2f6048c60fd8993fce2fc64aae58aa689744ae5ee5fc4381209b41e",
+    version = "v0.0.3",
+)

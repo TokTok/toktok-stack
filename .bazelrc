@@ -119,6 +119,9 @@ build --experimental_strict_java_deps=error
 #
 ##############################################################################
 
+# Always enable assert() in tests.
+build --per_file_copt='_test.cc?@-UNDEBUG'
+
 # Debug mode.
 build:debug -c dbg
 
@@ -286,9 +289,10 @@ build:gnulike --per_file_copt='external/com_google_absl[:/]@-UNO_FRAME_POINTER,-
 build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-ftrapv'
 build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-pedantic'
 
-build:gnulike --cxxopt='-std=c++17'
+build:gnulike --cxxopt='-std=c++20'
 build:gnulike --conlyopt='-std=c99'
-build:gnulike --per_file_copt='//c-toxcore[:/].*cc$@-std=c++20'
+build:gnulike --per_file_copt='external/openal[:/]@-std=c++17'
+build:gnulike --per_file_copt='//qtox[:/]@-std=c++17'
 
 # Cython code isn't very clean.
 build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-conditional-uninitialized'
