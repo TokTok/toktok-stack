@@ -150,9 +150,9 @@ build:asan-libfuzzer --@rules_fuzzing//fuzzing:cc_engine_sanitizer=asan
 
 build:sanitizer --config=debug
 build:sanitizer --copt='-UNDEBUG'
-build:sanitizer --copt='-O2'
-build:sanitizer --copt='-fno-inline'
-build:sanitizer --copt='-fno-omit-frame-pointer'
+build:sanitizer --copt='-O3'
+#build:sanitizer --per_file_copt='//c-toxcore[:/]@-O0'
+#build:sanitizer --per_file_copt='//c-toxcore[:/]@-fno-inline,-fno-omit-frame-pointer'
 build:sanitizer --flaky_test_attempts=1
 
 build:asan --config=sanitizer
@@ -289,10 +289,8 @@ build:gnulike --per_file_copt='external/com_google_absl[:/]@-UNO_FRAME_POINTER,-
 build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-ftrapv'
 build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-pedantic'
 
-build:gnulike --cxxopt='-std=c++20'
+build:gnulike --cxxopt='-std=c++17'
 build:gnulike --conlyopt='-std=c99'
-build:gnulike --per_file_copt='external/openal[:/]@-std=c++17'
-build:gnulike --per_file_copt='//qtox[:/]@-std=c++17'
 
 # Cython code isn't very clean.
 build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-conditional-uninitialized'

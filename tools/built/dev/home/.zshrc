@@ -29,6 +29,7 @@ fi
 
 #export PATH="$PATH:/src/workspace/bazel-workspace/external/rules_haskell_ghc_linux_amd64/bin"
 export PATH="$PATH:/src/workspace/hs-github-tools/tools"
+export ASAN_OPTIONS="$ASAN_OPTIONS,abort_on_error=1"
 export PATH="$PATH:$HOME/flutter/bin"
 
 export ASAN_OPTIONS="color=always"
