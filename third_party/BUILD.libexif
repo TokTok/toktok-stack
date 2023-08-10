@@ -50,6 +50,7 @@ cc_library(
     ],
     copts = [
         "-w",  # disable all warnings.
+        "-D_POSIX_C_SOURCE",  # localtime_r
         "-DLOCALEDIR='\"lib\"'",
         "-DGETTEXT_PACKAGE='\"libexif\"'",
         "-Ithird_party/libexif",

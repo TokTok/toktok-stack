@@ -241,8 +241,8 @@ local_library_repository(
 github_archive(
     name = "boringssl",
     repo = "google/boringssl",
-    sha256 = "0842dd6dabeb4a039241148c3207eaa0306fd016714dbce7b8b50524e3389f2b",
-    version = "d7f01bfd845f17b6b6f8c7a754b9bb28bc6dc12d",
+    sha256 = "9a1a9db5d0f6c1add527cccbd86a1bb75659afb4f9e1c26f44c97c3517db2400",
+    version = "bf221ee64323dcebd2c64bd4c4a3269fc231d2bf",
 )
 
 local_library_repository(

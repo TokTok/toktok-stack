@@ -70,7 +70,6 @@ cc_library(
     name = "sdl2_linux",
     srcs = glob(
         [
-            "src/**/*.h",
             "src/*/steam/*.h",
             "src/*/steam/*.c",
             "src/*/linux/*.h",
@@ -80,6 +79,7 @@ cc_library(
         ],
         exclude = ["src/hidapi/linux/hid.cpp"],
     ),
+    hdrs = glob(["src/**/*.h"]),
     linkopts = [
         "-ldl",
         "-lpthread",
@@ -129,5 +129,6 @@ cc_library(
     deps = [
         ":public",
         ":sdl2_sysdep",
+        "@xcb",
     ],
 )

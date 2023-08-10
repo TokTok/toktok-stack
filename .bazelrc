@@ -22,12 +22,6 @@ build --local_cpu_resources=HOST_CPUS
 # protobuf has its layering fixed.
 #build --features=layering_check
 
-build --experimental_generate_json_trace_profile
-build --experimental_json_trace_compression
-build --experimental_profile_cpu_usage
-# This kills parallelism entirely, running 1 action at a time.
-#build --experimental_local_memory_estimate
-
 build --experimental_inmemory_dotd_files
 build --experimental_inmemory_jdeps_files
 build --experimental_objc_include_scanning
@@ -331,6 +325,19 @@ build:clang --copt='-Wno-reserved-identifier'
 # __attribute__((nonnull)) causes these warnings on defensive null checks.
 build:clang --copt='-Wno-pointer-bool-conversion'
 build:clang --copt='-Wno-tautological-pointer-compare'
+# This is a C89 requirement, we use C99.
+build:clang --copt='-Wno-declaration-after-statement'
+
+# TODO(iphydf): Fix these or move them to per_file_copt (for third_party stuff).
+build:clang --copt='-Wno-array-parameter'
+build:clang --copt='-Wno-cast-function-type-strict'
+build:clang --copt='-Wno-deprecated-builtins'
+build:clang --copt='-Wno-deprecated-non-prototype'
+build:clang --copt='-Wno-private-header'
+build:clang --copt='-Wno-shadow-uncaptured-local'
+build:clang --copt='-Wno-strict-prototypes'
+build:clang --copt='-Wno-unsafe-buffer-usage'
+build:clang --copt='-Wno-unused-but-set-variable'
 
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Weverything'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-c++98-compat'

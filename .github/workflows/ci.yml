@@ -29,16 +29,18 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Build toxchat/toktok-stack:latest-third_party
-        uses: docker/build-push-action@v4
-        with:
-          file: tools/built/src/Dockerfile.third_party
-          tags: toxchat/toktok-stack:latest-third_party
-          cache-from: type=registry,ref=toxchat/toktok-stack:latest-third_party
-
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
+
+      - name: Build toxchat/toktok-stack:latest-third_party
+        run: docker build -t toxchat/toktok-stack:latest-third_party -f tools/built/src/Dockerfile.third_party .
+# TODO(iphydf): Find out how to make this push to the local docker daemon.
+#       uses: docker/build-push-action@v4
+#       with:
+#         file: tools/built/src/Dockerfile.third_party
+#         tags: toxchat/toktok-stack:latest-third_party
+#         cache-from: type=registry,ref=toxchat/toktok-stack:latest-third_party
 
       - name: Build toxchat/toktok-stack:latest
         run: docker build -t toxchat/toktok-stack:latest -f tools/built/src/Dockerfile .
@@ -53,9 +55,9 @@ jobs:
   mypy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python 3.9
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
           python-version: 3.9
       - name: Install mypy
