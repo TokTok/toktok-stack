@@ -1,8 +1,12 @@
 # Pre-build //... in release mode for speedy PR builds on sub-repos.
 FROM toxchat/toktok-stack:latest
 
-RUN echo 'build --config=remote'  >> .bazelrc.local \
- && echo 'build --config=release' >> .bazelrc.local
+RUN \
+ if curl -s -m1 https://code.tox.chat/bazel/ \
+   | grep "resource name must be a SHA256 hash"; then \
+   echo 'build --config=remote' | tee -a .bazelrc.local; \
+ fi
+RUN echo 'build --config=release' >> .bazelrc.local
 
 RUN ["bazel", "build", "-k", "//..."]
 

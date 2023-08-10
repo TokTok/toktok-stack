@@ -1,7 +1,11 @@
 # Pre-build //... in fastbuild mode for dev containers.
 FROM toxchat/toktok-stack:latest
 
-RUN echo 'build --config=remote' >> .bazelrc.local
+RUN \
+ if curl -s -m1 https://code.tox.chat/bazel/ \
+   | grep "resource name must be a SHA256 hash"; then \
+   echo 'build --config=remote' | tee -a .bazelrc.local; \
+ fi
 
 RUN ["bazel", "build", "-k", "//..."]
 

@@ -1,10 +1,12 @@
-name: "CodeQL"
+name: "codeql"
 
+# These checks only run on pull requests as they don't need to publish anything
+# on push. See docker.yml for jobs that run on pushes.
+#
+# We also run these checks on master (default branch) once a week.
 on:
-  push:
-    branches: [ "master" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [master]
   schedule:
     - cron: "52 2 * * 0"
 
