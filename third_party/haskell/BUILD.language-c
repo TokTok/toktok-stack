@@ -23,8 +23,8 @@ haskell_library(
     srcs = glob([
         "src/**/*.hs*",
     ]) + [
-        ":Parser",
         ":Lexer",
+        ":Parser",
     ],
     compiler_flags = [
         "-Wno-incomplete-patterns",

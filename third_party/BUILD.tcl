@@ -12,9 +12,9 @@ cc_library(
     name = "inc_files",
     hdrs = [
         "generic/tcl.decls",
-        "generic/tclTomMath.decls",
-        "generic/tclOO.decls",
         "generic/tclInt.decls",
+        "generic/tclOO.decls",
+        "generic/tclTomMath.decls",
         "generic/tclUniData.c",
         "unix/tclUnixNotfy.c",
     ] + glob(["generic/reg*.c"]),
