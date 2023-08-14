@@ -20,11 +20,6 @@ if [ ! -f home/.ssh/id_rsa ]; then
   ssh-keygen -f home/.ssh/id_rsa
 fi
 
-if [ ! -f home/.vimrc -a ! -f home/.config/nvim/init.vim ]; then
-  echo "vim config doesn't exist in home directory - vundle installation will fail"
-  exit 1
-fi
-
 tar c home workspace/tools/built/dev |
   docker build -t "$IMAGE" -f workspace/tools/built/dev/Dockerfile -
 docker run --name=toktok-dev --rm -it \

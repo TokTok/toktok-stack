@@ -12,54 +12,37 @@ new_local_repository(
 github_archive(
     name = "rules_cc",
     repo = "bazelbuild/rules_cc",
-    sha256 = "fe1e7b1801a63e79eb1b40dc44bf0590117a399e118ac44afd6fa07bf63e9ece",
-    version = "58f8e026c00a8a20767e3dc669f46ba23bc93bdb",
+    sha256 = "891f86e06de4bbb2466df92ffcc23332e865629eb37015c415b7075b509759d3",
+    version = "5d8ef91731af93a79d599bebc68dd0396cff2e1a",
 )
 
 github_archive(
     name = "rules_java",
     repo = "bazelbuild/rules_java",
-    sha256 = "74d05fcd95df837a72cf2335b05586bbd77bd7f6725858a9fb262ef81f5a93e9",
-    version = "7a98cf2adcae6a0e2eae0d392f92ea19159fbef1",
+    sha256 = "8731baeea9593b16d5bc0d8beecf45b64ff0ae3d18c577230e028e139aafc420",
+    version = "1213a73d263b161ce7184f38b6c3bc986bcc4b87",
 )
 
 github_archive(
     name = "rules_proto",
     repo = "bazelbuild/rules_proto",
-    sha256 = "ec3692776b2973954e22ed3b6ed346e3c43e67269eacc8cd43c7fc6aa47b710a",
-    version = "0bc8db13f8dc8f5d435be07e276712db1ca11a91",
+    sha256 = "de7ec6ff428857caa93055e1508be9df503764a1c8f62fe28db0438b91d281b3",
+    version = "70b42485395e0fa376f32b9e7f4012a70d6121d2",
 )
 
 github_archive(
     name = "rules_python",
     repo = "bazelbuild/rules_python",
-    sha256 = "18a8d97f706d768169f93e251d02eea6f8e1810bd90c2fe78cfdf036aa1772ef",
-    version = "fe30f1561e3afef59e3f8be6339c88444100de25",
+    sha256 = "8911e8a96ad591afded29c90c1ce4341c988f8e41b1a469c7fb593bd6025e193",
+    version = "0.6.0",
 )
 
 github_archive(
     name = "bazel_skylib",
     repo = "bazelbuild/bazel-skylib",
-    sha256 = "8d514db81bfba3d9eb2f77b4143118a8920d2c4987d3d0810e69177c00934b6e",
-    version = "8334f938c1574ef6f1f7a38a03550a31df65274e",
+    sha256 = "ed3492b4badb318e99c8f200556ec97166144897daa0ad06870d45ed9019d87d",
+    version = "6fcbad3991638ca5882e64ec53143ac316b17a7e",
 )
-
-# Fuzzing
-# =========================================================
-
-http_archive(
-    name = "rules_fuzzing",
-    sha256 = "23bb074064c6f488d12044934ab1b0631e8e6898d5cf2f6bde087adb01111573",
-    strip_prefix = "rules_fuzzing-0.3.1",
-    urls = ["https://github.com/bazelbuild/rules_fuzzing/archive/v0.3.1.zip"],
-)
-
-load("@rules_fuzzing//fuzzing:init.bzl", "rules_fuzzing_init")
-load("@rules_fuzzing//fuzzing:repositories.bzl", "rules_fuzzing_dependencies")
-
-rules_fuzzing_dependencies()
-
-rules_fuzzing_init()
 
 # Protobuf
 # =========================================================
@@ -70,13 +53,30 @@ rules_fuzzing_init()
 github_archive(
     name = "com_google_protobuf",
     repo = "protocolbuffers/protobuf",
-    sha256 = "25680843adf0c3302648d35f744e38cc3b6b05a6c77a927de5aea3e1c2e36106",
-    version = "v3.19.4",
+    sha256 = "d562030d993451e6cafe84a2a063bac33a34bc652911f9679c196b29b1d164d9",
+    version = "v3.20.2",
 )
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
 protobuf_deps()
+
+# Fuzzing
+# =========================================================
+
+http_archive(
+    name = "rules_fuzzing",
+    sha256 = "d9002dd3cd6437017f08593124fdd1b13b3473c7b929ceb0e60d317cb9346118",
+    strip_prefix = "rules_fuzzing-0.3.2",
+    urls = ["https://github.com/bazelbuild/rules_fuzzing/archive/v0.3.2.zip"],
+)
+
+load("@rules_fuzzing//fuzzing:init.bzl", "rules_fuzzing_init")
+load("@rules_fuzzing//fuzzing:repositories.bzl", "rules_fuzzing_dependencies")
+
+rules_fuzzing_dependencies()
+
+rules_fuzzing_init()
 
 # Rust
 # =========================================================
@@ -98,8 +98,8 @@ rust_repositories()
 github_archive(
     name = "rules_sh",
     repo = "tweag/rules_sh",
-    sha256 = "b6efbe69769514ea5d6f9b79352fbc286fe0939e7fc13b4db24b0aa329b7735b",
-    version = "v0.2.0",
+    sha256 = "0cb8f75b5a27877004d6367c4745a17fa05d3b758c54c37b3cc9b732857361eb",
+    version = "v0.3.0",
 )
 
 github_archive(
@@ -266,15 +266,15 @@ http_archive(
 github_archive(
     name = "com_google_googletest",
     repo = "google/googletest",
-    sha256 = "420e5b0af464ae648e19f14a10af817f3a998fac52974676c842db10ded28666",
-    version = "0affd45b62371c1de44064a5a5f8817242208442",
+    sha256 = "263000d4afc2a7a26dd75fe23fc86535c73785984ab053b4dfb231caa76b03d6",
+    version = "89b25572dbd7668499d2cfd01dea905f8c44e019",
 )
 
 new_github_archive(
     name = "curl",
     repo = "curl/curl",
-    sha256 = "c3181fd2ec477a55f359b4c89eb13de984200ee59fd493d84a4a53e5d7dd4a9f",
-    version = "curl-7_70_0",
+    sha256 = "a5850615a9f4a1fdf55dc6023cf9b10c8b320eb6cc17ed77dc7edb7603e06684",
+    version = "curl-8_2_1",
 )
 
 new_github_archive(
@@ -287,9 +287,9 @@ new_github_archive(
 http_archive(
     name = "ffmpeg",
     build_file = "@toktok//third_party:BUILD.ffmpeg",
-    sha256 = "8fc9f20ac5ed95115a9e285647add0eedd5cc1a98a039ada14c132452f98ac42",
-    strip_prefix = "ffmpeg-4.4.1",
-    urls = ["https://ffmpeg.org/releases/ffmpeg-4.4.1.tar.bz2"],
+    sha256 = "47d062731c9f66a78380e35a19aac77cebceccd1c7cc309b9c82343ffc430c3d",
+    strip_prefix = "ffmpeg-6.0",
+    urls = ["https://ffmpeg.org/releases/ffmpeg-6.0.tar.bz2"],
 )
 
 #new_local_repository(
@@ -459,8 +459,8 @@ new_github_archive(
 new_github_archive(
     name = "tcl",
     repo = "tcltk/tcl",
-    sha256 = "f58abc084565e658a611765891c9c89db12137197a389b259998abef22bfff3f",
-    version = "95b7301fac733f972e6e837f4e27c42c5487e6ec",
+    sha256 = "1a8be062395d830f136cfcefde78495c220c69f5de60f3c38ce225c1dba17f11",
+    version = "ed918cb027572a80468457db906cbb132f29b920",
 )
 
 http_archive(
@@ -538,8 +538,8 @@ http_archive(
 new_github_archive(
     name = "yasm",
     repo = "yasm/yasm",
-    sha256 = "e8123135c857ca3a0511854e0709e04f345925ab196ee6c73112dc9fa8b41690",
-    version = "ea8f2393611025c5d32ddfe022dddff5a1a5c989",
+    sha256 = "3d0938894e065b10a1a14b6e29e67208125dab18f6061bc6b73713cd75dd265d",
+    version = "2cd3bb50e256f5ed5f611ac611d25fe673f2cec3",
 )
 
 # Apple frameworks

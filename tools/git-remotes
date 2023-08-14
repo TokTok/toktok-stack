@@ -47,6 +47,7 @@ our %REPOS = (
    }],
    'c-toxcore' => ['c-toxcore', {
       upstream => 'toktok',
+      repo 'green-sky',
       repo 'iphydf',
       repo ['irungentoo', 'toxcore'],
       repo ['jfreegman', 'toxcore'],
