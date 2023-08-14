@@ -2,7 +2,7 @@
 
 set -eux
 
-BUILDTOOLS_VERSION="6.1.2"
+BUILDTOOLS_VERSION="v6.1.2"
 BCDB_VERSION="0.5.2"
 
 for prog in buildifier buildozer unused_deps; do
