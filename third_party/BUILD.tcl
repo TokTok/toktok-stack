@@ -31,11 +31,17 @@ genrule(
     ]),
 )
 
+genrule(
+    name = "tclUuid",
+    outs = ["generic/tclUuid.h"],
+    cmd = "echo '#define TCL_VERSION_UUID git' > $@;",
+)
+
 UNIX_SRCS = [
     "unix/tclEpollNotfy.c",
     "unix/tclKqueueNotfy.c",
-    "unix/tclSelectNotfy.c",
     "unix/tclLoadDl.c",
+    "unix/tclSelectNotfy.c",
 ] + glob(
     [
         "unix/*.h",
@@ -51,6 +57,7 @@ cc_library(
         "generic/regerror.c",
         "generic/regexec.c",
         "generic/regfree.c",
+        "generic/tclUuid.h",
         "libtommath/bn_mp_add.c",
         "libtommath/bn_mp_add_d.c",
         "libtommath/bn_mp_and.c",
@@ -88,6 +95,8 @@ cc_library(
         "libtommath/bn_mp_mul_d.c",
         "libtommath/bn_mp_neg.c",
         "libtommath/bn_mp_or.c",
+        "libtommath/bn_mp_pack.c",
+        "libtommath/bn_mp_pack_count.c",
         "libtommath/bn_mp_radix_size.c",
         "libtommath/bn_mp_radix_smap.c",
         "libtommath/bn_mp_read_radix.c",
@@ -103,6 +112,7 @@ cc_library(
         "libtommath/bn_mp_to_radix.c",
         "libtommath/bn_mp_to_ubin.c",
         "libtommath/bn_mp_ubin_size.c",
+        "libtommath/bn_mp_unpack.c",
         "libtommath/bn_mp_xor.c",
         "libtommath/bn_mp_zero.c",
         "libtommath/bn_s_mp_add.c",

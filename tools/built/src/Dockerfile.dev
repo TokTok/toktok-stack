@@ -21,6 +21,7 @@ RUN rm /etc/dpkg/dpkg.cfg.d/excludes \
  && apt-get update && apt-get install -y --no-install-recommends \
  astyle \
  cmake \
+ connect-proxy \
  dumb-init \
  gnupg \
  golang \
@@ -34,6 +35,7 @@ RUN rm /etc/dpkg/dpkg.cfg.d/excludes \
  patch \
  screen \
  stylish-haskell \
+ tor \
  vim \
  zsh \
  && apt-get clean

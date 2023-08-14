@@ -28,7 +28,7 @@ genrule(
 )
 
 cc_library(
-    name = "public",
+    name = "headers",
     hdrs = [":copy_headers"] + HDRS,
     copts = COPTS,
     includes = ["include"],
@@ -63,7 +63,7 @@ objc_library(
         "Metal",
     ],
     textual_hdrs = ["src/thread/generic/SDL_syssem.c"],
-    deps = [":public"],
+    deps = [":headers"],
 )
 
 cc_library(
@@ -86,7 +86,7 @@ cc_library(
     ],
     textual_hdrs = ["src/hidapi/linux/hid.c"],
     deps = [
-        ":public",
+        ":headers",
         "@xcb",
     ],
 )
@@ -122,12 +122,13 @@ cc_library(
             "src/hidapi/SDL_hidapi.c",
         ],
     ),
+    hdrs = [":copy_headers"] + HDRS,
     copts = COPTS + [
         "-Iexternal/sdl2/src/hidapi/hidapi",
     ],
+    includes = ["include"],
     visibility = ["//visibility:public"],
     deps = [
-        ":public",
         ":sdl2_sysdep",
         "@xcb",
     ],

@@ -59,7 +59,7 @@ build:libc++ --linkopt='-stdlib=libc++'
 # Use remote caching. This is disabled by default, because unless you have a
 # fairly fast connection (like on our CI systems), this is not very useful.
 #build:remote --remote_cache=code.tox.chat:8980
-build:remote --remote_http_cache=https://code.tox.chat/bazel
+build:remote --remote_cache=grpc://code.tox.chat:9092
 
 # Use remote execution. Disabled by default, because we don't want everyone to
 # use the remote executors (and they might be down sometimes).
@@ -442,6 +442,8 @@ build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-shorten-64-to-32'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-sometimes-uninitialized'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-string-plus-int'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-tautological-constant-out-of-range-compare'
+build:clang --per_file_copt='external/ffmpeg/fftools[:/]@-Wno-single-bit-bitfield-constant-conversion'
+build:clang --per_file_copt='external/openal[:/]@-Wno-unused-value'
 build:clang --per_file_copt='external/portaudio[:/]@-Wno-implicit-const-int-float-conversion'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-bool-operation'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-discarded-qualifiers'
@@ -456,7 +458,9 @@ build:gnulike --per_file_copt='external/libvpx[:/]@-Wno-unused-but-set-variable'
 build:gnulike --per_file_copt='external/portaudio[:/]@-Wno-unused-but-set-variable'
 build:gnulike --per_file_copt='external/sdl2[:/]@-Wno-unused-but-set-variable'
 build:gnulike --per_file_copt='external/tcl[:/]@-Wno-typedef-redefinition'
+build:gnulike --per_file_copt='external/tcl[:/]@-Wno-unused-function'
 build:gnulike --per_file_copt='external/tcl[:/]@-Wno-unused-but-set-variable'
+build:gnulike --per_file_copt='external/tcl[:/]@-Wno-unused-variable'
 build:gnulike --per_file_copt='external/xcb[:/]@-Wno-unused-but-set-variable'
 build:gnulike --per_file_copt='external/yasm[:/]@-Wno-misleading-indentation'
 build:gnulike --per_file_copt='external/yasm[:/]@-Wno-unused-but-set-variable'
