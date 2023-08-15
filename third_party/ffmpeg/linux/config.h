@@ -6,7 +6,9 @@
 #define CONFIG_THIS_YEAR 2023
 #define FFMPEG_DATADIR "/usr/local/share/ffmpeg"
 #define AVCONV_DATADIR "/usr/local/share/ffmpeg"
-#define CC_IDENT "clang version 17.0.0 (https://github.com/llvm/llvm-project 9d5ac6793cfe799a4bd8b329074c319afcccc4f1)"
+#define CC_IDENT                                                \
+  "clang version 17.0.0 (https://github.com/llvm/llvm-project " \
+  "9d5ac6793cfe799a4bd8b329074c319afcccc4f1)"
 #define OS_NAME linux
 #define av_restrict restrict
 #define EXTERN_PREFIX ""
