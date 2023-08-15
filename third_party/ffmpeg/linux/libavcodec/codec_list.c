@@ -680,4 +680,5 @@ static const FFCodec * const codec_list[] = {
     &ff_av1_decoder,
     &ff_vnull_decoder,
     &ff_anull_decoder,
-    NULL };
+    NULL
+};

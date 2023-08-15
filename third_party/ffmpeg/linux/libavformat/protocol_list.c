@@ -29,4 +29,5 @@ static const URLProtocol * const url_protocols[] = {
     &ff_udp_protocol,
     &ff_udplite_protocol,
     &ff_unix_protocol,
-    NULL };
+    NULL
+};

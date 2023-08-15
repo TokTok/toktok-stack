@@ -173,4 +173,5 @@ static const FFOutputFormat * const muxer_list[] = {
     &ff_wtv_muxer,
     &ff_wv_muxer,
     &ff_yuv4mpegpipe_muxer,
-    NULL };
+    NULL
+};
