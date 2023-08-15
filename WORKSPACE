@@ -84,13 +84,15 @@ rules_fuzzing_init()
 github_archive(
     name = "rules_rust",
     repo = "bazelbuild/rules_rust",
-    sha256 = "3b0f5c479c66f7854cc25d72227599647643af7c09141d4a301d2077fefa6649",
-    version = "9d70a5ac013561d04e3ded34f383aea22842cbeb",
+    sha256 = "7361e08d1b7c40fd67ee52be13884fa1d4cb8e388f3c7e1f4e9458afec29743b",
+    version = "0.26.0",
 )
 
-load("@rules_rust//rust:repositories.bzl", "rust_repositories")
+load("@rules_rust//rust:repositories.bzl", "rust_register_toolchains", "rust_repositories")
 
 rust_repositories()
+
+rust_register_toolchains()
 
 # Haskell
 # =========================================================
@@ -482,17 +484,17 @@ http_archive(
 http_archive(
     name = "xcb",
     build_file = "@toktok//third_party:BUILD.xcb",
-    sha256 = "2c7fcddd1da34d9b238c9caeda20d3bd7486456fc50b3cc6567185dbd5b0ad02",
-    strip_prefix = "libxcb-1.14",
-    urls = ["https://www.x.org/releases/individual/lib/libxcb-1.14.tar.gz"],
+    sha256 = "1cb65df8543a69ec0555ac696123ee386321dfac1964a3da39976c9a05ad724d",
+    strip_prefix = "libxcb-1.15",
+    urls = ["https://www.x.org/releases/individual/lib/libxcb-1.15.tar.gz"],
 )
 
 http_archive(
     name = "xcb_proto",
     build_file = "@toktok//third_party:BUILD.xcb_proto",
-    sha256 = "1c3fa23d091fb5e4f1e9bf145a902161cec00d260fabf880a7a248b02ab27031",
-    strip_prefix = "xcb-proto-1.14",
-    urls = ["https://www.x.org/releases/individual/proto/xcb-proto-1.14.tar.gz"],
+    sha256 = "0e434af76af722ef9b2dc21066da1cd11e5dd85fc1996d66228d090f9ae9b217",
+    strip_prefix = "xcb-proto-1.15",
+    urls = ["https://www.x.org/releases/individual/proto/xcb-proto-1.15.tar.gz"],
 )
 
 http_archive(
@@ -757,8 +759,8 @@ github_archive(
 github_archive(
     name = "io_kythe",
     repo = "kythe/kythe",
-    sha256 = "804da114170d0403a2a5fee88ed0dc3109be8e43681bee6cea5223f875979ebb",
-    version = "3842dabd95eb2adf4852d5ad04fb2bc6279e9e70",
+    sha256 = "6e4358e780768cae8a98ddf7059e588228bfd3319b24a4ab03cedc84231b14b4",
+    version = "v0.0.63",
 )
 
 http_archive(

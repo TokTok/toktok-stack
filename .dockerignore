@@ -4,6 +4,7 @@
 # user's local workspace directory so these excluded files will be present.
 .github
 **/*.gz
+**/*.log
 **/*.jar
 **/*.tar
 **/.bazelrc.local
@@ -19,3 +20,4 @@
 **/bazel-*
 **/build
 **/compile_commands.json
+**/wip

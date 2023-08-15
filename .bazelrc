@@ -339,6 +339,9 @@ build:clang --copt='-Wno-strict-prototypes'
 build:clang --copt='-Wno-unsafe-buffer-usage'
 build:clang --copt='-Wno-unused-but-set-variable'
 
+# TODO(iphydf): Update sqlcipher, hopefully it stops using deprecated stuff.
+build:clang --per_file_copt='external/sqlcipher[:/]@-Wno-deprecated-declarations'
+
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Weverything'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-c++98-compat'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-c++98-compat-pedantic'

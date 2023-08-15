@@ -1,4 +1,4 @@
-FROM toxchat/toolchain:6.3.2
+FROM toxchat/toolchain:latest
 
 WORKDIR /src/workspace
 
