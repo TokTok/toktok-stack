@@ -78,22 +78,6 @@ rules_fuzzing_dependencies()
 
 rules_fuzzing_init()
 
-# Rust
-# =========================================================
-
-github_archive(
-    name = "rules_rust",
-    repo = "bazelbuild/rules_rust",
-    sha256 = "7361e08d1b7c40fd67ee52be13884fa1d4cb8e388f3c7e1f4e9458afec29743b",
-    version = "0.26.0",
-)
-
-load("@rules_rust//rust:repositories.bzl", "rust_register_toolchains", "rust_repositories")
-
-rust_repositories()
-
-rust_register_toolchains()
-
 # Haskell
 # =========================================================
 
