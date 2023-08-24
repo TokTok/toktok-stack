@@ -22,10 +22,12 @@ RUN rm /etc/dpkg/dpkg.cfg.d/excludes \
  astyle \
  cmake \
  connect-proxy \
+ cppcheck \
  dumb-init \
  gnupg \
  golang \
  less \
+ libgtest-dev \
  locales \
  man-db \
  manpages-dev \
