@@ -143,7 +143,7 @@ build:honggfuzz --@rules_fuzzing//fuzzing:cc_engine=@rules_fuzzing//fuzzing/engi
 build:honggfuzz --@rules_fuzzing//fuzzing:cc_engine_instrumentation=honggfuzz
 build:honggfuzz --config=sanitizer
 
-build:asan-libfuzzer --config=libfuzzer
+build:asan-libfuzzer --config=libfuzzer --config=asan
 build:asan-libfuzzer --@rules_fuzzing//fuzzing:cc_engine_sanitizer=asan
 
 build:sanitizer --config=debug
@@ -153,10 +153,16 @@ build:sanitizer --copt='-O3'
 #build:sanitizer --per_file_copt='//c-toxcore[:/]@-fno-inline,-fno-omit-frame-pointer'
 build:sanitizer --flaky_test_attempts=1
 
+# Some of this is from "Can I run AddressSanitizer with more aggressive diagnostics enabled?"
+# on https://github.com/google/sanitizers/wiki/AddressSanitizer#faq and some is from
+# https://chromium.googlesource.com/external/github.com/grpc/grpc/+/4e9206f48c91e17f43856b016b12f59dd5118293/tools/bazel.rc
 build:asan --config=sanitizer
+build:asan --features=asan
 build:asan --copt='-fsanitize=address'
+build:asan --copt='-fsanitize-address-use-after-scope'
 build:asan --linkopt='-fsanitize=address'
-build:asan --test_env=ASAN_OPTIONS=color=always
+build:asan --action_env=ASAN_OPTIONS=color=always:detect_leaks=1:strict_string_checks=1:detect_stack_use_after_return=1:check_initialization_order=1:strict_init_order=1
+build:asan --action_env=LSAN_OPTIONS=report_objects=1
 
 build:msan --config=sanitizer
 build:msan --config=libc++
