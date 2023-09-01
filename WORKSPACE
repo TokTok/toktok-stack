@@ -19,22 +19,22 @@ github_archive(
 github_archive(
     name = "rules_java",
     repo = "bazelbuild/rules_java",
-    sha256 = "8731baeea9593b16d5bc0d8beecf45b64ff0ae3d18c577230e028e139aafc420",
-    version = "1213a73d263b161ce7184f38b6c3bc986bcc4b87",
+    sha256 = "048269909a98213157d2e5d0d01b97c6502077657ec7fa8dde26942cd7be2b83",
+    version = "6.5.1",
 )
 
 github_archive(
     name = "rules_proto",
     repo = "bazelbuild/rules_proto",
-    sha256 = "de7ec6ff428857caa93055e1508be9df503764a1c8f62fe28db0438b91d281b3",
-    version = "70b42485395e0fa376f32b9e7f4012a70d6121d2",
+    sha256 = "8800a005ed818bc683e14081567de3c8a73208ced446dfb5b2f76230f26c198b",
+    version = "8aa1e67c09bc8df20df33886909d44129cfb7e63",
 )
 
 github_archive(
     name = "rules_python",
     repo = "bazelbuild/rules_python",
-    sha256 = "8911e8a96ad591afded29c90c1ce4341c988f8e41b1a469c7fb593bd6025e193",
-    version = "0.6.0",
+    sha256 = "9ffcbf19b197153d7ceafb126eb05b7b5ce847aa4e1745f03feed298b4940e2c",
+    version = "0.25.0",
 )
 
 github_archive(
@@ -66,17 +66,22 @@ protobuf_deps()
 
 http_archive(
     name = "rules_fuzzing",
-    sha256 = "d9002dd3cd6437017f08593124fdd1b13b3473c7b929ceb0e60d317cb9346118",
-    strip_prefix = "rules_fuzzing-0.3.2",
-    urls = ["https://github.com/bazelbuild/rules_fuzzing/archive/v0.3.2.zip"],
+    sha256 = "c0dc1f90dea236299271e558d8303dd4cc8c7554b2b0639561e5007d2d33328e",
+    strip_prefix = "rules_fuzzing-0.4.0",
+    urls = ["https://github.com/bazelbuild/rules_fuzzing/archive/v0.4.0.zip"],
 )
 
-load("@rules_fuzzing//fuzzing:init.bzl", "rules_fuzzing_init")
 load("@rules_fuzzing//fuzzing:repositories.bzl", "rules_fuzzing_dependencies")
 
 rules_fuzzing_dependencies()
 
+load("@rules_fuzzing//fuzzing:init.bzl", "rules_fuzzing_init")
+
 rules_fuzzing_init()
+
+load("@fuzzing_py_deps//:requirements.bzl", "install_deps")
+
+install_deps()
 
 # Haskell
 # =========================================================
@@ -91,8 +96,8 @@ github_archive(
 github_archive(
     name = "rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "1d60168daff6d0225b9c231b3622c31b91a7b37e2487bed1cde5b5990a5c3f29",
-    version = "26494b7bdcd7bd02463d6d6ebe32b7c00c607024",
+    sha256 = "53ed15f888062324cc901bd1d75b80e8a560a38eaec17bb8640c5c82bf52dcbd",
+    version = "9fad1d3ab1b1084100f8c897ef3eb00e44348bac",
 )
 
 load("@rules_haskell//haskell:ghc_bindist.bzl", "haskell_register_ghc_bindists")
@@ -105,11 +110,12 @@ haskell_register_ghc_bindists(
     compiler_flags = [
         "-Wall",
         "-Werror",
+        "-XHaskell2010",
         "-optP=-Wno-trigraphs",
         "-optc=-Wno-unused-command-line-argument",
         "-fdiagnostics-color=always",
     ],
-    version = "8.10.7",
+    version = "9.4.6",
 )
 
 github_archive(
@@ -167,7 +173,7 @@ gazelle_dependencies()
 
 go_repository(
     name = "com_github_things_go_go_socks5",
-    commit = "master",
+    commit = "2710f15218a8a0919385dfea9f9aa1434acbe4b3",
     importpath = "github.com/things-go/go-socks5",
 )
 
@@ -348,8 +354,8 @@ new_github_archive(
 new_github_archive(
     name = "libvpx",
     repo = "webmproject/libvpx",
-    sha256 = "a1f3a0d2549b535807f711b223cecc1d65d24c322f25a35d9c7cb98acb0e217d",
-    version = "13f984c2162d8392d3fd0ffb8666ee518f60665a",
+    sha256 = "58486af4ae5d8fdd8fbdd71c242093755fe38dcc4f40c24d1e2a23f052a60fc1",
+    version = "v1.13.0",
 )
 
 new_github_archive(
@@ -436,10 +442,9 @@ http_archive(
 
 new_github_archive(
     name = "sqlcipher",
-    patches = ["@toktok//third_party/patches:sqlcipher.patch"],
     repo = "sqlcipher/sqlcipher",
-    sha256 = "41e1408465488e9c478ca5b7c5f8410405a10caa73b82db60ac115a76c563c05",
-    version = "v4.3.0",
+    sha256 = "a35364ce8ecbcf4f3ef21d5e4139cea0f6bec3aaaeb749bae3c2988fcc2b1b6a",
+    version = "v4.5.5",
 )
 
 new_github_archive(
@@ -667,8 +672,8 @@ python_repository(
 github_archive(
     name = "cython",
     repo = "cython/cython",
-    sha256 = "cff4d1667bf1d6d3e60b093a78c515cc76d6c13a93520252a4a412db15d6db8a",
-    version = "3.0.0a10",
+    sha256 = "0f603cc12658ef1f22da47b729ca987d43fad08a61a22b4539ad2e6460fc7263",
+    version = "3.0.2",
 )
 
 # Node.js

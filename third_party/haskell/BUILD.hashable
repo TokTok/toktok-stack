@@ -9,17 +9,21 @@ package(features = ["-layering_check"])
 
 cc_library(
     name = "cbits",
-    srcs = glob(["cbits/*.c"]),
+    srcs = glob([
+        "cbits/*.c",
+        "include/*.h",
+    ]),
     copts = ["-Wno-unused-label"],
+    includes = ["include"],
     deps = [hazel_library("rts")],
 )
 
 haskell_library(
     name = PACKAGE_NAME,
-    srcs = glob(["Data/**/*.*hs"]),
+    srcs = glob(["src/**/*.*hs"]),
     compiler_flags = [
         "-DGENERICS",
-        "-Wno-deprecations",
+        "-Wno-trustworthy-safe",
     ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
@@ -27,7 +31,9 @@ haskell_library(
         ":cbits",
         hazel_library("base"),
         hazel_library("bytestring"),
+        hazel_library("containers"),
         hazel_library("deepseq"),
+        hazel_library("filepath"),
         hazel_library("ghc-prim"),
         hazel_library("integer-gmp"),
         hazel_library("text"),

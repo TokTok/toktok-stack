@@ -10,8 +10,6 @@ haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["Network/**/*.*hs"]),
     compiler_flags = [
-        "-Wno-trustworthy-safe",
-        "-Wno-unused-imports",
         "-XCPP",
         "-XDeriveDataTypeable",
         "-XDeriveGeneric",

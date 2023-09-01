@@ -9,7 +9,11 @@ package(features = ["-layering_check"])
 haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["src/**/*.hs*"]),
-    compiler_flags = ["-Wno-trustworthy-safe"],
+    compiler_flags = [
+        "-Wno-noncanonical-monad-instances",
+        "-Wno-star-is-type",
+        "-Wno-trustworthy-safe",
+    ],
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],

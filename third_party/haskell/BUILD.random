@@ -11,7 +11,6 @@ haskell_library(
     srcs = glob(["src/**/*.*hs"]),
     compiler_flags = [
         "-XCPP",
-        "-Wno-tabs",
     ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],

@@ -11,7 +11,6 @@ haskell_library(
     srcs = glob(["src/**/*.*hs"]),
     compiler_flags = [
         "-Wno-dodgy-imports",
-        "-Wno-name-shadowing",
         "-Wno-orphans",
         "-Wno-unused-imports",
     ],
@@ -22,6 +21,7 @@ haskell_library(
         hazel_library("base"),
         hazel_library("base-orphans"),
         hazel_library("deepseq"),
+        hazel_library("hashable"),
         hazel_library("time"),
     ],
 )

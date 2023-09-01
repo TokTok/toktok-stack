@@ -24,6 +24,9 @@ haskell_library(
         ],
         exclude = ["Control/Concurrent/SampleVar/Lifted.hs"],
     ),
+    compiler_flags = [
+        "-XHaskell98",
+    ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [

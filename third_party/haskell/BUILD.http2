@@ -10,7 +10,7 @@ haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["Network/**/*.*hs"]) + ["Imports.hs"],
     compiler_flags = [
-        "-Wno-unused-imports",
+        "-Wno-deprecations",
         "-XStrict",
         "-XStrictData",
     ],
@@ -29,5 +29,6 @@ haskell_library(
         hazel_library("stm"),
         hazel_library("time-manager"),
         hazel_library("unix-time"),
+        hazel_library("unliftio"),
     ],
 )

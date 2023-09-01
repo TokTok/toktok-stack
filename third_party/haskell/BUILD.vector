@@ -17,7 +17,7 @@ cc_library(
 
 haskell_library(
     name = PACKAGE_NAME,
-    srcs = glob(["Data/**/*.*hs"]),
+    srcs = glob(["src/**/*.*hs"]),
     compiler_flags = [
         "-Iexternal/%s/include" % hazel_workspace(PACKAGE_NAME),
         "-Iexternal/%s/internal" % hazel_workspace(PACKAGE_NAME),
@@ -31,5 +31,6 @@ haskell_library(
         hazel_library("deepseq"),
         hazel_library("ghc-prim"),
         hazel_library("primitive"),
+        hazel_library("vector-stream"),
     ],
 )

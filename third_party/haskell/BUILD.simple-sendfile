@@ -16,7 +16,6 @@ haskell_library(
     ],
     compiler_flags = [
         "-DOS_Linux",
-        "-Wno-unused-imports",
     ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],

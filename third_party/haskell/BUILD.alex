@@ -30,6 +30,7 @@ haskell_binary(
     compiler_flags = [
         "-XCPP",
         "-XDatatypeContexts",
+        "-XHaskell98",
         "-w",  # DatatypeContexts is deprecated, but no flag can disable the warning.
     ],
     src_strip_prefix = "src",

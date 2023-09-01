@@ -22,6 +22,8 @@ haskell_library(
     srcs = glob(["Language/**/*.*hs"]),
     compiler_flags = [
         "-Wno-incomplete-patterns",
+        "-Wno-incomplete-record-updates",
+        "-Wno-incomplete-uni-patterns",
         "-Wno-missing-signatures",
         "-Wno-name-shadowing",
         "-Wno-unused-do-bind",

@@ -23,7 +23,9 @@ haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["Data/**/*.*hs"]),
     compiler_flags = [
-        "-Wno-missing-signatures",
+        "-Wno-incomplete-uni-patterns",
+        "-Wno-unused-imports",
+        "-Wno-unused-top-binds",
     ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],

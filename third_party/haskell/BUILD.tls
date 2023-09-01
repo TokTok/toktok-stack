@@ -11,7 +11,9 @@ haskell_library(
     srcs = glob(["Network/**/*.hs"]),
     compiler_flags = [
         "-DINCLUDE_NETWORK",
-        "-Wno-incomplete-patterns",
+        "-Wno-incomplete-uni-patterns",
+        "-Wno-noncanonical-monad-instances",
+        "-Wno-unused-imports",
         "-Wno-unused-matches",
     ],
     version = packages[PACKAGE_NAME].version,
@@ -29,6 +31,7 @@ haskell_library(
         hazel_library("memory"),
         hazel_library("mtl"),
         hazel_library("network"),
+        hazel_library("transformers"),
         hazel_library("x509"),
         hazel_library("x509-store"),
         hazel_library("x509-validation"),

@@ -24,6 +24,7 @@ haskell_library(
         "-Wno-missing-signatures",
         "-Wno-name-shadowing",
         "-Wno-orphans",
+        "-Wno-star-is-type",
         "-Wno-unbanged-strict-patterns",
         "-Wno-unused-foralls",
         "-Wno-unused-imports",

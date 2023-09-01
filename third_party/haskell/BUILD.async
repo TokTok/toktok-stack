@@ -9,9 +9,7 @@ package(features = ["-layering_check"])
 haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["Control/**/*.*hs"]),
-    compiler_flags = [
-        "-Wno-error=unused-imports",
-    ],
+    compiler_flags = ["-Wno-error=unused-imports"],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [

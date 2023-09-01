@@ -10,6 +10,7 @@ haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["src/**/*.*hs"]),
     compiler_flags = [
+        "-Wno-star-is-type",
         "-XApplicativeDo",
         "-XBangPatterns",
         "-XConstraintKinds",
@@ -39,8 +40,8 @@ haskell_library(
         "-XStandaloneDeriving",
         "-XTupleSections",
         "-XTypeApplications",
+        "-XTypeOperators",
         "-XTypeFamilies",
-        "-Wno-unused-imports",
     ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],

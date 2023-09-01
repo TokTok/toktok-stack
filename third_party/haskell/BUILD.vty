@@ -20,7 +20,12 @@ haskell_library(
         ["src/**/*.*hs"],
         exclude = ["src/Data/Sequence/**/*.hs"],
     ),
-    compiler_flags = ["-XScopedTypeVariables"],
+    compiler_flags = [
+        "-Wno-incomplete-uni-patterns",
+        "-Wno-unused-imports",
+        "-Wno-unused-top-binds",
+        "-XScopedTypeVariables",
+    ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [

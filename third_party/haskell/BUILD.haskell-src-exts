@@ -19,9 +19,11 @@ haskell_library(
         exclude = ["src/Language/Haskell/Exts/InternalParser.hs"],
     ) + [":InternalParser"],
     compiler_flags = [
-        "-j10",
+        "-Wno-incomplete-uni-patterns",
         "-Wno-name-shadowing",
+        "-Wno-noncanonical-monad-instances",
         "-Wno-unused-matches",
+        "-j10",
     ],
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,

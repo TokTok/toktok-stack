@@ -25,6 +25,7 @@ haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["src/**/*.*hs"]) + [":paths"],
     compiler_flags = [
+        "-Wno-star-is-type",
         "-j10",
         "-XDataKinds",
         "-XDeriveDataTypeable",
@@ -32,7 +33,7 @@ haskell_library(
         "-XOverloadedStrings",
         "-XRankNTypes",
         "-XScopedTypeVariables",
-        "-Wno-unused-imports",
+        "-XTypeOperators",
     ],
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,

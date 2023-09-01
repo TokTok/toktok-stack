@@ -9,14 +9,12 @@ package(features = ["-layering_check"])
 haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["Data/**/*.*hs"]),
-    compiler_flags = [
-        "-Wno-unused-imports",
-    ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         hazel_library("base"),
         hazel_library("deepseq"),
         hazel_library("hashable"),
+        hazel_library("template-haskell"),
     ],
 )
