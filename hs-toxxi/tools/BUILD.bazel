@@ -1,0 +1,23 @@
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_binary")
+
+haskell_binary(
+    name = "toxxi",
+    srcs = ["toxxi.hs"],
+    compiler_flags = ["-threaded"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//hs-toxxi",
+        hazel_library("base"),
+        hazel_library("brick"),
+        hazel_library("bytestring"),
+        hazel_library("microlens"),
+        hazel_library("microlens-mtl"),
+        hazel_library("microlens-th"),
+        hazel_library("text"),
+        hazel_library("text-zipper"),
+        hazel_library("vector"),
+        hazel_library("vty"),
+        hazel_library("word-wrap"),
+    ],
+)

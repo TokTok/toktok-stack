@@ -4,6 +4,9 @@ use strict;
 use warnings FATAL => 'all';
 use utf8;
 
+die "run this commands from the workspace root"
+   unless -f "WORKSPACE";
+
 my %build_files;
 for my $file (<third_party/haskell/BUILD.*>) {
    $file =~ s/.*BUILD.(.*)/$1/;

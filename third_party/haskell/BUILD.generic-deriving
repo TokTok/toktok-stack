@@ -12,9 +12,6 @@ haskell_library(
         ["src/**/*.hs"],
         exclude = ["src/Generics/Deriving/TH/Pre4_9.hs"],
     ),
-    compiler_flags = [
-        #"-Wno-unused-imports",
-    ],
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],

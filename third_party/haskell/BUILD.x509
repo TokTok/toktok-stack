@@ -25,5 +25,6 @@ haskell_library(
         hazel_library("hourglass"),
         hazel_library("memory"),
         hazel_library("mtl"),
+        hazel_library("transformers"),
     ],
 )

@@ -1,5 +1,4 @@
 load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
-load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@rules_haskell//haskell:defs.bzl", "haskell_library")
 load("@toktok//third_party/haskell:packages.bzl", "packages")
 
@@ -7,29 +6,10 @@ PACKAGE_NAME = "aeson"
 
 package(features = ["-layering_check"])
 
-cc_library(
-    name = "cbits",
-    hdrs = glob(["include/*.h"]),
-    includes = ["include"],
-)
-
-haskell_library(
-    name = "aeson-pure",
-    srcs = glob(["src-pure/**/*.*hs"]),
-    src_strip_prefix = "pure",
-    version = packages[PACKAGE_NAME].version,
-    visibility = ["//visibility:public"],
-    deps = [
-        hazel_library("base"),
-        hazel_library("bytestring"),
-        hazel_library("containers"),
-        hazel_library("text"),
-    ],
-)
-
 haskell_library(
     name = "attoparsec-iso8601",
     srcs = glob(["attoparsec-iso8601/**/*.*hs"]),
+    compiler_flags = ["-Wno-deprecations"],
     src_strip_prefix = "attoparsec-iso8601",
     version = packages[PACKAGE_NAME].version,
     deps = [
@@ -44,18 +24,20 @@ haskell_library(
 
 haskell_library(
     name = PACKAGE_NAME,
-    srcs = glob(["src/**/*.*hs"]),
+    srcs = glob([
+        "src/**/*.*hs",
+        "src-pure/**/*.*hs",
+    ]),
     compiler_flags = [
-        "-Wno-inline-rule-shadowing",
-        "-Wno-name-shadowing",
-        "-Wno-unused-matches",
+        "-Wno-incomplete-uni-patterns",
+        "-Wno-unused-imports",
     ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
-        ":aeson-pure",
         ":attoparsec-iso8601",
-        ":cbits",
+        hazel_library("OneTuple"),
+        hazel_library("QuickCheck"),
         hazel_library("attoparsec"),
         hazel_library("base"),
         hazel_library("base-compat-batteries"),
@@ -65,16 +47,20 @@ haskell_library(
         hazel_library("data-fix"),
         hazel_library("deepseq"),
         hazel_library("dlist"),
+        hazel_library("exceptions"),
         hazel_library("fail"),
         hazel_library("ghc-prim"),
         hazel_library("hashable"),
+        hazel_library("indexed-traversable"),
         hazel_library("primitive"),
         hazel_library("scientific"),
+        hazel_library("semialign"),
         hazel_library("semigroups"),
         hazel_library("strict"),
         hazel_library("tagged"),
         hazel_library("template-haskell"),
         hazel_library("text"),
+        hazel_library("text-short"),
         hazel_library("th-abstraction"),
         hazel_library("these"),
         hazel_library("time"),
@@ -85,5 +71,6 @@ haskell_library(
         hazel_library("uuid-types"),
         hazel_library("vector"),
         hazel_library("void"),
+        hazel_library("witherable"),
     ],
 )

@@ -10,6 +10,9 @@ haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["src/**/*.*hs"]),
     compiler_flags = [
+        "-Wno-missing-methods",
+        "-Wno-noncanonical-monad-instances",
+        "-Wno-star-is-type",
         "-Wno-unused-imports",
     ],
     version = packages[PACKAGE_NAME].version,
@@ -19,6 +22,7 @@ haskell_library(
         hazel_library("base64-bytestring"),
         hazel_library("base-compat"),
         hazel_library("bytestring"),
+        hazel_library("constraints"),
         hazel_library("containers"),
         hazel_library("exceptions"),
         hazel_library("filepath"),

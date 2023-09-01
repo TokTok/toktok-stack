@@ -29,6 +29,7 @@ haskell_library(
     deps = [
         ":cbits",
         hazel_library("base"),
+        hazel_library("bitvec"),
         hazel_library("bytestring"),
         hazel_library("primitive"),
         hazel_library("vector"),

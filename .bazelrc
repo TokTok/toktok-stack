@@ -26,11 +26,40 @@ build --experimental_inmemory_dotd_files
 build --experimental_inmemory_jdeps_files
 build --experimental_objc_include_scanning
 build --experimental_remotable_source_manifests
+#build --experimental_remote_build_event_upload=minimal
 build --experimental_repository_cache_hardlinks
 
 build --experimental_android_compress_java_resources=true
 build --experimental_android_resource_shrinking=true
 #build --experimental_desugar_java8_libs=true
+
+build --incompatible_check_sharding_support
+build --incompatible_check_testonly_for_output_files
+build --incompatible_default_to_explicit_init_py
+build --incompatible_disable_native_android_rules
+build --incompatible_disable_runtimes_filegroups
+build --incompatible_disable_target_provider_fields
+build --incompatible_disallow_empty_glob
+build --incompatible_dont_use_javasourceinfoprovider
+build --incompatible_enable_android_toolchain_resolution
+build --incompatible_enable_apple_toolchain_resolution
+build --incompatible_exclusive_test_sandboxed
+build --incompatible_no_implicit_file_export
+build --incompatible_remote_output_paths_relative_to_input_root
+build --incompatible_remote_use_new_exit_code_for_lost_inputs
+build --incompatible_sandbox_hermetic_tmp
+build --incompatible_strict_action_env
+build --incompatible_top_level_aspects_require_providers
+build --incompatible_use_host_features
+
+# These don't work, yet.
+#build --incompatible_stop_exporting_language_modules
+#build --incompatible_disallow_struct_provider_syntax
+#build --incompatible_no_rule_outputs_param
+#build --incompatible_config_setting_private_default_visibility
+#build --incompatible_visibility_private_attributes_at_definition
+#build --incompatible_struct_has_no_methods
+#build --incompatible_disable_starlark_host_transitions
 
 # This doesn't work on macOS.
 build:linux --experimental_omitfp
@@ -137,11 +166,9 @@ build:drmemory --config=dynamic-analysis
 
 build:libfuzzer --@rules_fuzzing//fuzzing:cc_engine=@rules_fuzzing//fuzzing/engines:libfuzzer
 build:libfuzzer --@rules_fuzzing//fuzzing:cc_engine_instrumentation=libfuzzer
-build:libfuzzer --config=sanitizer
 
 build:honggfuzz --@rules_fuzzing//fuzzing:cc_engine=@rules_fuzzing//fuzzing/engines:honggfuzz
 build:honggfuzz --@rules_fuzzing//fuzzing:cc_engine_instrumentation=honggfuzz
-build:honggfuzz --config=sanitizer
 
 build:asan-libfuzzer --config=libfuzzer --config=asan
 build:asan-libfuzzer --@rules_fuzzing//fuzzing:cc_engine_sanitizer=asan
@@ -149,20 +176,23 @@ build:asan-libfuzzer --@rules_fuzzing//fuzzing:cc_engine_sanitizer=asan
 build:sanitizer --config=debug
 build:sanitizer --copt='-UNDEBUG'
 build:sanitizer --copt='-O3'
-#build:sanitizer --per_file_copt='//c-toxcore[:/]@-O0'
-#build:sanitizer --per_file_copt='//c-toxcore[:/]@-fno-inline,-fno-omit-frame-pointer'
+build:sanitizer --per_file_copt='//c-toxcore[:/]@-O0'
+build:sanitizer --per_file_copt='//c-toxcore[:/]@-fno-inline,-fno-omit-frame-pointer'
 build:sanitizer --flaky_test_attempts=1
 
 # Some of this is from "Can I run AddressSanitizer with more aggressive diagnostics enabled?"
 # on https://github.com/google/sanitizers/wiki/AddressSanitizer#faq and some is from
 # https://chromium.googlesource.com/external/github.com/grpc/grpc/+/4e9206f48c91e17f43856b016b12f59dd5118293/tools/bazel.rc
 build:asan --config=sanitizer
-build:asan --features=asan
+#build:asan --features=asan
 build:asan --copt='-fsanitize=address'
+build:asan --copt='-fsanitize-address-use-after-return=always'
 build:asan --copt='-fsanitize-address-use-after-scope'
 build:asan --linkopt='-fsanitize=address'
-build:asan --action_env=ASAN_OPTIONS=color=always:detect_leaks=1:strict_string_checks=1:detect_stack_use_after_return=1:check_initialization_order=1:strict_init_order=1
+build:asan --action_env=ASAN_OPTIONS=color=always:detect_leaks=1:strict_string_checks=1:check_initialization_order=1:strict_init_order=1
 build:asan --action_env=LSAN_OPTIONS=report_objects=1
+build:asan --test_tag_filters=-haskell
+build:asan --build_tag_filters=-haskell
 
 build:msan --config=sanitizer
 build:msan --config=libc++
@@ -294,9 +324,10 @@ build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-ftrapv
 build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-pedantic'
 
 build:gnulike --cxxopt='-std=c++17'
-build:gnulike --conlyopt='-std=c99'
+build:gnulike --conlyopt='-std=c17'
 
 # Cython code isn't very clean.
+build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-cast-function-type-strict'
 build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-conditional-uninitialized'
 build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-deprecated-declarations'
 build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-extra-semi-stmt'
@@ -333,15 +364,11 @@ build:clang --copt='-Wno-pointer-bool-conversion'
 build:clang --copt='-Wno-tautological-pointer-compare'
 # This is a C89 requirement, we use C99.
 build:clang --copt='-Wno-declaration-after-statement'
+# Used in absl, for some reason doesn't work with per_file_copt.
+# TODO(iphydf): Find out why.
+build:clang --copt='-Wno-deprecated-builtins'
 
 # TODO(iphydf): Fix these or move them to per_file_copt (for third_party stuff).
-build:clang --copt='-Wno-array-parameter'
-build:clang --copt='-Wno-cast-function-type-strict'
-build:clang --copt='-Wno-deprecated-builtins'
-build:clang --copt='-Wno-deprecated-non-prototype'
-build:clang --copt='-Wno-private-header'
-build:clang --copt='-Wno-shadow-uncaptured-local'
-build:clang --copt='-Wno-strict-prototypes'
 build:clang --copt='-Wno-unsafe-buffer-usage'
 build:clang --copt='-Wno-unused-but-set-variable'
 
@@ -381,6 +408,7 @@ build:gnulike --per_file_copt='//jvm-toxcore-c@-Wno-error=switch'
 build:gnulike --per_file_copt='//jvm-toxcore-c@-Wno-parentheses'
 
 # TODO(iphydf): Fix these.
+build:clang --per_file_copt='//c-toxcore@-Wno-shadow-uncaptured-local'
 build:clang --per_file_copt='//c-toxcore@-Wno-sign-compare'
 build:clang --per_file_copt='//jvm-toxcore-c@-Wno-global-constructors,-Wno-exit-time-destructors'
 build:clang --per_file_copt='//qtox@-Wno-comma'
@@ -452,8 +480,10 @@ build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-sometimes-uninitialized'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-string-plus-int'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-tautological-constant-out-of-range-compare'
 build:clang --per_file_copt='external/ffmpeg/fftools[:/]@-Wno-single-bit-bitfield-constant-conversion'
+build:clang --per_file_copt='external/libconfig[:/]@-Wno-deprecated-non-prototype'
 build:clang --per_file_copt='external/openal[:/]@-Wno-unused-value'
 build:clang --per_file_copt='external/portaudio[:/]@-Wno-implicit-const-int-float-conversion'
+build:clang --per_file_copt='external/zlib[:/]@-Wno-deprecated-non-prototype'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-bool-operation'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-discarded-qualifiers'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-format-truncation'

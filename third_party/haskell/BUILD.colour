@@ -11,6 +11,7 @@ haskell_library(
     srcs = glob(["Data/**/*.*hs"]),
     compiler_flags = [
         "-Wno-incomplete-patterns",
+        "-Wno-incomplete-uni-patterns",
         "-Wno-missing-signatures",
         "-Wno-name-shadowing",
         "-Wno-orphans",

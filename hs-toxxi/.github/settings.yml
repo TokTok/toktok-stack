@@ -1,0 +1,16 @@
+---
+_extends: .github
+
+repository:
+  name: hs-toxxi
+  description: A simple console based text client for Tox.
+  homepage: https://hackage.haskell.org/package/toxxi
+  has_issues: true
+
+branches:
+  - name: "master"
+    protection:
+      required_status_checks:
+        contexts:
+          - "bazel-opt"
+          - "build / stack"

@@ -14,6 +14,7 @@ haskell_library(
     ]),
     compiler_flags = [
         "-Wno-name-shadowing",
+        "-Wno-noncanonical-monad-instances",
         "-Wno-unused-imports",
     ],
     version = packages[PACKAGE_NAME].version,

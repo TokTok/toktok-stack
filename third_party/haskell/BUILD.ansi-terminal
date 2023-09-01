@@ -33,6 +33,7 @@ haskell_library(
     visibility = ["//visibility:public"],
     deps = [
         ":cbits",
+        hazel_library("ansi-terminal-types"),
         hazel_library("base"),
         hazel_library("colour"),
     ],

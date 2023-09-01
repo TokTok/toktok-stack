@@ -19,6 +19,7 @@ haskell_library(
         hazel_library("binary-orphans"),
         hazel_library("case-insensitive"),
         hazel_library("hashable"),
+        hazel_library("primitive"),
         hazel_library("scientific"),
         hazel_library("tagged"),
         hazel_library("text"),

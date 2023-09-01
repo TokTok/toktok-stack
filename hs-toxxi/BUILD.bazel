@@ -1,0 +1,30 @@
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
+load("//third_party/haskell/hspec-discover:build_defs.bzl", "hspec_test")
+load("//tools/project:build_defs.bzl", "project")
+
+project()
+
+haskell_library(
+    name = "hs-toxxi",
+    srcs = glob(["src/**/*.*hs"]),
+    src_strip_prefix = "src",
+    version = "0.0.1",
+    visibility = ["//visibility:public"],
+    deps = [
+        #"//hs-toxcore-c",
+        hazel_library("base"),
+        hazel_library("brick"),
+    ],
+)
+
+hspec_test(
+    name = "testsuite",
+    size = "small",
+    deps = [
+        ":hs-toxxi",
+        hazel_library("QuickCheck"),
+        hazel_library("base"),
+        hazel_library("hspec"),
+    ],
+)

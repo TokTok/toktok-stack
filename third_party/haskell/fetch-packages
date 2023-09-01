@@ -6,7 +6,7 @@ use utf8;
 
 use Parallel::Iterator qw(iterate);
 
-my $RESOLVER = "https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/27.yaml";
+my $RESOLVER = "https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/21/9.yaml";
 my @PACKAGES = map { (/([^.]+)$/)[0] } <BUILD.*>;
 my @PATCHES = map { (/([^.]+).patch/)[0] } <*.patch>;
 my @LTS_PACKAGES = `curl -s "$RESOLVER" | grep "^- hackage:"`;
@@ -54,7 +54,7 @@ while (my ($index, $value) = $iter->()) {
 print STDERR "\n";
 
 print <<EOF;
-"""Generated from resolver: lts-18.27"""
+"""Generated from resolver: lts-21.9"""
 
 core_packages = [
     "Cabal",
@@ -65,8 +65,10 @@ core_packages = [
     "containers",
     "deepseq",
     "directory",
+    "exceptions",
     "filepath",
     "ghc",
+    "ghc-bignum",
     "ghc-boot",
     "ghc-boot-th",
     "ghc-compact",
@@ -92,6 +94,30 @@ core_packages = [
 ]
 packages = (
     {
+        "monad-validate": struct(
+            sha256 = "f50f12c6560b4bf22a968fd3d73163fad24556c2aa0348a1769588ca998b11f3",
+            version = "1.2.0.0",
+            patches = None,
+            path = None,
+        ),
+        "persist": struct(
+            sha256 = "238bbc5a40f3cfdd251512e22cc74b68e2b1c285f426fa2931cc68c5d69540a7",
+            version = "0.1.1.5",
+            patches = None,
+            path = None,
+        ),
+        "suspend": struct(
+            sha256 = "2f4f5b64837e94859b75dd49b28cf77bc75d70d5ab4f9adacb46ada5da98f072",
+            version = "0.2.0.0",
+            patches = None,
+            path = None,
+        ),
+        "timers": struct(
+            sha256 = "4b057105fa485eb1d9d73b3dd3de0044a00c432efc4aca64c98f14bb9aa2320c",
+            version = "0.2.0.4",
+            patches = None,
+            path = None,
+        ),
 EOF
 print for grep { defined } @out;
 print "    }\n";

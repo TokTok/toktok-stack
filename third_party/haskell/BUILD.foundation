@@ -35,7 +35,6 @@ haskell_library(
         "@toktok//tools/config:osx": ["Foundation/System/Bindings/Macos.hsc"],
     }),
     compiler_flags = [
-        "-Wno-unused-imports",
         "-DARCH_IS_LITTLE_ENDIAN",
         "-Iexternal/haskell_foundation/cbits",
         "-XBangPatterns",

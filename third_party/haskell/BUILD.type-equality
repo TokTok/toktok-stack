@@ -9,10 +9,7 @@ package(features = ["-layering_check"])
 haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["src-hetero/**/*.*hs"]),
-    compiler_flags = [
-        "-Wno-missing-methods",
-        "-Wno-trustworthy-safe",
-    ],
+    compiler_flags = ["-Wno-trustworthy-safe"],
     src_strip_prefix = "src-hetero",
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],

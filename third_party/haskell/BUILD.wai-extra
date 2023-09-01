@@ -10,9 +10,9 @@ haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["Network/**/*.*hs"]),
     compiler_flags = [
-        "-XOverloadedStrings",
         "-Wno-deprecations",
-        "-Wno-unused-imports",
+        "-Wno-incomplete-uni-patterns",
+        "-XOverloadedStrings",
     ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
@@ -43,6 +43,7 @@ haskell_library(
         hazel_library("vault"),
         hazel_library("wai"),
         hazel_library("wai-logger"),
+        hazel_library("warp"),
         hazel_library("word8"),
     ],
 )

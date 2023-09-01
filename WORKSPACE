@@ -91,8 +91,15 @@ github_archive(
 github_archive(
     name = "rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "1d60168daff6d0225b9c231b3622c31b91a7b37e2487bed1cde5b5990a5c3f29",
-    version = "26494b7bdcd7bd02463d6d6ebe32b7c00c607024",
+    # Commit breaking things:
+    #sha256 = "288e5cc249f6456fad7c5eecdd7f47dd930fbd6daf6dcb4595c226497ae1af15",
+    #version = "e2bda084bb4099ba6d1b0684e1167c9bc6b3ee0b",
+    # Commit still working:
+    #sha256 = "7ed33f8a06d755e64ab09a2a4e27d5d87782fad662d38e97c3a29c8342561c1b",
+    #version = "d8afc5739639f01e734b833426d70d10155be9bd",
+    # Latest:
+    sha256 = "d80efc06089dfb8b9bb0ed056eef6ce5260dd1017e574d51d02b721ad69500fa",
+    version = "f801bba2773ae2fde30e0da2138f6ac0f2c2a910",
 )
 
 load("@rules_haskell//haskell:ghc_bindist.bzl", "haskell_register_ghc_bindists")
@@ -105,11 +112,12 @@ haskell_register_ghc_bindists(
     compiler_flags = [
         "-Wall",
         "-Werror",
+        "-XHaskell2010",
         "-optP=-Wno-trigraphs",
         "-optc=-Wno-unused-command-line-argument",
         "-fdiagnostics-color=always",
     ],
-    version = "8.10.7",
+    version = "9.4.6",
 )
 
 github_archive(

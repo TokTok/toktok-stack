@@ -23,7 +23,10 @@ haskell_library(
         ],
         exclude = ["Data/Hourglass/Internal/Win.hs"],
     ),
-    compiler_flags = ["-Wno-unused-imports"],
+    compiler_flags = [
+        "-Wno-noncanonical-monoid-instances",
+        "-Wno-unused-imports",
+    ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [

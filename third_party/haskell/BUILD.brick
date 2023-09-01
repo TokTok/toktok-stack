@@ -12,12 +12,12 @@ haskell_library(
     compiler_flags = [
         "-XCPP",
         "-XScopedTypeVariables",
-        "-Wno-unused-imports",
     ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
         hazel_library("base"),
+        hazel_library("bimap"),
         hazel_library("bytestring"),
         hazel_library("config-ini"),
         hazel_library("containers"),
@@ -31,6 +31,7 @@ haskell_library(
         hazel_library("microlens"),
         hazel_library("microlens-mtl"),
         hazel_library("microlens-th"),
+        hazel_library("mtl"),
         hazel_library("random"),
         hazel_library("parallel"),
         hazel_library("stm"),

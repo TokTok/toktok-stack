@@ -13,9 +13,8 @@ haskell_library(
         "Data/**/*.*hs",
     ]),
     compiler_flags = [
-        "-XCPP",
         "-Wno-trustworthy-safe",
-        "-Wno-unused-imports",
+        "-XCPP",
     ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],

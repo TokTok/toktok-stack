@@ -22,9 +22,7 @@ haskell_library(
         "Control/**/*.*hs",
         "Data/**/*.*hs",
     ]),
-    compiler_flags = [
-        "-Wno-unused-imports",
-    ],
+    compiler_flags = ["-Wno-type-equality-requires-operators"],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
@@ -32,6 +30,7 @@ haskell_library(
         hazel_library("base"),
         hazel_library("deepseq"),
         hazel_library("ghc-prim"),
+        hazel_library("template-haskell"),
         hazel_library("transformers"),
     ],
 )

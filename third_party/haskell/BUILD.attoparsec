@@ -7,14 +7,33 @@ PACKAGE_NAME = "attoparsec"
 package(features = ["-layering_check"])
 
 haskell_library(
-    name = PACKAGE_NAME,
-    srcs = glob(["Data/**/*.*hs"]),
+    name = "attoparsec-internal",
+    srcs = glob(["internal/Data/**/*.*hs"]),
     compiler_flags = [
+        "-Wno-deprecations",
         "-Wno-unused-imports",
     ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
+        hazel_library("array"),
+        hazel_library("base"),
+        hazel_library("bytestring"),
+        hazel_library("text"),
+    ],
+)
+
+haskell_library(
+    name = PACKAGE_NAME,
+    srcs = glob(["Data/**/*.*hs"]),
+    compiler_flags = [
+        "-XTypeOperators",
+        "-Wno-unused-imports",
+    ],
+    version = packages[PACKAGE_NAME].version,
+    visibility = ["//visibility:public"],
+    deps = [
+        ":attoparsec-internal",
         hazel_library("array"),
         hazel_library("base"),
         hazel_library("bytestring"),

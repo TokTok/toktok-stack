@@ -1,0 +1,15 @@
+name: publish
+
+on:
+  push:
+    branches: [master]
+  release:
+    types: [released]
+
+jobs:
+  publish:
+    uses: TokTok/ci-tools/.github/workflows/haskell-publish.yml@master
+    secrets:
+      API_TOKEN_HACKAGE: ${{ secrets.API_TOKEN_HACKAGE }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}

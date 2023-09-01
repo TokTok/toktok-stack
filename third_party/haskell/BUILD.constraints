@@ -1,0 +1,30 @@
+load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
+load("@rules_haskell//haskell:defs.bzl", "haskell_library")
+load("@toktok//third_party/haskell:packages.bzl", "packages")
+
+PACKAGE_NAME = "constraints"
+
+package(features = ["-layering_check"])
+
+haskell_library(
+    name = PACKAGE_NAME,
+    srcs = glob(["src/**/*.*hs"]),
+    compiler_flags = [
+        "-Wno-forall-identifier",
+        "-Wno-star-is-type",
+    ],
+    version = packages[PACKAGE_NAME].version,
+    visibility = ["//visibility:public"],
+    deps = [
+        hazel_library("base"),
+        hazel_library("binary"),
+        hazel_library("deepseq"),
+        hazel_library("ghc-prim"),
+        hazel_library("hashable"),
+        hazel_library("mtl"),
+        hazel_library("semigroups"),
+        hazel_library("transformers"),
+        hazel_library("transformers-compat"),
+        hazel_library("type-equality"),
+    ],
+)

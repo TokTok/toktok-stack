@@ -9,6 +9,7 @@ package(features = ["-layering_check"])
 haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["src/**/*.*hs"]),
+    compiler_flags = ["-Wno-star-is-type"],
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],

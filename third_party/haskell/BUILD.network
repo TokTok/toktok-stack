@@ -20,7 +20,7 @@ genrule(
     outs = ["include/HsNetworkConfig.h"],
     cmd = """
         cd `dirname $(location configure)`
-        ./configure CC=$(CC)
+        sh configure CC=$(CC)
         DIR=`pwd`
         cd -
         cp $$DIR/include/HsNetworkConfig.h $@
@@ -51,13 +51,12 @@ haskell_library(
         "Network/Socket/Buffer.hsc",
         "Network/Socket/ByteString.hs",
         "Network/Socket/ByteString/IO.hsc",
-        "Network/Socket/ByteString/IOVec.hsc",
         "Network/Socket/ByteString/Internal.hs",
         "Network/Socket/ByteString/Lazy.hs",
         "Network/Socket/ByteString/Lazy/Posix.hs",
-        "Network/Socket/ByteString/MsgHdr.hsc",
         "Network/Socket/Cbits.hsc",
         "Network/Socket/Fcntl.hs",
+        "Network/Socket/Flag.hsc",
         "Network/Socket/Handle.hs",
         "Network/Socket/If.hs",
         "Network/Socket/Imports.hs",
@@ -65,6 +64,11 @@ haskell_library(
         "Network/Socket/Internal.hs",
         "Network/Socket/Name.hs",
         "Network/Socket/Options.hsc",
+        "Network/Socket/Posix/Cmsg.hsc",
+        "Network/Socket/Posix/CmsgHdr.hsc",
+        "Network/Socket/Posix/IOVec.hsc",
+        "Network/Socket/Posix/MsgHdr.hsc",
+        "Network/Socket/ReadShow.hs",
         "Network/Socket/Shutdown.hs",
         "Network/Socket/SockAddr.hs",
         "Network/Socket/Syscall.hs",
@@ -72,9 +76,7 @@ haskell_library(
         "Network/Socket/Unix.hsc",
     ],
     compiler_flags = [
-        "-Wno-overlapping-patterns",
-        "-Wno-unused-imports",
-        "-Wno-unused-matches",
+        "-Wno-deprecations",
         "-XCPP",
         # XXX: Hack because for some reason it doesn't end up being defined.
         "-DCALLCONV=ccall",
@@ -86,5 +88,6 @@ haskell_library(
         hazel_library("base"),
         hazel_library("bytestring"),
         hazel_library("deepseq"),
+        hazel_library("directory"),
     ],
 )

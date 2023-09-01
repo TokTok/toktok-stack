@@ -17,7 +17,7 @@ genrule(
     outs = ["cbits/config.h"],
     cmd = """
         cd `dirname $(location configure)`
-        ./configure CC=$(CC)
+        sh configure CC=$(CC)
         DIR=`pwd`
         cd -
         cp $$DIR/cbits/config.h $@
@@ -38,9 +38,7 @@ cc_library(
 haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["Data/**/*.hs*"]),
-    compiler_flags = [
-        "-Wno-unused-imports",
-    ],
+    compiler_flags = ["-Wno-unused-imports"],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [
