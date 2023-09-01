@@ -16,5 +16,8 @@ haskell_library(
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
-    deps = [hazel_library("base")],
+    deps = [
+        hazel_library("base"),
+        hazel_library("ghc-prim"),
+    ],
 )

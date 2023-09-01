@@ -49,6 +49,7 @@ haskell_library(
         hazel_library("http-types"),
         hazel_library("iproute"),
         hazel_library("network"),
+        hazel_library("recv"),
         hazel_library("simple-sendfile"),
         hazel_library("stm"),
         hazel_library("streaming-commons"),

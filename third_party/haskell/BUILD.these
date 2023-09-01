@@ -9,9 +9,7 @@ package(features = ["-layering_check"])
 haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["src/**/*.*hs"]),
-    compiler_flags = [
-        "-Wno-trustworthy-safe",
-    ],
+    compiler_flags = ["-Wno-trustworthy-safe"],
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
@@ -21,6 +19,7 @@ haskell_library(
         hazel_library("bifunctors"),
         hazel_library("binary"),
         hazel_library("deepseq"),
+        hazel_library("foldable1-classes-compat"),
         hazel_library("ghc-prim"),
         hazel_library("hashable"),
         hazel_library("semigroups"),

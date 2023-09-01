@@ -16,10 +16,7 @@ haskell_library(
             "Text/EditDistance/Tests/*.hs",
         ],
     ),
-    compiler_flags = [
-        "-Wno-overlapping-patterns",
-        "-Wno-unused-imports",
-    ],
+    compiler_flags = ["-Wno-overlapping-patterns"],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [

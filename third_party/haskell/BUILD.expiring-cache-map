@@ -11,8 +11,10 @@ haskell_library(
     srcs = glob(["Caching/**/*.*hs"]),
     compiler_flags = [
         "-Wno-incomplete-patterns",
+        "-Wno-incomplete-uni-patterns",
         "-Wno-missing-signatures",
         "-Wno-name-shadowing",
+        "-Wno-noncanonical-monad-instances",
         "-Wno-type-defaults",
         "-Wno-unused-do-bind",
         "-Wno-unused-imports",

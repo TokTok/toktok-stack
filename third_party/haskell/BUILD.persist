@@ -10,6 +10,8 @@ haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["src/**/*.*hs"]),
     compiler_flags = [
+        "-Wno-deprecations",
+        "-Wno-star-is-type",
         "-Wno-unused-imports",
     ],
     version = packages[PACKAGE_NAME].version,

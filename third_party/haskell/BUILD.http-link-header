@@ -16,7 +16,6 @@ haskell_library(
         hazel_library("attoparsec"),
         hazel_library("base"),
         hazel_library("bytestring"),
-        hazel_library("bytestring-conversion"),
         hazel_library("errors"),
         hazel_library("http-api-data"),
         hazel_library("network-uri"),

@@ -17,9 +17,10 @@ haskell_library(
     srcs = glob(["src/**/*.*hs"]),
     compiler_flags = [
         "-Wno-deprecations",
-        "-Wno-inline-rule-shadowing",
         "-Wno-name-shadowing",
+        "-Wno-noncanonical-monad-instances",
         "-Wno-unused-imports",
+        "-XTypeOperators",
     ],
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,

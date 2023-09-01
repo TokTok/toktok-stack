@@ -50,10 +50,15 @@ def pyx_library(
 
     native.genrule(
         name = name + "_cythonize",
-        srcs = pyx_srcs,
+        srcs = pyx_srcs + pxd_srcs,
         outs = [src.split(".")[0] + ".c" for src in pyx_srcs],
         cmd = "\n".join([
-            "PYTHONHASHSEED=0 $(location @cython//:cython) %s $(SRCS)" % extra_flags,
+            "PYTHONHASHSEED=0 $(location @cython//:cython) -I %s -I $(GENDIR)/%s %s %s" % (
+                native.package_name(),
+                native.package_name(),
+                extra_flags,
+                " ".join(["$(location %s)" % s for s in pyx_srcs]),
+            ),
             "cp -r %s/* $(RULEDIR)" % native.package_name(),
         ]),
         tools = ["@cython//:cython"] + pxd_srcs,

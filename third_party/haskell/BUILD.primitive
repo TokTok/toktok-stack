@@ -23,7 +23,7 @@ haskell_library(
         "Data/**/*.*hs",
     ]),
     compiler_flags = [
-        "-Wno-unused-imports",
+        "-XTypeOperators",
     ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
@@ -32,6 +32,7 @@ haskell_library(
         hazel_library("base"),
         hazel_library("deepseq"),
         hazel_library("ghc-prim"),
+        hazel_library("template-haskell"),
         hazel_library("transformers"),
     ],
 )

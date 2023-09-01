@@ -12,6 +12,7 @@ haskell_library(
     compiler_flags = [
         "-Wno-deprecations",
         "-Wno-trustworthy-safe",
+        "-XTypeOperators",
     ],
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,

@@ -9,7 +9,10 @@ package(features = ["-layering_check"])
 haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["Network/**/*.hs"]),
-    compiler_flags = ["-Wno-missing-signatures"],
+    compiler_flags = [
+        "-Wno-missing-signatures",
+        "-Wno-noncanonical-monad-instances",
+    ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [

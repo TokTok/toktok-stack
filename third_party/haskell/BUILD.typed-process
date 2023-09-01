@@ -9,7 +9,9 @@ package(features = ["-layering_check"])
 haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["src/**/*.*hs"]),
-    compiler_flags = ["-Wno-name-shadowing"],
+    compiler_flags = [
+        "-XTypeOperators",
+    ],
     src_strip_prefix = "src",
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],

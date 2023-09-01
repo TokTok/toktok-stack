@@ -13,9 +13,10 @@ haskell_library(
         "src/**/*.*hs",
     ]),
     compiler_flags = [
+        "-Wno-noncanonical-monoid-instances",
+        "-Wno-unused-imports",
         "-XCPP",
         "-DUseGHC",
-        "-Wno-unused-imports",
     ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],

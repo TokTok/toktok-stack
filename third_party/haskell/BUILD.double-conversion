@@ -10,11 +10,10 @@ package(features = ["-layering_check"])
 cc_library(
     name = "cbits",
     srcs = glob([
-        "cbits/*.cc",
         "double-conversion/src/*.cc",
         "double-conversion/src/*.h",
         "include/*.h",
-    ]),
+    ]) + ["cbits/hs-double-conversion-embed.cc"],
     copts = [
         "-Iexternal/%s/include" % hazel_workspace(PACKAGE_NAME),
         "-Iexternal/%s/double-conversion/src" % hazel_workspace(PACKAGE_NAME),
@@ -25,6 +24,10 @@ cc_library(
 haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["Data/**/*.hs"]),
+    compiler_flags = [
+        "-Wno-deprecations",
+        "-Wno-star-is-type",
+    ],
     version = packages[PACKAGE_NAME].version,
     visibility = ["//visibility:public"],
     deps = [

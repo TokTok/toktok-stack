@@ -10,6 +10,7 @@ haskell_library(
     name = PACKAGE_NAME,
     srcs = glob(["Data/**/*.hs"]),
     compiler_flags = [
+        "-Wno-noncanonical-monad-instances",
         "-Wno-unused-imports",
     ],
     version = packages[PACKAGE_NAME].version,
