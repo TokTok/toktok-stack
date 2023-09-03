@@ -11,6 +11,9 @@ RUN useradd -m -g users -G sudo -u 1000 builder \
  && echo "%sudo ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 USER builder
 
+# Needed for Cirrus CI to work.
+RUN mkdir /tmp/cirrus-ci-build
+
 # First, we copy all the unpacked third_party downloads into the image. These
 # are rarely changing, so we won't need to rebuild this part of the image often.
 # Dependencies installed with apt above should never change, as we should be
