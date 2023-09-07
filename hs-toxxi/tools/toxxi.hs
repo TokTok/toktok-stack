@@ -4,22 +4,22 @@
 {-# OPTIONS_GHC -Wwarn #-}
 module Main where
 
-import qualified Brick.AttrMap          as A
-import qualified Brick.Main             as M
-import qualified Brick.Types            as T
-import           Brick.Util             (on)
+import qualified Brick.AttrMap      as A
+import qualified Brick.Main         as M
+import qualified Brick.Types        as T
+import           Brick.Util         (on)
 import           Brick.Widgets.Core
-import qualified Brick.Widgets.Edit     as E
-import qualified Brick.Widgets.List     as L
-import           Control.Monad          (when)
-import qualified Data.ByteString        as BS
-import qualified Data.List              as List
-import qualified Data.Text.Zipper       as Z
-import qualified Data.Vector            as Vec
-import qualified Graphics.Vty           as V
+import qualified Brick.Widgets.Edit as E
+import qualified Brick.Widgets.List as L
+import           Control.Monad      (when)
+import qualified Data.ByteString    as BS
+import qualified Data.List          as List
+import qualified Data.Text.Zipper   as Z
+import qualified Data.Vector        as Vec
+import qualified Graphics.Vty       as V
 import           Lens.Micro
-import           Lens.Micro.TH
 import           Lens.Micro.Mtl
+import           Lens.Micro.TH
 
 
 data ToxxiEvent
