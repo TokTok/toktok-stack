@@ -30,6 +30,7 @@ COPY BUILD.bazel WORKSPACE .bazelignore .bazelversion /src/workspace/
 COPY third_party /src/workspace/third_party
 COPY tools/config /src/workspace/tools/config
 COPY tools/workspace /src/workspace/tools/workspace
-RUN bazel aquery --config=docker --output=proto --show_timestamps //... > /dev/null
+RUN bazel aquery --config=docker --output=proto --show_timestamps //... > /dev/null \
+ && tools/workspace/cleanup
 
 # vim:ft=dockerfile
