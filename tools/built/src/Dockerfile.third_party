@@ -30,7 +30,15 @@ COPY BUILD.bazel WORKSPACE .bazelignore .bazelversion /src/workspace/
 COPY third_party /src/workspace/third_party
 COPY tools/config /src/workspace/tools/config
 COPY tools/workspace /src/workspace/tools/workspace
+# Download bazel itself, unpack it, and run it once (no deps downloaded).
+RUN bazel query --output=proto --show_timestamps //... > /dev/null \
+ && du -sh "$HOME/.cache/bazel/_bazel_builder"
+# Download Haskell deps. We split it here because individual Docker layers can't
+# become too large or GitHub will run out of disk space while packing them up.
+RUN bazel aquery --config=docker --output=proto --show_timestamps //third_party/haskell/... > /dev/null \
+ && du -sh "$HOME/.cache/bazel/_bazel_builder"
+# Download the rest of the deps. These are much smaller than GHC (about 50%).
 RUN bazel aquery --config=docker --output=proto --show_timestamps //... > /dev/null \
- && tools/workspace/cleanup
+ && du -sh "$HOME/.cache/bazel/_bazel_builder"
 
 # vim:ft=dockerfile

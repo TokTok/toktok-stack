@@ -107,7 +107,7 @@ haskell_repositories()
 
 # This repository rule creates @ghc repository.
 haskell_register_ghc_bindists(
-    compiler_flags = [
+    ghcopts = [
         "-Wall",
         "-Werror",
         "-XHaskell2010",
