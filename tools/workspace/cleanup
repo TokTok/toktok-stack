@@ -16,7 +16,7 @@ du -sh "$BAZEL_CACHE"
 sudo find "$BAZEL_CACHE" -name "libHS*_p.a" -delete
 
 # Haskell docs. Saves about 1.2GB.
-for i in $(find "$BAZEL_CACHE"/*/external/rules_haskell* -name doc); do
+for i in "$(find "$BAZEL_CACHE"/*/external/rules_haskell* -name doc)"; do
   rm -rf "$i"
   BASE_DOCDIR="$i/html/libraries/base-4.17.2.0"
   mkdir -p "$BASE_DOCDIR"
