@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -eux
+
+# Delete some large files we don't need for our builds, just to save some disk
+# space on GitHub Actions, which can easily run out of space when given single
+# large Docker layers.
+
+BAZEL_CACHE="$HOME/.cache/bazel/_bazel_builder"
+
+# Before:
+du -sh "$BAZEL_CACHE"
+
+# Haskell profiling libraries. If we want to do profiling, we can use stack.
+# Saves about 1GB.
+sudo find "$BAZEL_CACHE" -name "libHS*_p.a" -delete
+
+# Haskell docs. Saves about 1.2GB.
+readarray -d '' DOCS < <(find "$BAZEL_CACHE"/*/external/rules_haskell_ghc_linux_amd64 -name doc -print0)
+for i in "${DOCS[@]}"; do
+  rm -rf "$i/"
+  BASE_DOCDIR="$i/html/libraries/base-4.17.2.0"
+  mkdir -p "$BASE_DOCDIR"
+  # We need at least this one file, otherwise rules_haskell fails to initialise.
+  touch "$BASE_DOCDIR/base.haddock"
+done
+
+# After:
+du -sh "$BAZEL_CACHE"
