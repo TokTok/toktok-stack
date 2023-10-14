@@ -14,10 +14,14 @@ build --check_licenses=true
 build --process_headers_in_dependencies
 build --remote_download_minimal
 build --strict_filesets=true
+#build --strict_proto_deps=strict
+#build --strict_public_imports=strict
+#build --strict_system_includes=true
 build --enable_platform_specific_config
 build --watchfs
 build --local_cpu_resources=HOST_CPUS
 build --dynamic_mode=fully
+#build --features=fully_static_link
 
 # TODO(https://github.com/protocolbuffers/protobuf/issues/9406): Enable once
 # protobuf has its layering fixed.
@@ -34,7 +38,6 @@ build --experimental_android_compress_java_resources=true
 build --experimental_android_resource_shrinking=true
 #build --experimental_desugar_java8_libs=true
 
-build --incompatible_check_sharding_support
 build --incompatible_check_testonly_for_output_files
 build --incompatible_default_to_explicit_init_py
 build --incompatible_disable_native_android_rules
@@ -94,7 +97,6 @@ build:remote --remote_cache=grpc://code.tox.chat:9092
 # Use remote execution. Disabled by default, because we don't want everyone to
 # use the remote executors (and they might be down sometimes).
 build:remote-exec --remote_executor=grpc://code.tox.chat:8980
-build:remote-exec --config=rbe
 
 # Use local docker sandbox. This is a lot slower than linux-sandbox, but is more
 # hermetic and reproducible, so it is used on our CI.
@@ -102,7 +104,6 @@ build:docker-sandbox --experimental_docker_image=toxchat/builder:latest
 build:docker-sandbox --experimental_docker_verbose
 build:docker-sandbox --experimental_enable_docker_sandbox
 build:docker-sandbox --define=EXECUTOR=remote
-build:docker-sandbox --config=rbe
 
 build:docker-sandbox --genrule_strategy=docker
 build:docker-sandbox --spawn_strategy=docker
@@ -213,9 +214,9 @@ build:tsan --test_env=TSAN_OPTIONS=color=always,history_size=7,force_seq_cst_ato
 
 build:ubsan --config=sanitizer
 build:ubsan --copt='-fno-sanitize-recover=all'
-build:ubsan --copt='-fsanitize=undefined,nullability'
+build:ubsan --copt='-fsanitize=nullability,undefined'
 #build:ubsan --per_file_copt='//c-toxcore[:/]@-fsanitize=integer'
-build:ubsan --linkopt='-fsanitize=undefined,nullability,integer'
+build:ubsan --linkopt='-fsanitize=integer,nullability,undefined'
 # https://github.com/bazelbuild/bazel/issues/11122
 build:ubsan --linkopt='-fsanitize-link-c++-runtime'
 build:ubsan --per_file_copt='//c-toxcore[:/]@-D_DEBUG'
@@ -306,7 +307,8 @@ test --test_output=errors
 test --test_verbose_timeout_warnings=true
 
 # This breaks Kythe.
-#build --distinct_host_configuration=false
+build --distinct_host_configuration=false
+build:kythe --distinct_host_configuration=true
 
 ##############################################################################
 #
@@ -314,10 +316,10 @@ test --test_verbose_timeout_warnings=true
 #
 ##############################################################################
 
-build:gnulike --copt='-Wall'
-build:gnulike --copt='-Werror'
-build:gnulike --copt='-Wformat'
-build:gnulike --copt='-Wformat-security'
+build:gnulike --per_file_copt='@-Wall'
+build:gnulike --per_file_copt='@-Werror'
+build:gnulike --per_file_copt='@-Wformat'
+build:gnulike --per_file_copt='@-Wformat-security'
 
 # NO_FRAME_POINTER is set when compiling fuzzers (for some reason), causing absl to use the
 # libunwind stack trace implementation, which is Google internal-only, so fails to compile in Open
@@ -327,8 +329,10 @@ build:gnulike --per_file_copt='external/com_google_absl[:/]@-UNO_FRAME_POINTER,-
 build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-ftrapv'
 build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-pedantic'
 
-build:gnulike --cxxopt='-std=c++17'
-build:gnulike --conlyopt='-std=c17'
+# Use GNU versions of the C/C++ standards, because runtime/cgo doesn't set
+# feature flags correctly.
+build:gnulike --cxxopt='-std=gnu++17'
+build:gnulike --conlyopt='-std=gnu17'
 
 # Cython code isn't very clean.
 build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-cast-function-type-strict'
@@ -339,6 +343,7 @@ build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-undef'
 build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-unused-macros'
 build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-unreachable-code'
 build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-used-but-marked-unused'
+build:gcc --per_file_copt='//py_toxcore_c[:/]@-Wno-pedantic'
 build:gnulike --per_file_copt='//py_toxcore_c[:/]@-Wno-cast-align'
 build:gnulike --per_file_copt='//py_toxcore_c[:/]@-Wno-shadow'
 
@@ -350,17 +355,22 @@ build:gcc --copt='-Wno-nonnull-compare'
 build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.c$@-Wold-style-declaration,-Wold-style-definition'
 build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.(cc|cpp)$@-Wzero-as-null-pointer-constant'
 
+# X11/Xfuncproto.h does this.
+build:gcc --per_file_copt='//qtox@-Wno-variadic-macros'
+
 # TODO(iphydf): Fix these.
 build:gcc --per_file_copt='//toxins/tox_shell@-Wno-unused-result'
+build:gcc --per_file_copt='//toxins/toxvpn:import/src/listener.cpp@-Wno-stringop-truncation'
 build:gnulike --per_file_copt='//toxins/toxvpn:import/src/main.cpp@-Wno-unused-result'
 build:gnulike --per_file_copt='//toxins/toxvpn:import/src/toxvpn-remote.cpp@-Wno-unused-result'
+
+# This isn't a useful warning and makes code uglier.
+build:gnulike --copt='-Wno-missing-braces'
 
 # Clang warning flags.
 build:clang --copt='-Wthread-safety-analysis'
 build:clang --copt='-Wno-error=thread-safety-analysis'
 build:clang --copt='-Wno-error=inconsistent-missing-override'
-# This isn't a useful warning and makes code uglier.
-build:clang --copt='-Wno-missing-braces'
 # This warning triggers when system header macros introduce reserved
 # identifiers, which is exactly the point of them being reserved.
 build:clang --copt='-Wno-reserved-identifier'
@@ -460,8 +470,10 @@ build:clang --per_file_copt='//toxins@-Wno-switch-enum'
 build:clang --per_file_copt='//toxins@-Wno-unreachable-code'
 build:clang --per_file_copt='//toxins@-Wno-unreachable-code-return'
 build:gcc --per_file_copt='//c-toxcore@-Wno-error=pedantic'
+build:gcc --per_file_copt='//qtox@-Wno-zero-as-null-pointer-constant'
 build:gcc --per_file_copt='//toxic@-Wno-format-overflow'
 build:gcc --per_file_copt='//toxic@-Wno-format-truncation'
+build:gcc --per_file_copt='//toxic@-Wno-nonnull'
 build:gcc --per_file_copt='//toxins@-Wno-format-overflow'
 build:windows --per_file_copt='//qtox@/wd4068'  # unknown pragma
 
@@ -483,28 +495,42 @@ build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-string-plus-int'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-tautological-constant-out-of-range-compare'
 build:clang --per_file_copt='external/ffmpeg/fftools[:/]@-Wno-single-bit-bitfield-constant-conversion'
 build:clang --per_file_copt='external/libconfig[:/]@-Wno-deprecated-non-prototype'
-build:clang --per_file_copt='external/openal[:/]@-Wno-unused-value'
 build:clang --per_file_copt='external/portaudio[:/]@-Wno-implicit-const-int-float-conversion'
 build:clang --per_file_copt='external/zlib[:/]@-Wno-deprecated-non-prototype'
+build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-array-parameter'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-bool-operation'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-discarded-qualifiers'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-format-truncation'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-int-in-bool-context'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-maybe-uninitialized'
+build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-stringop-overread'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-stringop-truncation'
 build:gcc --per_file_copt='external/haskell_cryptohash@-Wno-format-overflow'
-build:gcc --per_file_copt='external/yasm[:/]@-Wno-stringop-truncation'
-build:gcc --per_file_copt='external/yasm[:/]@-Wno-tautological-compare'
+build:gcc --per_file_copt='external/opus[:/]@-Wno-maybe-uninitialized'
 build:gnulike --per_file_copt='external/libvpx[:/]@-Wno-unused-but-set-variable'
 build:gnulike --per_file_copt='external/portaudio[:/]@-Wno-unused-but-set-variable'
 build:gnulike --per_file_copt='external/sdl2[:/]@-Wno-unused-but-set-variable'
-build:gnulike --per_file_copt='external/tcl[:/]@-Wno-typedef-redefinition'
+build:gnulike --per_file_copt='external/xcb[:/]@-Wno-unused-but-set-variable'
+
+build:clang --per_file_copt='external/openal[:/]@-Wno-unused-value'
+build:gcc --host_per_file_copt='external/openal[:/]@-Wno-use-after-free'
+
+build:clang --per_file_copt='external/tcl[:/]@-Wno-typedef-redefinition'
 build:gnulike --per_file_copt='external/tcl[:/]@-Wno-unused-function'
 build:gnulike --per_file_copt='external/tcl[:/]@-Wno-unused-but-set-variable'
 build:gnulike --per_file_copt='external/tcl[:/]@-Wno-unused-variable'
-build:gnulike --per_file_copt='external/xcb[:/]@-Wno-unused-but-set-variable'
-build:gnulike --per_file_copt='external/yasm[:/]@-Wno-misleading-indentation'
-build:gnulike --per_file_copt='external/yasm[:/]@-Wno-unused-but-set-variable'
+build:gnulike --host_per_file_copt='external/tcl[:/]@-Wno-unused-variable'
+
+build:gcc      --per_file_copt='external/yasm[:/]@-Wno-format-overflow'
+build:gcc --host_per_file_copt='external/yasm[:/]@-Wno-format-overflow'
+build:gcc      --per_file_copt='external/yasm[:/]@-Wno-stringop-truncation'
+build:gcc --host_per_file_copt='external/yasm[:/]@-Wno-stringop-truncation'
+build:gcc      --per_file_copt='external/yasm[:/]@-Wno-tautological-compare'
+build:gcc --host_per_file_copt='external/yasm[:/]@-Wno-tautological-compare'
+build:gnulike      --per_file_copt='external/yasm[:/]@-Wno-misleading-indentation'
+build:gnulike --host_per_file_copt='external/yasm[:/]@-Wno-misleading-indentation'
+build:gnulike      --per_file_copt='external/yasm[:/]@-Wno-unused-but-set-variable'
+build:gnulike --host_per_file_copt='external/yasm[:/]@-Wno-unused-but-set-variable'
 
 build:windows --copt='/WX' --linkopt='/WX'
 build:windows --per_file_copt='^external/libqrencode[:/]@/wd4273'
@@ -586,11 +612,11 @@ build:ci --show_timestamps
 build:ci --verbose_failures
 build:ci --flaky_test_attempts=6  # try a bit harder - toxcore tests are flaky
 
-# The "rbe" config sets up the toolchains for clang-14.
-build:rbe --config=clang
-
 # Docker build doesn't support IPv6.
 build:docker --config=ci
+
+# We use GCC in the nix builders.
+build --config=gcc
 
 try-import %workspace%/.bazelrc.local
 

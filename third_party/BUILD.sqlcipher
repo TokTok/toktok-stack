@@ -130,7 +130,6 @@ cc_library(
     copts = [
         "-Iexternal/sqlcipher/src",
         "-DBUILD_sqlite",
-        "-DOPENSSL_VERSION_TEXT='\"boringssl-master\"'",
         "-DSQLITE_THREADSAFE=1",
         "-DSQLITE_HAVE_ZLIB=1",
         "-DSQLITE_HAS_CODEC=1",
@@ -157,7 +156,7 @@ cc_library(
         "@toktok//tools/config:windows": [],
     }),
     visibility = ["//visibility:public"],
-    deps = ["@openssl//:crypto"],
+    deps = ["@openssl"],
 )
 
 cc_binary(

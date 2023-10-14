@@ -1,80 +1,69 @@
-load("@toktok//third_party/qt:build_defs.bzl", "qt_import")
-
 package(features = ["layering_check"])
 
 [alias(
     name = name,
-    actual = select({
-        "@toktok//tools/config:windows": "bin/%s.exe" % name,
-        "//conditions:default": "bin/%s" % name,
-    }),
+    actual = "@qt5.qtbase.dev//:bin/%s" % name,
     visibility = ["//visibility:public"],
 ) for name in [
-    "lconvert",
-    "macdeployqt",
     "moc",
     "rcc",
     "uic",
-    "windeployqt",
 ]]
 
-qt_import(
-    name = "qt_concurrent",
-    module = "Concurrent",
-)
+[alias(
+    name = name,
+    actual = "bin/%s" % name,
+    visibility = ["//visibility:public"],
+) for name in [
+    "lconvert",
+]]
 
-qt_import(
-    name = "qt_core",
-    module = "Core",
-)
+[alias(
+    name = "qt_" + mod.lower(),
+    actual = "@qt5.qtbase.dev//:" + mod.lower(),
+    visibility = ["//visibility:public"],
+) for mod in [
+    "Concurrent",
+    "Core",
+    "Gui",
+    "OpenGL",
+    "Network",
+    "Test",
+    "Widgets",
+    "Xml",
+]]
 
-qt_import(
-    name = "qt_gui",
-    module = "Gui",
-)
+[alias(
+    name = "qt_" + mod.lower(),
+    actual = "@qt5.qtmultimedia.dev//:" + mod.lower(),
+    visibility = ["//visibility:public"],
+) for mod in [
+    "Multimedia",
+    "MultimediaWidgets",
+]]
 
-qt_import(
-    name = "qt_multimedia",
-    module = "Multimedia",
-)
-
-qt_import(
-    name = "qt_multimedia_widgets",
-    module = "MultimediaWidgets",
-)
-
-qt_import(
-    name = "qt_opengl",
-    module = "OpenGL",
-)
-
-qt_import(
-    name = "qt_network",
-    module = "Network",
-)
-
-qt_import(
-    name = "qt_svg",
-    module = "Svg",
-)
-
-qt_import(
-    name = "qt_test",
-    module = "Test",
-)
-
-qt_import(
-    name = "qt_widgets",
-    module = "Widgets",
-)
-
-qt_import(
-    name = "qt_xml",
-    module = "Xml",
-)
+[alias(
+    name = "qt_" + mod.lower(),
+    actual = "@qt5.qtsvg.dev//:" + mod.lower(),
+    visibility = ["//visibility:public"],
+) for mod in [
+    "Svg",
+]]
 
 filegroup(
     name = "qt",
-    srcs = [],
+    srcs = [
+        ":qt_concurrent",
+        ":qt_core",
+        ":qt_gui",
+        ":qt_multimedia",
+        ":qt_multimediawidgets",
+        ":qt_network",
+        ":qt_opengl",
+        ":qt_svg",
+        ":qt_test",
+        ":qt_widgets",
+        ":qt_xml",
+    ],
     visibility = ["@toktok//third_party:__pkg__"],
 )

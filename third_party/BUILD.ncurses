@@ -23,6 +23,7 @@ genrule(
         "install-sh",
     ],
     outs = [
+        "configure.log",
         "include/MKterm.h.awk",
         "include/curses.h",
         "include/ncurses_cfg.h",
@@ -37,8 +38,10 @@ genrule(
         "ncurses/lib_keyname.c",
     ],
     cmd = """
+        PATH=$$PATH:`pwd`/`dirname $(location @diffutils//:cmp)`
+        MAKE=`pwd`/$(location @gnumake)
         cd `dirname $(location configure)`
-        ./configure CC=$(CC) \
+        ./configure CC=$(CC) MAKE=$$MAKE \
             --datadir=/lib \
             --enable-widec \
             --without-cxx-binding \
@@ -46,9 +49,10 @@ genrule(
             --without-manpages \
             --without-progs \
             --without-tack \
-            --without-tests
-        make -C include sources
-        make -C ncurses sources
+            --without-tests \
+            > configure.log
+        $$MAKE -C include sources >> configure.log
+        $$MAKE -C ncurses sources >> configure.log
         DIR=`pwd`
         cd -
         for i in $(OUTS); do
@@ -56,6 +60,10 @@ genrule(
         done
     """,
     toolchains = ["@rules_cc//cc:current_cc_toolchain"],
+    tools = [
+        "@diffutils//:cmp",
+        "@gnumake",
+    ],
 )
 
 filegroup(
@@ -76,9 +84,11 @@ genrule(
     ],
     outs = ["include/term.h"],
     cmd = """
+        PATH=$$PATH:`pwd`/`dirname $(location @diffutils//:cmp)`
         awk -f $(location include/MKterm.h.awk) $(locations :caplist) > $@
         $(location include/edit_cfg.sh) $(location include/ncurses_cfg.h) $@
     """,
+    tools = ["@diffutils//:cmp"],
 )
 
 genrule(
@@ -178,7 +188,6 @@ cc_binary(
     ],
     copts = [
         "-Iexternal/ncurses/ncurses",
-        "-D_DEFAULT_SOURCE",
         "-D_XOPEN_SOURCE=600",
     ],
     includes = ["include"],
@@ -414,7 +423,6 @@ cc_library(
     copts = [
         "-Iexternal/ncurses/ncurses",
         "-I$(GENDIR)/external/ncurses/ncurses",
-        "-D_DEFAULT_SOURCE",
         "-D_XOPEN_SOURCE=600",
         "-DBUILDING_NCURSES",
         "-DNCURSES_STATIC",

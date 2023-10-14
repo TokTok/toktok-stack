@@ -1,0 +1,17 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+package(features = ["layering_check"])
+
+[cc_library(
+    name = mod.lower(),
+    hdrs = glob(["include/Qt%s/**" % mod]),
+    includes = [
+        "include",
+        "include/Qt" + mod,
+    ],
+    visibility = ["//visibility:public"],
+    deps = ["@qt5.qtmultimedia.out//:" + mod.lower()],
+) for mod in [
+    "Multimedia",
+    "MultimediaWidgets",
+]]

@@ -1,21 +1,92 @@
-load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
 load("@rules_haskell//haskell:defs.bzl", "haskell_toolchain_library")
-load("@toktok//third_party/haskell:packages.bzl", "core_packages")
 
 package(default_visibility = ["//visibility:public"])
 
 licenses(["notice"])
 
-[haskell_toolchain_library(name = name) for name in core_packages]
-
-PACKAGES = [pkg[len("BUILD."):] for pkg in glob(
-    ["BUILD.*"],
-    exclude = ["BUILD.bazel"],
-)]
-
-# A filegroup that depends on all Haskell packages, just so our Docker build
-# sees them in the first aquery and can download the dependencies.
-filegroup(
-    name = "haskell",
-    srcs = [hazel_library(pkg) for pkg in PACKAGES],
-)
+# haskell_toolchain_library can access builtin GHC packages
+# and assign them a bazel target name, so that they
+# can be referenced as dependencies.
+[haskell_toolchain_library(name = name) for name in [
+    "aeson",
+    "aeson-pretty",
+    "ansi-wl-pprint",
+    "array",
+    "async",
+    "base",
+    "base16-bytestring",
+    "binary",
+    "binary-conduit",
+    "brick",
+    "bytestring",
+    "case-insensitive",
+    "casing",
+    "clock",
+    "conduit",
+    "conduit-extra",
+    "containers",
+    "cryptohash",
+    "data-binary-ieee754",
+    "data-default-class",
+    "data-fix",
+    "deepseq",
+    "Diff",
+    "directory",
+    "edit-distance",
+    "entropy",
+    "exceptions",
+    "expiring-cache-map",
+    "filepath",
+    "generic-arbitrary",
+    "github",
+    "groom",
+    "hashable",
+    "hspec",
+    "html",
+    "http-client",
+    "http-client-tls",
+    "http-media",
+    "http-types",
+    "integer-gmp",
+    "iproute",
+    "language-c",
+    "lens-family",
+    "microlens",
+    "microlens-th",
+    "monad-control",
+    "monad-parallel",
+    "MonadRandom",
+    "monad-validate",
+    "mtl",
+    "network",
+    "parallel",
+    "persist",
+    "pretty",
+    "process",
+    "QuickCheck",
+    "quickcheck-instances",
+    "quickcheck-text",
+    "random",
+    "recursion-schemes",
+    "rts",
+    "saltine",
+    "servant",
+    "servant-server",
+    "split",
+    "suspend",
+    "tabular",
+    "text",
+    "time",
+    "timers",
+    "transformers",
+    "transformers-compat",
+    "unix",
+    "unliftio-core",
+    "unordered-containers",
+    "uuid",
+    "vector",
+    "wai",
+    "wai-cors",
+    "wai-extra",
+    "warp",
+]]

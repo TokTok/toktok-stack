@@ -1,0 +1,29 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+package(features = ["layering_check"])
+
+exports_files([
+    "bin/moc",
+    "bin/rcc",
+    "bin/uic",
+])
+
+[cc_library(
+    name = mod.lower(),
+    hdrs = glob(["include/Qt%s/**" % mod]),
+    includes = [
+        "include",
+        "include/Qt" + mod,
+    ],
+    visibility = ["//visibility:public"],
+    deps = ["@qt5.qtbase.out//:" + mod.lower()],
+) for mod in [
+    "Concurrent",
+    "Core",
+    "Gui",
+    "OpenGL",
+    "Network",
+    "Test",
+    "Widgets",
+    "Xml",
+]]

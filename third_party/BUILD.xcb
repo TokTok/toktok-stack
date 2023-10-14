@@ -1,62 +1,12 @@
+# bazel
 load("@rules_cc//cc:defs.bzl", "cc_library")
-load("@rules_python//python:defs.bzl", "py_binary")
-load("@toktok//third_party/xcb_proto:protos.bzl", "xcb_protos")
 
 package(features = ["layering_check"])
 
-py_binary(
-    name = "c_client",
-    srcs = ["src/c_client.py"],
-    deps = ["@xcb_proto//:xcbgen"],
-)
-
-genrule(
-    name = "xcb_proto",
-    srcs = ["@xcb_proto"],
-    outs = ["{}.c".format(p) for p in xcb_protos] + ["{}.h".format(p) for p in xcb_protos],
-    cmd = "".join([
-        "$(location :c_client) -c 'xcb' -l 'X Version 11' -s 3 external/xcb_proto/src/{}.xml;".format(p)
-        for p in xcb_protos
-    ] + [
-        "mv {0}.c {0}.h $$(dirname $(location {0}.c));".format(p)
-        for p in xcb_protos
-    ]),
-    exec_tools = [":c_client"],
-)
-
-genrule(
-    name = "copy_headers",
-    srcs = ["src/xcb.h"],
-    outs = ["include/xcb/xcb.h"],
-    cmd = "cp $< $@",
-)
-
 cc_library(
     name = "xcb",
-    srcs = [
-        ":xcb_proto",
-    ] + glob([
-        "src/*.c",
-        "src/*.h",
-    ]),
-    hdrs = ["include/xcb/xcb.h"],
-    copts = [
-        "-DHAVE_CONFIG_H",
-        "-Iexternal/xcb/src",
-        "-Wno-unused-result",
-    ] + select({
-        "@toktok//tools/config:freebsd": ["-Ithird_party/xcb/freebsd"],
-        "@toktok//tools/config:linux": ["-Ithird_party/xcb/linux"],
-        "@toktok//tools/config:osx": ["-Ithird_party/xcb/osx"],
-    }),
-    includes = [
-        "include",
-        "src",
-    ],
+    srcs = ["@xcb.out//:lib"],
+    hdrs = glob(["include/xcb/*.h"]),
+    strip_include_prefix = "include",
     visibility = ["//visibility:public"],
-    deps = [
-        "@toktok//third_party/xcb:config",
-        "@xau",
-        "@xdmcp",
-    ],
 )

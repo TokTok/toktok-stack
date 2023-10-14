@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package test.proto;
-
-message SomeType {
-   int32 some_int = 1;
-   string some_string = 2;
-}

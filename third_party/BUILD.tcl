@@ -246,7 +246,6 @@ cc_library(
         ],
     }) + select({
         "@toktok//tools/config:linux": [
-            "-D_DEFAULT_SOURCE",
             "-DHAVE_GETHOSTBYADDR_R=1",
             "-DHAVE_GETHOSTBYADDR_R_8=1",
             "-DHAVE_GETHOSTBYNAME_R=1",

@@ -2,6 +2,8 @@
 
 load("@rules_haskell//haskell:defs.bzl", "haskell_library", "haskell_test")
 
+_HSPEC_DISCOVER = "@haskellPackages.hspec-discover//:hspec-discover"
+
 def hspec_library(name, src_strip_prefix, **kwargs):
     """HSpec test library.
 
@@ -20,12 +22,13 @@ def hspec_library(name, src_strip_prefix, **kwargs):
         outs = [name + "_hspec_driver.hs"],
         cmd = ";".join([
             "cd %s/src/testsuite" % native.package_name(),
-            "../{relpath}/$(location //third_party/haskell/hspec-discover) $$(basename $@) $$(basename $@) ../{relpath}/$@ --module-name={module_name}".format(
+            "../{relpath}/$(location {discover}) $$(basename $@) $$(basename $@) ../{relpath}/$@ --module-name={module_name}".format(
+                discover = _HSPEC_DISCOVER,
                 relpath = relpath,
                 module_name = module_name,
             ),
         ]),
-        tools = ["//third_party/haskell/hspec-discover"],
+        tools = [_HSPEC_DISCOVER],
     )
 
     haskell_library(
@@ -45,9 +48,9 @@ def hspec_test(name, **kwargs):
         outs = ["test/Spec.hs"],
         cmd = ";".join([
             "cd %s/test" % native.package_name(),
-            "../../$(location //third_party/haskell/hspec-discover) $$(basename $@) Main.hs ../../$@",
+            "../../$(location %s) $$(basename $@) Main.hs ../../$@" % _HSPEC_DISCOVER,
         ]),
-        tools = ["//third_party/haskell/hspec-discover"],
+        tools = [_HSPEC_DISCOVER],
     )
 
     haskell_test(

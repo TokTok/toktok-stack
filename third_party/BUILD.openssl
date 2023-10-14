@@ -3,42 +3,9 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 package(features = ["layering_check"])
 
 cc_library(
-    name = "headers",
-    hdrs = glob(["include/openssl/*.h"]) + select({
-        "@toktok//tools/config:linux": ["include/x86_64-linux-gnu/openssl/opensslconf.h"],
-        "//conditions:default": [],
-    }),
-    includes = [
-        "include",
-        "include/x86_64-linux-gnu",
-    ],
-)
-
-cc_library(
-    name = "crypto",
-    srcs = select({
-        "@toktok//tools/config:linux": ["lib/x86_64-linux-gnu/libcrypto.so"],
-        "@toktok//tools/config:osx": ["lib/libcrypto.dylib"],
-    }),
-    visibility = ["//visibility:public"],
-    deps = [":headers"],
-)
-
-cc_library(
-    name = "ssl",
-    srcs = select({
-        "@toktok//tools/config:linux": ["lib/x86_64-linux-gnu/libssl.so"],
-        "@toktok//tools/config:osx": ["lib/libssl.dylib"],
-    }),
-    visibility = ["//visibility:public"],
-    deps = [":headers"],
-)
-
-cc_library(
     name = "openssl",
-    visibility = ["@toktok//third_party:__pkg__"],
-    deps = [
-        ":crypto",
-        ":ssl",
-    ],
+    srcs = ["@openssl.out//:lib"],
+    hdrs = glob(["include/openssl/*.h"]),
+    strip_include_prefix = "include",
+    visibility = ["//visibility:public"],
 )

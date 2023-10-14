@@ -1,51 +1,5 @@
-load("@ai_formation_hazel//tools:mangling.bzl", "hazel_library")
-load("@rules_haskell//haskell:defs.bzl", "haskell_binary")
-load("@toktok//third_party/haskell:packages.bzl", "packages")
-
-PACKAGE_NAME = "alex"
-
-package(features = ["-layering_check"])
-
-genrule(
-    name = "paths",
-    outs = ["Paths_%s.hs" % PACKAGE_NAME],
-    cmd = """
-    cat > $@ <<EOF
-module Paths_alex where
-
-import Data.Version (Version, makeVersion)
-
-version :: Version
-version = makeVersion %s
-
-getDataDir :: IO FilePath
-getDataDir = return ""
-EOF
-    """ % str([int(v) for v in packages[PACKAGE_NAME].version.split(".")]),
-)
-
-haskell_binary(
-    name = "%s_bin" % PACKAGE_NAME,
-    srcs = glob(["src/**/*.hs"]) + [":paths"],
-    compiler_flags = [
-        "-XCPP",
-        "-XDatatypeContexts",
-        "-XHaskell98",
-        "-w",  # DatatypeContexts is deprecated, but no flag can disable the warning.
-    ],
-    src_strip_prefix = "src",
-    version = packages[PACKAGE_NAME].version,
+filegroup(
+    name = "alex",
+    srcs = ["bin/alex"],
     visibility = ["//visibility:public"],
-    deps = [
-        hazel_library("array"),
-        hazel_library("directory"),
-        hazel_library("base"),
-        hazel_library("containers"),
-    ],
-)
-
-alias(
-    name = PACKAGE_NAME,
-    actual = ":%s_bin" % PACKAGE_NAME,
-    visibility = ["@toktok//third_party/haskell:__pkg__"],
 )

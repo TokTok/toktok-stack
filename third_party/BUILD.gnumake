@@ -1,5 +1,5 @@
 filegroup(
-    name = "happy",
-    srcs = ["bin/happy"],
+    name = "gnumake",
+    srcs = ["bin/make"],
     visibility = ["//visibility:public"],
 )

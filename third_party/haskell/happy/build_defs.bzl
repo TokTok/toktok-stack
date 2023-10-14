@@ -1,8 +1,8 @@
 """Haskell Happy parser generator."""
 
-load("@ai_formation_hazel//tools:mangling.bzl", "hazel_binary")
+_HAPPY = "@haskellPackages.happy//:happy"
 
-def happy_parser(name, src, glr = False, preproc = None):
+def happy_parser(name, src, glr = False, preproc = None, preproc_tool = None):
     """Haskell Happy parser generator.
 
     Args:
@@ -10,6 +10,7 @@ def happy_parser(name, src, glr = False, preproc = None):
       src: Happy source (.y file).
       glr: Enable GLR parser driver.
       preproc: Optional program to pass the .y file through before passing it to happy.
+      preproc_tool: Interpreter for the preprocessor program.
     """
     driver_out = src[:src.rindex(".")] + ".hs"
     data_out = src[:src.rindex(".")] + "Data.hs"
@@ -26,29 +27,25 @@ def happy_parser(name, src, glr = False, preproc = None):
             name = "%s_preproc" % name,
             srcs = [src],
             outs = [pp_src],
-            cmd = " ".join([
+            cmd = " ".join((["$(location %s)" % preproc_tool] if preproc_tool else []) + [
                 "$(location %s)" % preproc,
                 "$<",
                 "$@",
             ]),
-            tools = [preproc],
+            tools = [preproc] + ([preproc_tool] if preproc_tool else []),
         )
         src = pp_src
 
     native.genrule(
         name = name,
-        srcs = [
-            src,
-            "@toktok//third_party/haskell/happy/templates",
-        ],
+        srcs = [src],
         outs = outs,
         cmd = " ".join([
-            "$(location %s)" % hazel_binary("happy"),
-            "-t third_party/haskell/happy/templates",
+            "$(location %s)" % _HAPPY,
             "--array",
             "--strict",
             "-o $(location %s)" % driver_out,
             "$(location %s)" % src,
         ] + happy_flags),
-        tools = [hazel_binary("happy")],
+        tools = [_HAPPY],
     )

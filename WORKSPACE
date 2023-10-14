@@ -3,39 +3,19 @@ workspace(name = "toktok")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
 
-new_local_repository(
-    name = "bazel_toolchain",
-    build_file = "third_party/BUILD.bazel_toolchain",
-    path = "/src/toolchain",
+github_archive(
+    name = "rules_jvm_external",
+    repo = "bazelbuild/rules_jvm_external",
+    sha256 = "6cc8444b20307113a62b676846c29ff018402fd4c7097fcd6d0a0fd5f2e86429",
+    version = "5.3",
 )
 
-github_archive(
-    name = "rules_cc",
-    repo = "bazelbuild/rules_cc",
-    sha256 = "891f86e06de4bbb2466df92ffcc23332e865629eb37015c415b7075b509759d3",
-    version = "5d8ef91731af93a79d599bebc68dd0396cff2e1a",
-)
-
-github_archive(
-    name = "rules_java",
-    repo = "bazelbuild/rules_java",
-    sha256 = "048269909a98213157d2e5d0d01b97c6502077657ec7fa8dde26942cd7be2b83",
-    version = "6.5.1",
-)
-
-github_archive(
-    name = "rules_proto",
-    repo = "bazelbuild/rules_proto",
-    sha256 = "8800a005ed818bc683e14081567de3c8a73208ced446dfb5b2f76230f26c198b",
-    version = "8aa1e67c09bc8df20df33886909d44129cfb7e63",
-)
-
-github_archive(
-    name = "rules_python",
-    repo = "bazelbuild/rules_python",
-    sha256 = "9ffcbf19b197153d7ceafb126eb05b7b5ce847aa4e1745f03feed298b4940e2c",
-    version = "0.25.0",
-)
+#github_archive(
+#    name = "rules_proto",
+#    repo = "bazelbuild/rules_proto",
+#    sha256 = "8800a005ed818bc683e14081567de3c8a73208ced446dfb5b2f76230f26c198b",
+#    version = "8aa1e67c09bc8df20df33886909d44129cfb7e63",
+#)
 
 github_archive(
     name = "bazel_skylib",
@@ -43,23 +23,6 @@ github_archive(
     sha256 = "ed3492b4badb318e99c8f200556ec97166144897daa0ad06870d45ed9019d87d",
     version = "6fcbad3991638ca5882e64ec53143ac316b17a7e",
 )
-
-# Protobuf
-# =========================================================
-
-# proto_library rules implicitly depend on @com_google_protobuf//:protoc,
-# which is the proto-compiler.
-# This statement defines the @com_google_protobuf repo.
-github_archive(
-    name = "com_google_protobuf",
-    repo = "protocolbuffers/protobuf",
-    sha256 = "d562030d993451e6cafe84a2a063bac33a34bc652911f9679c196b29b1d164d9",
-    version = "v3.20.2",
-)
-
-load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
-
-protobuf_deps()
 
 # Fuzzing
 # =========================================================
@@ -83,15 +46,29 @@ load("@fuzzing_py_deps//:requirements.bzl", "install_deps")
 
 install_deps()
 
-# Haskell
+# Go
 # =========================================================
 
 github_archive(
-    name = "rules_sh",
-    repo = "tweag/rules_sh",
-    sha256 = "0cb8f75b5a27877004d6367c4745a17fa05d3b758c54c37b3cc9b732857361eb",
-    version = "v0.3.0",
+    name = "io_bazel_rules_go",
+    repo = "bazelbuild/rules_go",
+    sha256 = "2c6388e97cb4fb30546d65e983c45bb422bfe32c6e946af329cd1c52f1eaf836",
+    version = "v0.39.1",
 )
+
+github_archive(
+    name = "bazel_gazelle",
+    repo = "bazelbuild/bazel-gazelle",
+    sha256 = "1e246edb247c76ddf698ddc58fec7d3a9f908131b356133e6dccf91194d47aee",
+    version = "v0.33.0",
+)
+
+load("@io_bazel_rules_go//go:deps.bzl", "go_rules_dependencies")
+
+go_rules_dependencies()
+
+# Haskell
+# =========================================================
 
 github_archive(
     name = "rules_haskell",
@@ -100,74 +77,95 @@ github_archive(
     version = "9fad1d3ab1b1084100f8c897ef3eb00e44348bac",
 )
 
-load("@rules_haskell//haskell:ghc_bindist.bzl", "haskell_register_ghc_bindists")
-load("@rules_haskell//haskell:repositories.bzl", "haskell_repositories")
-
-haskell_repositories()
-
-# This repository rule creates @ghc repository.
-haskell_register_ghc_bindists(
-    ghcopts = [
-        "-Wall",
-        "-Werror",
-        "-XHaskell2010",
-        "-optP=-Wno-trigraphs",
-        "-optc=-Wno-unused-command-line-argument",
-        "-fdiagnostics-color=always",
-    ],
-    version = "9.4.6",
+load(
+    "@rules_haskell//haskell:repositories.bzl",
+    "rules_haskell_dependencies",
 )
 
-github_archive(
-    name = "ai_formation_hazel",
-    repo = "FormationAI/hazel",
-    sha256 = "db5466c442c228cffab14c51daff46a7861fdea3ef62be3e80ccd4b8dc60ab3e",
-    version = "fe4b139751951f9489434f3f26e96598a1afebe1",
+# Setup all Bazel dependencies required by rules_haskell.
+rules_haskell_dependencies()
+
+# Load nixpkgs_git_repository from rules_nixpkgs,
+# which was already initialized by rules_haskell_dependencies above.
+load(
+    "@io_tweag_rules_nixpkgs//nixpkgs:nixpkgs.bzl",
+    "nixpkgs_cc_configure",
+    "nixpkgs_git_repository",
+    "nixpkgs_package",
+    "nixpkgs_python_configure",
+)
+load(
+    "@io_tweag_rules_nixpkgs//toolchains/go:go.bzl",
+    "nixpkgs_go_configure",
 )
 
-load("@ai_formation_hazel//tools:mangling.bzl", "hazel_workspace")
-load("//third_party/haskell:haskell.bzl", "new_cabal_package")
-load("//third_party/haskell:packages.bzl", "core_packages", "packages")
+nixpkgs_git_repository(
+    name = "nixpkgs",
+    revision = "23.05",
+    sha256 = "f2b96094f6dfbb53b082fe8709da94137475fcfead16c960f2395c98fc014b68",
+)
 
-[new_local_repository(
-    name = hazel_workspace(pkg),
-    build_file = "third_party/haskell/BUILD.bazel",
-    path = "third_party/haskell",
-) for pkg in core_packages]
+nixpkgs_cc_configure(
+    repository = "@nixpkgs",
+)
 
-[new_cabal_package(
-    package = "%s-%s" % (
-        pkg,
-        data.version,
-    ),
-    patches = data.patches,
-    path = data.path,
-    sha256 = data.sha256,
-) for pkg, data in packages.items()]
+nixpkgs_go_configure(
+    repository = "@nixpkgs",
+)
 
-# Go
+nixpkgs_python_configure(
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "diffutils",
+    build_file = "//third_party:BUILD.diffutils",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "gnumake",
+    build_file = "//third_party:BUILD.gnumake",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "perl",
+    build_file = "//third_party:BUILD.perl",
+    repository = "@nixpkgs",
+)
+
+load(
+    "@rules_haskell//haskell:nixpkgs.bzl",
+    "haskell_register_ghc_nixpkgs",
+)
+
+# Fetch a GHC binary distribution from nixpkgs and register it as a toolchain.
+# For more information:
+# https://api.haskell.build/haskell/nixpkgs.html#haskell_register_ghc_nixpkgs
+haskell_register_ghc_nixpkgs(
+    attribute_path = "ghc",
+    nix_file = "//:ghc.nix",
+    repositories = {"nixpkgs": "@nixpkgs"},
+    version = "9.2.7",
+    #static_runtime = True,
+    #fully_static_link = True,
+)
+
+[nixpkgs_package(
+    name = "haskellPackages." + tool,
+    build_file = "//third_party/haskell:BUILD." + tool,
+    repository = "@nixpkgs",
+) for tool in [
+    "alex",
+    "happy",
+    "hspec-discover",
+]]
+
+# Go packages
 # =========================================================
 
-github_archive(
-    name = "io_bazel_rules_go",
-    repo = "bazelbuild/rules_go",
-    sha256 = "57bfd6a77a5be1fd9bce07d00afdfac232c06f303c1650053a794ab77ef1278f",
-    version = "v0.31.0",
-)
-
-github_archive(
-    name = "bazel_gazelle",
-    repo = "bazelbuild/bazel-gazelle",
-    sha256 = "b5b1bf61e25709be1badcbc574fce36aa3376120f9b84a3cdb30c963e5b7629b",
-    version = "v0.24.0",
-)
-
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
-load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
-
-go_rules_dependencies()
-
-go_register_toolchains(version = "1.17")
 
 gazelle_dependencies()
 
@@ -212,9 +210,28 @@ go_repository(
 
 load("//tools/workspace:local.bzl", "local_library_repository")
 
-local_library_repository(
+nixpkgs_package(
+    name = "alsaLib",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
     name = "asound",
-    version = "2.0",
+    attribute_path = "alsaLib.dev",
+    build_file = "//third_party:BUILD.asound",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "openssl.out",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "openssl",
+    attribute_path = "openssl.dev",
+    build_file = "//third_party:BUILD.openssl",
+    repository = "@nixpkgs",
 )
 
 http_archive(
@@ -235,16 +252,6 @@ github_archive(
     repo = "google/boringssl",
     sha256 = "9a1a9db5d0f6c1add527cccbd86a1bb75659afb4f9e1c26f44c97c3517db2400",
     version = "bf221ee64323dcebd2c64bd4c4a3269fc231d2bf",
-)
-
-local_library_repository(
-    name = "openssl",
-    brew_name = "openssl@1.1",
-    libs = [
-        "crypto",
-        "ssl",
-    ],
-    version = "1.1.1g",
 )
 
 http_archive(
@@ -284,18 +291,25 @@ http_archive(
     urls = ["https://ffmpeg.org/releases/ffmpeg-6.0.tar.bz2"],
 )
 
-#new_local_repository(
-#    name = "ffmpeg",
-#    build_file = "@toktok//third_party:BUILD.ffmpeg",
-#    path = "third_party/ffmpeg/ffmpeg-4.2.2",
-#)
-
 http_archive(
     name = "gettext",
     build_file = "@toktok//third_party:BUILD.gettext",
     sha256 = "66415634c6e8c3fa8b71362879ec7575e27da43da562c798a8a2f223e6e47f5c",
     strip_prefix = "gettext-0.20.1",
     urls = ["https://ftp.gnu.org/pub/gnu/gettext/gettext-0.20.1.tar.gz"],
+)
+
+nixpkgs_package(
+    name = "gl.out",
+    attribute_path = "libGL.out",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "gl",
+    attribute_path = "libGL.dev",
+    build_file = "@toktok//third_party:BUILD.gl",
+    repository = "@nixpkgs",
 )
 
 http_archive(
@@ -454,76 +468,70 @@ new_github_archive(
     version = "ed918cb027572a80468457db906cbb132f29b920",
 )
 
-http_archive(
+nixpkgs_package(
+    name = "x11.out",
+    attribute_path = "xorg.libX11.out",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
     name = "x11",
+    attribute_path = "xorg.libX11.dev",
     build_file = "@toktok//third_party:BUILD.x11",
-    sha256 = "b8c0930a9b25de15f3d773288cacd5e2f0a4158e194935615c52aeceafd1107b",
-    strip_prefix = "libX11-1.6.9",
-    urls = ["https://www.x.org/releases/individual/lib/libX11-1.6.9.tar.gz"],
+    repository = "@nixpkgs",
 )
 
-http_archive(
-    name = "xau",
-    build_file = "@toktok//third_party:BUILD.xau",
-    sha256 = "1f123d8304b082ad63a9e89376400a3b1d4c29e67e3ea07b3f659cccca690eea",
-    strip_prefix = "libXau-1.0.9",
-    urls = ["https://www.x.org/releases/individual/lib/libXau-1.0.9.tar.gz"],
+nixpkgs_package(
+    name = "xcb.out",
+    attribute_path = "xorg.libxcb.out",
+    repository = "@nixpkgs",
 )
 
-http_archive(
+nixpkgs_package(
     name = "xcb",
+    attribute_path = "xorg.libxcb.dev",
     build_file = "@toktok//third_party:BUILD.xcb",
-    sha256 = "1cb65df8543a69ec0555ac696123ee386321dfac1964a3da39976c9a05ad724d",
-    strip_prefix = "libxcb-1.15",
-    urls = ["https://www.x.org/releases/individual/lib/libxcb-1.15.tar.gz"],
+    repository = "@nixpkgs",
 )
 
-http_archive(
-    name = "xcb_proto",
-    build_file = "@toktok//third_party:BUILD.xcb_proto",
-    sha256 = "0e434af76af722ef9b2dc21066da1cd11e5dd85fc1996d66228d090f9ae9b217",
-    strip_prefix = "xcb-proto-1.15",
-    urls = ["https://www.x.org/releases/individual/proto/xcb-proto-1.15.tar.gz"],
+nixpkgs_package(
+    name = "xext.out",
+    attribute_path = "xorg.libXext.out",
+    repository = "@nixpkgs",
 )
 
-http_archive(
-    name = "xdmcp",
-    build_file = "@toktok//third_party:BUILD.xdmcp",
-    sha256 = "2ef9653d32e09d1bf1b837d0e0311024979653fe755ad3aaada8db1aa6ea180c",
-    strip_prefix = "libXdmcp-1.1.3",
-    urls = ["https://www.x.org/releases/individual/lib/libXdmcp-1.1.3.tar.gz"],
-)
-
-http_archive(
+nixpkgs_package(
     name = "xext",
+    attribute_path = "xorg.libXext.dev",
     build_file = "@toktok//third_party:BUILD.xext",
-    sha256 = "8ef0789f282826661ff40a8eef22430378516ac580167da35cc948be9041aac1",
-    strip_prefix = "libXext-1.3.4",
-    urls = ["https://www.x.org/releases/individual/lib/libXext-1.3.4.tar.gz"],
+    repository = "@nixpkgs",
 )
 
-http_archive(
-    name = "xss",
-    build_file = "@toktok//third_party:BUILD.xss",
-    sha256 = "4f74e7e412144591d8e0616db27f433cfc9f45aae6669c6c4bb03e6bf9be809a",
-    strip_prefix = "libXScrnSaver-1.2.3",
-    urls = ["https://www.x.org/releases/individual/lib/libXScrnSaver-1.2.3.tar.gz"],
+nixpkgs_package(
+    name = "xxf86vm.out",
+    attribute_path = "xorg.libXxf86vm.out",
+    repository = "@nixpkgs",
 )
 
-http_archive(
-    name = "xorgproto",
-    build_file = "@toktok//third_party:BUILD.xorgproto",
-    sha256 = "ebfcfce48b66bec25d5dff0e9510e04053ef78e51a8eabeeee4c00e399226d61",
-    strip_prefix = "xorgproto-2019.2",
-    urls = ["https://www.x.org/releases/individual/proto/xorgproto-2019.2.tar.gz"],
+nixpkgs_package(
+    name = "xxf86vm",
+    attribute_path = "xorg.libXxf86vm.dev",
+    build_file = "@toktok//third_party:BUILD.xxf86vm",
+    repository = "@nixpkgs",
 )
 
-http_archive(
+nixpkgs_package(
     name = "xproto",
+    attribute_path = "xorg.xorgproto.out",
     build_file = "@toktok//third_party:BUILD.xproto",
-    sha256 = "6d755eaae27b45c5cc75529a12855fed5de5969b367ed05003944cf901ed43c7",
-    strip_prefix = "xproto-7.0.31",
-    urls = ["https://www.x.org/releases/individual/proto/xproto-7.0.31.tar.gz"],
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "xss",
+    attribute_path = "xorg.libXScrnSaver",
+    build_file = "@toktok//third_party:BUILD.xss",
+    repository = "@nixpkgs",
 )
 
 new_github_archive(
@@ -567,97 +575,34 @@ swift_rules_dependencies()
 
 apple_support_dependencies()
 
-# JUnit5
-# =========================================================
-
-load("//tools/workspace:junit5.bzl", "junit_jupiter_java_repositories", "junit_platform_java_repositories")
-
-junit_jupiter_java_repositories()
-
-junit_platform_java_repositories()
-
-# Maven dependencies
-# =========================================================
-
-load("@rules_jvm_external//:defs.bzl", "maven_install")
-
-local_repository(
-    name = "org_bytedeco_javacpp_presets_ffmpeg_platform",
-    path = "third_party/javacpp/ffmpeg",
-)
-
-local_repository(
-    name = "org_bytedeco_javacpp_presets_opencv_platform",
-    path = "third_party/javacpp/opencv",
-)
-
-maven_install(
-    artifacts = [
-        "com.chuusai:shapeless_2.11:2.3.3",
-        "com.google.guava:guava:19.0",
-        "com.typesafe.scala-logging:scala-logging_2.11:3.7.2",
-        "junit:junit:4.13",
-        "log4j:log4j:1.2.17",
-        "org.apache.commons:commons-lang3:3.4",
-        "org.bytedeco:javacpp:1.4",
-        "org.bytedeco.javacpp-presets:ffmpeg:3.4.1-1.4",
-        "org.bytedeco.javacpp-presets:opencv:3.4.0-1.4",
-        "org.bytedeco:javacv:1.4",
-        "org.bytedeco:javacv-platform:1.4",
-        "org.jetbrains:annotations:13.0",
-        "org.scalacheck:scalacheck_2.11:1.14.0",
-        "org.scalatestplus:scalacheck-1-14_2.11:3.1.0.1",
-        "org.scalatestplus:junit-4-13_2.11:3.2.10.0",
-        "org.scala-lang.modules:scala-swing_2.11:2.1.1",
-        "org.slf4j:slf4j-api:1.7.25",
-        "org.slf4j:slf4j-log4j12:1.7.22",
-    ],
-    repositories = [
-        "https://maven.google.com",
-        "https://repo1.maven.org/maven2",
-    ],
-)
-
-# Scala toolchain
-# =========================================================
-
-github_archive(
-    name = "io_bazel_rules_scala",
-    repo = "bazelbuild/rules_scala",
-    sha256 = "5456e8d90f6a45b698f26f2aee5f86e4380c0afc14cbcd0994b8e69857c0c525",
-    version = "72adeb585081c4cf53d033d554dbdddbb1e59fbc",
-)
-
-load("@io_bazel_rules_scala//:scala_config.bzl", "scala_config")
-
-scala_config(scala_version = "2.11.12")
-
-load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories")
-load("@io_bazel_rules_scala//scala:toolchains.bzl", "scala_register_toolchains")
-load("@io_bazel_rules_scala//scala_proto:scala_proto.bzl", "scala_proto_repositories")
-load("@io_bazel_rules_scala//scala_proto:toolchains.bzl", "scala_proto_register_enable_all_options_toolchain")
-load("@io_bazel_rules_scala//testing:scalatest.bzl", "scalatest_repositories", "scalatest_toolchain")
-
-scala_register_toolchains()
-
-scala_repositories()
-
-scala_proto_repositories()
-
-scala_proto_register_enable_all_options_toolchain()
-
-scalatest_repositories()
-
-scalatest_toolchain()
-
 # Qt5
 # =========================================================
 
-load("//tools/workspace:qt.bzl", "qt_repository")
+[nixpkgs_package(
+    name = "qt5.qt%s.out" % mod,
+    build_file = "//third_party/qt:BUILD.qt%s.out" % mod,
+    repository = "@nixpkgs",
+) for mod in [
+    "base",
+    "multimedia",
+    "svg",
+]]
 
-qt_repository(
+[nixpkgs_package(
+    name = "qt5.qt%s.dev" % mod,
+    build_file = "//third_party/qt:BUILD.qt%s.dev" % mod,
+    repository = "@nixpkgs",
+) for mod in [
+    "base",
+    "multimedia",
+    "svg",
+]]
+
+nixpkgs_package(
     name = "qt",
-    version = "5.14.2",
+    attribute_path = "qt5.qttools.dev",
+    build_file = "//third_party:BUILD.qt",
+    repository = "@nixpkgs",
 )
 
 # Python
@@ -676,104 +621,104 @@ github_archive(
     version = "3.0.2",
 )
 
-# Node.js
-# =========================================================
-
+## Node.js
+## =========================================================
+#
+##github_archive(
+##    name = "rules_codeowners",
+##    repo = "zegl/rules_codeowners",
+##    #sha256 = "06910242c6d47c5719efd5789cf34dac393034dc0fe4c73f1ed3aac739ffabdc",
+##    version = "bdc2f987cd0e15ebfa9b76689a4c9a472730a6f0",
+##)
+##
+##github_archive(
+##    name = "build_bazel_rules_nodejs",
+##    repo = "bazelbuild/rules_nodejs",
+##    sha256 = "171bdbd8386576ed2f6a3f8aff87eeb048f963981870a3a8432be7d12cf5b2cc",
+##    version = "1.3.0",
+##)
+##
+##load("@build_bazel_rules_nodejs//:index.bzl", "yarn_install")
+##
+##yarn_install(
+##    name = "npm",
+##    package_json = "//js-toxcore-c:package.json",
+##    yarn_lock = "//js-toxcore-c:yarn.lock",
+##)
+#
+##load("@npm//:install_bazel_dependencies.bzl", "install_bazel_dependencies")
+##install_bazel_dependencies()
+#
+##load("@org_pubref_rules_node//node:rules.bzl", "node_repositories", "yarn_modules")
+##
+##node_repositories()
+##
+##yarn_modules(
+##    name = "yarn_modules",
+##    install_tools = [
+##        "sh",
+##        "dirname",
+##    ],
+##    deps = {
+##        "ansi-to-html": "0.6.4",
+##        "async": "2.6.0",
+##        "buffertools": "2.1.6",
+##        "ffi": "2.2.0",
+##        "firebase": "3.9.0",
+##        "firepad": "1.4.0",
+##        "grunt": "1.0.1",
+##        "grunt-jsdoc": "2.2.1",
+##        "grunt-shell": "2.1.0",
+##        "ink-docstrap": "1.3.2",
+##        "jsdoc": "3.5.5",
+##        "mktemp": "0.4.0",
+##        "mocha": "3.5.3",
+##        "ref": "1.3.5",
+##        "ref-array": "1.2.0",
+##        "ref-struct": "1.1.0",
+##        "should": "13.2.1",
+##        "underscore": "1.8.3",
+##    },
+##)
+##
+##yarn_modules(
+##    name = "mocha_modules",
+##    deps = {"mocha": "3.5.3"},
+##)
+#
+## Compilation database
+## =========================================================
+#
+## Tool used for creating a compilation database.
 #github_archive(
-#    name = "rules_codeowners",
-#    repo = "zegl/rules_codeowners",
-#    #sha256 = "06910242c6d47c5719efd5789cf34dac393034dc0fe4c73f1ed3aac739ffabdc",
-#    version = "bdc2f987cd0e15ebfa9b76689a4c9a472730a6f0",
+#    name = "io_kythe",
+#    repo = "kythe/kythe",
+#    sha256 = "6e4358e780768cae8a98ddf7059e588228bfd3319b24a4ab03cedc84231b14b4",
+#    version = "v0.0.63",
 #)
 #
-#github_archive(
-#    name = "build_bazel_rules_nodejs",
-#    repo = "bazelbuild/rules_nodejs",
-#    sha256 = "171bdbd8386576ed2f6a3f8aff87eeb048f963981870a3a8432be7d12cf5b2cc",
-#    version = "1.3.0",
+#http_archive(
+#    name = "com_github_tencent_rapidjson",
+#    build_file = "@io_kythe//third_party:rapidjson.BUILD",
+#    sha256 = "e6fc99c7df7f29995838a764dd68df87b71db360f7727ace467b21b82c85efda",
+#    strip_prefix = "rapidjson-8f4c021fa2f1e001d2376095928fc0532adf2ae6",
+#    url = "https://github.com/Tencent/rapidjson/archive/8f4c021fa2f1e001d2376095928fc0532adf2ae6.zip",
 #)
 #
-#load("@build_bazel_rules_nodejs//:index.bzl", "yarn_install")
-#
-#yarn_install(
-#    name = "npm",
-#    package_json = "//js-toxcore-c:package.json",
-#    yarn_lock = "//js-toxcore-c:yarn.lock",
-#)
-
-#load("@npm//:install_bazel_dependencies.bzl", "install_bazel_dependencies")
-#install_bazel_dependencies()
-
-#load("@org_pubref_rules_node//node:rules.bzl", "node_repositories", "yarn_modules")
-#
-#node_repositories()
-#
-#yarn_modules(
-#    name = "yarn_modules",
-#    install_tools = [
-#        "sh",
-#        "dirname",
-#    ],
-#    deps = {
-#        "ansi-to-html": "0.6.4",
-#        "async": "2.6.0",
-#        "buffertools": "2.1.6",
-#        "ffi": "2.2.0",
-#        "firebase": "3.9.0",
-#        "firepad": "1.4.0",
-#        "grunt": "1.0.1",
-#        "grunt-jsdoc": "2.2.1",
-#        "grunt-shell": "2.1.0",
-#        "ink-docstrap": "1.3.2",
-#        "jsdoc": "3.5.5",
-#        "mktemp": "0.4.0",
-#        "mocha": "3.5.3",
-#        "ref": "1.3.5",
-#        "ref-array": "1.2.0",
-#        "ref-struct": "1.1.0",
-#        "should": "13.2.1",
-#        "underscore": "1.8.3",
-#    },
+#new_github_archive(
+#    name = "com_github_google_glog",
+#    build_file_content = "\n".join([
+#        "load(\"//:bazel/glog.bzl\", \"glog_library\")",
+#        "glog_library(with_gflags=0)",
+#    ]),
+#    repo = "google/glog",
+#    sha256 = "feca3c7e29a693cab7887409756d89d342d4a992d54d7c5599bebeae8f7b50be",
+#    version = "3ba8976592274bc1f907c402ce22558011d6fc5e",
 #)
 #
-#yarn_modules(
-#    name = "mocha_modules",
-#    deps = {"mocha": "3.5.3"},
-#)
-
-# Compilation database
-# =========================================================
-
-# Tool used for creating a compilation database.
-github_archive(
-    name = "io_kythe",
-    repo = "kythe/kythe",
-    sha256 = "6e4358e780768cae8a98ddf7059e588228bfd3319b24a4ab03cedc84231b14b4",
-    version = "v0.0.63",
-)
-
-http_archive(
-    name = "com_github_tencent_rapidjson",
-    build_file = "@io_kythe//third_party:rapidjson.BUILD",
-    sha256 = "e6fc99c7df7f29995838a764dd68df87b71db360f7727ace467b21b82c85efda",
-    strip_prefix = "rapidjson-8f4c021fa2f1e001d2376095928fc0532adf2ae6",
-    url = "https://github.com/Tencent/rapidjson/archive/8f4c021fa2f1e001d2376095928fc0532adf2ae6.zip",
-)
-
-new_github_archive(
-    name = "com_github_google_glog",
-    build_file_content = "\n".join([
-        "load(\"//:bazel/glog.bzl\", \"glog_library\")",
-        "glog_library(with_gflags=0)",
-    ]),
-    repo = "google/glog",
-    sha256 = "feca3c7e29a693cab7887409756d89d342d4a992d54d7c5599bebeae8f7b50be",
-    version = "3ba8976592274bc1f907c402ce22558011d6fc5e",
-)
-
-load("@io_kythe//:setup.bzl", "kythe_rule_repositories")
-
-kythe_rule_repositories()
+#load("@io_kythe//:setup.bzl", "kythe_rule_repositories")
+#
+#kythe_rule_repositories()
 
 # Tox Extension modules
 # =========================================================

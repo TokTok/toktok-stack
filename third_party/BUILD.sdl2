@@ -87,6 +87,7 @@ cc_library(
     textual_hdrs = ["src/hidapi/linux/hid.c"],
     deps = [
         ":headers",
+        "@x11",
         "@xcb",
     ],
 )
@@ -130,6 +131,12 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":sdl2_sysdep",
+        "@asound",
+        "@gl",
         "@xcb",
+        "@xext",
+        "@xproto",
+        "@xss",
+        "@xxf86vm",
     ],
 )

@@ -6,6 +6,10 @@ filegroup(
         ["BUILD.*"],
         exclude = [
             "BUILD.bazel*",
+            # TODO
+            "BUILD.asound",
+            "BUILD.x264",
+            "BUILD.openssl",
             # These depend on //c-toxcore, so can't be pre-built.
             "BUILD.toxext",
             "BUILD.tox_extension_messages",

@@ -1,0 +1,12 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+package(features = ["layering_check"])
+
+[cc_library(
+    name = mod.lower(),
+    srcs = glob(["lib/libQt5%s.so*" % mod]),
+    visibility = ["//visibility:public"],
+) for mod in [
+    "Multimedia",
+    "MultimediaWidgets",
+]]

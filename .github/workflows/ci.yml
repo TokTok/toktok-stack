@@ -40,12 +40,6 @@ jobs:
 
       - name: Build toxchat/toktok-stack:latest-third_party
         run: docker build -t toxchat/toktok-stack:latest-third_party -f tools/built/src/Dockerfile.third_party .
-# TODO(iphydf): Find out how to make this push to the local docker daemon.
-#       uses: docker/build-push-action@v4
-#       with:
-#         file: tools/built/src/Dockerfile.third_party
-#         tags: toxchat/toktok-stack:latest-third_party
-#         cache-from: type=registry,ref=toxchat/toktok-stack:latest-third_party
 
       - name: Build toxchat/toktok-stack:latest
         run: docker build -t toxchat/toktok-stack:latest -f tools/built/src/Dockerfile .

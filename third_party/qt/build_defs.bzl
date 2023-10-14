@@ -10,9 +10,8 @@ This file defines three macros:
 # Qt UI compiler rule.
 # =========================================================
 
-load("@build_bazel_rules_apple//apple:apple.bzl", "apple_dynamic_framework_import")
 load("@build_bazel_rules_apple//apple:macos.bzl", "macos_application")
-load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test", "objc_library")
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
 
 def _qt_uic_impl(ctx):
     uic = ctx.executable._uic
@@ -289,74 +288,6 @@ def qt_test(name, src, deps, copts = [], mocopts = [], size = None):
             ":%s_moc" % name,
             "@qt//:qt_test",
         ],
-    )
-
-# Qt library import into cc_libraries.
-# =========================================================
-
-def qt_import(name, module):
-    """Creates a cc_library of the given name that links in a Qt module.
-
-    Modules are e.g. "Core" for QtCore, "Gui" for QtGui, etc. This works
-    across platforms: OSX, Windows, and FreeBSD/Linux.
-
-    Args:
-      name: the name of the resulting cc_library.
-      module: Qt module name (Core, Gui, Widgets, etc.).
-    """
-    apple_dynamic_framework_import(
-        name = "Qt%s_framework" % module,
-        framework_imports = native.glob(
-            ["lib/Qt%s.framework/**" % module],
-            allow_empty = True,
-        ),
-        visibility = ["//visibility:public"],
-    )
-
-    objc_library(
-        name = "Qt%s_osx" % module,
-        deps = [":Qt%s_framework" % module],
-    )
-
-    cc_library(
-        name = "Qt%s_elf" % module,
-        srcs = [
-            "lib/libQt5%s.so.5" % module,
-            "lib/libQt5%s.so" % module,
-        ],
-        linkopts = [
-            "-Wl,-rpath,external/qt/lib",
-            "-Lexternal/qt/lib",
-            "-lQt5%s" % module,
-        ],
-    )
-
-    cc_library(
-        name = "Qt%s_win" % module,
-        srcs = ["lib/Qt5%s.lib" % module],
-    )
-
-    cc_library(
-        name = name,
-        hdrs = native.glob(["include/Qt%s/**" % module]),
-        includes = [
-            "include",
-            "include/Qt%s" % module,
-        ],
-        linkopts = select({
-            "@toktok//tools/config:linux": [],
-            "@toktok//tools/config:osx": [
-                "-F/usr/local/Cellar/qt/5.14.2/lib",
-                "-framework Qt%s" % module,
-            ],
-            "@toktok//tools/config:windows": [],
-        }),
-        visibility = ["//visibility:public"],
-        deps = select({
-            "@toktok//tools/config:linux": [":Qt%s_elf" % module],
-            "@toktok//tools/config:osx": [":Qt%s_osx" % module],
-            "@toktok//tools/config:windows": [":Qt%s_win" % module],
-        }),
     )
 
 # Building app bundles for macOS.

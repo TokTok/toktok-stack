@@ -1,13 +1,1 @@
 licenses(["notice"])
-
-# We place this binary directly into the repository, because it's needed for the
-# toolchain to work. There may be a way to avoid this, but I don't know it.
-alias(
-    name = "hspec-discover",
-    actual = select({
-        "@toktok//tools/config:freebsd": ":hspec-discover.freebsd",
-        "@toktok//tools/config:linux": ":hspec-discover.linux",
-        "@toktok//tools/config:osx": ":hspec-discover.osx",
-    }),
-    visibility = ["//visibility:public"],
-)

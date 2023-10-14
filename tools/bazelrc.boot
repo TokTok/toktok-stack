@@ -8,21 +8,13 @@ build --color=yes
 build --experimental_disable_external_package
 build --experimental_repository_cache_hardlinks
 
+# This project uses a GHC provisioned via nix.
+# We need to use the rules_haskell nix toolchain accordingly:
+build --host_platform=@io_tweag_rules_nixpkgs//nixpkgs/platforms:host
+run --host_platform=@io_tweag_rules_nixpkgs//nixpkgs/platforms:host
+
 # Java toolchain.
-build:rbe --extra_toolchains=@bazel_toolchain//toolchain/java:all
-
-# C/C++ toolchain.
-build:rbe --extra_toolchains=@bazel_toolchain//toolchain/config:cc-toolchain
-build:rbe --crosstool_top=@bazel_toolchain//toolchain/cc:toolchain
-
-# Platform flags:
-# The toolchain container used for execution is defined in the target indicated
-# by "extra_execution_platforms", "host_platform" and "platforms".
-# More about platforms: https://docs.bazel.build/versions/master/platforms.html
-build:rbe --extra_execution_platforms=@bazel_toolchain//toolchain/config:platform
-build:rbe --host_platform=@bazel_toolchain//toolchain/config:platform
-build:rbe --platforms=@bazel_toolchain//toolchain/config:platform
-
-# Docker image build toxchat/toktok-stack running clang-14 in the
-# toxchat/builder image.
-build:docker --config=rbe
+build --java_runtime_version=nixpkgs_java_11
+build --tool_java_runtime_version=nixpkgs_java_11
+build --java_language_version=11
+build --tool_java_language_version=11

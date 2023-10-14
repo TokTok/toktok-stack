@@ -1,12 +1,13 @@
+# bazel
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
 package(features = ["layering_check"])
 
-# TODO(iphydf): Build x11 in bazel.
 cc_library(
     name = "x11",
-    includes = ["include"],
-    linkopts = ["-lX11"],
-    # hdrs = ["include/X11/Xos.h"],
+    srcs = ["@x11.out//:lib"],
+    hdrs = glob(["include/X11/*.h"]),
+    strip_include_prefix = "include",
     visibility = ["//visibility:public"],
+    deps = ["@xproto"],
 )

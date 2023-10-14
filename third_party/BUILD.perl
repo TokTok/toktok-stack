@@ -1,5 +1,5 @@
 filegroup(
-    name = "happy",
-    srcs = ["bin/happy"],
+    name = "perl",
+    srcs = ["bin/perl"],
     visibility = ["//visibility:public"],
 )
