@@ -7,11 +7,11 @@ RUN ["mkdir", "/tmp/cirrus-ci-build"]
 # download GHC and some other large dependencies that rarely change. We copy the
 # minimum number of files to avoid rebuilding this when making changes to the
 # toktok-stack tools.
-COPY tools/bazelrc.boot /src/workspace/.bazelrc
-COPY BUILD.bazel WORKSPACE .bazelignore .bazelversion ghc.nix /src/workspace/
-COPY third_party /src/workspace/third_party
-COPY tools/config /src/workspace/tools/config
-COPY tools/workspace /src/workspace/tools/workspace
+COPY --chown=builder:users tools/bazelrc.boot /src/workspace/.bazelrc
+COPY --chown=builder:users BUILD.bazel WORKSPACE .bazelignore .bazelversion ghc.nix /src/workspace/
+COPY --chown=builder:users third_party /src/workspace/third_party
+COPY --chown=builder:users tools/config /src/workspace/tools/config
+COPY --chown=builder:users tools/workspace /src/workspace/tools/workspace
 RUN bazel aquery --output=proto --show_timestamps //... > /dev/null
 
 # vim:ft=dockerfile

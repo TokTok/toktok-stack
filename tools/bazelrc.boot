@@ -7,6 +7,10 @@ build --color=yes
 # reinitialise the entire workspace.
 build --experimental_disable_external_package
 build --experimental_repository_cache_hardlinks
+build --incompatible_disable_target_provider_fields
+build --incompatible_disallow_empty_glob
+build --incompatible_no_implicit_file_export
+build --incompatible_top_level_aspects_require_providers
 
 # This project uses a GHC provisioned via nix.
 # We need to use the rules_haskell nix toolchain accordingly:

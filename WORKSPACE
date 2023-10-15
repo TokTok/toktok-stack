@@ -4,24 +4,10 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
 
 github_archive(
-    name = "rules_jvm_external",
-    repo = "bazelbuild/rules_jvm_external",
-    sha256 = "6cc8444b20307113a62b676846c29ff018402fd4c7097fcd6d0a0fd5f2e86429",
-    version = "5.3",
-)
-
-#github_archive(
-#    name = "rules_proto",
-#    repo = "bazelbuild/rules_proto",
-#    sha256 = "8800a005ed818bc683e14081567de3c8a73208ced446dfb5b2f76230f26c198b",
-#    version = "8aa1e67c09bc8df20df33886909d44129cfb7e63",
-#)
-
-github_archive(
     name = "bazel_skylib",
     repo = "bazelbuild/bazel-skylib",
-    sha256 = "ed3492b4badb318e99c8f200556ec97166144897daa0ad06870d45ed9019d87d",
-    version = "6fcbad3991638ca5882e64ec53143ac316b17a7e",
+    sha256 = "4060f1efdb6e12e72dd531700271e281e66f5fd46a708bbfadba194588111f42",
+    version = "652c8f0b2817daaa2570b7a3b2147643210f7dc7",
 )
 
 # Fuzzing
@@ -73,8 +59,8 @@ go_rules_dependencies()
 github_archive(
     name = "rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "53ed15f888062324cc901bd1d75b80e8a560a38eaec17bb8640c5c82bf52dcbd",
-    version = "9fad1d3ab1b1084100f8c897ef3eb00e44348bac",
+    sha256 = "dfb99ad2788a65bba2400b7801c3241839220c033eb41a141f7fc434f4796543",
+    version = "48df56b32710e7894079cde1a91b2701667fa518",
 )
 
 load(
@@ -106,6 +92,7 @@ nixpkgs_git_repository(
 )
 
 nixpkgs_cc_configure(
+    attribute_path = "clang_16",
     repository = "@nixpkgs",
 )
 
@@ -177,47 +164,45 @@ go_repository(
 
 go_repository(
     name = "com_github_gorilla_websocket",
-    commit = "main",
+    commit = "666c197fc9157896b57515c3a3326c3f8c8319fe",
     importpath = "github.com/gorilla/websocket",
 )
 
 go_repository(
     name = "com_github_streamrail_concurrent_map",
-    commit = "master",
+    commit = "8bf1e9bacbf65b10c81d0f4314cf2b1ebef728b5",
     importpath = "github.com/streamrail/concurrent-map",
 )
 
 go_repository(
     name = "com_github_petermattis_goid",
-    commit = "master",
+    commit = "1876fd5063bc764851a18bc0e050b9ab7adca065",
     importpath = "github.com/petermattis/goid",
 )
 
 go_repository(
     name = "com_github_sasha_s_go_deadlock",
-    commit = "master",
+    commit = "5afde13977e624ab3bd64e5801f75f9e8eb1f41b",
     importpath = "github.com/sasha-s/go-deadlock",
 )
 
 go_repository(
     name = "com_github_kardianos_osext",
-    commit = "master",
+    commit = "2bc1f35cddc0cc527b4bc3dce8578fc2a6c11384",
     importpath = "github.com/kardianos/osext",
 )
 
 # C/C++ dependencies
 # =========================================================
 
-load("//tools/workspace:local.bzl", "local_library_repository")
-
 nixpkgs_package(
-    name = "alsaLib",
+    name = "alsa-lib",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "asound",
-    attribute_path = "alsaLib.dev",
+    attribute_path = "alsa-lib.dev",
     build_file = "//third_party:BUILD.asound",
     repository = "@nixpkgs",
 )
@@ -240,11 +225,6 @@ http_archive(
     sha256 = "97fc51ac2b085d4cde31ef4d2c3122c21abc217e9090a43a30fc5ec21684e059",
     strip_prefix = "ncurses-6.3",
     urls = ["https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.3.tar.gz"],
-)
-
-local_library_repository(
-    name = "x264",
-    version = "r2917_1",
 )
 
 github_archive(
@@ -377,14 +357,6 @@ new_github_archive(
     repo = "zeromq/libzmq",
     sha256 = "710cbbbd97cd8ab6831466d8d4f2e9f491efacf34c24c72183c4e6428e203300",
     version = "v4.3.2",
-)
-
-new_github_archive(
-    name = "msgpack-c",
-    patches = ["@toktok//third_party/patches:msgpack-c.patch"],
-    repo = "msgpack/msgpack-c",
-    sha256 = "fa6648361c9254ae7897be2b0731570dcae047d2f07f0b732f443ac7d11c37ec",
-    version = "c-4.0.0",
 )
 
 new_github_archive(
@@ -578,25 +550,23 @@ apple_support_dependencies()
 # Qt5
 # =========================================================
 
-[nixpkgs_package(
-    name = "qt5.qt%s.out" % mod,
-    build_file = "//third_party/qt:BUILD.qt%s.out" % mod,
-    repository = "@nixpkgs",
-) for mod in [
+QT_LIBS = [
     "base",
     "multimedia",
     "svg",
-]]
+]
 
 [nixpkgs_package(
-    name = "qt5.qt%s.dev" % mod,
-    build_file = "//third_party/qt:BUILD.qt%s.dev" % mod,
+    name = "qt5.qt%s.out" % lib,
+    build_file = "//third_party/qt:BUILD.qt%s.out" % lib,
     repository = "@nixpkgs",
-) for mod in [
-    "base",
-    "multimedia",
-    "svg",
-]]
+) for lib in QT_LIBS]
+
+[nixpkgs_package(
+    name = "qt5.qt%s.dev" % lib,
+    build_file = "//third_party/qt:BUILD.qt%s.dev" % lib,
+    repository = "@nixpkgs",
+) for lib in QT_LIBS]
 
 nixpkgs_package(
     name = "qt",

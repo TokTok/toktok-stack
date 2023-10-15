@@ -46,6 +46,7 @@ with (import <nixpkgs> { config = {}; overlays = []; });
     language-c
     lens-family
     microlens
+    microlens-mtl
     microlens-th
     monad-control
     monad-parallel
@@ -69,6 +70,7 @@ with (import <nixpkgs> { config = {}; overlays = []; });
     suspend
     tabular
     text
+    text-zipper
     time
     timers
     transformers
@@ -78,9 +80,11 @@ with (import <nixpkgs> { config = {}; overlays = []; });
     unordered-containers
     uuid
     vector
+    vty
     wai
     wai-cors
     wai-extra
     warp
+    word-wrap
   ]);
 }

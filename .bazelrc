@@ -12,6 +12,7 @@ build --show_progress_rate_limit=0.5
 
 build --check_licenses=true
 build --process_headers_in_dependencies
+#build --remote_cache_compression  # needs newer bazel version
 build --remote_download_minimal
 build --strict_filesets=true
 #build --strict_proto_deps=strict
@@ -32,6 +33,9 @@ build --experimental_inmemory_jdeps_files
 build --experimental_objc_include_scanning
 build --experimental_remotable_source_manifests
 #build --experimental_remote_build_event_upload=minimal
+build --experimental_remote_cache_async
+build --experimental_remote_merkle_tree_cache
+#build --experimental_remote_require_cached
 build --experimental_repository_cache_hardlinks
 
 build --experimental_android_compress_java_resources=true
@@ -42,18 +46,14 @@ build --incompatible_check_testonly_for_output_files
 build --incompatible_default_to_explicit_init_py
 build --incompatible_disable_native_android_rules
 build --incompatible_disable_runtimes_filegroups
-build --incompatible_disable_target_provider_fields
-build --incompatible_disallow_empty_glob
 build --incompatible_dont_use_javasourceinfoprovider
 build --incompatible_enable_android_toolchain_resolution
 build --incompatible_enable_apple_toolchain_resolution
 build --incompatible_exclusive_test_sandboxed
-build --incompatible_no_implicit_file_export
 build --incompatible_remote_output_paths_relative_to_input_root
 build --incompatible_remote_use_new_exit_code_for_lost_inputs
 build --incompatible_sandbox_hermetic_tmp
 build --incompatible_strict_action_env
-build --incompatible_top_level_aspects_require_providers
 build --incompatible_use_host_features
 
 # These don't work, yet.
@@ -316,10 +316,24 @@ build:kythe --distinct_host_configuration=true
 #
 ##############################################################################
 
-build:gnulike --per_file_copt='@-Wall'
-build:gnulike --per_file_copt='@-Werror'
-build:gnulike --per_file_copt='@-Wformat'
-build:gnulike --per_file_copt='@-Wformat-security'
+build:gnulike --copt='-Wall'
+build:gnulike --copt='-Werror'
+build:gnulike --copt='-Wformat'
+build:gnulike --copt='-Wformat-security'
+
+build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Weverything'
+build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-c++98-compat'
+build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-c++98-compat-pedantic'
+build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-conversion'
+build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-covered-switch-default'
+build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-disabled-macro-expansion'
+build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-documentation-deprecated-sync'
+build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-missing-field-initializers'
+build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-missing-noreturn'
+build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-padded'
+build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-reserved-id-macro'
+build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-unused-parameter'
+build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-vla'
 
 # NO_FRAME_POINTER is set when compiling fuzzers (for some reason), causing absl to use the
 # libunwind stack trace implementation, which is Google internal-only, so fails to compile in Open
@@ -356,7 +370,7 @@ build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.c$@-Wol
 build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.(cc|cpp)$@-Wzero-as-null-pointer-constant'
 
 # X11/Xfuncproto.h does this.
-build:gcc --per_file_copt='//qtox@-Wno-variadic-macros'
+build:gnulike --per_file_copt='//qtox[:/].*x11@-Wno-variadic-macros'
 
 # TODO(iphydf): Fix these.
 build:gcc --per_file_copt='//toxins/tox_shell@-Wno-unused-result'
@@ -386,20 +400,6 @@ build:clang --copt='-Wno-deprecated-builtins'
 # TODO(iphydf): Fix these or move them to per_file_copt (for third_party stuff).
 build:clang --copt='-Wno-unsafe-buffer-usage'
 build:clang --copt='-Wno-unused-but-set-variable'
-
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Weverything'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-c++98-compat'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-c++98-compat-pedantic'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-conversion'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-covered-switch-default'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-disabled-macro-expansion'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-documentation-deprecated-sync'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-missing-field-initializers'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-missing-noreturn'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-padded'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-reserved-id-macro'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-unused-parameter'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-vla'
 
 build:clang --per_file_copt='//c-toxcore/toxav:video.c@-Wno-used-but-marked-unused'
 build:clang --per_file_copt='//c-toxcore/super_donators@-w'
@@ -486,17 +486,25 @@ build:gnulike --per_file_copt='\\.pb\\.cc$@-w'
 # Disable some clang warnings on ffmpeg.
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-bool-operation'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-braced-scalar-init'
+build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-dangling-else'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-implicit-const-int-float-conversion'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-incompatible-pointer-types-discards-qualifiers'
+build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-parentheses'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-pointer-bool-conversion'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-shorten-64-to-32'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-sometimes-uninitialized'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-string-plus-int'
+build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-switch'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-tautological-constant-out-of-range-compare'
+build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-unneeded-internal-declaration'
 build:clang --per_file_copt='external/ffmpeg/fftools[:/]@-Wno-single-bit-bitfield-constant-conversion'
 build:clang --per_file_copt='external/libconfig[:/]@-Wno-deprecated-non-prototype'
+build:clang --per_file_copt='external/libsodium[:/]@-Wno-unknown-pragmas'
+build:clang --per_file_copt='external/libsodium[:/]@-Wno-unused-function'
+build:clang --per_file_copt='external/libsodium[:/]@-Wno-unused-variable'
 build:clang --per_file_copt='external/portaudio[:/]@-Wno-implicit-const-int-float-conversion'
 build:clang --per_file_copt='external/zlib[:/]@-Wno-deprecated-non-prototype'
+build:clang --host_per_file_copt='external/zlib[:/]@-Wno-deprecated-non-prototype'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-array-parameter'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-bool-operation'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-discarded-qualifiers'
@@ -516,10 +524,8 @@ build:clang --per_file_copt='external/openal[:/]@-Wno-unused-value'
 build:gcc --host_per_file_copt='external/openal[:/]@-Wno-use-after-free'
 
 build:clang --per_file_copt='external/tcl[:/]@-Wno-typedef-redefinition'
-build:gnulike --per_file_copt='external/tcl[:/]@-Wno-unused-function'
-build:gnulike --per_file_copt='external/tcl[:/]@-Wno-unused-but-set-variable'
-build:gnulike --per_file_copt='external/tcl[:/]@-Wno-unused-variable'
-build:gnulike --host_per_file_copt='external/tcl[:/]@-Wno-unused-variable'
+build:gnulike      --per_file_copt='external/tcl[:/]@-Wno-unused'
+build:gnulike --host_per_file_copt='external/tcl[:/]@-Wno-unused'
 
 build:gcc      --per_file_copt='external/yasm[:/]@-Wno-format-overflow'
 build:gcc --host_per_file_copt='external/yasm[:/]@-Wno-format-overflow'
@@ -615,8 +621,8 @@ build:ci --flaky_test_attempts=6  # try a bit harder - toxcore tests are flaky
 # Docker build doesn't support IPv6.
 build:docker --config=ci
 
-# We use GCC in the nix builders.
-build --config=gcc
+# We use Clang in the nix builders.
+build:gnulike --config=clang
 
 try-import %workspace%/.bazelrc.local
 
