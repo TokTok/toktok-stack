@@ -2,14 +2,14 @@
 
 set -eux
 
-sudo service ssh start
+sudo openrc
+sudo touch /run/openrc/softlevel
+sudo openrc -s sshd start
+
+echo hi
 
 # Start Tor node for any local testing.
-sudo service tor start
-
-# Re-initialise third party and git remotes if this is an external volume
-# mounted the first time.
-tools/prepare_third_party.sh
+#sudo service tor start
 
 # Install a default .bazelrc.local that works with the dev container.
 if [ ! -f .bazelrc.local ]; then ln -s .bazelrc.local.example .bazelrc.local; fi
@@ -20,4 +20,4 @@ if [ -d /src/workspace/.vscode ]; then sudo chown -R builder:users /src/workspac
 bazel-compdb
 bazel build --config=remote //...
 
-nc -l 0.0.0.0 2000
+exec nix-shell -p netcat --run "nc -l 0.0.0.0 2000"

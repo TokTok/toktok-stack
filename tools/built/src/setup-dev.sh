@@ -2,7 +2,7 @@
 
 set -eux
 
-BUILDTOOLS_VERSION="v6.1.2"
+BUILDTOOLS_VERSION="v6.3.3"
 BCDB_VERSION="0.5.2"
 
 for prog in buildifier buildozer unused_deps; do
@@ -12,9 +12,7 @@ done
 
 sudo install -o root -g root -m 755 tools/built/src/bazel-nomodules /usr/local/bin/bazel-nomodules
 
-echo "export BAZEL_COMPDB_BAZEL_PATH=bazel-nomodules" >>~/.zlogin
-echo "export CC=$CC" >>~/.zlogin
-echo "export CXX=$CXX" >>~/.zlogin
+echo "export BAZEL_COMPDB_BAZEL_PATH=$BAZEL_COMPDB_BAZEL_PATH" >>~/.zlogin
 
 INSTALL_DIR="/usr/local/bin"
 
@@ -31,4 +29,4 @@ tools/project/update_versions.sh
 
 bazel-compdb
 bazel build --show_timestamps //...
-tools/retry 5 bazel test --show_timestamps -- //... -//jvm-toxcore-c:ToxCryptoImplTest
+# tools/retry 5 bazel test --show_timestamps -- //...

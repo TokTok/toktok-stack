@@ -8,91 +8,56 @@ FROM toxchat/toktok-stack:latest-fastbuild
 
 USER root
 
-# Install some common dev tools. We need cmake for the YCM build below. We
-# also install an SSH server so we can connect to our dev container.
-#
-# This first does a partial "unminimize" so manpages for the packages we
-# install here are not excluded. We don't fully unminimize because that would
-# blow up our docker image size and we don't need most of the docs it adds.
-RUN rm /etc/dpkg/dpkg.cfg.d/excludes \
- && rm /usr/bin/man \
- && dpkg-divert --quiet --remove --rename /usr/bin/man \
- && rm /etc/update-motd.d/60-unminimize \
- && apt-get update && apt-get install -y --no-install-recommends \
- astyle \
- cmake \
- connect-proxy \
- cppcheck \
- dumb-init \
- gnupg \
- golang \
- less \
- libgtest-dev \
- locales \
- man-db \
- manpages-dev \
- mypy \
- netcat \
- openssh-server \
- patch \
- screen \
- stylish-haskell \
- tor \
- vim \
- zsh \
- && apt-get clean
-
-RUN usermod -s /usr/bin/zsh builder \
- && locale-gen en_US.UTF-8 \
- && update-locale LANG=en_US.UTF-8
+# Install an SSH server so we can connect to our dev container.
+RUN ["apk", "add",\
+ "dumb-init",\
+ "mandoc",\
+ "man-pages",\
+ "openrc",\
+ "openssh-server",\
+ "shadow",\
+ "tor"]
 
 # Install ibazel for quick rebuilds.
-RUN wget -q https://github.com/bazelbuild/bazel-watcher/releases/download/v0.15.10/ibazel_linux_amd64 \
+RUN wget -q https://github.com/bazelbuild/bazel-watcher/releases/download/v0.23.7/ibazel_linux_amd64 \
  && install -o root -g root -m 755 ibazel_linux_amd64 /usr/local/bin/ibazel \
  && rm -f ibazel_linux_amd64
 
 # Install our wrapper for lhs support in stylish-haskell.
-RUN dpkg-divert --add --rename /usr/bin/stylish-haskell \
- && ln -s /src/workspace/ci-tools/bin/stylish-haskell-lhs /usr/bin/stylish-haskell
-
-# Install heroku CLI.
-RUN curl https://cli-assets.heroku.com/install.sh | sh
+#RUN mv /usr/bin/stylish-haskell /usr/bin/stylish-haskell.distrib \
+# && ln -s /src/workspace/ci-tools/bin/stylish-haskell-lhs /usr/bin/stylish-haskell
 
 USER builder
 
-# Build YCM before everything else, because this one doesn't change much and
-# takes a while to compile.
-RUN git clone --jobs=8 --depth=1 --recurse-submodules --shallow-submodules https://github.com/ycm-core/YouCompleteMe ~/.vim/bundle/YouCompleteMe \
- && cd ~/.vim/bundle/YouCompleteMe && python3 install.py --clangd-completer --go-completer
+RUN nix-channel --add https://github.com/NixOS/nixpkgs/archive/refs/tags/23.05.tar.gz nixpkgs \
+ && nix-channel --add https://github.com/nix-community/home-manager/archive/release-23.05.tar.gz home-manager \
+ && nix-channel --update \
+ && nix-shell '<home-manager>' -A install
 
-# Install flutter development tools.
-ENV PATH=$PATH:/home/builder/flutter/bin
-RUN git clone --depth=1 https://github.com/flutter/flutter.git ~/flutter \
- && flutter doctor
+COPY tools/built/src/home.nix /home/builder/.config/home-manager/
+RUN ["home-manager", "switch"]
 
-# Prepare builder's home with oh-my-zsh and toxcore's astylerc.
-RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
- && sed -i -e 's/^ZSH_THEME=.*/ZSH_THEME="cypher"/' "$HOME/.zshrc" \
- && echo "cd /src/workspace" >> "$HOME/.zshrc" \
- && ln -sf /src/workspace/c-toxcore/other/astyle/astylerc $HOME/.astylerc
+# Prepare builder's home with toxcore's astylerc.
+RUN ["ln", "-sf", "/src/workspace/c-toxcore/other/astyle/astylerc", "/home/builder/.astylerc"]
 
-# Build everything in default (fastbuild) mode. Use remote here in the initial
-# build, but not later when `builder` is interactively working. "remote" is set
-# in the base -fastbuild image.
-#
-# Run tests afterwards, because those can be retried, while the build must
-# succeed first time. We exclude ToxCryptoImplTest because it times out in
-# unoptimised builds.
+# Disable layering check for compdb generation.
+COPY tools/built/src/bazel-nomodules /src/workspace/tools/built/src/
 ENV BAZEL_COMPDB_BAZEL_PATH=bazel-nomodules
+
 # For local development: the setup script might have changed and is an
 # extension of the Dockerfile, so we copy it here. On CI builds, they are
 # the same file.
 COPY tools/built/src/setup-dev.sh /src/workspace/tools/built/src/
-RUN /src/workspace/tools/built/src/setup-dev.sh
+RUN ["/src/workspace/tools/built/src/setup-dev.sh"]
 
 # Also for local development: add this file again, so local changes are
 # reflected.
 COPY tools/built/src/init.sh tools/built/src/setup-local.sh /src/workspace/tools/built/src/
 CMD ["/src/workspace/tools/built/src/init.sh"]
+
+RUN ["sudo", "usermod", "-s", "/home/builder/.nix-profile/bin/zsh", "builder"]
+
+VOLUME [ "/sys/fs/cgroup" ]
+EXPOSE 22/tcp
 
 # vim:ft=dockerfile

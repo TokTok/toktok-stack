@@ -2,6 +2,7 @@
 # Also avoid some files that are never needed in any of the Docker or
 # submodule CI builds. When using the dev container, we expect to mount the
 # user's local workspace directory so these excluded files will be present.
+/bazel-*
 .github
 **/*.gz
 **/*.log
@@ -17,7 +18,6 @@
 **/__pycache__
 **/_build
 **/_install
-**/bazel-*
 **/build
 **/compile_commands.json
 **/wip

@@ -15,9 +15,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'andy-morris/alex.vim'
 Plugin 'andy-morris/happy.vim'
 Plugin 'cappyzawa/starlark.vim'
-Plugin 'nanotech/jellybeans.vim'
 Plugin 'raichoo/haskell-vim'
-Plugin 'ycm-core/YouCompleteMe'
 
 " All of your Plugins must be added before the following line
 call vundle#end()		" required
@@ -81,4 +79,4 @@ set terse
 nnoremap <C-l> :noh<CR><C-l>
 map Q gqap
 
-" colorscheme is appended at the end so the initial PluginInstall works.
+colorscheme jellybeans
