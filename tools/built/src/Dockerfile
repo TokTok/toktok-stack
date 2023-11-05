@@ -11,4 +11,4 @@ RUN echo "import %workspace%/tools/bazelrc.docker" >> /src/workspace/.bazelrc
 # Finally, we run another aquery. This will download some more dependencies, but
 # the most expensive ones should already have been downloaded in the third_party
 # image we built before this one.
-RUN bazel aquery --output=proto //... > /dev/null
+RUN sudo nix-daemon --daemon & bazel aquery --output=proto //... > /dev/null

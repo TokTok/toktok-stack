@@ -3,7 +3,6 @@ FROM toxchat/toktok-stack:latest
 
 RUN echo 'build --config=debug'  >> .bazelrc.local
 
-# TODO(iphydf): Fix debug build for Haskell.
-RUN ["bazel", "build", "-k", "--", "//third_party/...",  "-//third_party/haskell/..."]
+RUN sudo nix-daemon --daemon & bazel build -k //third_party/...
 
 # vim:ft=dockerfile

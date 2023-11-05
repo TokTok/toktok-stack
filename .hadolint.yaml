@@ -1,4 +1,5 @@
 ---
 ignored:
-  - DL3007
-  - DL3008
+  - DL3004 # We use sudo to launch nix-daemon.
+  - DL3007 # We use the "latest" tags in our images.
+  - DL3008 # We don't pin versions in apt get install.

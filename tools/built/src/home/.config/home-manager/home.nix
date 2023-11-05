@@ -3,11 +3,13 @@
 {
   home.username = "builder";
   home.homeDirectory = "/home/builder";
-  home.sessionVariables = { EDITOR = "vi"; };
+  home.sessionVariables = { EDITOR = "nvim"; };
+  home.sessionPath = [ "/src/workspace/hs-github-tools/tools" ];
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
     connect # for ssh proxy via tor
+    gnupg
     openssh
     screen # terminal window manager
   ];
@@ -62,6 +64,8 @@
     initExtra = ''
       unsetopt beep                   # don't beep, ever
       setopt hist_reduce_blanks       # remove superfluous blanks
+
+      cd /src/workspace               # go to work
     '';
 
     shellAliases = {
