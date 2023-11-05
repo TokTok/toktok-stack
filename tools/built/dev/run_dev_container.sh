@@ -20,10 +20,15 @@ if [ ! -f home/.ssh/id_rsa ]; then
   ssh-keygen -f home/.ssh/id_rsa
 fi
 
+(cd workspace && docker build -t toxchat/toktok-stack:latest-dev -f tools/built/src/Dockerfile.dev .)
 tar c home workspace/tools/built/dev |
   docker build -t "$IMAGE" -f workspace/tools/built/dev/Dockerfile -
 docker run --name=toktok-dev --rm -it \
   -p 2224:22 \
+  --tmpfs "/run" \
+  --tmpfs "/run/wrappers" \
+  --tmpfs "/tmp" \
+  -v "/sys/fs/cgroup:/sys/fs/cgroup" \
   -v "$PWD/workspace:/src/workspace" \
   -v "$HOME/.local/share/vscode/config:/src/workspace/.vscode" \
   -v "$HOME/.local/share/vscode/server:/home/builder/.vscode-server" \

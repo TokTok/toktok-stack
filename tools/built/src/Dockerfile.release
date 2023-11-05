@@ -2,12 +2,12 @@
 FROM toxchat/toktok-stack:latest
 
 RUN \
- if curl -s -m1 https://code.tox.chat/bazel/ \
+ if curl -s -m1 http://code.tox.chat/bazel/ \
    | grep "resource name must be a SHA256 hash"; then \
    echo 'build --config=remote' | tee -a .bazelrc.local; \
  fi
 RUN echo 'build --config=release' >> .bazelrc.local
 
-RUN ["bazel", "build", "-k", "//..."]
+RUN sudo nix-daemon --daemon & bazel build -k //...
 
 # vim:ft=dockerfile

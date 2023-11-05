@@ -4,6 +4,6 @@ FROM toxchat/toktok-stack:latest
 RUN echo 'build --config=release' >> .bazelrc.local \
  && echo 'build --config=asan'    >> .bazelrc.local
 
-RUN ["bazel", "build", "-k", "--", "//third_party/..."]
+RUN sudo nix-daemon --daemon & bazel build -k //third_party/...
 
 # vim:ft=dockerfile
