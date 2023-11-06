@@ -30,7 +30,8 @@ INSTALL_DIR="$HOME/.bin"
 # that in the toktok-stack builds. It's checked in the submodule builds.
 tools/project/update_versions.sh
 
-sudo nix-daemon --daemon & sleep 1
+sudo nix-daemon --daemon &
+sleep 1
 nix-shell -p python3 --run "python3 $HOME/.bin/bazel-compdb"
 bazel build --show_timestamps //...
 tools/retry 5 bazel test --show_timestamps -- //...
