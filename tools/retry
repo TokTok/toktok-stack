@@ -5,7 +5,7 @@ set -eux
 ATTEMPTS="$1"
 shift
 
-for i in `seq 1 $ATTEMPTS`; do
+for i in "$(seq 1 "$ATTEMPTS")"; do
   echo "=== Attempt $i ===";
   if "$@"; then
     exit 0
