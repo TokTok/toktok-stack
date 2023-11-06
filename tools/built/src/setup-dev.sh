@@ -5,16 +5,20 @@ set -eux
 BUILDTOOLS_VERSION="v6.3.3"
 BCDB_VERSION="0.5.2"
 
+mkdir -p "$HOME/.bin"
+export PATH="$PATH:$HOME/.bin"
+
 for prog in buildifier buildozer unused_deps; do
-  wget -q -O "$prog" "https://github.com/bazelbuild/buildtools/releases/download/$BUILDTOOLS_VERSION/$prog-linux-amd64"
-  sudo install -o root -g root -m 755 "$prog" "/usr/local/bin/$prog"
+  curl -L -s -o "$prog" "https://github.com/bazelbuild/buildtools/releases/download/$BUILDTOOLS_VERSION/$prog-linux-amd64"
+  sudo install -o root -g root -m 755 "$prog" "$HOME/.bin/$prog"
+  rm -f "$prog"
 done
 
-sudo install -o root -g root -m 755 tools/built/src/bazel-nomodules /usr/local/bin/bazel-nomodules
+sudo install -o root -g root -m 755 tools/built/src/bazel-nomodules "$HOME/.bin/bazel-nomodules"
 
 echo "export BAZEL_COMPDB_BAZEL_PATH=$BAZEL_COMPDB_BAZEL_PATH" >>~/.zlogin
 
-INSTALL_DIR="/usr/local/bin"
+INSTALL_DIR="$HOME/.bin"
 
 # Download and symlink.
 (
@@ -27,6 +31,12 @@ INSTALL_DIR="/usr/local/bin"
 # that in the toktok-stack builds. It's checked in the submodule builds.
 tools/project/update_versions.sh
 
-bazel-compdb
+# Start nix-daemon if it isn't running yet.
+if [ ! -f /nix/var/nix/daemon-socket/socket ]; then
+  sudo nix-daemon --daemon &
+  sleep 1
+fi
+
+nix-shell -p python3 --run "python3 $HOME/.bin/bazel-compdb"
 bazel build --show_timestamps //...
-# tools/retry 5 bazel test --show_timestamps -- //...
+tools/retry 5 bazel test --show_timestamps -- //...

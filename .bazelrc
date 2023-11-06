@@ -113,7 +113,8 @@ build:docker-sandbox --strategy=Javac=docker
 #
 # TODO(https://github.com/tweag/rules_haskell/issues/1265): Enable this by
 # default once rules_haskell supports it.
-build:sandboxfs --experimental_use_sandboxfs=auto
+build:sandboxfs --experimental_sandboxfs_path=/home/builder/.bin/sandboxfs
+build:sandboxfs --experimental_use_sandboxfs
 build:sandboxfs --experimental_use_windows_sandbox=auto
 
 ##############################################################################
@@ -157,6 +158,8 @@ build:debug -c dbg
 build:release -c opt
 # NDEBUG disables asserts.
 #build:release --copt='-Wno-unused-variable'
+
+build:strace --run_under="/run/current-system/sw/bin/strace -f"
 
 build:dynamic-analysis --jobs=4
 build:dynamic-analysis --test_timeout=300

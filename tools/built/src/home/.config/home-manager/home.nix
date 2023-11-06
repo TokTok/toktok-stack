@@ -4,7 +4,10 @@
   home.username = "builder";
   home.homeDirectory = "/home/builder";
   home.sessionVariables = { EDITOR = "nvim"; };
-  home.sessionPath = [ "/src/workspace/hs-github-tools/tools" ];
+  home.sessionPath = [
+    "${config.home.homeDirectory}/.bin"
+    "/src/workspace/hs-github-tools/tools"
+  ];
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
@@ -12,6 +15,7 @@
     gnupg
     openssh
     screen # terminal window manager
+    tor
   ];
 
   # This value determines the Home Manager release that your
@@ -44,15 +48,31 @@
 
   programs.neovim = {
     enable = true;
-    plugins = with pkgs.vimPlugins; [ jellybeans-vim vim-nix YouCompleteMe ];
+    plugins = with pkgs.vimPlugins; [
+      jellybeans-vim
+      vim-bazel
+      vim-nix
+      YouCompleteMe
+    ];
 
     extraConfig = ''
       colorscheme jellybeans
 
+      set expandtab
       set nowrap
       set viminfo='500,\"800
+      set scrolloff=5
+      set sidescrolloff=3
+      set cursorline
+      set backup
+      set backupdir=~/.local/state/nvim/backup/
+
+      let g:ycm_extra_conf_globlist = ['/src/workspace/.ycm_extra_conf.py']
 
       nnoremap <C-l> :noh<CR><C-l>
+      map Q gqap
+
+      au FileType bzl set ts=4 sw=4
     '';
   };
 

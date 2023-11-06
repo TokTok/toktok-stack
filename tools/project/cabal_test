@@ -90,16 +90,18 @@ def resolve_bazel_deps(
             sys.exit(1)
         for dep in rule["deps"]:
             if dep.startswith(":hs-"):
-                deps.append(dep[4:])
+                deps.append(dep[len(":hs-"):])
             elif dep.startswith("//hs-"):
-                deps.append(dep[5:])
+                deps.append(dep[len("//hs-"):])
             elif dep.startswith("//c-"):
                 pass  # ignore native deps for now
             elif dep.startswith(":"):
                 if name != "testsuite":
                     deps.extend(go(dep[1:]))
+            elif dep.startswith("//third_party/haskell:"):
+                deps.append(dep[len("//third_party/haskell:"):])
             else:
-                deps.append(dep)
+                raise Exception(f"deps contains unhandled dependency {dep}")
         return deps
 
     return set(go(name))

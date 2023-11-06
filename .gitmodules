@@ -16,9 +16,6 @@
 [submodule "dockerfiles"]
 	path = dockerfiles
 	url = https://github.com/TokTok/dockerfiles
-[submodule "echobot-jvm"]
-	path = echobot-jvm
-	url = https://github.com/TokTok/echobot-jvm
 [submodule "experimental"]
 	path = experimental
 	url = https://github.com/TokTok/experimental
@@ -64,21 +61,6 @@
 [submodule "js-toxcore-c"]
 	path = js-toxcore-c
 	url = https://github.com/TokTok/js-toxcore-c
-[submodule "jtox"]
-	path = jtox
-	url = https://github.com/TokTok/jtox
-[submodule "jvm-macros"]
-	path = jvm-macros
-	url = https://github.com/TokTok/jvm-macros
-[submodule "jvm-sbt-plugins"]
-	path = jvm-sbt-plugins
-	url = https://github.com/TokTok/jvm-sbt-plugins
-[submodule "jvm-toxcore-api"]
-	path = jvm-toxcore-api
-	url = https://github.com/TokTok/jvm-toxcore-api
-[submodule "jvm-toxcore-c"]
-	path = jvm-toxcore-c
-	url = https://github.com/TokTok/jvm-toxcore-c
 [submodule "py-toxcore-c"]
 	path = py_toxcore_c
 	url = https://github.com/TokTok/py-toxcore-c
@@ -88,9 +70,6 @@
 [submodule "spec"]
 	path = spec
 	url = https://github.com/TokTok/spec
-[submodule "streambot-jvm"]
-	path = streambot-jvm
-	url = https://github.com/TokTok/streambot-jvm
 [submodule "tools/.github"]
 	path = tools/.github
 	url = https://github.com/TokTok/.github

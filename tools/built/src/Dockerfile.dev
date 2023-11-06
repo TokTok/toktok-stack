@@ -34,14 +34,7 @@ ENV BAZEL_COMPDB_BAZEL_PATH=bazel-nomodules
 # extension of the Dockerfile, so we copy it here. On CI builds, they are
 # the same file.
 COPY tools/built/src/setup-dev.sh /src/workspace/tools/built/src/
-#RUN ["/src/workspace/tools/built/src/setup-dev.sh"]
-
-# Also for local development: add this file again, so local changes are
-# reflected.
-COPY tools/built/src/init.sh tools/built/src/setup-local.sh /src/workspace/tools/built/src/
-#CMD ["/src/workspace/tools/built/src/init.sh"]
-
-#RUN ["sudo", "usermod", "-s", "/home/builder/.nix-profile/bin/zsh", "builder"]
+RUN ["/src/workspace/tools/built/src/setup-dev.sh"]
 
 VOLUME [ "/sys/fs/cgroup" ]
 EXPOSE 22/tcp

@@ -1,0 +1,5 @@
+filegroup(
+    name = "platforms",
+    srcs = glob(["lib/qt-*/plugins/platforms/*offscreen*"]),
+    visibility = ["//visibility:public"],
+)

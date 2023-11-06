@@ -284,6 +284,9 @@ def qt_test(name, src, deps, copts = [], mocopts = [], size = None):
         size = size,
         srcs = [src],
         copts = copts + ["-I$(GENDIR)/%s/%s" % (native.package_name(), src[:src.rindex("/")])],
+        # TODO(iphydf): Infer this, rather than hard-coding the Qt version number.
+        env = {"QT_PLUGIN_PATH": "external/qt5.qtbase.bin/lib/qt-5.15.9/plugins"},
+        data = ["@qt//:qt_platform"],
         deps = deps + [
             ":%s_moc" % name,
             "@qt//:qt_test",
