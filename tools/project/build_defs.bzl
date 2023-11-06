@@ -37,13 +37,15 @@ def _haskell_ci_tests(haskell_package, custom_cirrus, custom_github):
                 name = "github_%s_test" % workflow,
                 size = "small",
                 srcs = ["//tools/project:diff_test.sh"],
-                data = [
-                    yml_cur,
-                    yml_ref,
-                ],
                 args = [
+                    "$(location @diffutils//:diff)",
                     "$(location %s)" % yml_cur,
                     "$(location %s)" % yml_ref,
+                ],
+                data = [
+                    "@diffutils//:diff",
+                    yml_cur,
+                    yml_ref,
                 ],
             )
 
@@ -58,13 +60,15 @@ def _haskell_ci_tests(haskell_package, custom_cirrus, custom_github):
             name = "cirrus_test",
             size = "small",
             srcs = ["//tools/project:diff_test.sh"],
-            data = [
-                ".cirrus.yml",
-                ":cirrus_ci",
-            ],
             args = [
+                "$(location @diffutils//:diff)",
                 "$(location .cirrus.yml)",
                 "$(location :cirrus_ci)",
+            ],
+            data = [
+                "@diffutils//:diff",
+                ".cirrus.yml",
+                ":cirrus_ci",
             ],
         )
 
@@ -98,10 +102,12 @@ def project(license = "gpl3", custom_cirrus = False, custom_github = False):
         size = "small",
         srcs = ["//tools/project:diff_test.sh"],
         args = [
+            "$(location @diffutils//:diff)",
             "$(location LICENSE)",
             "$(location //tools:LICENSE.%s)" % license,
         ],
         data = [
+            "@diffutils//:diff",
             "LICENSE",
             "//tools:LICENSE.%s" % license,
         ],
@@ -137,12 +143,14 @@ def workspace(projects):
     native.sh_test(
         name = "git_modules_test",
         size = "small",
-        srcs = [":git_modules_test.pl"],
+        srcs = ["@perl"],
         args = [
+	    "$(location git_modules_test.pl)",
             "$(location gitmodules)",
             "$(location git-remotes)",
         ] + projects,
         data = [
+	    "git_modules_test.pl",
             "gitmodules",
             "git-remotes",
         ],

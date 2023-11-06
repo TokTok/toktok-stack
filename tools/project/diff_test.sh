@@ -1,5 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eu
+DIFF=$1
+shift
 
-exec diff -u <(sed -e 's/secure: "[^"]*"/secure: "SECURE"/g' "$1") "$2"
+exec "$DIFF" -u <(sed -e 's/secure: "[^"]*"/secure: "SECURE"/g' "$1") "$2"

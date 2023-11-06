@@ -59,8 +59,8 @@ go_rules_dependencies()
 github_archive(
     name = "rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "dfb99ad2788a65bba2400b7801c3241839220c033eb41a141f7fc434f4796543",
-    version = "48df56b32710e7894079cde1a91b2701667fa518",
+    sha256 = "c9c2dc3d1a97e8b16d85c73d45d7f8c3a8d3bb7b35783c4305e61e0aed8a3ea5",
+    version = "2d0942ec1d9ad239c44c6cfc635fa7e51cd0f0f3",
 )
 
 load(
@@ -555,6 +555,12 @@ QT_LIBS = [
     "multimedia",
     "svg",
 ]
+
+nixpkgs_package(
+    name = "qt5.qtbase.bin",
+    build_file = "//third_party/qt:BUILD.qtbase.bin",
+    repository = "@nixpkgs",
+)
 
 [nixpkgs_package(
     name = "qt5.qt%s.out" % lib,

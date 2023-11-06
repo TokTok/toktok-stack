@@ -4,7 +4,10 @@
   home.username = "builder";
   home.homeDirectory = "/home/builder";
   home.sessionVariables = { EDITOR = "nvim"; };
-  home.sessionPath = [ "/src/workspace/hs-github-tools/tools" ];
+  home.sessionPath = [
+    "${config.home.homeDirectory}/.bin"
+    "/src/workspace/hs-github-tools/tools"
+  ];
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
@@ -12,6 +15,7 @@
     gnupg
     openssh
     screen # terminal window manager
+    tor
   ];
 
   # This value determines the Home Manager release that your

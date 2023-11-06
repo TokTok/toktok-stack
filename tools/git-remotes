@@ -70,10 +70,6 @@ our %REPOS = (
       upstream => 'toktok',
       repo 'iphydf',
    }],
-   'echobot-jvm' => ['echobot-jvm', {
-      upstream => 'toktok',
-      repo 'iphydf',
-   }],
    'experimental' => ['experimental', {
       upstream => 'toktok',
       repo 'iphydf',
@@ -135,27 +131,6 @@ our %REPOS = (
       upstream => 'toktok',
       repo 'iphydf',
    }],
-   'jtox' => ['jtox', {
-      upstream => 'toktok',
-      repo 'iphydf',
-   }],
-   'jvm-macros' => ['jvm-macros', {
-      upstream => 'toktok',
-      repo 'iphydf',
-   }],
-   'jvm-sbt-plugins' => ['jvm-sbt-plugins', {
-      upstream => 'toktok',
-      repo 'iphydf',
-   }],
-   'jvm-toxcore-c' => ['jvm-toxcore-c', {
-      upstream => 'toktok',
-      repo 'iphydf',
-      repo 'zoff99',
-   }],
-   'jvm-toxcore-api' => ['jvm-toxcore-api', {
-      upstream => 'toktok',
-      repo 'iphydf',
-   }],
    'py_toxcore_c' => ['py-toxcore-c', {
       upstream => 'toktok',
       repo ['aitjcize', 'PyTox'],
@@ -167,10 +142,6 @@ our %REPOS = (
       repo 'qtox',
    }],
    'spec' => ['spec', {
-      upstream => 'toktok',
-      repo 'iphydf',
-   }],
-   'streambot-jvm' => ['streambot-jvm', {
       upstream => 'toktok',
       repo 'iphydf',
    }],

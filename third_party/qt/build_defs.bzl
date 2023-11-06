@@ -284,6 +284,7 @@ def qt_test(name, src, deps, copts = [], mocopts = [], size = None):
         size = size,
         srcs = [src],
         copts = copts + ["-I$(GENDIR)/%s/%s" % (native.package_name(), src[:src.rindex("/")])],
+        data = ["@qt//:qt_platform"],
         deps = deps + [
             ":%s_moc" % name,
             "@qt//:qt_test",

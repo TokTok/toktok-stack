@@ -158,6 +158,8 @@ build:release -c opt
 # NDEBUG disables asserts.
 #build:release --copt='-Wno-unused-variable'
 
+build:strace --run_under="/run/current-system/sw/bin/strace -f"
+
 build:dynamic-analysis --jobs=4
 build:dynamic-analysis --test_timeout=300
 build:dynamic-analysis --strip=never

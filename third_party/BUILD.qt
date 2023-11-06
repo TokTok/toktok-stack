@@ -18,6 +18,12 @@ package(features = ["layering_check"])
     "lconvert",
 ]]
 
+alias(
+    name = "qt_platform",
+    actual = "@qt5.qtbase.bin//:platforms",
+    visibility = ["//visibility:public"],
+)
+
 [alias(
     name = "qt_" + mod.lower(),
     actual = "@qt5.qtbase.dev//:" + mod.lower(),

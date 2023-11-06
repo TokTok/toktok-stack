@@ -1,14 +1,16 @@
-#!/usr/bin/perl
+#!/bin/sh
 
-use strict;
-use warnings;
+set -eux
 
-my $ATTEMPTS = shift @ARGV;
+ATTEMPTS="$1"
+shift
 
-for my $i (1 .. $ATTEMPTS) {
-   print "=== Attempt $i ===\n";
-   exit 0 unless system @ARGV;
-}
+for i in `seq 1 $ATTEMPTS`; do
+  echo "=== Attempt $i ===";
+  if "$@"; then
+    exit 0
+  fi
+done
 
-print "Failed after $ATTEMPTS attempts: @ARGV\n";
-exit 1;
+echo "Failed after $ATTEMPTS attempts: $@"
+exit 1
