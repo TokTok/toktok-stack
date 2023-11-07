@@ -37,6 +37,14 @@ if [ ! -f /nix/var/nix/daemon-socket/socket ]; then
   sleep 1
 fi
 
+# Generate compile_commands.json, used by YCM.
 nix-shell -p python3 --run "python3 $HOME/.bin/bazel-compdb"
-bazel build --show_timestamps //...
+
+# Download the entire remote build cache so it's available locally in the dev
+# container. Really we only need the headers for YCM, but I don't know how to
+# easily limit this to headers only.
+bazel build --show_timestamps --remote_download_outputs=all //...
+
+# Run all tests to completion, so the dev container starts out with all tests
+# passing (so any potential breakage is local only).
 tools/retry 5 bazel test --show_timestamps -- //...

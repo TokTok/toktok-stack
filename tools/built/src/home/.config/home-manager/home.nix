@@ -11,11 +11,14 @@
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
-    connect # for ssh proxy via tor
-    gnupg
-    openssh
-    screen # terminal window manager
-    tor
+    connect         # for ssh proxy via tor
+    gdb             # debugger for C code
+    gnupg           # for signing git commits
+    openssh         # ssh server
+    screen          # terminal window manager
+    stylish-haskell # formatter for Haskell
+    tor             # onion routing for privacy when testing tox inside the container
+    xxd             # hex viewer (to inspect dumps and tox saves)
   ];
 
   # This value determines the Home Manager release that your
@@ -72,7 +75,7 @@
       nnoremap <C-l> :noh<CR><C-l>
       map Q gqap
 
-      au FileType bzl set ts=4 sw=4
+      au FileType bzl,haskell,lhaskell set ts=4 sw=4
     '';
   };
 

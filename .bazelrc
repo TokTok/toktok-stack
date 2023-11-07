@@ -13,7 +13,7 @@ build --show_progress_rate_limit=0.5
 build --check_licenses=true
 build --process_headers_in_dependencies
 #build --remote_cache_compression  # needs newer bazel version
-build --remote_download_minimal
+build --remote_download_outputs=minimal  # use "all" to make YCM work
 build --strict_filesets=true
 #build --strict_proto_deps=strict
 #build --strict_public_imports=strict
@@ -184,6 +184,8 @@ build:asan-libfuzzer --@rules_fuzzing//fuzzing:cc_engine_sanitizer=asan
 build:sanitizer --config=debug
 build:sanitizer --copt='-UNDEBUG'
 build:sanitizer --copt='-O3'
+# TODO(https://github.com/tweag/rules_nixpkgs/issues/430): Remove when released.
+build:sanitizer --copt='-fno-sanitize-ignorelist'
 build:sanitizer --per_file_copt='//c-toxcore[:/]@-O0'
 build:sanitizer --per_file_copt='//c-toxcore[:/]@-fno-inline,-fno-omit-frame-pointer'
 build:sanitizer --flaky_test_attempts=1
