@@ -205,7 +205,8 @@ build:asan --test_tag_filters=-haskell
 build:asan --build_tag_filters=-haskell
 
 build:msan --config=sanitizer
-build:msan --config=libc++
+# TODO(iphydf): Get an msan-enabled libc++ into Nix.
+#build:msan --config=libc++
 build:msan --copt='-fsanitize=memory'
 build:msan --copt='-fsanitize-memory-track-origins=2'
 build:msan --linkopt='-fsanitize=memory'

@@ -6,6 +6,7 @@ go_library(
     name = "go_default_library",
     srcs = ["hello.go"],
     importpath = "github.com/TokTok/third_party/go",
+    tags = ["go"],
     visibility = ["//visibility:private"],
     deps = ["@com_github_streamrail_concurrent_map//:go_default_library"],
 )
@@ -13,6 +14,7 @@ go_library(
 go_binary(
     name = "go",
     embed = [":go_default_library"],
+    tags = ["go"],
     visibility = ["//visibility:public"],
 )
 
@@ -21,4 +23,5 @@ go_test(
     size = "small",
     srcs = ["hello_test.go"],
     embed = [":go_default_library"],
+    tags = ["go"],
 )
