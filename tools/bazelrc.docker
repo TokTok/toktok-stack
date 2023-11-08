@@ -1,4 +1,9 @@
 # Bazel config for the toktok-stack Docker image.
 
 # Set the default fairly high so the Docker image utilises many cores if it can.
-build --jobs=16
+build:docker --jobs=16
+
+# The "docker" config includes all flags needed to successfully build all of
+# toktok-stock. Users may pass additional flags like --config=release. By
+# default, the Docker image builds in fastbuild mode.
+build --config=docker

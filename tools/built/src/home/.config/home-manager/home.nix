@@ -76,6 +76,8 @@
       map Q gqap
 
       au FileType bzl,haskell,lhaskell set ts=4 sw=4
+      " .lhs files need a long distance sync for highlighting
+      au FileType lhaskell :au BufEnter * :syntax sync fromstart
     '';
   };
 
