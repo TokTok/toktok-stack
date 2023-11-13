@@ -16,7 +16,7 @@ cc_library(
             "-DHAVE_FREELOCALE",
         ],
         "@toktok//tools/config:linux": [
-            "-std=gnu89",
+            "-D_DEFAULT_SOURCE",
             "-DHAVE_NEWLOCALE",
             "-DHAVE_USELOCALE",
             "-DHAVE_FREELOCALE",
@@ -28,6 +28,6 @@ cc_library(
             "-DHAVE_XLOCALE_H",
         ],
     }),
-    includes = ["lib"],
+    strip_include_prefix = "lib",
     visibility = ["//visibility:public"],
 )

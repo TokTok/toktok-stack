@@ -52,8 +52,8 @@ cc_library(
         "@toktok//tools/config:linux": ["-Ithird_party/curl/linux"],
         "@toktok//tools/config:osx": ["-Ithird_party/curl/osx"],
     }),
-    includes = ["include"],
     linkopts = ["-lpthread"],
+    strip_include_prefix = "include",
     visibility = ["//visibility:public"],
     deps = [
         "@boringssl//:crypto",
@@ -65,7 +65,7 @@ cc_library(
 )
 
 cc_binary(
-    name = "tool",
+    name = "bin/curl",
     srcs = glob([
         "src/*.c",
         "src/*.h",

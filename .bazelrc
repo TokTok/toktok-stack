@@ -15,18 +15,20 @@ build --process_headers_in_dependencies
 #build --remote_cache_compression  # needs newer bazel version
 build --remote_download_outputs=minimal  # use "all" to make YCM work
 build --strict_filesets=true
-#build --strict_proto_deps=strict
-#build --strict_public_imports=strict
-#build --strict_system_includes=true
+build --strict_proto_deps=strict
+build --strict_public_imports=strict
+build --strict_system_includes=true
 build --enable_platform_specific_config
 build --watchfs
 build --local_cpu_resources=HOST_CPUS
-build --dynamic_mode=fully
-#build --features=fully_static_link
+build --features=layering_check
 
-# TODO(https://github.com/protocolbuffers/protobuf/issues/9406): Enable once
-# protobuf has its layering fixed.
-#build --features=layering_check
+# Fully dynamic build.
+build:dynamic --dynamic_mode=fully
+
+# Fully static build.
+build:static --dynamic_mode=off
+build:static --features=fully_static_link
 
 build --experimental_inmemory_dotd_files
 build --experimental_inmemory_jdeps_files
@@ -194,7 +196,7 @@ build:sanitizer --flaky_test_attempts=1
 # on https://github.com/google/sanitizers/wiki/AddressSanitizer#faq and some is from
 # https://chromium.googlesource.com/external/github.com/grpc/grpc/+/4e9206f48c91e17f43856b016b12f59dd5118293/tools/bazel.rc
 build:asan --config=sanitizer
-#build:asan --features=asan
+build:asan --features=asan
 build:asan --copt='-fsanitize=address'
 build:asan --copt='-fsanitize-address-use-after-return=always'
 build:asan --copt='-fsanitize-address-use-after-scope'
@@ -272,14 +274,6 @@ build:gnulike --cxxopt='-fno-exceptions'
 build:gnulike --cxxopt='-fno-rtti'
 build:gnulike --cxxopt='-DGOOGLE_PROTOBUF_NO_RTTI'
 
-# Use musl instead of glibc.
-build:musl --copt='-nostdinc'
-build:musl --copt='-isystem/usr/include/c++/6'
-build:musl --copt='-isystem/usr/include/x86_64-linux-gnu/c++/6'
-build:musl --copt='-isystem/usr/include/x86_64-linux-musl'
-build:musl --copt='-isystem/usr/lib/gcc/x86_64-linux-gnu/6/include'
-#build:musl --copt='-isystem/usr/include/clang/3.8/include'
-
 # Enable trace logging for toxcore.
 build --per_file_copt='//c-toxcore/@-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_TRACE'
 build --per_file_copt='//c-toxcore/@-DMAX_VLA_SIZE=2048'
@@ -322,6 +316,13 @@ build:kythe --distinct_host_configuration=true
 #
 ##############################################################################
 
+# Use GNU versions of the C standard, because runtime/cgo doesn't set feature
+# flags correctly. We then override it in *all* per-file flags, which ends up
+# not matching runtime/cgo/gcc_setenv.c for some reason.
+build:gnulike --cxxopt='-std=c++17'
+build:gnulike --conlyopt='-std=gnu17'
+build:gnulike --per_file_copt='\\.c$@-std=c17'
+
 build:gnulike --copt='-Wall'
 build:gnulike --copt='-Werror'
 build:gnulike --copt='-Wformat'
@@ -340,19 +341,21 @@ build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-padd
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-reserved-id-macro'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-unused-parameter'
 build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-vla'
+build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-ftrapv'
+build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-pedantic'
 
 # NO_FRAME_POINTER is set when compiling fuzzers (for some reason), causing absl to use the
 # libunwind stack trace implementation, which is Google internal-only, so fails to compile in Open
 # Source software.
 build:gnulike --per_file_copt='external/com_google_absl[:/]@-UNO_FRAME_POINTER,-fno-omit-frame-pointer'
 
-build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-ftrapv'
-build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-pedantic'
-
-# Use GNU versions of the C/C++ standards, because runtime/cgo doesn't set
-# feature flags correctly.
-build:gnulike --cxxopt='-std=gnu++17'
-build:gnulike --conlyopt='-std=gnu17'
+# Compile toxcore as C++.
+build:clang --per_file_copt='//c-toxcore/@-xc++,-std=c++17'
+build:clang --per_file_copt='//c-toxcore/@-Wno-alloca'
+build:clang --per_file_copt='//c-toxcore/@-Wno-c99-extensions'
+build:clang --per_file_copt='//c-toxcore/@-Wno-old-style-cast'
+build:clang --per_file_copt='//c-toxcore/@-Wno-unreachable-code-return'
+build:clang --per_file_copt='//c-toxcore/@-Wno-unused-macros'
 
 # Cython code isn't very clean.
 build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-cast-function-type-strict'
@@ -399,13 +402,11 @@ build:clang --copt='-Wno-pointer-bool-conversion'
 build:clang --copt='-Wno-tautological-pointer-compare'
 # This is a C89 requirement, we use C99.
 build:clang --copt='-Wno-declaration-after-statement'
+# Useless warning, see https://stackoverflow.com/questions/77017567.
+build:clang --copt='-Wno-unsafe-buffer-usage'
 # Used in absl, for some reason doesn't work with per_file_copt.
 # TODO(iphydf): Find out why.
 build:clang --copt='-Wno-deprecated-builtins'
-
-# TODO(iphydf): Fix these or move them to per_file_copt (for third_party stuff).
-build:clang --copt='-Wno-unsafe-buffer-usage'
-build:clang --copt='-Wno-unused-but-set-variable'
 
 build:clang --per_file_copt='//c-toxcore/toxav:video.c@-Wno-used-but-marked-unused'
 build:clang --per_file_copt='//c-toxcore/super_donators@-w'
@@ -476,7 +477,6 @@ build:clang --per_file_copt='//toxins@-Wno-switch-enum'
 build:clang --per_file_copt='//toxins@-Wno-unreachable-code'
 build:clang --per_file_copt='//toxins@-Wno-unreachable-code-return'
 build:gcc --per_file_copt='//c-toxcore@-Wno-error=pedantic'
-build:gcc --per_file_copt='//qtox@-Wno-zero-as-null-pointer-constant'
 build:gcc --per_file_copt='//toxic@-Wno-format-overflow'
 build:gcc --per_file_copt='//toxic@-Wno-format-truncation'
 build:gcc --per_file_copt='//toxic@-Wno-nonnull'
@@ -493,6 +493,7 @@ build:gnulike --per_file_copt='\\.pb\\.cc$@-w'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-bool-operation'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-braced-scalar-init'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-dangling-else'
+build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-deprecated-pragma'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-implicit-const-int-float-conversion'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-incompatible-pointer-types-discards-qualifiers'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-parentheses'
@@ -505,10 +506,14 @@ build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-tautological-constant-out-
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-unneeded-internal-declaration'
 build:clang --per_file_copt='external/ffmpeg/fftools[:/]@-Wno-single-bit-bitfield-constant-conversion'
 build:clang --per_file_copt='external/libconfig[:/]@-Wno-deprecated-non-prototype'
+build:clang --per_file_copt='external/libconfig[:/]@-Wno-unused-but-set-variable'
 build:clang --per_file_copt='external/libsodium[:/]@-Wno-unknown-pragmas'
 build:clang --per_file_copt='external/libsodium[:/]@-Wno-unused-function'
 build:clang --per_file_copt='external/libsodium[:/]@-Wno-unused-variable'
-build:clang --per_file_copt='external/portaudio[:/]@-Wno-implicit-const-int-float-conversion'
+build:clang --per_file_copt='external/libvpx[:/]@-Wno-unused-but-set-variable'
+build:clang --per_file_copt='external/libzmq[:/]@-Wno-unused-variable'
+build:clang --per_file_copt='external/sdl2[:/]@-Wno-unused-but-set-variable'
+build:clang --per_file_copt='external/xcb[:/]@-Wno-unused-but-set-variable'
 build:clang --per_file_copt='external/zlib[:/]@-Wno-deprecated-non-prototype'
 build:clang --host_per_file_copt='external/zlib[:/]@-Wno-deprecated-non-prototype'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-array-parameter'
@@ -519,12 +524,7 @@ build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-int-in-bool-context'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-maybe-uninitialized'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-stringop-overread'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-stringop-truncation'
-build:gcc --per_file_copt='external/haskell_cryptohash@-Wno-format-overflow'
 build:gcc --per_file_copt='external/opus[:/]@-Wno-maybe-uninitialized'
-build:gnulike --per_file_copt='external/libvpx[:/]@-Wno-unused-but-set-variable'
-build:gnulike --per_file_copt='external/portaudio[:/]@-Wno-unused-but-set-variable'
-build:gnulike --per_file_copt='external/sdl2[:/]@-Wno-unused-but-set-variable'
-build:gnulike --per_file_copt='external/xcb[:/]@-Wno-unused-but-set-variable'
 
 build:clang --per_file_copt='external/openal[:/]@-Wno-unused-value'
 build:gcc --host_per_file_copt='external/openal[:/]@-Wno-use-after-free'
@@ -629,6 +629,11 @@ build:docker --config=ci
 
 # We use Clang in the nix builders.
 build:gnulike --config=clang
+build --config=dynamic
+
+# Used for musl builds.
+#build:gnulike --config=gcc
+#build --config=static
 
 try-import %workspace%/.bazelrc.local
 

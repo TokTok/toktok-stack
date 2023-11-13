@@ -1,4 +1,5 @@
-with (import <nixpkgs> { config = {}; overlays = []; });
+#with ((import <nixpkgs> { }).pkgsMusl);
+with (import <nixpkgs> { });
 
 {
   ghc = haskellPackages.ghcWithPackages (p: with p; [

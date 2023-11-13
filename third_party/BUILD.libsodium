@@ -90,7 +90,7 @@ cc_library(
         ],
     }),
     defines = ["SODIUM_STATIC"],
-    includes = ["include"],
+    strip_include_prefix = "include",
     textual_hdrs = glob([
         "src/libsodium/**/*.h",
         "src/libsodium/crypto_scalarmult/curve25519/sandy2x/*.S",

@@ -300,6 +300,7 @@ cc_binary(
         "x86regtmod.c",
     ],
     copts = [
+        "-D_DEFAULT_SOURCE",
         "-DHAVE_CONFIG_H",
         "-I$(GENDIR)/external/yasm",
         "-Iexternal/yasm",

@@ -55,10 +55,10 @@ cc_library(
             "-Wno-unused-function",
         ],
     }),
-    includes = ["src/liblzma/api"],
     linkopts = select({
         "@toktok//tools/config:windows": [],
         "//conditions:default": ["-lpthread"],
     }),
+    strip_include_prefix = "src/liblzma/api",
     visibility = ["//visibility:public"],
 )
