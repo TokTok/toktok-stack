@@ -195,7 +195,7 @@ cc_library(
         "@toktok//tools/config:osx": ["-Ithird_party/libidn2/osx"],
         "@toktok//tools/config:windows": ["-Ithird_party/libidn2/windows"],
     }),
-    includes = ["lib"],
+    strip_include_prefix = "lib",
     textual_hdrs = [
         "lib/tr46map_data.c",
     ],

@@ -187,10 +187,11 @@ cc_binary(
         "ncurses/tinfo/make_hash.c",
     ],
     copts = [
+        "-Iexternal/ncurses/include",
+        "-I$(GENDIR)/external/ncurses/include",
         "-Iexternal/ncurses/ncurses",
         "-D_XOPEN_SOURCE=600",
     ],
-    includes = ["include"],
     deps = [":ncurses_internal"],
 )
 
@@ -421,6 +422,8 @@ cc_library(
         "include/unctrl.h",
     ],
     copts = [
+        "-Iexternal/ncurses/include",
+        "-I$(GENDIR)/external/ncurses/include",
         "-Iexternal/ncurses/ncurses",
         "-I$(GENDIR)/external/ncurses/ncurses",
         "-D_XOPEN_SOURCE=600",
@@ -428,7 +431,7 @@ cc_library(
         "-DNCURSES_STATIC",
         "-Wno-unused",
     ],
-    includes = ["include"],
+    strip_include_prefix = "include",
     visibility = ["//visibility:public"],
     deps = [":ncurses_internal"],
 )
