@@ -154,7 +154,11 @@ cc_library(
             exclude = ["win/tclWinTest.c"],
         ),
     }),
-    hdrs = ["generic/tcl.h"],
+    hdrs = [
+        "generic/tcl.h",
+        "generic/tclDecls.h",
+        "generic/tclPlatDecls.h",
+    ],
     copts = [
         "-DBUILD_tcl",
         "-DCFG_INSTALL_BINDIR='\"CFG_INSTALL_BINDIR\"'",
@@ -175,7 +179,7 @@ cc_library(
         "-DHAVE_DECL_PTHREAD_MUTEX_RECURSIVE=1",
         "-DHAVE_EVENTFD=1",
         "-DHAVE_FREEADDRINFO=1",
-        "-DHAVE_FTS=1",
+        "-DHAVE_FTS=0",
         "-DHAVE_GETADDRINFO=1",
         "-DHAVE_GETCWD=1",
         "-DHAVE_GETGRGID_R=1",
@@ -228,7 +232,9 @@ cc_library(
         "-DTIME_WITH_SYS_TIME=1",
         "-DZIPFS_BUILD=1",
         "-Iexternal/tcl/compat/zlib/contrib/minizip",
+        "-Iexternal/tcl/generic",
         "-Iexternal/tcl/libtommath",
+        "-I$(GENDIR)/external/tcl/generic",
     ] + select({
         "@toktok//tools/config:windows": [
             "-Iexternal/tcl/win",
@@ -246,6 +252,7 @@ cc_library(
         ],
     }) + select({
         "@toktok//tools/config:linux": [
+            "-D_DEFAULT_SOURCE",
             "-DHAVE_GETHOSTBYADDR_R=1",
             "-DHAVE_GETHOSTBYADDR_R_8=1",
             "-DHAVE_GETHOSTBYNAME_R=1",
@@ -264,7 +271,6 @@ cc_library(
     defines = ["STATIC_BUILD"],
     # TODO(iphydf): Enable once @zlib stops being so private.
     features = ["-layering_check"],
-    includes = ["generic"],
     linkopts = select({
         "@toktok//tools/config:linux": [
             "-ldl",
@@ -277,6 +283,7 @@ cc_library(
             "-DEFAULTLIB:user32.lib",
         ],
     }),
+    strip_include_prefix = "generic",
     visibility = ["@toktok//third_party:__pkg__"],
     deps = [
         ":inc_files",

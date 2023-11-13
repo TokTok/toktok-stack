@@ -104,8 +104,8 @@ cc_library(
     }),
     hdrs = glob(["include/AL/*.h"]),
     copts = COPTS,
-    includes = ["include"],
     linkopts = ["-ldl"],
+    strip_include_prefix = "include",
     deps = [
         #"@sdl2",
         "@toktok//third_party/openal:config",

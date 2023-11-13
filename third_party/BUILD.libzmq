@@ -7,15 +7,21 @@ genrule(
     srcs = glob(["**"]),
     outs = ["platform.hpp"],
     cmd = """
+        BASE=`pwd`
         mkdir `dirname $(location CMakeLists.txt)`/_build
         cd `dirname $(location CMakeLists.txt)`/_build
-        cmake ..
+        "$$BASE/$(location @cmake)" .. -DCMAKE_MAKE_PROGRAM="$$BASE/$(location @gnumake)" -DCMAKE_C_COMPILER=$(CC)
         DIR=`pwd`
         cd -
         for i in $(OUTS); do
-          cp $$DIR/`echo $$i | sed -e 's|$(GENDIR)/external/libzmq/||'` $$i
+          cp "$$DIR"/`echo $$i | sed -e 's|$(GENDIR)/external/libzmq/||'` $$i
         done
     """,
+    exec_tools = [
+        "@cmake",
+        "@gnumake",
+    ],
+    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
 )
 
 cc_library(
@@ -26,7 +32,11 @@ cc_library(
             "src/*.h",
             "src/*.hpp",
         ],
-        exclude = ["test/*"],
+        exclude = [
+            "test/*",
+            "src/ws_*.cpp",
+            "src/wss_*.cpp",
+        ],
     ),
     hdrs = [
         "include/zmq.h",

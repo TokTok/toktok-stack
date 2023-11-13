@@ -32,7 +32,7 @@ INSTALL_DIR="$HOME/.bin"
 tools/project/update_versions.sh
 
 # Start nix-daemon if it isn't running yet.
-if [ ! -f /nix/var/nix/daemon-socket/socket ]; then
+if [ ! -e /nix/var/nix/daemon-socket/socket ]; then
   sudo nix-daemon --daemon &
   sleep 1
 fi

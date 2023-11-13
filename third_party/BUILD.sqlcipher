@@ -144,7 +144,6 @@ cc_library(
             "-Wno-unused",
         ],
     }),
-    includes = ["include"],
     linkopts = select({
         "@toktok//tools/config:linux": [
             "-lpthread",
@@ -155,6 +154,7 @@ cc_library(
         ],
         "@toktok//tools/config:windows": [],
     }),
+    strip_include_prefix = "include",
     visibility = ["//visibility:public"],
     deps = ["@openssl"],
 )

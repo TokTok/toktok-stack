@@ -1,0 +1,11 @@
+filegroup(
+    name = "libtool",
+    srcs = ["bin/libtool"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "libtoolize",
+    srcs = ["bin/libtoolize"],
+    visibility = ["//visibility:public"],
+)

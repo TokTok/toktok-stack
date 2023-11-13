@@ -14,6 +14,8 @@
     connect         # for ssh proxy via tor
     gdb             # debugger for C code
     gnupg           # for signing git commits
+    man-pages       # libc documentation
+    man-pages-posix # libc documentation (POSIX functions)
     openssh         # ssh server
     screen          # terminal window manager
     stylish-haskell # formatter for Haskell
@@ -75,6 +77,7 @@
       nnoremap <C-l> :noh<CR><C-l>
       map Q gqap
 
+      au BufEnter BUILD.* set ft=bzl
       au FileType bzl,haskell,lhaskell set ts=4 sw=4
       " .lhs files need a long distance sync for highlighting
       au FileType lhaskell :au BufEnter * :syntax sync fromstart

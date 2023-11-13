@@ -19,17 +19,34 @@ genrule(
         "src/sodium_config.h",
     ],
     cmd = """
-        cd $$(dirname $(location configure.ac))
+        BASE=`pwd`
+        export PATH="$$PATH:$$BASE/$$(dirname $(location @autoconf//:autoconf))"
+        export PATH="$$PATH:$$BASE/$$(dirname $(location @automake//:aclocal))"
+        export PATH="$$PATH:$$BASE/$$(dirname $(location @diffutils//:cmp))"
+        export PATH="$$PATH:$$BASE/$$(dirname $(location @libtool//:libtoolize))"
+        export PATH="$$PATH:$$BASE/$$(dirname $(location @m4))"
+        cd "$$(dirname $(location configure.ac))"
         autoreconf -fi
-        ./configure
+        ./configure CC="$(CC)" MAKE="$$BASE/$(location @gnumake)" || (cat config.log && false)
         cd -
         find . -name sodium_config.h
-        cp $$(dirname $(location configure.ac))/src/libsodium/include/sodium/version.h $(location src/libsodium/include/sodium/version.h)
+        cp "$$(dirname $(location configure.ac))/src/libsodium/include/sodium/version.h" "$(location src/libsodium/include/sodium/version.h)"
         grep '^DEFS = ' $$(dirname $(location configure.ac))/Makefile $(location src/libsodium/include/sodium/version.h) \\
           | grep -E -o -- '-D([^ ]|\\\\ )+' \\
           | sed -e 's/^-D/#define /;s/=/ /;s/\\\\//g' \\
-          > $(location src/sodium_config.h)
+          > "$(location src/sodium_config.h)"
     """,
+    exec_tools = [
+        "@autoconf//:autoconf",
+        "@autoconf//:autoreconf",
+        "@automake//:aclocal",
+        "@automake//:automake",
+        "@diffutils//:cmp",
+        "@gnumake",
+        "@libtool//:libtoolize",
+        "@m4",
+    ],
+    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
 )
 
 HEADERS = glob([
@@ -90,7 +107,7 @@ cc_library(
         ],
     }),
     defines = ["SODIUM_STATIC"],
-    includes = ["include"],
+    strip_include_prefix = "include",
     textual_hdrs = glob([
         "src/libsodium/**/*.h",
         "src/libsodium/crypto_scalarmult/curve25519/sandy2x/*.S",

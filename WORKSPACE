@@ -91,8 +91,16 @@ nixpkgs_git_repository(
     sha256 = "f2b96094f6dfbb53b082fe8709da94137475fcfead16c960f2395c98fc014b68",
 )
 
+NIXPKGS = "import <nixpkgs> {}"
+#NIXPKGS = "(import <nixpkgs> {}).pkgsMusl"
+
+NIXPKGS_CC = "clang_16"
+#NIXPKGS_CC = "llvmPackages_16.libcxxClang"
+#NIXPKGS_CC = "gcc"
+
 nixpkgs_cc_configure(
-    attribute_path = "clang_16",
+    attribute_path = NIXPKGS_CC,
+    nix_file_content = NIXPKGS,
     repository = "@nixpkgs",
 )
 
@@ -107,6 +115,36 @@ nixpkgs_python_configure(
 nixpkgs_package(
     name = "diffutils",
     build_file = "//third_party:BUILD.diffutils",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "autoconf",
+    build_file = "//third_party:BUILD.autoconf",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "automake",
+    build_file = "//third_party:BUILD.automake",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "libtool",
+    build_file = "//third_party:BUILD.libtool",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "m4",
+    build_file = "//third_party:BUILD.m4",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "cmake",
+    build_file = "//third_party:BUILD.cmake",
     repository = "@nixpkgs",
 )
 
@@ -132,11 +170,11 @@ load(
 # https://api.haskell.build/haskell/nixpkgs.html#haskell_register_ghc_nixpkgs
 haskell_register_ghc_nixpkgs(
     attribute_path = "ghc",
+    #fully_static_link = True,
     nix_file = "//:ghc.nix",
     repositories = {"nixpkgs": "@nixpkgs"},
-    version = "9.2.7",
     #static_runtime = True,
-    #fully_static_link = True,
+    version = "9.2.7",
 )
 
 [nixpkgs_package(
@@ -266,17 +304,17 @@ new_github_archive(
 http_archive(
     name = "ffmpeg",
     build_file = "@toktok//third_party:BUILD.ffmpeg",
-    sha256 = "47d062731c9f66a78380e35a19aac77cebceccd1c7cc309b9c82343ffc430c3d",
-    strip_prefix = "ffmpeg-6.0",
-    urls = ["https://ffmpeg.org/releases/ffmpeg-6.0.tar.bz2"],
+    sha256 = "eb7da3de7dd3ce48a9946ab447a7346bd11a3a85e6efb8f2c2ce637e7f547611",
+    strip_prefix = "ffmpeg-6.1",
+    urls = ["https://ffmpeg.org/releases/ffmpeg-6.1.tar.bz2"],
 )
 
 http_archive(
     name = "gettext",
     build_file = "@toktok//third_party:BUILD.gettext",
-    sha256 = "66415634c6e8c3fa8b71362879ec7575e27da43da562c798a8a2f223e6e47f5c",
-    strip_prefix = "gettext-0.20.1",
-    urls = ["https://ftp.gnu.org/pub/gnu/gettext/gettext-0.20.1.tar.gz"],
+    sha256 = "839a260b2314ba66274dae7d245ec19fce190a3aa67869bf31354cb558df42c7",
+    strip_prefix = "gettext-0.22.3",
+    urls = ["https://ftp.gnu.org/pub/gnu/gettext/gettext-0.22.3.tar.gz"],
 )
 
 nixpkgs_package(
@@ -333,53 +371,45 @@ http_archive(
 new_github_archive(
     name = "libqrencode",
     repo = "fukuchi/libqrencode",
-    sha256 = "ab58566242d0abc2c54592cc35eca00cf51cc91985f3c1fbd372fb2428a7195a",
-    version = "e5cbbafe5bd2052829176d05f2fac00ca9dbe4b8",
+    sha256 = "0b9af8ce90939259465e2b0f100a60433eaa4242269738c71d46f311cf557401",
+    version = "715e29fd4cd71b6e452ae0f4e36d917b43122ce8",
 )
 
 new_github_archive(
     name = "libsodium",
-    patches = ["@toktok//third_party/patches:libsodium.patch"],
     repo = "jedisct1/libsodium",
-    sha256 = "1b72c0cdbc535ce42e14ac15e8fc7c089a3ee9ffe5183399fd77f0f3746ea794",
-    version = "1.0.18",
+    sha256 = "310cb8149ba12342d0cd64ae81d0c7ed60d608732685e3c6b8c359bba572cfd3",
+    version = "1.0.19",
 )
 
 new_github_archive(
     name = "libvpx",
     repo = "webmproject/libvpx",
-    sha256 = "58486af4ae5d8fdd8fbdd71c242093755fe38dcc4f40c24d1e2a23f052a60fc1",
-    version = "v1.13.0",
+    sha256 = "24ab597b3598503e9af89262bcacda2185e7865ddcb2cf004355833bc33fcf1b",
+    version = "v1.13.1",
 )
 
 new_github_archive(
     name = "libzmq",
     repo = "zeromq/libzmq",
-    sha256 = "710cbbbd97cd8ab6831466d8d4f2e9f491efacf34c24c72183c4e6428e203300",
-    version = "v4.3.2",
+    sha256 = "49b9d6cd12275d94a27724fcda646554f13af27857e3fe778b72cb245c74976e",
+    version = "v4.3.5",
 )
 
 new_github_archive(
     name = "openal",
     repo = "kcat/openal-soft",
+    #sha256 = "dd4e36a61ac4726574a3d6e96492f2e136e12ccfc9f9b5e6f22a45713613c98b",
+    #version = "1.23.1",
     sha256 = "4acd4cdd3295658c8cfdf53b67782f6812ab9499913ed2dc9acc03c6cf7329c5",
     version = "openal-soft-1.20.1",
 )
 
 new_github_archive(
     name = "opus",
-    patches = ["@toktok//third_party/patches:opus.patch"],
     repo = "xiph/opus",
-    sha256 = "dd991a0a8ecf885b147297290b3585c16d236e2c2283272ecaa7778dae524292",
-    version = "a8e6a77c5fe0c37aa6788f939f24f8cd22ae2652",
-)
-
-http_archive(
-    name = "portaudio",
-    build_file = "@toktok//third_party:BUILD.portaudio",
-    sha256 = "f5a21d7dcd6ee84397446fa1fa1a0675bb2e8a4a6dceb4305a8404698d8d1513",
-    strip_prefix = "portaudio",
-    urls = ["http://www.portaudio.com/archives/pa_stable_v190600_20161030.tgz"],
+    sha256 = "43cbfbe91f12995a6066fe032762fe25ffea5f713cc7fb17f579aa4dcbf112bb",
+    version = "v1.4",
 )
 
 http_archive(
@@ -403,19 +433,11 @@ new_local_repository(
 )
 
 http_archive(
-    name = "sndfile",
-    build_file = "@toktok//third_party:BUILD.sndfile",
-    sha256 = "1ff33929f042fa333aed1e8923aa628c3ee9e1eb85512686c55092d1e5a9dfa9",
-    strip_prefix = "libsndfile-1.0.28",
-    urls = ["http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28.tar.gz"],
-)
-
-http_archive(
     name = "libxz",
     build_file = "@toktok//third_party:BUILD.libxz",
-    sha256 = "b512f3b726d3b37b6dc4c8570e137b9311e7552e8ccbab4d39d47ce5f4177145",
-    strip_prefix = "xz-5.2.4",
-    urls = ["https://netix.dl.sourceforge.net/project/lzmautils/xz-5.2.4.tar.gz"],
+    sha256 = "135c90b934aee8fbc0d467de87a05cb70d627da36abe518c357a873709e5b7d6",
+    strip_prefix = "xz-5.4.5",
+    urls = ["https://netix.dl.sourceforge.net/project/lzmautils/xz-5.4.5.tar.gz"],
 )
 
 http_archive(
@@ -436,8 +458,8 @@ new_github_archive(
 new_github_archive(
     name = "tcl",
     repo = "tcltk/tcl",
-    sha256 = "1a8be062395d830f136cfcefde78495c220c69f5de60f3c38ce225c1dba17f11",
-    version = "ed918cb027572a80468457db906cbb132f29b920",
+    sha256 = "a2a8789d6fbe8dcbb17ed5c19d71539045f818cf657128bcef8740f6a40436f7",
+    version = "149b0e616bdf5f74071665caf6bf4f59d80ea0fc",
 )
 
 nixpkgs_package(

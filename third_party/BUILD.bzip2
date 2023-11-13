@@ -16,7 +16,6 @@ cc_library(
     ],
     hdrs = ["bzlib.h"],
     copts = ["-D_POSIX_C_SOURCE"],
-    includes = ["."],
     visibility = ["//visibility:public"],
 )
 
