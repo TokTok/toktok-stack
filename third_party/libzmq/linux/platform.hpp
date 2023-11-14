@@ -122,7 +122,8 @@
 #define ZMQ_HAVE_OPENBSD
 #endif
 
-// TODO better move OS-specific defines to the automake files, and check for availability of IPC with an explicit test there
+// TODO better move OS-specific defines to the automake files, and check for availability of IPC
+// with an explicit test there
 #if defined __VMS
 #define ZMQ_HAVE_OPENVMS
 #undef ZMQ_HAVE_IPC
