@@ -91,16 +91,22 @@ nixpkgs_git_repository(
     sha256 = "f2b96094f6dfbb53b082fe8709da94137475fcfead16c960f2395c98fc014b68",
 )
 
-NIXPKGS = "import <nixpkgs> {}"
-#NIXPKGS = "(import <nixpkgs> {}).pkgsMusl"
+FULLY_STATIC = False
 
-NIXPKGS_CC = "clang_16"
-#NIXPKGS_CC = "llvmPackages_16.libcxxClang"
-#NIXPKGS_CC = "gcc"
+NIXPKGS = {
+    "cc": "gcc",
+    "prefix": "pkgsStatic.",
+    "suffix": ".pkgsStatic",
+} if FULLY_STATIC else {
+    #"cc": "llvmPackages_16.libcxxClang",
+    "cc": "llvmPackages_16.clang",
+    "prefix": "",
+    "suffix": "",
+}
 
 nixpkgs_cc_configure(
-    attribute_path = NIXPKGS_CC,
-    nix_file_content = NIXPKGS,
+    attribute_path = NIXPKGS["cc"],
+    nix_file_content = "(import <nixpkgs> {})" + NIXPKGS["suffix"],
     repository = "@nixpkgs",
 )
 
@@ -109,6 +115,7 @@ nixpkgs_go_configure(
 )
 
 nixpkgs_python_configure(
+    python3_attribute_path = NIXPKGS["prefix"] + "python3",
     repository = "@nixpkgs",
 )
 
@@ -235,18 +242,20 @@ go_repository(
 
 nixpkgs_package(
     name = "alsa-lib",
+    attribute_path = NIXPKGS["prefix"] + "alsa-lib",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "asound",
-    attribute_path = "alsa-lib.dev",
+    attribute_path = NIXPKGS["prefix"] + "alsa-lib.dev",
     build_file = "//third_party:BUILD.asound",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "openssl.out",
+    attribute_path = "openssl.out",
     repository = "@nixpkgs",
 )
 
@@ -377,6 +386,7 @@ new_github_archive(
 
 new_github_archive(
     name = "libsodium",
+    patches = ["@toktok//third_party/patches:libsodium.patch"],
     repo = "jedisct1/libsodium",
     sha256 = "310cb8149ba12342d0cd64ae81d0c7ed60d608732685e3c6b8c359bba572cfd3",
     version = "1.0.19",
@@ -464,26 +474,26 @@ new_github_archive(
 
 nixpkgs_package(
     name = "x11.out",
-    attribute_path = "xorg.libX11.out",
+    attribute_path = NIXPKGS["prefix"] + "xorg.libX11.out",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "x11",
-    attribute_path = "xorg.libX11.dev",
+    attribute_path = NIXPKGS["prefix"] + "xorg.libX11.dev",
     build_file = "@toktok//third_party:BUILD.x11",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "xcb.out",
-    attribute_path = "xorg.libxcb.out",
+    attribute_path = NIXPKGS["prefix"] + "xorg.libxcb.out",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "xcb",
-    attribute_path = "xorg.libxcb.dev",
+    attribute_path = NIXPKGS["prefix"] + "xorg.libxcb.dev",
     build_file = "@toktok//third_party:BUILD.xcb",
     repository = "@nixpkgs",
 )

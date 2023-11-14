@@ -44,12 +44,13 @@ jobs:
       - name: Build toxchat/toktok-stack:latest
         run: docker build -t toxchat/toktok-stack:latest -f tools/built/src/Dockerfile .
 
-      - name: Build toxchat/toktok-stack:latest-release
-        run: docker build -t toxchat/toktok-stack:latest-release -f tools/built/src/Dockerfile.release .
+      - name: Build toxchat/toktok-stack:latest-fastbuild
+        run: docker build -t toxchat/toktok-stack:latest-fastbuild -f tools/built/src/Dockerfile.fastbuild .
 
-      - name: Run tests in toxchat/toktok-stack:latest-release
-        if: ${{ contains(github.event.pull_request.title, 'chore(deps)') }}
-        run: tools/built/bazel_test release
+      - name: Build toxchat/toktok-stack:latest-dev
+        run: |
+          sed -i -e 's/ --remote_download_outputs=all//' tools/built/src/setup-dev.sh
+          docker build -t toxchat/toktok-stack:latest-dev -f tools/built/src/Dockerfile.dev .
 
   mypy:
     runs-on: ubuntu-latest

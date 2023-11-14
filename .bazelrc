@@ -212,7 +212,7 @@ build:msan --config=sanitizer
 build:msan --copt='-fsanitize=memory'
 build:msan --copt='-fsanitize-memory-track-origins=2'
 build:msan --linkopt='-fsanitize=memory'
-build:msan --test_env=MSAN_OPTIONS=color=always
+build:msan --test_env=MSAN_OPTIONS=color=always:external_symbolizer_path=/nix/store/643f0y8q5yfzrqq4kn56dc13xvz90srv-llvm-16.0.1/bin/llvm-symbolizer
 build:msan --per_file_copt='//toxic[:/]@-UAUDIO,-UVIDEO,-UPYTHON'
 
 build:tsan --config=sanitizer
@@ -482,6 +482,7 @@ build:gcc --per_file_copt='//c-toxcore@-Wno-error=pedantic'
 build:gcc --per_file_copt='//toxic@-Wno-format-overflow'
 build:gcc --per_file_copt='//toxic@-Wno-format-truncation'
 build:gcc --per_file_copt='//toxic@-Wno-nonnull'
+build:gcc --per_file_copt='//toxic@-Wno-overflow'
 build:gcc --per_file_copt='//toxins@-Wno-format-overflow'
 build:windows --per_file_copt='//qtox@/wd4068'  # unknown pragma
 
@@ -526,6 +527,7 @@ build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-int-in-bool-context'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-maybe-uninitialized'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-stringop-overread'
 build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-stringop-truncation'
+build:gcc --per_file_copt='external/libidn2[:/]@-Wno-unused-const-variable'
 build:gcc --per_file_copt='external/opus[:/]@-Wno-maybe-uninitialized'
 
 build:clang --per_file_copt='external/openal[:/]@-Wno-unused-value'
@@ -633,7 +635,7 @@ build:docker --config=ci
 build:gnulike --config=clang
 build --config=dynamic
 
-# Used for musl builds.
+# Used for static musl builds.
 #build:gnulike --config=gcc
 #build --config=static
 
