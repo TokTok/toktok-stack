@@ -1,12 +1,24 @@
-diff -ur a/src/libsodium/crypto_secretbox/xsalsa20poly1305/secretbox_xsalsa20poly1305.c b/src/libsodium/crypto_secretbox/xsalsa20poly1305/secretbox_xsalsa20poly1305.c
---- src/libsodium/crypto_secretbox/xsalsa20poly1305/secretbox_xsalsa20poly1305.c	2019-05-30 13:13:18.000000000 +0000
-+++ src/libsodium/crypto_secretbox/xsalsa20poly1305/secretbox_xsalsa20poly1305.c	2022-01-13 13:42:44.891332633 +0000
+diff --color -ru src/libsodium/crypto_box/curve25519xsalsa20poly1305/box_curve25519xsalsa20poly1305.c src/libsodium/crypto_box/curve25519xsalsa20poly1305/box_curve25519xsalsa20poly1305.c
+--- src/libsodium/crypto_box/curve25519xsalsa20poly1305/box_curve25519xsalsa20poly1305.c	2023-09-13 13:46:16.000000000 +0000
++++ src/libsodium/crypto_box/curve25519xsalsa20poly1305/box_curve25519xsalsa20poly1305.c	2023-11-15 21:15:54.696112254 +0000
+@@ -37,7 +37,7 @@
+                                                const unsigned char *sk)
+ {
+     static const unsigned char zero[16] = { 0 };
+-    unsigned char s[32];
++    unsigned char s[32] = { 0 };
+ 
+     if (crypto_scalarmult_curve25519(s, sk, pk) != 0) {
+         return -1;
+diff --color -ru src/libsodium/crypto_secretbox/xsalsa20poly1305/secretbox_xsalsa20poly1305.c src/libsodium/crypto_secretbox/xsalsa20poly1305/secretbox_xsalsa20poly1305.c
+--- src/libsodium/crypto_secretbox/xsalsa20poly1305/secretbox_xsalsa20poly1305.c	2023-09-13 13:46:16.000000000 +0000
++++ src/libsodium/crypto_secretbox/xsalsa20poly1305/secretbox_xsalsa20poly1305.c	2023-11-15 21:16:08.922200888 +0000
 @@ -28,7 +28,7 @@
                                         const unsigned char *n,
                                         const unsigned char *k)
  {
 -    unsigned char subkey[32];
-+    unsigned char subkey[32] = {0};
++    unsigned char subkey[32] = { 0 };
      int           i;
-
+ 
      if (clen < 32) {
