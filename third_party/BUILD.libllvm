@@ -1,0 +1,7 @@
+exports_files(["bin/llvm-symbolizer"])
+
+filegroup(
+    name = "libllvm",
+    srcs = ["bin/llvm-symbolizer"],
+    visibility = ["//visibility:public"],
+)

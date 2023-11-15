@@ -126,6 +126,13 @@ nixpkgs_package(
 )
 
 nixpkgs_package(
+    name = "libllvm",
+    attribute_path = "llvmPackages_16.libllvm",
+    build_file = "//third_party:BUILD.libllvm",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
     name = "autoconf",
     build_file = "//third_party:BUILD.autoconf",
     repository = "@nixpkgs",
