@@ -7,7 +7,7 @@ diff --color -ru src/libsodium/crypto_box/curve25519xsalsa20poly1305/box_curve25
      static const unsigned char zero[16] = { 0 };
 -    unsigned char s[32];
 +    unsigned char s[32] = { 0 };
- 
+
      if (crypto_scalarmult_curve25519(s, sk, pk) != 0) {
          return -1;
 diff --color -ru src/libsodium/crypto_secretbox/xsalsa20poly1305/secretbox_xsalsa20poly1305.c src/libsodium/crypto_secretbox/xsalsa20poly1305/secretbox_xsalsa20poly1305.c
@@ -20,5 +20,5 @@ diff --color -ru src/libsodium/crypto_secretbox/xsalsa20poly1305/secretbox_xsals
 -    unsigned char subkey[32];
 +    unsigned char subkey[32] = { 0 };
      int           i;
- 
+
      if (clen < 32) {
