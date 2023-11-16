@@ -79,6 +79,7 @@
 
       au BufEnter BUILD.* set ft=bzl
       au FileType bzl,haskell,lhaskell set ts=4 sw=4
+      au FileType go set noexpandtab
       " .lhs files need a long distance sync for highlighting
       au FileType lhaskell :au BufEnter * :syntax sync fromstart
     '';
