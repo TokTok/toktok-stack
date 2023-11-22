@@ -53,7 +53,7 @@ load("@io_bazel_rules_go//go:deps.bzl", "go_rules_dependencies")
 
 go_rules_dependencies()
 
-# Haskell
+# Nixpkgs
 # =========================================================
 
 github_archive(
@@ -173,6 +173,65 @@ nixpkgs_package(
     build_file = "//third_party:BUILD.perl",
     repository = "@nixpkgs",
 )
+
+# Java/Kotlin
+# =========================================================
+
+#load("@io_tweag_rules_nixpkgs//nixpkgs:nixpkgs.bzl", "nixpkgs_java_configure")
+#
+#nixpkgs_java_configure(
+#    attribute_path = "jdk11.home",
+#    repository = "@nixpkgs",
+#    toolchain = True,
+#    toolchain_name = "nixpkgs_java",
+#    toolchain_version = "11",
+#)
+#
+#github_archive(
+#    name = "rules_proto",
+#    repo = "bazelbuild/rules_proto",
+#    sha256 = "91e8dc46c147a67f1fd7801f1733966db44cade148c1e9a248d90a7e7238bbe7",
+#    version = "6.0.0-rc0",
+#)
+#
+#github_archive(
+#    name = "rules_pkg",
+#    repo = "bazelbuild/rules_pkg",
+#    sha256 = "80d083438f579a9b1b76bb70e0f37a8d053858fa6683671fb1c8e2da0e61e8eb",
+#    version = "0.9.1",
+#)
+#
+#github_archive(
+#    name = "rules_jvm_external",
+#    repo = "bazelbuild/rules_jvm_external",
+#    sha256 = "6cc8444b20307113a62b676846c29ff018402fd4c7097fcd6d0a0fd5f2e86429",
+#    version = "5.3",
+#)
+#
+#github_archive(
+#    name = "io_bazel_stardoc",
+#    repo = "bazelbuild/stardoc",
+#    sha256 = "af5de1753e68de3c2afaf9b804074b60f808cc3f02d757adeea63eb649dfd886",
+#    version = "0.6.2",
+#)
+#
+#github_archive(
+#    name = "rules_kotlin",
+#    repo = "bazelbuild/rules_kotlin",
+#    sha256 = "eec67a1438949f0bec00d6941223ba8009a5e232ef969e6110ccdcfb6d71349c",
+#    version = "v1.9.0",
+#)
+#
+#load("@rules_kotlin//kotlin:repositories.bzl", "kotlin_repositories")
+#
+#kotlin_repositories()
+#
+#load("@rules_kotlin//kotlin:core.bzl", "kt_register_toolchains")
+#
+#kt_register_toolchains()
+
+# Haskell
+# =========================================================
 
 load(
     "@rules_haskell//haskell:nixpkgs.bzl",

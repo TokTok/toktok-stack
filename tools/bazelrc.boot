@@ -9,6 +9,7 @@ build --experimental_disable_external_package
 build --experimental_repository_cache_hardlinks
 build --incompatible_disable_target_provider_fields
 build --incompatible_disallow_empty_glob
+# TODO(iphydf): This breaks rules_kotlin.
 build --incompatible_no_implicit_file_export
 build --incompatible_top_level_aspects_require_providers
 
@@ -18,7 +19,7 @@ build --host_platform=@io_tweag_rules_nixpkgs//nixpkgs/platforms:host
 run --host_platform=@io_tweag_rules_nixpkgs//nixpkgs/platforms:host
 
 # Java toolchain.
-build --java_runtime_version=nixpkgs_java_11
-build --tool_java_runtime_version=nixpkgs_java_11
+build --java_runtime_version=nixpkgs_java
+build --tool_java_runtime_version=nixpkgs_java
 build --java_language_version=11
 build --tool_java_language_version=11

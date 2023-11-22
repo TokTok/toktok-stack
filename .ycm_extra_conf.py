@@ -28,6 +28,7 @@ def Settings(**kwargs):
     return {
       'flags': list(compilation_info.compiler_flags_) + GLIBC_FLAGS,
       'include_paths_relative_to_dir': compilation_info.compiler_working_dir_,
+      'end_col': 0,
     }
 
-  return {}
+  return {'end_col': 0}
