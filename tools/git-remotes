@@ -31,10 +31,6 @@ sub nrepo($) { $_[0]->[0] => $_[0] }
 sub repo($) { ref $_[0] ? nrepo $_[0] : irepo $_[0] }
 
 our %REPOS = (
-   'apidsl' => ['apidsl', {
-      upstream => 'toktok',
-      repo 'iphydf',
-   }],
    'btox' => ['bTox', {
       upstream => 'toktok',
       repo 'iphydf',
@@ -75,6 +71,10 @@ our %REPOS = (
       repo 'iphydf',
    }],
    'go-toxcore-c' => ['go-toxcore-c', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
+   'hs-apigen' => ['hs-apigen', {
       upstream => 'toktok',
       repo 'iphydf',
    }],

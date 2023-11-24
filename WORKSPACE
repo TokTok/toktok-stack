@@ -77,6 +77,7 @@ load(
     "@io_tweag_rules_nixpkgs//nixpkgs:nixpkgs.bzl",
     "nixpkgs_cc_configure",
     "nixpkgs_git_repository",
+    "nixpkgs_java_configure",
     "nixpkgs_package",
     "nixpkgs_python_configure",
 )
@@ -177,58 +178,81 @@ nixpkgs_package(
 # Java/Kotlin
 # =========================================================
 
-#load("@io_tweag_rules_nixpkgs//nixpkgs:nixpkgs.bzl", "nixpkgs_java_configure")
-#
-#nixpkgs_java_configure(
-#    attribute_path = "jdk11.home",
-#    repository = "@nixpkgs",
-#    toolchain = True,
-#    toolchain_name = "nixpkgs_java",
-#    toolchain_version = "11",
-#)
-#
-#github_archive(
-#    name = "rules_proto",
-#    repo = "bazelbuild/rules_proto",
-#    sha256 = "91e8dc46c147a67f1fd7801f1733966db44cade148c1e9a248d90a7e7238bbe7",
-#    version = "6.0.0-rc0",
-#)
-#
-#github_archive(
-#    name = "rules_pkg",
-#    repo = "bazelbuild/rules_pkg",
-#    sha256 = "80d083438f579a9b1b76bb70e0f37a8d053858fa6683671fb1c8e2da0e61e8eb",
-#    version = "0.9.1",
-#)
-#
-#github_archive(
-#    name = "rules_jvm_external",
-#    repo = "bazelbuild/rules_jvm_external",
-#    sha256 = "6cc8444b20307113a62b676846c29ff018402fd4c7097fcd6d0a0fd5f2e86429",
-#    version = "5.3",
-#)
-#
-#github_archive(
-#    name = "io_bazel_stardoc",
-#    repo = "bazelbuild/stardoc",
-#    sha256 = "af5de1753e68de3c2afaf9b804074b60f808cc3f02d757adeea63eb649dfd886",
-#    version = "0.6.2",
-#)
-#
-#github_archive(
-#    name = "rules_kotlin",
-#    repo = "bazelbuild/rules_kotlin",
-#    sha256 = "eec67a1438949f0bec00d6941223ba8009a5e232ef969e6110ccdcfb6d71349c",
-#    version = "v1.9.0",
-#)
-#
-#load("@rules_kotlin//kotlin:repositories.bzl", "kotlin_repositories")
-#
-#kotlin_repositories()
-#
-#load("@rules_kotlin//kotlin:core.bzl", "kt_register_toolchains")
-#
-#kt_register_toolchains()
+nixpkgs_java_configure(
+    attribute_path = "jdk11.home",
+    repository = "@nixpkgs",
+    toolchain = True,
+    toolchain_name = "nixpkgs_java",
+    toolchain_version = "11",
+)
+
+github_archive(
+    name = "rules_proto",
+    repo = "bazelbuild/rules_proto",
+    sha256 = "91e8dc46c147a67f1fd7801f1733966db44cade148c1e9a248d90a7e7238bbe7",
+    version = "6.0.0-rc0",
+)
+
+github_archive(
+    name = "rules_pkg",
+    repo = "bazelbuild/rules_pkg",
+    sha256 = "80d083438f579a9b1b76bb70e0f37a8d053858fa6683671fb1c8e2da0e61e8eb",
+    version = "0.9.1",
+)
+
+http_archive(
+    name = "remote_java_tools_linux",
+    patch_cmds = [
+        "chmod 755 java_tools/ijar/ijar",
+        "{patchelf} --set-interpreter {ld_linux} --add-rpath {gcc_lib} java_tools/ijar/ijar".format(
+            gcc_lib = "/nix/store/yazs3bdl481s2kyffgsa825ihy1adn8f-gcc-12.2.0-lib/lib",
+            ld_linux = "/nix/store/yaz7pyf0ah88g2v505l38n0f3wg2vzdj-glibc-2.37-8/lib64/ld-linux-x86-64.so.2",
+            patchelf = "/nix/store/ywwjpdyhar4f3vcqf4qk77vrbr3vj5wl-patchelf-0.15.0/bin/patchelf",
+        ),
+        "chmod 555 java_tools/ijar/ijar",
+        "chmod 755 java_tools/src/tools/singlejar/singlejar_local",
+        "{patchelf} --set-interpreter {ld_linux} --add-rpath {gcc_lib} java_tools/src/tools/singlejar/singlejar_local".format(
+            gcc_lib = "/nix/store/yazs3bdl481s2kyffgsa825ihy1adn8f-gcc-12.2.0-lib/lib",
+            ld_linux = "/nix/store/yaz7pyf0ah88g2v505l38n0f3wg2vzdj-glibc-2.37-8/lib64/ld-linux-x86-64.so.2",
+            patchelf = "/nix/store/ywwjpdyhar4f3vcqf4qk77vrbr3vj5wl-patchelf-0.15.0/bin/patchelf",
+        ),
+        "chmod 555 java_tools/src/tools/singlejar/singlejar_local",
+    ],
+    sha256 = "b36ca871b27e09122f5e16fcfdbd25c30c43b528799a8f463e7bedb19b153ecc",
+    urls = [
+        "https://mirror.bazel.build/bazel_java_tools/releases/java/v13.2/java_tools_linux-v13.2.zip",
+        "https://github.com/bazelbuild/java_tools/releases/download/java_v13.2/java_tools_linux-v13.2.zip",
+    ],
+)
+
+github_archive(
+    name = "rules_jvm_external",
+    repo = "bazelbuild/rules_jvm_external",
+    sha256 = "6cc8444b20307113a62b676846c29ff018402fd4c7097fcd6d0a0fd5f2e86429",
+    version = "5.3",
+)
+
+github_archive(
+    name = "io_bazel_stardoc",
+    repo = "bazelbuild/stardoc",
+    sha256 = "af5de1753e68de3c2afaf9b804074b60f808cc3f02d757adeea63eb649dfd886",
+    version = "0.6.2",
+)
+
+github_archive(
+    name = "rules_kotlin",
+    repo = "bazelbuild/rules_kotlin",
+    sha256 = "eec67a1438949f0bec00d6941223ba8009a5e232ef969e6110ccdcfb6d71349c",
+    version = "v1.9.0",
+)
+
+load("@rules_kotlin//kotlin:repositories.bzl", "kotlin_repositories")
+
+kotlin_repositories()
+
+load("@rules_kotlin//kotlin:core.bzl", "kt_register_toolchains")
+
+kt_register_toolchains()
 
 # Haskell
 # =========================================================
@@ -243,6 +267,14 @@ load(
 # https://api.haskell.build/haskell/nixpkgs.html#haskell_register_ghc_nixpkgs
 haskell_register_ghc_nixpkgs(
     attribute_path = "ghc",
+    compiler_flags = [
+        "-Wall",
+        "-Werror",
+        "-XHaskell2010",
+        "-fdiagnostics-color=always",
+        # TODO(iphydf): Move to hs-cimple.
+        "-Wno-redundant-constraints",
+    ],
     #fully_static_link = True,
     nix_file = "//:ghc.nix",
     repositories = {"nixpkgs": "@nixpkgs"},

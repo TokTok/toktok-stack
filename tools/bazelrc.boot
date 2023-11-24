@@ -10,7 +10,7 @@ build --experimental_repository_cache_hardlinks
 build --incompatible_disable_target_provider_fields
 build --incompatible_disallow_empty_glob
 # TODO(iphydf): This breaks rules_kotlin.
-build --incompatible_no_implicit_file_export
+#build --incompatible_no_implicit_file_export
 build --incompatible_top_level_aspects_require_providers
 
 # This project uses a GHC provisioned via nix.

@@ -2,7 +2,6 @@ load("@rules_haskell//haskell:defs.bzl", "haskell_repl")
 load("//tools/project:build_defs.bzl", "workspace")
 
 workspace(projects = [
-    "apidsl",
     "btox",
     "c-toxcore",
     "c-toxcore-hs",
@@ -10,6 +9,7 @@ workspace(projects = [
     "dockerfiles",
     "experimental",
     "go-toxcore-c",
+    "hs-apigen",
     "hs-cimple",
     "hs-github-tools",
     "hs-msgpack-arbitrary",

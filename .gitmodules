@@ -1,6 +1,3 @@
-[submodule "apidsl"]
-	path = apidsl
-	url = https://github.com/TokTok/apidsl
 [submodule "btox"]
 	path = btox
 	url = https://github.com/TokTok/bTox
@@ -22,6 +19,9 @@
 [submodule "go-toxcore-c"]
 	path = go-toxcore-c
 	url = https://github.com/TokTok/go-toxcore-c
+[submodule "hs-apigen"]
+	path = hs-apigen
+	url = https://github.com/TokTok/hs-apigen
 [submodule "hs-cimple"]
 	path = hs-cimple
 	url = https://github.com/TokTok/hs-cimple
