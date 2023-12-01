@@ -274,6 +274,8 @@ haskell_register_ghc_nixpkgs(
         "-fdiagnostics-color=always",
         # TODO(iphydf): Move to hs-cimple.
         "-Wno-redundant-constraints",
+        "-optc=-Wno-unused-command-line-argument",
+        "-optl=-Wl,--no-fatal-warnings",
     ],
     #fully_static_link = True,
     nix_file = "//:ghc.nix",

@@ -26,6 +26,7 @@ build --enable_platform_specific_config
 build --watchfs
 build --local_cpu_resources=HOST_CPUS
 build --features=layering_check
+build --features=treat_warnings_as_errors
 
 # Fully dynamic build.
 build:dynamic --dynamic_mode=fully
@@ -218,11 +219,13 @@ build:msan --test_env=MSAN_OPTIONS=color=always:external_symbolizer_path=/nix/st
 build:msan --per_file_copt='//toxic[:/]@-UAUDIO,-UVIDEO,-UPYTHON'
 
 build:tsan --config=sanitizer
+build:tsan --features=tsan
 build:tsan --copt='-fsanitize=thread'
 build:tsan --linkopt='-fsanitize=thread'
 build:tsan --test_env=TSAN_OPTIONS=color=always,history_size=7,force_seq_cst_atomics=1:external_symbolizer_path=/nix/store/643f0y8q5yfzrqq4kn56dc13xvz90srv-llvm-16.0.1/bin/llvm-symbolizer
 
 build:ubsan --config=sanitizer
+build:ubsan --features=ubsan
 build:ubsan --copt='-fno-sanitize-recover=all'
 build:ubsan --copt='-fsanitize=nullability,undefined'
 #build:ubsan --per_file_copt='//c-toxcore[:/]@-fsanitize=integer'
@@ -326,7 +329,6 @@ build:gnulike --conlyopt='-std=gnu17'
 build:gnulike --per_file_copt='\\.c$@-std=c17'
 
 build:gnulike --copt='-Wall'
-build:gnulike --copt='-Werror'
 build:gnulike --copt='-Wformat'
 build:gnulike --copt='-Wformat-security'
 
