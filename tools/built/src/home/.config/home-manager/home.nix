@@ -55,6 +55,7 @@
     enable = true;
     plugins = with pkgs.vimPlugins; [
       jellybeans-vim
+      kotlin-vim
       vim-bazel
       vim-nix
       YouCompleteMe
@@ -63,6 +64,7 @@
     extraConfig = ''
       colorscheme jellybeans
 
+      set mouse=
       set expandtab
       set nowrap
       set viminfo='500,\"800
@@ -71,6 +73,7 @@
       set cursorline
       set backup
       set backupdir=~/.local/state/nvim/backup/
+      set ts=4 sw=4  " tabs default to 4 spaces
 
       let g:ycm_extra_conf_globlist = ['/src/workspace/.ycm_extra_conf.py']
 
@@ -78,7 +81,6 @@
       map Q gqap
 
       au BufEnter BUILD.* set ft=bzl
-      au FileType c,cpp,bzl,haskell,lhaskell set ts=4 sw=4
       au FileType sh set ts=2 sw=2
       au FileType go set noexpandtab
       " .lhs files need a long distance sync for highlighting

@@ -26,7 +26,6 @@ build --enable_platform_specific_config
 build --watchfs
 build --local_cpu_resources=HOST_CPUS
 build --features=layering_check
-build --features=treat_warnings_as_errors
 
 # Fully dynamic build.
 build:dynamic --dynamic_mode=fully
@@ -329,6 +328,7 @@ build:gnulike --conlyopt='-std=gnu17'
 build:gnulike --per_file_copt='\\.c$@-std=c17'
 
 build:gnulike --copt='-Wall'
+build:gnulike --copt='-Werror'
 build:gnulike --copt='-Wformat'
 build:gnulike --copt='-Wformat-security'
 
