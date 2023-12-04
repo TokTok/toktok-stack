@@ -1,7 +1,7 @@
-#load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_binary")
-#
-#kt_jvm_binary(
-#    name = "mytest",
-#    srcs = glob(["*.kt"]),
-#    main_class = "third_party.kotlin.MainKt",
-#)
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_binary")
+
+kt_jvm_binary(
+    name = "mytest",
+    srcs = glob(["*.kt"]),
+    main_class = "third_party.kotlin.MainKt",
+)

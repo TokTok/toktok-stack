@@ -76,15 +76,23 @@ genrule(
     ("vpx_scale", "vpx_scale/vpx_scale_rtcd.pl"),
 ]]
 
+HDRS = glob(["**/*.h"]) + [
+    "vp8_rtcd.h",
+    "vp9_rtcd.h",
+    "vpx_dsp_rtcd.h",
+    "vpx_scale_rtcd.h",
+]
+
 cc_library(
-    name = "headers",
-    hdrs = glob(["**/*.h"]) + [
-        "vp8_rtcd.h",
-        "vp9_rtcd.h",
-        "vpx_dsp_rtcd.h",
-        "vpx_scale_rtcd.h",
-    ],
+    name = "headers_private",
+    hdrs = HDRS,
     deps = ["@toktok//third_party/libvpx:vpx_config"],
+)
+
+filegroup(
+    name = "headers",
+    srcs = HDRS,
+    visibility = ["//visibility:public"],
 )
 
 cc_library(
@@ -129,7 +137,7 @@ cc_library(
     }),
     visibility = ["//visibility:public"],
     deps = [
-        ":headers",
+        ":headers_private",
         "@pthread",
         "@toktok//third_party/libvpx:vpx_config",
         "@toktok//third_party/libvpx:vpx_version",

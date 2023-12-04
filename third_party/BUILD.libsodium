@@ -54,7 +54,7 @@ HEADERS = glob([
 ])
 
 genrule(
-    name = "copy_headers",
+    name = "headers",
     srcs = HEADERS + ["@toktok//third_party/libsodium:version.h"],
     outs = [hdr[len("src/libsodium/"):] for hdr in HEADERS] + ["include/sodium/version.h"],
     cmd = "\n".join(["cp $(location @toktok//third_party/libsodium:version.h) $(location include/sodium/version.h)"] + [
@@ -64,6 +64,7 @@ genrule(
         )
         for hdr in HEADERS
     ]),
+    visibility = ["//visibility:public"],
 )
 
 genrule(
@@ -89,7 +90,7 @@ cc_library(
             "src/libsodium/**/*.S",
         ]),
     }),
-    hdrs = [":copy_headers"],
+    hdrs = [":headers"],
     copts = [
         "-DSODIUM_DLL_EXPORT",
         "-I$(GENDIR)/external/libsodium/include/sodium",

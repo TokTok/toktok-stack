@@ -30,6 +30,14 @@ genrule(
     """,
 )
 
+HDRS = glob(["include/*.h"])
+
+filegroup(
+    name = "headers",
+    srcs = HDRS,
+    visibility = ["//visibility:public"],
+)
+
 cc_library(
     name = "opus",
     srcs = glob(
@@ -65,7 +73,7 @@ cc_library(
         "src/opus_multistream_encoder.c",
         "src/repacketizer.c",
     ],
-    hdrs = glob(["include/*.h"]),
+    hdrs = HDRS,
     copts = [
         "-DHAVE_CONFIG_H",
         "-I$(GENDIR)/third_party/opus",
