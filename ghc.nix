@@ -31,6 +31,7 @@ with (import <nixpkgs> { });
     entropy
     exceptions
     expiring-cache-map
+    extra
     filepath
     generic-arbitrary
     github
