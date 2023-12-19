@@ -1,16 +1,18 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 set -eux
 
-ATTEMPTS="$1"
+NUM_ATTEMPTS="$1"
 shift
 
-for i in "$(seq 1 "$ATTEMPTS")"; do
+readarray -t ATTEMPTS <<< "$(seq 1 "$NUM_ATTEMPTS")"
+
+for i in "${ATTEMPTS[@]}"; do
   echo "=== Attempt $i ==="
   if "$@"; then
     exit 0
   fi
 done
 
-echo "Failed after $ATTEMPTS attempts: $@"
+echo "Failed after $NUM_ATTEMPTS attempts: $@"
 exit 1

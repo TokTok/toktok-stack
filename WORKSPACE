@@ -374,6 +374,14 @@ http_archive(
     urls = ["https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.3.tar.gz"],
 )
 
+http_archive(
+    name = "ev",
+    build_file = "@toktok//third_party:BUILD.ev",
+    sha256 = "507eb7b8d1015fbec5b935f34ebed15bf346bed04a11ab82b8eee848c4205aea",
+    strip_prefix = "libev-4.33",
+    urls = ["http://dist.schmorp.de/libev/libev-4.33.tar.gz"],
+)
+
 github_archive(
     name = "boringssl",
     repo = "google/boringssl",
