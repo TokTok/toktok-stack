@@ -5,7 +5,7 @@ set -eux
 NUM_ATTEMPTS="$1"
 shift
 
-readarray -t ATTEMPTS <<< "$(seq 1 "$NUM_ATTEMPTS")"
+readarray -t ATTEMPTS <<<"$(seq 1 "$NUM_ATTEMPTS")"
 
 for i in "${ATTEMPTS[@]}"; do
   echo "=== Attempt $i ==="
