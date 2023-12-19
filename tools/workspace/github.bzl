@@ -5,9 +5,13 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", _http_archive = "http_archi
 def github_archive(name, repo, version, strip_prefix="", **kwargs):
     """http_archive but for GitHub downloads."""
     owner, repo = repo.split("/")
+    if version.startswith("v"):
+        version_prefix = version[1:]
+    else:
+        version_prefix = version
     _http_archive(
         name = name,
-        strip_prefix = "%s-%s%s" % (repo, version.replace("v", ""), strip_prefix),
+        strip_prefix = "%s-%s%s" % (repo, version_prefix, strip_prefix),
         urls = ["https://github.com/%s/%s/archive/%s.zip" % (owner, repo, version)],
         **kwargs
     )

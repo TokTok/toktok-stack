@@ -11,6 +11,7 @@
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
+    astyle          # C code formatting
     connect         # for ssh proxy via tor
     gdb             # debugger for C code
     gnupg           # for signing git commits
