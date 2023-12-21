@@ -1,8 +1,6 @@
 # bazel
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
-package(features = ["layering_check"])
-
 cc_library(
     name = "xproto",
     hdrs = glob(["include/X11/**/*.h"]),

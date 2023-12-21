@@ -1,7 +1,5 @@
 load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
 
-package(features = ["layering_check"])
-
 COPTS = [
     "-DSDL_VIDEO_OPENGL_EGL=0",
     "-DSDL_VIDEO_RENDER_OGL_ES2=0",

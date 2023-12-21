@@ -27,7 +27,6 @@
 #define HAVE_CATCHABLE_SEGV 1
 #define HAVE_CATCHABLE_ABRT 1
 #define TLS __thread
-#define HAVE_DLFCN_H 1
 #define LT_OBJDIR ".libs/"
 #define HAVE_MMINTRIN_H 1
 #define HAVE_EMMINTRIN_H 1
@@ -38,10 +37,7 @@
 #define HAVE_AVX2INTRIN_H 1
 #define HAVE_WMMINTRIN_H 1
 #define HAVE_RDRAND 1
-#define HAVE_SYS_MMAN_H 1
 #define NATIVE_LITTLE_ENDIAN 1
-#define HAVE_AMD64_ASM 1
-#define HAVE_AVX_ASM 1
 #define HAVE_TI_MODE 1
 #define HAVE_CPUID 1
 #define HAVE_WEAK_SYMBOLS 1
@@ -49,11 +45,6 @@
 #define HAVE_ATOMIC_OPS 1
 #define HAVE_ALLOCA_H 1
 #define HAVE_ALLOCA 1
-#define HAVE_MMAP 1
-#define HAVE_MLOCK 1
-#define HAVE_MADVISE 1
-#define HAVE_MPROTECT 1
 #define HAVE_NANOSLEEP 1
-#define HAVE_POSIX_MEMALIGN 1
 #define HAVE_GETPID 1
 #define CONFIGURED 1

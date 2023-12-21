@@ -10,6 +10,21 @@ github_archive(
     version = "652c8f0b2817daaa2570b7a3b2147643210f7dc7",
 )
 
+# Third-party Bazel
+# =========================================================
+
+# https://github.com/uber/hermetic_cc_toolchain
+http_archive(
+    name = "hermetic_cc_toolchain",
+    sha256 = "a5caccbf6d86d4f60afd45b541a05ca4cc3f5f523aec7d3f7711e584600fb075",
+    url = "https://github.com/uber/hermetic_cc_toolchain/releases/download/v2.1.3/hermetic_cc_toolchain-v2.1.3.tar.gz",
+)
+
+# hermetic_cc_toolchain
+load("@hermetic_cc_toolchain//toolchain:defs.bzl", zig_toolchains = "toolchains")
+
+zig_toolchains()
+
 # Fuzzing
 # =========================================================
 

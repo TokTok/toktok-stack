@@ -1,7 +1,5 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
-package(features = ["layering_check"])
-
 genrule(
     name = "regen_config",
     srcs = glob([
@@ -67,40 +65,47 @@ genrule(
     visibility = ["//visibility:public"],
 )
 
-genrule(
-    name = "sodium_config",
-    srcs = select({
-        "@toktok//tools/config:freebsd": ["@toktok//third_party/libsodium:linux/sodium_config.h"],
-        "@toktok//tools/config:linux": ["@toktok//third_party/libsodium:linux/sodium_config.h"],
-        "@toktok//tools/config:osx": ["@toktok//third_party/libsodium:osx/sodium_config.h"],
-        "@toktok//tools/config:windows": ["@toktok//third_party/libsodium:windows/sodium_config.h"],
+SRCS_X86_64 = [
+    "src/libsodium/**/*-avx2.c",
+    "src/libsodium/**/*-avx512f.c",
+    "src/libsodium/**/sse/*.c",
+    "src/libsodium/**/*-sse41.c",
+    "src/libsodium/**/*-ssse3.c",
+]
+
+alias(
+    name = "config",
+    actual = select({
+        "@toktok//tools/config:arm64": "@toktok//third_party/libsodium:config/arm64.h",
+        "@toktok//tools/config:linux-x86_64": "@toktok//third_party/libsodium:config/linux-x86_64.h",
+        "@toktok//tools/config:windows-x86_64": "@toktok//third_party/libsodium:config/windows-x86_64.h",
     }),
-    outs = ["sodium_config.h"],
-    cmd = "cp $< $@",
 )
 
 cc_library(
     name = "libsodium",
-    srcs = glob([
-        "src/libsodium/**/*.h",
-        "src/libsodium/**/*.c",
-    ]) + ["sodium_config.h"] + select({
-        "@toktok//tools/config:windows": [],
-        "//conditions:default": glob([
-            "src/libsodium/**/*.S",
-        ]),
+    srcs = [":config"] + glob(
+        [
+            "src/libsodium/**/*.h",
+            "src/libsodium/**/*.c",
+        ],
+        exclude = SRCS_X86_64,
+    ) + select({
+        "@toktok//tools/config:arm64": [],
+        "@toktok//tools/config:linux-x86_64": glob(SRCS_X86_64 + ["src/libsodium/**/*.S"]),
+        "@toktok//tools/config:windows-x86_64": glob(SRCS_X86_64),
     }),
     hdrs = [":headers"],
     copts = [
         "-DSODIUM_DLL_EXPORT",
         "-I$(GENDIR)/external/libsodium/include/sodium",
+        "-include $(location :config)",
+        "-Wno-strict-aliasing",
+        "-Wno-unknown-pragmas",
+        "-Wno-unused",
     ] + select({
-        "@toktok//tools/config:windows": [],
-        "//conditions:default": [
-            "-include $(location sodium_config.h)",
-            "-Wno-strict-aliasing",
-            "-Wno-unknown-pragmas",
-            "-Wno-unused",
+        "@toktok//tools/config:arm64": [],
+        "@toktok//tools/config:x86_64": [
             "-maes",
             "-mpclmul",
             "-mrdrnd",
@@ -109,11 +114,6 @@ cc_library(
     }),
     defines = ["SODIUM_STATIC"],
     strip_include_prefix = "include",
-    textual_hdrs = glob([
-        "src/libsodium/**/*.h",
-        "src/libsodium/crypto_scalarmult/curve25519/sandy2x/*.S",
-    ]) + [
-        "src/libsodium/crypto_stream/salsa20/xmm6/salsa20_xmm6-asm.S",
-    ],
+    textual_hdrs = glob(["src/libsodium/**/*.S"]),
     visibility = ["//visibility:public"],
 )

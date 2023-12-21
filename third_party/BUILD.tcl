@@ -1,7 +1,5 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
 
-package(features = ["layering_check"])
-
 filegroup(
     name = "library",
     srcs = ["library/init.tcl"],

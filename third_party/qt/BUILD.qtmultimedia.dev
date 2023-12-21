@@ -1,7 +1,5 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
-package(features = ["layering_check"])
-
 [cc_library(
     name = mod.lower(),
     hdrs = glob(["include/Qt%s/**" % mod]),

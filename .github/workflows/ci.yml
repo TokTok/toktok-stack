@@ -47,6 +47,9 @@ jobs:
       - name: Build toxchat/toktok-stack:latest-fastbuild
         run: docker build -t toxchat/toktok-stack:latest-fastbuild -f tools/built/src/Dockerfile.fastbuild .
 
+      - name: Build toxchat/toktok-stack:latest-arm64
+        run: docker build -t toxchat/toktok-stack:latest-arm64 -f tools/built/src/Dockerfile.arm64 .
+
       - name: Build toxchat/toktok-stack:latest-dev
         run: |
           sed -i -e 's/ --remote_download_outputs=all//' tools/built/src/setup-dev.sh

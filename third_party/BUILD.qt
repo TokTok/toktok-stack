@@ -1,5 +1,3 @@
-package(features = ["layering_check"])
-
 [alias(
     name = name,
     actual = "@qt5.qtbase.dev//:bin/%s" % name,

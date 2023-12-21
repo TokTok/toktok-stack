@@ -1,7 +1,5 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
 
-package(features = ["layering_check"])
-
 genrule(
     name = "cap_names_list",
     srcs = ["libcap/include/uapi/linux/capability.h"],

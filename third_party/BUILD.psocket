@@ -1,7 +1,5 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
-package(features = ["layering_check"])
-
 # POSIX networking library.
 #
 # For Windows, we use the Winsock libraries, for everything else we assume it's
@@ -10,8 +8,8 @@ cc_library(
     name = "psocket",
     linkopts = select({
         "@toktok//tools/config:windows": [
-            "-DEFAULTLIB:iphlpapi.lib",
-            "-DEFAULTLIB:ws2_32.lib",
+            "-liphlpapi",
+            "-lws2_32",
         ],
         "//conditions:default": [],
     }),

@@ -27,16 +27,10 @@ build --watchfs
 build --local_cpu_resources=HOST_CPUS
 build --features=layering_check
 
-# Fully dynamic build.
-build:dynamic --dynamic_mode=fully
-
-# Fully static build.
-build:static --dynamic_mode=off
-build:static --features=fully_static_link
-
 build --experimental_inmemory_dotd_files
 build --experimental_inmemory_jdeps_files
 build --experimental_objc_include_scanning
+build --experimental_omitfp
 build --experimental_remotable_source_manifests
 #build --experimental_remote_build_event_upload=minimal
 build --experimental_remote_cache_async
@@ -55,6 +49,7 @@ build --incompatible_disable_runtimes_filegroups
 build --incompatible_dont_use_javasourceinfoprovider
 build --incompatible_enable_android_toolchain_resolution
 build --incompatible_enable_apple_toolchain_resolution
+build --incompatible_enable_cc_toolchain_resolution
 build --incompatible_exclusive_test_sandboxed
 build --incompatible_remote_output_paths_relative_to_input_root
 build --incompatible_remote_use_new_exit_code_for_lost_inputs
@@ -70,9 +65,6 @@ build --incompatible_use_host_features
 #build --incompatible_visibility_private_attributes_at_definition
 #build --incompatible_struct_has_no_methods
 #build --incompatible_disable_starlark_host_transitions
-
-# This doesn't work on macOS.
-build:linux --experimental_omitfp
 
 # TODO(iphydf): Make this work somehow with clang.
 #coverage --combined_report=lcov
@@ -121,17 +113,6 @@ build:docker-sandbox --strategy=Javac=docker
 # default once rules_haskell supports it.
 build:sandboxfs --experimental_sandboxfs_path=/home/builder/.bin/sandboxfs
 build:sandboxfs --experimental_use_sandboxfs
-build:sandboxfs --experimental_use_windows_sandbox=auto
-
-##############################################################################
-#
-# :: Filter out OS-specific parts from "bazel build //...".
-#
-##############################################################################
-
-build:freebsd --build_tag_filters=-windows,-macos
-build:linux --build_tag_filters=-windows,-macos
-build:macos --build_tag_filters=-windows
 
 ##############################################################################
 #
@@ -238,22 +219,6 @@ build:ubsan --test_env=UBSAN_OPTIONS=color=always,print_stacktrace=1:external_sy
 build:lto --copt='-flto'
 build:lto --linkopt='-flto'
 
-# On Windows, we always generate debug info, and always compile with
-# optimisation flags.
-build:windows --config=release
-build:windows --copt='/Z7'
-#build:windows --copt='/UNDEBUG'
-# Disable inlining of functions not marked as "inline".
-build:windows --copt='/Ob1'
-build:windows --linkopt='/DEBUG:FULL'
-
-# Generate code to protect against Spectre variant 1.
-#build:windows --copt='/Qspectre'
-
-# This file breaks clang on OSX when compiled with -O2 or higher:
-# fatal error: error in backend: Cannot emit physreg copy instruction
-build:macos --per_file_copt='c-toxcore/toxcore/group.c$@-O1'
-
 build:android --crosstool_top=//external:android/crosstool
 build:android --cpu=armeabi-v7a
 build:android --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
@@ -319,6 +284,9 @@ build:kythe --distinct_host_configuration=true
 # :: Warning flags (some compiler-specific).
 #
 ##############################################################################
+
+build:clang --config=gnulike
+build:gcc --config=gnulike
 
 # Use GNU versions of the C standard, because runtime/cgo doesn't set feature
 # flags correctly. We then override it in *all* per-file flags, which ends up
@@ -412,6 +380,9 @@ build:clang --copt='-Wno-unsafe-buffer-usage'
 # TODO(iphydf): Find out why.
 build:clang --copt='-Wno-deprecated-builtins'
 
+# LPTSTR cast for WSAStringToAddress is necessary.
+build:windows-amd64 --per_file_copt='//c-toxcore/toxcore:network.c@-Wno-cast-qual'
+
 build:clang --per_file_copt='//c-toxcore/toxav:video.c@-Wno-used-but-marked-unused'
 build:clang --per_file_copt='//c-toxcore/super_donators@-w'
 build:clang --per_file_copt='_test\\.(cc|cpp)$@-Wno-global-constructors,-Wno-exit-time-destructors'
@@ -488,7 +459,6 @@ build:gcc --per_file_copt='//toxic@-Wno-format-truncation'
 build:gcc --per_file_copt='//toxic@-Wno-nonnull'
 build:gcc --per_file_copt='//toxic@-Wno-overflow'
 build:gcc --per_file_copt='//toxins@-Wno-format-overflow'
-build:windows --per_file_copt='//qtox@/wd4068'  # unknown pragma
 
 # Ignore warnings for Go generated internal files and external libraries.
 build:gnulike --per_file_copt='/go_default_library%@-w'
@@ -552,64 +522,11 @@ build:gnulike --host_per_file_copt='external/yasm[:/]@-Wno-misleading-indentatio
 build:gnulike      --per_file_copt='external/yasm[:/]@-Wno-unused-but-set-variable'
 build:gnulike --host_per_file_copt='external/yasm[:/]@-Wno-unused-but-set-variable'
 
-build:windows --copt='/WX' --linkopt='/WX'
-build:windows --per_file_copt='^external/libqrencode[:/]@/wd4273'
-#build:windows --per_file_copt='//c-toxcore[:/]@/Za'
-build:windows --per_file_copt='//c-toxcore[:/]@/permissive-'
-build:windows --per_file_copt='//c-toxcore[:/]@/W4'
-build:windows --per_file_copt='//c-toxcore[:/]@/wd4018'
-build:windows --per_file_copt='//c-toxcore[:/]@/wd4100'
-build:windows --per_file_copt='//c-toxcore[:/]@/wd4127'
-build:windows --per_file_copt='//c-toxcore[:/]@/wd4200'
-build:windows --per_file_copt='//c-toxcore[:/]@/wd4204'
-build:windows --per_file_copt='//c-toxcore[:/]@/wd4244'
-build:windows --per_file_copt='//c-toxcore[:/]@/wd4245'
-build:windows --per_file_copt='//c-toxcore[:/]@/wd4267'
-build:windows --per_file_copt='//c-toxcore[:/]@/wd4310'
-build:windows --per_file_copt='//c-toxcore[:/]@/wd4389'
-
-#build:windows --per_file_copt='//qtox[:/]@/Za'
-build:windows --per_file_copt='//qtox[:/]@/permissive-'
-build:windows --per_file_copt='//qtox[:/]@/W4'
-build:windows --per_file_copt='//qtox[:/]@/wd4065'
-build:windows --per_file_copt='//qtox[:/]@/wd4100'
-build:windows --per_file_copt='//qtox[:/]@/wd4127'
-build:windows --per_file_copt='//qtox[:/]@/wd4244'
-build:windows --per_file_copt='//qtox[:/]@/wd4245'
-build:windows --per_file_copt='//qtox[:/]@/wd4267'
-build:windows --per_file_copt='//qtox[:/]@/wd4305'
-build:windows --per_file_copt='//qtox[:/]@/wd4456'
-build:windows --per_file_copt='//qtox[:/]@/wd4457'
-build:windows --per_file_copt='//qtox[:/]@/wd4458'
-build:windows --per_file_copt='//qtox[:/]@/wd4459'
-build:windows --per_file_copt='//qtox[:/]@/wd4566'
-build:windows --per_file_copt='//qtox[:/]@/wd4702'
-
-# Fix these:
-build:windows --per_file_copt='//qtox[:/]@/wd4701'
-build:windows --per_file_copt='//qtox[:/]@/wd4703'
-
-build:windows --linkopt='/GUARD:CF'
-# Could be WINDOWS, but we like our console.
-build:windows --linkopt='/SUBSYSTEM:CONSOLE'
-
 ##############################################################################
 #
 # :: System/compiler-specific optional flags.
 #
 ##############################################################################
-
-build:freebsd --config=gnulike
-build:linux --config=gnulike
-build:macos --config=gnulike
-
-# Linux-specific flags.
-build:linux --config=gnuld
-# Gives lots of warnings with sanitizers.
-#build:linux --linkopt='-Wl,--detect-odr-violations'
-
-# FreeBSD-specific flags.
-build:freebsd --config=gnuld
 
 # Flags for systems with GNU linker or compatible.
 build:gnuld --linkopt='-Wl,-z,noexecstack'
@@ -619,10 +536,6 @@ build:gnuld --linkopt='-fPIE'
 # Not enabled, because (at least - I gave up when trying to fix libvpx)
 # libsodium and libvpx assembly code doesn't define noexecstack.
 #build:gnuld --linkopt='-Wl,--warn-execstack'
-
-# MSVC has a header that disallows the above nullptr thing. Defining the
-# following symbol disables that check.
-build:windows --per_file_copt='//c-toxcore@/D_ALLOW_KEYWORD_MACROS'
 
 # Continuous Integration platforms tend to not have IPv6.
 build:ci --per_file_copt='//c-toxcore/auto_tests@-DUSE_IPV6=0'
@@ -635,13 +548,43 @@ build:ci --flaky_test_attempts=6  # try a bit harder - toxcore tests are flaky
 # Docker build doesn't support IPv6.
 build:docker --config=ci
 
-# We use Clang in the nix builders.
-build:gnulike --config=clang
-build --config=dynamic
+##############################################################################
+#
+# :: Compilation targets (including cross compilation)
+#
+##############################################################################
 
-# Used for static musl builds.
-#build:gnulike --config=gcc
-#build --config=static
+build:nix --config=clang
+build:nix --config=gnuld
+build:nix --build_tag_filters=-windows,-macos
+
+build:zig --config=clang
+build:zig --copt=-fPIC
+build:zig --dynamic_mode=off
+# See: https://github.com/uber/hermetic_cc_toolchain/issues/134
+build:zig --sandbox_add_mount_pair=/tmp
+
+build:linux-arm64-musl --platforms=@zig_sdk//platform:linux_arm64
+build:linux-arm64-musl --extra_toolchains=@zig_sdk//toolchain:linux_arm64_musl
+build:linux-arm64-musl --config=zig
+build:linux-arm64-musl --build_tag_filters=-windows,-macos
+
+build:linux-amd64-musl --platforms=@zig_sdk//platform:linux_amd64
+build:linux-amd64-musl --extra_toolchains=@zig_sdk//toolchain:linux_amd64_musl
+build:linux-amd64-musl --config=zig
+build:linux-amd64-musl --build_tag_filters=-windows,-macos
+
+build:windows-amd64 --platforms=@zig_sdk//platform:windows_amd64
+build:windows-amd64 --extra_toolchains=@zig_sdk//toolchain:windows_amd64
+build:windows-amd64 --config=zig
+build:windows-amd64 --build_tag_filters=-macos
+
+# Pick *one* of these for the target platform. "nix" is the default Linux target.
+# TODO(iphydf): Move to .bazelrc.local.
+#build --config=linux-arm64-musl
+#build --config=linux-amd64-musl
+#build --config=windows-amd64
+build --config=nix
 
 try-import %workspace%/.bazelrc.local
 

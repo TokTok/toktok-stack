@@ -1,11 +1,6 @@
 licenses(["notice"])
 
 exports_files(
-    srcs = [
-        "linux/sodium_config.h",
-        "osx/sodium_config.h",
-        "version.h",
-        "windows/sodium_config.h",
-    ],
+    srcs = glob(["config/*.h"]) + ["version.h"],
     visibility = ["@libsodium//:__pkg__"],
 )

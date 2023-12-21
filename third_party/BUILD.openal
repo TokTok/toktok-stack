@@ -1,7 +1,5 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "objc_library")
 
-package(features = ["layering_check"])
-
 COPTS = [
     "-DAL_ALEXT_PROTOTYPES",
     "-I$(GENDIR)/third_party/openal/platform",
