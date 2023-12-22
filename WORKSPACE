@@ -415,8 +415,8 @@ http_archive(
 github_archive(
     name = "com_google_googletest",
     repo = "google/googletest",
-    sha256 = "263000d4afc2a7a26dd75fe23fc86535c73785984ab053b4dfb231caa76b03d6",
-    version = "89b25572dbd7668499d2cfd01dea905f8c44e019",
+    sha256 = "93b52882cff4e8fb344070106facee0df5e61be91b1948a69c8581b3bcbe0c61",
+    version = "b3a9ba2b8e975550799838332803d468797ae2e1",
 )
 
 new_github_archive(
