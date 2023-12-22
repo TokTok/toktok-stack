@@ -56,7 +56,7 @@
 #define ZMQ_HAVE_PTHREAD_SET_AFFINITY
 #define HAVE_ACCEPT4
 #define HAVE_STRNLEN
-/* #undef ZMQ_HAVE_STRLCPY */
+#define ZMQ_HAVE_STRLCPY
 /* #undef ZMQ_HAVE_LIBBSD */
 
 #define ZMQ_HAVE_IPC

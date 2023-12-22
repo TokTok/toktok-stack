@@ -62,7 +62,6 @@ licenses(["notice"])
     "mtl",
     "network",
     "parallel",
-    "persist",
     "pretty",
     "process",
     "QuickCheck",

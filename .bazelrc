@@ -322,12 +322,12 @@ build:gnulike --per_file_copt='external/com_google_absl[:/]@-UNO_FRAME_POINTER,-
 build:linux-arm64-musl --per_file_copt='external/com_google_absl/absl/base/internal/low_level_alloc.cc@-Doff64_t=long'
 
 # Compile toxcore as C++.
-build:clang --per_file_copt='//c-toxcore/@-xc++,-std=c++17'
-build:clang --per_file_copt='//c-toxcore/@-Wno-alloca'
-build:clang --per_file_copt='//c-toxcore/@-Wno-c99-extensions'
-build:clang --per_file_copt='//c-toxcore/@-Wno-old-style-cast'
-build:clang --per_file_copt='//c-toxcore/@-Wno-unreachable-code-return'
-build:clang --per_file_copt='//c-toxcore/@-Wno-unused-macros'
+build:c-as-cpp --per_file_copt='//c-toxcore/@-xc++,-std=c++17'
+build:c-as-cpp --per_file_copt='//c-toxcore/@-Wno-alloca'
+build:c-as-cpp --per_file_copt='//c-toxcore/@-Wno-c99-extensions'
+build:c-as-cpp --per_file_copt='//c-toxcore/@-Wno-old-style-cast'
+build:c-as-cpp --per_file_copt='//c-toxcore/@-Wno-unreachable-code-return'
+build:c-as-cpp --per_file_copt='//c-toxcore/@-Wno-unused-macros'
 
 # Cython code isn't very clean.
 build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-cast-function-type-strict'

@@ -1,0 +1,9 @@
+load("@rules_haskell//haskell:defs.bzl", "haskell_repl")
+load(":haskell_targets.bzl", "HASKELL_TARGETS")
+
+haskell_repl(
+    name = "hie-bios",
+    testonly = True,
+    collect_data = False,
+    deps = HASKELL_TARGETS,
+)

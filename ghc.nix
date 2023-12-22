@@ -57,7 +57,6 @@ with (import <nixpkgs> { });
     mtl
     network
     parallel
-    persist
     pretty
     process
     QuickCheck

@@ -11,17 +11,19 @@
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
-    astyle          # C code formatting
-    connect         # for ssh proxy via tor
-    gdb             # debugger for C code
-    gnupg           # for signing git commits
-    man-pages       # libc documentation
-    man-pages-posix # libc documentation (POSIX functions)
-    openssh         # ssh server
-    screen          # terminal window manager
-    stylish-haskell # formatter for Haskell
-    tor             # onion routing for privacy when testing tox inside the container
-    xxd             # hex viewer (to inspect dumps and tox saves)
+    astyle                  # C code formatting
+    connect                 # for ssh proxy via tor
+    gdb                     # debugger for C code
+    gnupg                   # for signing git commits
+    haskell-language-server # For vscode to understand Haskell.
+    man-pages               # libc documentation
+    man-pages-posix         # libc documentation (POSIX functions)
+    openssh                 # ssh server
+    python3                 # needed for .hie-bios
+    screen                  # terminal window manager
+    stylish-haskell         # formatter for Haskell
+    tor                     # onion routing for privacy when testing tox inside the container
+    xxd                     # hex viewer (to inspect dumps and tox saves)
   ];
 
   # This value determines the Home Manager release that your
@@ -32,7 +34,7 @@
   # You can update Home Manager without changing this value. See
   # the Home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "23.05";
+  home.stateVersion = "23.11";
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -92,7 +94,7 @@
   programs.zsh = {
     enable = true;
     autocd = true;
-    enableSyntaxHighlighting = true;
+    syntaxHighlighting.enable = true;
 
     initExtra = ''
       unsetopt beep                   # don't beep, ever
@@ -125,4 +127,10 @@
       theme = "cypher";
     };
   };
+
+  imports = [
+    "${fetchTarball "https://github.com/msteen/nixos-vscode-server/tarball/master"}/modules/vscode-server/home.nix"
+  ];
+
+  services.vscode-server.enable = true;
 }

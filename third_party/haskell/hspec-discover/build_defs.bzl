@@ -38,7 +38,7 @@ def hspec_library(name, src_strip_prefix, **kwargs):
         **kwargs
     )
 
-def hspec_test(name, **kwargs):
+def hspec_test(name, visibility=["//tools/haskell:__pkg__"], **kwargs):
     """HSpec test."""
     srcs = native.glob(["test/*/**/*.*hs"])
 
@@ -58,5 +58,6 @@ def hspec_test(name, **kwargs):
         srcs = srcs + [name + "_hspec_driver"],
         main_file = "test/Spec.hs",
         src_strip_prefix = "test",
+        visibility = visibility,
         **kwargs
     )

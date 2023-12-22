@@ -8,11 +8,14 @@ RUN ["mkdir", "/tmp/cirrus-ci-build"]
 # minimum number of files to avoid rebuilding this when making changes to the
 # toktok-stack tools.
 COPY --chown=builder:users tools/bazelrc.boot /src/workspace/.bazelrc
-COPY --chown=builder:users BUILD.bazel WORKSPACE .bazelignore .bazelversion ghc.nix /src/workspace/
+COPY --chown=builder:users BUILD.bazel WORKSPACE .bazelignore ghc.nix /src/workspace/
 COPY --chown=builder:users third_party /src/workspace/third_party
 COPY --chown=builder:users tools/config /src/workspace/tools/config
 COPY --chown=builder:users tools/workspace /src/workspace/tools/workspace
 WORKDIR /src/workspace
 RUN sudo nix-daemon --daemon & bazel aquery --output=proto --show_timestamps //... > /dev/null
+
+# TODO(https://github.com/tweag/rules_nixpkgs/issues/439): Remove.
+RUN sudo sed -Eie "s!\b(mktemp|rm)\b!$(echo -n /nix/store/*-coreutils-9.3/bin/)\1!" /nix/store/*-clang-wrapper-*/bin/cc
 
 # vim:ft=dockerfile

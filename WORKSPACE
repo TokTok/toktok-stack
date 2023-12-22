@@ -53,15 +53,15 @@ install_deps()
 github_archive(
     name = "io_bazel_rules_go",
     repo = "bazelbuild/rules_go",
-    sha256 = "2c6388e97cb4fb30546d65e983c45bb422bfe32c6e946af329cd1c52f1eaf836",
-    version = "v0.39.1",
+    sha256 = "82f7ae1c9ffcfde827f4164123a6775c5c28d9993d291e4fd40bf40698926569",
+    version = "v0.41.0",
 )
 
 github_archive(
     name = "bazel_gazelle",
     repo = "bazelbuild/bazel-gazelle",
-    sha256 = "1e246edb247c76ddf698ddc58fec7d3a9f908131b356133e6dccf91194d47aee",
-    version = "v0.33.0",
+    sha256 = "4aa8e6c9cb98a9814c82289e4a87c661aa16c8b31bffa448163da8fd20a5bb93",
+    version = "v0.35.0",
 )
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_rules_dependencies")
@@ -74,8 +74,9 @@ go_rules_dependencies()
 github_archive(
     name = "rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "c9c2dc3d1a97e8b16d85c73d45d7f8c3a8d3bb7b35783c4305e61e0aed8a3ea5",
-    version = "2d0942ec1d9ad239c44c6cfc635fa7e51cd0f0f3",
+    sha256 = "713d03014f08f20ad9d68fe458703f3f7bdbc8c94c21be22748af5728f5c7c4b",
+    # TODO(https://github.com/tweag/rules_haskell/issues/2097): Upgrade once this bug is fixed.
+    version = "d14584e7f227fee55d857694d6ba7dc7e74d8f3c",
 )
 
 load(
@@ -103,8 +104,8 @@ load(
 
 nixpkgs_git_repository(
     name = "nixpkgs",
-    revision = "23.05",
-    sha256 = "f2b96094f6dfbb53b082fe8709da94137475fcfead16c960f2395c98fc014b68",
+    revision = "23.11",
+    sha256 = "bc9a0a74e8d7fb0e11434dd3abaa0cb0572ccd3a65b5a192eea41832b286e8a0",
 )
 
 FULLY_STATIC = False
@@ -114,8 +115,8 @@ NIXPKGS = {
     "prefix": "pkgsStatic.",
     "suffix": ".pkgsStatic",
 } if FULLY_STATIC else {
-    #"cc": "llvmPackages_16.libcxxClang",
-    "cc": "llvmPackages_16.clang",
+    #"cc": "libcxxClang",
+    "cc": "clang",
     "prefix": "",
     "suffix": "",
 }
@@ -143,7 +144,7 @@ nixpkgs_package(
 
 nixpkgs_package(
     name = "libllvm",
-    attribute_path = "llvmPackages_16.libllvm",
+    attribute_path = "libllvm",
     build_file = "//third_party:BUILD.libllvm",
     repository = "@nixpkgs",
 )
@@ -220,16 +221,16 @@ http_archive(
     patch_cmds = [
         "chmod 755 java_tools/ijar/ijar",
         "{patchelf} --set-interpreter {ld_linux} --add-rpath {gcc_lib} java_tools/ijar/ijar".format(
-            gcc_lib = "/nix/store/yazs3bdl481s2kyffgsa825ihy1adn8f-gcc-12.2.0-lib/lib",
-            ld_linux = "/nix/store/yaz7pyf0ah88g2v505l38n0f3wg2vzdj-glibc-2.37-8/lib64/ld-linux-x86-64.so.2",
-            patchelf = "/nix/store/ywwjpdyhar4f3vcqf4qk77vrbr3vj5wl-patchelf-0.15.0/bin/patchelf",
+            gcc_lib = "/nix/store/myw67gkgayf3s2mniij7zwd79lxy8v0k-gcc-12.3.0-lib/lib",
+            ld_linux = "/nix/store/qn3ggz5sf3hkjs2c797xf7nan3amdxmp-glibc-2.38-27/lib64/ld-linux-x86-64.so.2",
+            patchelf = "/nix/store/85jldj870vzcl72yz03labc93bwvqayx-patchelf-0.15.0/bin/patchelf",
         ),
         "chmod 555 java_tools/ijar/ijar",
         "chmod 755 java_tools/src/tools/singlejar/singlejar_local",
         "{patchelf} --set-interpreter {ld_linux} --add-rpath {gcc_lib} java_tools/src/tools/singlejar/singlejar_local".format(
-            gcc_lib = "/nix/store/yazs3bdl481s2kyffgsa825ihy1adn8f-gcc-12.2.0-lib/lib",
-            ld_linux = "/nix/store/yaz7pyf0ah88g2v505l38n0f3wg2vzdj-glibc-2.37-8/lib64/ld-linux-x86-64.so.2",
-            patchelf = "/nix/store/ywwjpdyhar4f3vcqf4qk77vrbr3vj5wl-patchelf-0.15.0/bin/patchelf",
+            gcc_lib = "/nix/store/myw67gkgayf3s2mniij7zwd79lxy8v0k-gcc-12.3.0-lib/lib",
+            ld_linux = "/nix/store/qn3ggz5sf3hkjs2c797xf7nan3amdxmp-glibc-2.38-27/lib64/ld-linux-x86-64.so.2",
+            patchelf = "/nix/store/85jldj870vzcl72yz03labc93bwvqayx-patchelf-0.15.0/bin/patchelf",
         ),
         "chmod 555 java_tools/src/tools/singlejar/singlejar_local",
     ],
@@ -282,7 +283,8 @@ load(
 # https://api.haskell.build/haskell/nixpkgs.html#haskell_register_ghc_nixpkgs
 haskell_register_ghc_nixpkgs(
     attribute_path = "ghc",
-    compiler_flags = [
+    #fully_static_link = True,
+    ghcopts = [
         "-Wall",
         "-Werror",
         "-XHaskell2010",
@@ -292,11 +294,10 @@ haskell_register_ghc_nixpkgs(
         "-optc=-Wno-unused-command-line-argument",
         "-optl=-Wl,--no-fatal-warnings",
     ],
-    #fully_static_link = True,
     nix_file = "//:ghc.nix",
     repositories = {"nixpkgs": "@nixpkgs"},
     #static_runtime = True,
-    version = "9.2.7",
+    version = "9.4.8",
 )
 
 [nixpkgs_package(
