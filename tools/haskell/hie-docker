@@ -1,0 +1,13 @@
+#!/bin/sh
+
+docker run --rm \
+  --entrypoint tools/haskell/gen_haskell_targets \
+  --user "$UID:$GID" \
+  --tmpfs="/home/$USER:exec" \
+  --workdir="/home/ubuntu/toktok-stack" \
+  --volume="/etc/group:/etc/group:ro" \
+  --volume="/etc/passwd:/etc/passwd:ro" \
+  --volume="/etc/shadow:/etc/shadow:ro" \
+  --volume="$PWD:/home/ubuntu/toktok-stack" \
+  -e HIE_BIOS_OUTPUT=/dev/stdout \
+  -t gcr.io/bazel-public/bazel:6.4.0

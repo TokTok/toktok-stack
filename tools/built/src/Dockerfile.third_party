@@ -13,6 +13,7 @@ COPY --chown=builder:users third_party /src/workspace/third_party
 COPY --chown=builder:users tools/config /src/workspace/tools/config
 COPY --chown=builder:users tools/workspace /src/workspace/tools/workspace
 WORKDIR /src/workspace
-RUN sudo nix-daemon --daemon & bazel aquery --output=proto --show_timestamps //... > /dev/null
+RUN (sudo nix-daemon --daemon & bazel aquery --output=proto --show_timestamps //... > /dev/null) || true
+RUN ls /nix/store/*patchelf*/bin/patchelf
 
 # vim:ft=dockerfile

@@ -1,4 +1,3 @@
-load("@rules_haskell//haskell:defs.bzl", "haskell_repl")
 load("//tools/project:build_defs.bzl", "workspace")
 
 workspace(projects = [
@@ -32,25 +31,6 @@ workspace(projects = [
     "toxins",
     "website",
 ])
-
-haskell_repl(
-    name = "hie-bios",
-    collect_data = False,
-    deps = [
-        "//hs-cimple",
-        "//hs-github-tools",
-        "//hs-msgpack-arbitrary",
-        "//hs-msgpack-binary",
-        "//hs-msgpack-persist",
-        "//hs-msgpack-rpc-conduit",
-        "//hs-msgpack-testsuite",
-        "//hs-msgpack-types",
-        "//hs-schema",
-        "//hs-tokstyle",
-        "//hs-toxcore",
-        "//hs-toxcore-c",
-    ],
-)
 
 exports_files(srcs = [
     "LICENSE.gpl3",

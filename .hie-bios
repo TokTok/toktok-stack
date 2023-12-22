@@ -2,13 +2,17 @@
 import os
 import subprocess
 
-subprocess.run(
-    ["bazel", "build", "//tools:hie-bios", "--output_groups=hie_bios"],
-    check=True)
+subprocess.run(["tools/haskell/gen_haskell_targets"], check=True)
+result = subprocess.run(
+    ["bazel", "run", "//tools:hie-bios@bios", "--output_groups=hie_bios"],
+    check=True, capture_output=True)
 with open(os.environ["HIE_BIOS_OUTPUT"], "w") as fh:
-    fh.write("-hide-all-packages\n")
-    with open("bazel-bin/tools/hie-bios@hie-bios", "r") as bios:
-        for line in bios.readlines():
+    prev = None
+    for line in result.stdout.decode("utf-8").splitlines(keepends=True):
+        line = line.replace("/home/builder/.cache/bazel/_bazel_builder/a08c2e4811c846650b733c6fc815a920/execroot/toktok/bazel-out/k8-fastbuild/bin/", "/src/workspace/bazel-bin/")
+        line = line.replace("/home/builder/.cache/bazel/_bazel_builder/a08c2e4811c846650b733c6fc815a920/execroot/toktok/", "/src/workspace/")
+        if line != prev and not line.startswith("-l"):
             fh.write(line)
+        prev = line
     # Make warnings non-fatal
     fh.write("-Wwarn\n")
