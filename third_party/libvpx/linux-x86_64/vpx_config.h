@@ -9,7 +9,7 @@
 #ifndef VPX_CONFIG_H
 #define VPX_CONFIG_H
 #define RESTRICT
-#define INLINE      inline
+#define INLINE inline
 #define VPX_ARCH_ARM 0
 #define VPX_ARCH_MIPS 0
 #define VPX_ARCH_X86 0
