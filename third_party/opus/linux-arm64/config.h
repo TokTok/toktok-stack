@@ -13,14 +13,14 @@
 /* Do not build the float API */
 /* #undef DISABLE_FLOAT_API */
 
+/* Disable bitstream fixes from RFC 8251 */
+/* #undef DISABLE_UPDATE_DRAFT */
+
 /* Assertions */
 /* #undef ENABLE_ASSERTIONS */
 
-/* Ambisonics Support */
-/* #undef ENABLE_EXPERIMENTAL_AMBISONICS */
-
-/* Enable bitstream changes from draft-ietf-codec-opus-update */
-/* #undef ENABLE_UPDATE_DRAFT */
+/* Hardening */
+#define ENABLE_HARDENING 1
 
 /* Debug fixed-point implementation */
 /* #undef FIXED_DEBUG */
@@ -52,11 +52,11 @@
 /* Define to 1 if you have the `lrintf' function. */
 #define HAVE_LRINTF 1
 
-/* Define to 1 if you have the <memory.h> header file. */
-#define HAVE_MEMORY_H 1
-
 /* Define to 1 if you have the <stdint.h> header file. */
 #define HAVE_STDINT_H 1
+
+/* Define to 1 if you have the <stdio.h> header file. */
+#define HAVE_STDIO_H 1
 
 /* Define to 1 if you have the <stdlib.h> header file. */
 #define HAVE_STDLIB_H 1
@@ -77,13 +77,13 @@
 #define HAVE_UNISTD_H 1
 
 /* Define to 1 if you have the `__malloc_hook' function. */
-#define HAVE___MALLOC_HOOK 1
+/* #undef HAVE___MALLOC_HOOK */
 
 /* Define to the sub-directory where libtool stores uninstalled libraries. */
 #define LT_OBJDIR ".libs/"
 
 /* Make use of ARM asm optimization */
-/* #undef OPUS_ARM_ASM */
+#define OPUS_ARM_ASM 1
 
 /* Use generic ARMv4 inline asm optimizations */
 /* #undef OPUS_ARM_INLINE_ASM */
@@ -95,7 +95,7 @@
 /* #undef OPUS_ARM_INLINE_MEDIA */
 
 /* Use ARM NEON inline asm optimizations */
-/* #undef OPUS_ARM_INLINE_NEON */
+#define OPUS_ARM_INLINE_NEON 1
 
 /* Define if assembler supports EDSP instructions */
 /* #undef OPUS_ARM_MAY_HAVE_EDSP */
@@ -133,30 +133,6 @@
 /* Use run-time CPU capabilities detection */
 #define OPUS_HAVE_RTCD 1
 
-/* Compiler supports X86 AVX Intrinsics */
-#define OPUS_X86_MAY_HAVE_AVX 1
-
-/* Compiler supports X86 SSE Intrinsics */
-#define OPUS_X86_MAY_HAVE_SSE 1
-
-/* Compiler supports X86 SSE2 Intrinsics */
-#define OPUS_X86_MAY_HAVE_SSE2 1
-
-/* Compiler supports X86 SSE4.1 Intrinsics */
-#define OPUS_X86_MAY_HAVE_SSE4_1 1
-
-/* Define if binary requires AVX intrinsics support */
-/* #undef OPUS_X86_PRESUME_AVX */
-
-/* Define if binary requires SSE intrinsics support */
-#define OPUS_X86_PRESUME_SSE 1
-
-/* Define if binary requires SSE2 intrinsics support */
-#define OPUS_X86_PRESUME_SSE2 1
-
-/* Define if binary requires SSE4.1 intrinsics support */
-/* #undef OPUS_X86_PRESUME_SSE4_1 */
-
 /* Define to the address where bug reports for this package should be sent. */
 #define PACKAGE_BUGREPORT "opus@xiph.org"
 
@@ -175,7 +151,9 @@
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "unknown"
 
-/* Define to 1 if you have the ANSI C header files. */
+/* Define to 1 if all of the C90 standard headers exist (not just the ones
+   required in a freestanding environment). This macro is provided for
+   backward compatibility; new code need not use it. */
 #define STDC_HEADERS 1
 
 /* Make use of alloca */

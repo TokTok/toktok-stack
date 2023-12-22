@@ -118,7 +118,6 @@ _asm_library = rule(
 def asm_library(**kwargs):
     _asm_library(
         execfmt = select({
-            "@toktok//tools/config:freebsd": "-felf64",
             "@toktok//tools/config:linux": "-felf64",
             "@toktok//tools/config:osx": "-fmacho64",
             "@toktok//tools/config:windows": "-fwin64",

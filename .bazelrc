@@ -26,6 +26,7 @@ build --enable_platform_specific_config
 build --watchfs
 build --local_cpu_resources=HOST_CPUS
 build --features=layering_check
+build --distinct_host_configuration=false
 
 build --experimental_inmemory_dotd_files
 build --experimental_inmemory_jdeps_files
@@ -229,7 +230,7 @@ build:gnulike --per_file_copt='external/.*[-_]avx\\.c$@-mavx,-w'
 build:gnulike --per_file_copt='external/.*[-_]avx2\\.c$@-mavx2,-w'
 build:gnulike --per_file_copt='external/.*[-_]avx512f\\.c$@-mavx512f,-w'
 build:gnulike --per_file_copt='external/.*[-_]sse\\.c$@-mssse3,-msse4,-w'
-build:gnulike --per_file_copt='external/.*[-_]sse4\\.c$@-msse4,-w'
+build:gnulike --per_file_copt='external/.*[-_]sse4\\.c$@-msse4,-msse4.1,-w'
 build:gnulike --per_file_copt='external/.*[-_]sse41\\.c$@-msse4.1,-w'
 build:gnulike --per_file_copt='external/.*[-_]sse4_1\\.c$@-msse4.1,-w'
 build:gnulike --per_file_copt='external/.*[-_]ssse3\\.c$@-mssse3,-w'
@@ -275,10 +276,6 @@ build:gnulike --per_file_copt='//tools/debug[:/]@-g'
 test --test_output=errors
 test --test_verbose_timeout_warnings=true
 
-# This breaks Kythe.
-build --distinct_host_configuration=false
-build:kythe --distinct_host_configuration=true
-
 ##############################################################################
 #
 # :: Warning flags (some compiler-specific).
@@ -320,6 +317,9 @@ build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-pedant
 # libunwind stack trace implementation, which is Google internal-only, so fails to compile in Open
 # Source software.
 build:gnulike --per_file_copt='external/com_google_absl[:/]@-UNO_FRAME_POINTER,-fno-omit-frame-pointer'
+
+# Hack to get absl to compile for arm64.
+build:linux-arm64-musl --per_file_copt='external/com_google_absl/absl/base/internal/low_level_alloc.cc@-Doff64_t=long'
 
 # Compile toxcore as C++.
 build:clang --per_file_copt='//c-toxcore/@-xc++,-std=c++17'
@@ -381,7 +381,7 @@ build:clang --copt='-Wno-unsafe-buffer-usage'
 build:clang --copt='-Wno-deprecated-builtins'
 
 # LPTSTR cast for WSAStringToAddress is necessary.
-build:windows-amd64 --per_file_copt='//c-toxcore/toxcore:network.c@-Wno-cast-qual'
+build:windows-x86_64 --per_file_copt='//c-toxcore/toxcore:network.c@-Wno-cast-qual'
 
 build:clang --per_file_copt='//c-toxcore/toxav:video.c@-Wno-used-but-marked-unused'
 build:clang --per_file_copt='//c-toxcore/super_donators@-w'
@@ -528,14 +528,16 @@ build:gnulike --host_per_file_copt='external/yasm[:/]@-Wno-unused-but-set-variab
 #
 ##############################################################################
 
+build --config=clang
+
 # Flags for systems with GNU linker or compatible.
-build:gnuld --linkopt='-Wl,-z,noexecstack'
-#build:gnuld --linkopt='-Wl,--fatal-warnings'
-build:gnuld --linkopt='-Wl,--warn-common'
-build:gnuld --linkopt='-fPIE'
+build --host_linkopt='-Wl,-z,noexecstack'
+#build --host_linkopt='-Wl,--fatal-warnings'
+#build --host_linkopt='-Wl,--warn-common'
+build --host_linkopt='-fPIE'
 # Not enabled, because (at least - I gave up when trying to fix libvpx)
 # libsodium and libvpx assembly code doesn't define noexecstack.
-#build:gnuld --linkopt='-Wl,--warn-execstack'
+#build --host_linkopt='-Wl,--warn-execstack'
 
 # Continuous Integration platforms tend to not have IPv6.
 build:ci --per_file_copt='//c-toxcore/auto_tests@-DUSE_IPV6=0'
@@ -554,36 +556,34 @@ build:docker --config=ci
 #
 ##############################################################################
 
-build:nix --config=clang
-build:nix --config=gnuld
 build:nix --build_tag_filters=-windows,-macos
 
-build:zig --config=clang
 build:zig --copt=-fPIC
 build:zig --dynamic_mode=off
+build:zig --features=fully_static_link
 # See: https://github.com/uber/hermetic_cc_toolchain/issues/134
 build:zig --sandbox_add_mount_pair=/tmp
 
+build:linux-arm64-musl --config=zig
 build:linux-arm64-musl --platforms=@zig_sdk//platform:linux_arm64
 build:linux-arm64-musl --extra_toolchains=@zig_sdk//toolchain:linux_arm64_musl
-build:linux-arm64-musl --config=zig
 build:linux-arm64-musl --build_tag_filters=-windows,-macos
 
-build:linux-amd64-musl --platforms=@zig_sdk//platform:linux_amd64
-build:linux-amd64-musl --extra_toolchains=@zig_sdk//toolchain:linux_amd64_musl
-build:linux-amd64-musl --config=zig
-build:linux-amd64-musl --build_tag_filters=-windows,-macos
+build:linux-x86_64-musl --config=zig
+build:linux-x86_64-musl --platforms=@zig_sdk//platform:linux_amd64
+build:linux-x86_64-musl --extra_toolchains=@zig_sdk//toolchain:linux_amd64_musl
+build:linux-x86_64-musl --build_tag_filters=-windows,-macos
 
-build:windows-amd64 --platforms=@zig_sdk//platform:windows_amd64
-build:windows-amd64 --extra_toolchains=@zig_sdk//toolchain:windows_amd64
-build:windows-amd64 --config=zig
-build:windows-amd64 --build_tag_filters=-macos
+build:windows-x86_64 --config=zig
+build:windows-x86_64 --platforms=@zig_sdk//platform:windows_amd64
+build:windows-x86_64 --extra_toolchains=@zig_sdk//toolchain:windows_amd64
+build:windows-x86_64 --build_tag_filters=-macos
 
 # Pick *one* of these for the target platform. "nix" is the default Linux target.
 # TODO(iphydf): Move to .bazelrc.local.
 #build --config=linux-arm64-musl
-#build --config=linux-amd64-musl
-#build --config=windows-amd64
+#build --config=linux-x86_64-musl
+#build --config=windows-x86_64
 build --config=nix
 
 try-import %workspace%/.bazelrc.local

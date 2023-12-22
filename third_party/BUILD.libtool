@@ -9,3 +9,9 @@ filegroup(
     srcs = ["bin/libtoolize"],
     visibility = ["//visibility:public"],
 )
+
+filegroup(
+    name = "libtool.m4",
+    srcs = ["share/aclocal/libtool.m4"],
+    visibility = ["//visibility:public"],
+)

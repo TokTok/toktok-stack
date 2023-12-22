@@ -16,16 +16,33 @@ genrule(
         "m4/as-gcc-inline-assembly.m4",
         "m4/opus-intrinsics.m4",
         "src/opus_encoder.c",
+        "@libtool//:libtool.m4",
     ],
     outs = ["config.h"],
     cmd = """
-        cd `dirname $(location configure.ac)`
-        autoreconf -fi
-        ./configure
-        DIR=`pwd`
-        cd -
-        cp $$DIR/config.h $@
+        export PATH="$$PATH:$$PWD/$$(dirname $(location @autoconf//:autoconf))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(location @automake//:aclocal))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(location @diffutils//:cmp))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(location @gnumake))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(location @libtool//:libtoolize))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(location @m4))"
+
+        SRCDIR="$$(dirname $(location configure.ac))"
+        autoreconf -fi -I "$$PWD/$$(dirname $(location @libtool//:libtool.m4))" "$$SRCDIR"
+        "$$SRCDIR/configure" CC="$(CC)"
+        cp config.h "$@"
     """,
+    exec_tools = [
+        "@autoconf//:autoconf",
+        "@autoconf//:autoreconf",
+        "@automake//:aclocal",
+        "@automake//:automake",
+        "@diffutils//:cmp",
+        "@gnumake",
+        "@libtool//:libtoolize",
+        "@m4",
+    ],
+    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
 )
 
 HDRS = glob(["include/*.h"])
@@ -49,17 +66,6 @@ cc_library(
             "celt/opus_custom_demo.c",
         ],
     ) + [
-        "celt/x86/pitch_sse.c",
-        "celt/x86/pitch_sse2.c",
-        "celt/x86/pitch_sse4_1.c",
-        "celt/x86/vq_sse2.c",
-        "celt/x86/x86_celt_map.c",
-        "celt/x86/x86cpu.c",
-        "silk/x86/NSQ_del_dec_sse4_1.c",
-        "silk/x86/NSQ_sse4_1.c",
-        "silk/x86/VAD_sse4_1.c",
-        "silk/x86/VQ_WMat_EC_sse4_1.c",
-        "silk/x86/x86_silk_map.c",
         "src/analysis.c",
         "src/mlp.c",
         "src/mlp_data.c",
@@ -70,7 +76,24 @@ cc_library(
         "src/opus_multistream_decoder.c",
         "src/opus_multistream_encoder.c",
         "src/repacketizer.c",
-    ],
+    ] + select({
+        "@toktok//tools/config:linux-arm64": [
+            "celt/arm/armcpu.c",
+        ],
+        "@toktok//tools/config:linux-x86_64": [
+            "celt/x86/pitch_sse.c",
+            "celt/x86/pitch_sse2.c",
+            "celt/x86/pitch_sse4_1.c",
+            "celt/x86/vq_sse2.c",
+            "celt/x86/x86_celt_map.c",
+            "celt/x86/x86cpu.c",
+            "silk/x86/NSQ_del_dec_sse4_1.c",
+            "silk/x86/NSQ_sse4_1.c",
+            "silk/x86/VAD_sse4_1.c",
+            "silk/x86/VQ_WMat_EC_sse4_1.c",
+            "silk/x86/x86_silk_map.c",
+        ],
+    }),
     hdrs = HDRS,
     copts = [
         "-DHAVE_CONFIG_H",

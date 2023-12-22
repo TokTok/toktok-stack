@@ -15,8 +15,8 @@ build --incompatible_top_level_aspects_require_providers
 
 # This project uses a GHC provisioned via nix.
 # We need to use the rules_haskell nix toolchain accordingly:
-build:nix --host_platform=@io_tweag_rules_nixpkgs//nixpkgs/platforms:host
-run:nix --host_platform=@io_tweag_rules_nixpkgs//nixpkgs/platforms:host
+build --host_platform=@io_tweag_rules_nixpkgs//nixpkgs/platforms:host
+run --host_platform=@io_tweag_rules_nixpkgs//nixpkgs/platforms:host
 
 # Java toolchain.
 build --java_runtime_version=nixpkgs_java

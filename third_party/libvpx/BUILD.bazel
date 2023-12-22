@@ -4,17 +4,25 @@ licenses(["notice"])
 
 exports_files(
     srcs = [
-        "libs-x86_64-linux-gcc.mk",
         "vpx_version.h",
     ],
+    visibility = ["@libvpx//:__pkg__"],
+)
+
+alias(
+    name = "libs.mk",
+    actual = select({
+        "@toktok//tools/config:linux-arm64": "linux-arm64/libs-arm64-linux-gcc.mk",
+        "@toktok//tools/config:linux-x86_64": "linux-x86_64/libs-x86_64-linux-gcc.mk",
+    }),
     visibility = ["@libvpx//:__pkg__"],
 )
 
 genrule(
     name = "platform_asm_header",
     srcs = select({
-        "@toktok//tools/config:windows": ["windows/vpx_config.asm"],
-        "//conditions:default": ["posix/vpx_config.asm"],
+        "@toktok//tools/config:linux-arm64": [],
+        "@toktok//tools/config:linux-x86_64": ["linux-x86_64/vpx_config.asm"],
     }),
     outs = ["vpx_config.asm"],
     cmd = "cp $< $@",
@@ -24,8 +32,8 @@ genrule(
 genrule(
     name = "platform_header",
     srcs = select({
-        "@toktok//tools/config:windows": ["windows/vpx_config.h"],
-        "//conditions:default": ["posix/vpx_config.h"],
+        "@toktok//tools/config:linux-arm64": ["linux-arm64/vpx_config.h"],
+        "@toktok//tools/config:linux-x86_64": ["linux-x86_64/vpx_config.h"],
     }),
     outs = ["vpx_config.h"],
     cmd = "cp $< $@",

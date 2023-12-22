@@ -9,3 +9,9 @@ filegroup(
     srcs = ["bin/autoreconf"],
     visibility = ["//visibility:public"],
 )
+
+filegroup(
+    name = "autoupdate",
+    srcs = ["bin/autoupdate"],
+    visibility = ["//visibility:public"],
+)
