@@ -1,5 +1,5 @@
 ## Copyright (c) 2011 The WebM project authors. All Rights Reserved.
-## 
+##
 ## Use of this source code is governed by a BSD-style license
 ## that can be found in the LICENSE file in the root of the source
 ## tree. An additional intellectual property rights grant can be found
@@ -25,13 +25,13 @@ NM=nm
 CFLAGS  =  -DNDEBUG -O3 -fPIC -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -Wall -Wdeclaration-after-statement -Wdisabled-optimization -Wextra-semi -Wextra-semi-stmt -Wfloat-conversion -Wformat=2 -Wparentheses-equality -Wpointer-arith -Wtype-limits -Wcast-qual -Wvla -Wimplicit-function-declaration -Wmissing-declarations -Wmissing-prototypes -Wuninitialized -Wunreachable-code-loop-increment -Wunused -Wextra -Wundef -Wframe-larger-than=52000 -std=gnu89 -Wshorten-64-to-32
 CXXFLAGS  =  -DNDEBUG -O3 -fPIC -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -Wall -Wdeclaration-after-statement -Wdisabled-optimization -Wextra-semi -Wextra-semi-stmt -Wfloat-conversion -Wformat=2 -Wparentheses-equality -Wpointer-arith -Wtype-limits -Wcast-qual -Wvla -Wimplicit-function-declaration -Wmissing-declarations -Wmissing-prototypes -Wuninitialized -Wunreachable-code-loop-increment -Wunused -Wextra -Wno-psabi -Wc++14-extensions -Wc++17-extensions -Wc++20-extensions -std=gnu++11 -std=gnu++11
 ARFLAGS = -crs$(if $(quiet),,v)
-LDFLAGS = 
+LDFLAGS =
 ASFLAGS =  -march=armv8-a
 extralibs =  -lpthread
 AS_SFX    = .S
-EXE_SFX   = 
-VCPROJ_SFX = 
-RTCD_OPTIONS = --disable-avx512 
+EXE_SFX   =
+VCPROJ_SFX =
+RTCD_OPTIONS = --disable-avx512
 LIBYUV_CXXFLAGS =  -Wno-missing-declarations -Wno-missing-prototypes -Wno-pass-failed -Wno-unused-parameter
 fmt_deps = sed -e 's;^\([a-zA-Z0-9_]*\)\.o;${@:.d=.o} $@;'
 VPX_ARCH_ARM=yes

@@ -1,5 +1,5 @@
 ## Copyright (c) 2011 The WebM project authors. All Rights Reserved.
-## 
+##
 ## Use of this source code is governed by a BSD-style license
 ## that can be found in the LICENSE file in the root of the source
 ## tree. An additional intellectual property rights grant can be found
@@ -29,9 +29,9 @@ LDFLAGS =  -m64
 ASFLAGS =  -f elf64
 extralibs =  -lpthread
 AS_SFX    = .asm
-EXE_SFX   = 
-VCPROJ_SFX = 
-RTCD_OPTIONS = --disable-avx512 
+EXE_SFX   =
+VCPROJ_SFX =
+RTCD_OPTIONS = --disable-avx512
 LIBYUV_CXXFLAGS =  -Wno-missing-declarations -Wno-missing-prototypes -Wno-pass-failed -Wno-unused-parameter
 fmt_deps = sed -e 's;^\([a-zA-Z0-9_]*\)\.o;${@:.d=.o} $@;'
 VPX_ARCH_X86_64=yes
