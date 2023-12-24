@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+gcc_lib="/nix/store/myw67gkgayf3s2mniij7zwd79lxy8v0k-gcc-12.3.0-lib/lib"
+ld_linux="/nix/store/qn3ggz5sf3hkjs2c797xf7nan3amdxmp-glibc-2.38-27/lib64/ld-linux-x86-64.so.2"
+patchelf="/nix/store/85jldj870vzcl72yz03labc93bwvqayx-patchelf-0.15.0/bin/patchelf"
+
+for node in ~/.vscode-server/bin/*/node; do
+  "$patchelf" --set-interpreter "$ld_linux" --add-rpath "$gcc_lib" "$node"
+done

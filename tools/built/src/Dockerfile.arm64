@@ -7,6 +7,6 @@ RUN \
  fi; \
  sed -i -e 's/build --config=nix/build --config=linux-arm64-musl/' .bazelrc
 
-RUN sudo nix-daemon --daemon & bazel build -k //c-toxcore/auto_tests/...
+RUN sudo nix-daemon --daemon & bazel build -k //...
 
 # vim:ft=dockerfile

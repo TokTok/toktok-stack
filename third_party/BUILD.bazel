@@ -8,8 +8,11 @@ filegroup(
             "BUILD.bazel*",
             # TODO
             "BUILD.asound",
-            "BUILD.x264",
+            "BUILD.ffmpeg",
+            "BUILD.openal",
             "BUILD.openssl",
+            "BUILD.sdl2",
+            "BUILD.x264",
             # These depend on //c-toxcore, so can't be pre-built.
             "BUILD.toxext",
             "BUILD.tox_extension_messages",
@@ -17,5 +20,12 @@ filegroup(
     )] + [
         "@com_google_googletest//:gtest",
         "@com_google_googletest//:gtest_main",
-    ],
+    ] + select({
+        "@toktok//tools/config:arm64": [],
+        "@toktok//tools/config:x86_64": [
+            "BUILD.ffmpeg",
+            "BUILD.openal",
+            "BUILD.sdl2",
+        ],
+    }),
 )

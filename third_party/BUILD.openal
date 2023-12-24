@@ -8,8 +8,10 @@ COPTS = [
     "-fexceptions",
     "-Wno-unused-function",
     "-Wno-switch",
-    "-msse4.1",
-]
+] + select({
+    "@toktok//tools/config:arm64": [],
+    "@toktok//tools/config:x86_64": ["-msse4.1"],
+})
 
 genrule(
     name = "regen_config",

@@ -16,6 +16,17 @@ jobs:
   common:
     uses: TokTok/ci-tools/.github/workflows/common-ci.yml@master
 
+  hie-bios:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: "Generate HIE BIOS output and haskell_targets.bzl"
+        run: tools/haskell/hie-docker
+      - name: "Verify that haskell_targets.bzl didn't change"
+        run: git diff --exit-code
+
   docker-haskell:
     runs-on: ubuntu-latest
     steps:
