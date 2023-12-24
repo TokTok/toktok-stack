@@ -8,8 +8,8 @@
 
 NCURSES_EXPORT(const TERMTYPE2 *)
 _nc_fallback2(const char *name GCC_UNUSED) {
-  /* the fallback list is empty */
-  return ((const TERMTYPE2 *)0);
+    /* the fallback list is empty */
+    return ((const TERMTYPE2 *)0);
 }
 
 #if NCURSES_EXT_NUMBERS
@@ -20,13 +20,13 @@ _nc_fallback2(const char *name GCC_UNUSED) {
  */
 NCURSES_EXPORT(const TERMTYPE *)
 _nc_fallback(const char *name) {
-  const TERMTYPE2 *tp = _nc_fallback2(name);
-  const TERMTYPE *result = 0;
-  if (tp != 0) {
-    static TERMTYPE temp;
-    _nc_export_termtype2(&temp, tp);
-    result = &temp;
-  }
-  return result;
+    const TERMTYPE2 *tp = _nc_fallback2(name);
+    const TERMTYPE *result = 0;
+    if (tp != 0) {
+        static TERMTYPE temp;
+        _nc_export_termtype2(&temp, tp);
+        result = &temp;
+    }
+    return result;
 }
 #endif

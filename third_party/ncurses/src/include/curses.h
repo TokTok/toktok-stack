@@ -472,12 +472,12 @@ typedef unsigned int wint_t1;
  */
 #define CCHARW_MAX 5
 typedef struct {
-  attr_t attr;
-  wchar_t chars[CCHARW_MAX];
+    attr_t attr;
+    wchar_t chars[CCHARW_MAX];
 #if 1
 #undef NCURSES_EXT_COLORS
 #define NCURSES_EXT_COLORS 20211021
-  int ext_color; /* color pair, must be more than 16-bits */
+    int ext_color; /* color pair, must be more than 16-bits */
 #endif
 } cchar_t;
 
@@ -487,54 +487,54 @@ typedef struct {
 struct ldat;
 
 struct _win_st {
-  NCURSES_SIZE_T _cury, _curx; /* current cursor position */
+    NCURSES_SIZE_T _cury, _curx; /* current cursor position */
 
-  /* window location and size */
-  NCURSES_SIZE_T _maxy, _maxx; /* maximums of x and y, NOT window size */
-  NCURSES_SIZE_T _begy, _begx; /* screen coords of upper-left-hand corner */
+    /* window location and size */
+    NCURSES_SIZE_T _maxy, _maxx; /* maximums of x and y, NOT window size */
+    NCURSES_SIZE_T _begy, _begx; /* screen coords of upper-left-hand corner */
 
-  short _flags; /* window state flags */
+    short _flags; /* window state flags */
 
-  /* attribute tracking */
-  attr_t _attrs; /* current attribute for non-space character */
-  chtype _bkgd;  /* current background char/attribute pair */
+    /* attribute tracking */
+    attr_t _attrs; /* current attribute for non-space character */
+    chtype _bkgd;  /* current background char/attribute pair */
 
-  /* option values set by user */
-  bool _notimeout;  /* no time out on function-key entry? */
-  bool _clear;      /* consider all data in the window invalid? */
-  bool _leaveok;    /* OK to not reset cursor on exit? */
-  bool _scroll;     /* OK to scroll this window? */
-  bool _idlok;      /* OK to use insert/delete line? */
-  bool _idcok;      /* OK to use insert/delete char? */
-  bool _immed;      /* window in immed mode? (not yet used) */
-  bool _sync;       /* window in sync mode? */
-  bool _use_keypad; /* process function keys into KEY_ symbols? */
-  int _delay;       /* 0 = nodelay, <0 = blocking, >0 = delay */
+    /* option values set by user */
+    bool _notimeout;  /* no time out on function-key entry? */
+    bool _clear;      /* consider all data in the window invalid? */
+    bool _leaveok;    /* OK to not reset cursor on exit? */
+    bool _scroll;     /* OK to scroll this window? */
+    bool _idlok;      /* OK to use insert/delete line? */
+    bool _idcok;      /* OK to use insert/delete char? */
+    bool _immed;      /* window in immed mode? (not yet used) */
+    bool _sync;       /* window in sync mode? */
+    bool _use_keypad; /* process function keys into KEY_ symbols? */
+    int _delay;       /* 0 = nodelay, <0 = blocking, >0 = delay */
 
-  struct ldat *_line; /* the actual line data */
+    struct ldat *_line; /* the actual line data */
 
-  /* global screen state */
-  NCURSES_SIZE_T _regtop;    /* top line of scrolling region */
-  NCURSES_SIZE_T _regbottom; /* bottom line of scrolling region */
+    /* global screen state */
+    NCURSES_SIZE_T _regtop;    /* top line of scrolling region */
+    NCURSES_SIZE_T _regbottom; /* bottom line of scrolling region */
 
-  /* these are used only if this is a sub-window */
-  int _parx;       /* x coordinate of this window in parent */
-  int _pary;       /* y coordinate of this window in parent */
-  WINDOW *_parent; /* pointer to parent if a sub-window */
+    /* these are used only if this is a sub-window */
+    int _parx;       /* x coordinate of this window in parent */
+    int _pary;       /* y coordinate of this window in parent */
+    WINDOW *_parent; /* pointer to parent if a sub-window */
 
-  /* these are used only if this is a pad */
-  struct pdat {
-    NCURSES_SIZE_T _pad_y, _pad_x;
-    NCURSES_SIZE_T _pad_top, _pad_left;
-    NCURSES_SIZE_T _pad_bottom, _pad_right;
-  } _pad;
+    /* these are used only if this is a pad */
+    struct pdat {
+        NCURSES_SIZE_T _pad_y, _pad_x;
+        NCURSES_SIZE_T _pad_top, _pad_left;
+        NCURSES_SIZE_T _pad_bottom, _pad_right;
+    } _pad;
 
-  NCURSES_SIZE_T _yoffset; /* real begy is _begy + _yoffset */
+    NCURSES_SIZE_T _yoffset; /* real begy is _begy + _yoffset */
 
 #if NCURSES_WIDECHAR
-  cchar_t _bkgrnd; /* current background char/attribute pair */
+    cchar_t _bkgrnd; /* current background char/attribute pair */
 #if 1
-  int _color; /* current color-pair for non-space character */
+    int _color; /* current color-pair for non-space character */
 #endif
 #endif
 };
@@ -617,7 +617,7 @@ extern NCURSES_EXPORT(int) beep(void);                                    /* imp
 extern NCURSES_EXPORT(int) bkgd(chtype);                                  /* generated */
 extern NCURSES_EXPORT(void) bkgdset(chtype);                              /* generated */
 extern NCURSES_EXPORT(int)
-    border(chtype, chtype, chtype, chtype, chtype, chtype, chtype, chtype);   /* generated */
+border(chtype, chtype, chtype, chtype, chtype, chtype, chtype, chtype);   /* generated */
 extern NCURSES_EXPORT(int) box(WINDOW *, chtype, chtype);                     /* generated */
 extern NCURSES_EXPORT(bool) can_change_color(void);                           /* implemented */
 extern NCURSES_EXPORT(int) cbreak(void);                                      /* implemented */
@@ -627,11 +627,11 @@ extern NCURSES_EXPORT(int) clearok(WINDOW *, bool);                           /*
 extern NCURSES_EXPORT(int) clrtobot(void);                                    /* generated */
 extern NCURSES_EXPORT(int) clrtoeol(void);                                    /* generated */
 extern NCURSES_EXPORT(int) color_content(NCURSES_COLOR_T, NCURSES_COLOR_T *, NCURSES_COLOR_T *,
-                                         NCURSES_COLOR_T *);   /* implemented */
+        NCURSES_COLOR_T *);   /* implemented */
 extern NCURSES_EXPORT(int) color_set(NCURSES_PAIRS_T, void *); /* generated */
 extern NCURSES_EXPORT(int) COLOR_PAIR(int);                    /* generated */
 extern NCURSES_EXPORT(int)
-    copywin(const WINDOW *, WINDOW *, int, int, int, int, int, int, int); /* implemented */
+copywin(const WINDOW *, WINDOW *, int, int, int, int, int, int, int); /* implemented */
 extern NCURSES_EXPORT(int) curs_set(int);                                 /* implemented */
 extern NCURSES_EXPORT(int) def_prog_mode(void);                           /* implemented */
 extern NCURSES_EXPORT(int) def_shell_mode(void);                          /* implemented */
@@ -671,7 +671,7 @@ extern NCURSES_EXPORT(WINDOW *) initscr(void);                            /* imp
 extern NCURSES_EXPORT(int) init_color(NCURSES_COLOR_T, NCURSES_COLOR_T, NCURSES_COLOR_T,
                                       NCURSES_COLOR_T); /* implemented */
 extern NCURSES_EXPORT(int)
-    init_pair(NCURSES_PAIRS_T, NCURSES_COLOR_T, NCURSES_COLOR_T);      /* implemented */
+init_pair(NCURSES_PAIRS_T, NCURSES_COLOR_T, NCURSES_COLOR_T);      /* implemented */
 extern NCURSES_EXPORT(int) innstr(char *, int);                        /* generated */
 extern NCURSES_EXPORT(int) insch(chtype);                              /* generated */
 extern NCURSES_EXPORT(int) insdelln(int);                              /* generated */
@@ -696,7 +696,7 @@ extern NCURSES_EXPORT(int) mvaddchstr(int, int, const chtype *);       /* genera
 extern NCURSES_EXPORT(int) mvaddnstr(int, int, const char *, int);     /* generated */
 extern NCURSES_EXPORT(int) mvaddstr(int, int, const char *);           /* generated */
 extern NCURSES_EXPORT(int)
-    mvchgat(int, int, int, attr_t, NCURSES_PAIRS_T, const void *); /* generated */
+mvchgat(int, int, int, attr_t, NCURSES_PAIRS_T, const void *); /* generated */
 extern NCURSES_EXPORT(int) mvcur(int, int, int, int);              /* implemented */
 extern NCURSES_EXPORT(int) mvdelch(int, int);                      /* generated */
 extern NCURSES_EXPORT(int) mvderwin(WINDOW *, int, int);           /* implemented */
@@ -713,9 +713,9 @@ extern NCURSES_EXPORT(int) mvinsnstr(int, int, const char *, int); /* generated 
 extern NCURSES_EXPORT(int) mvinsstr(int, int, const char *);       /* generated */
 extern NCURSES_EXPORT(int) mvinstr(int, int, char *);              /* generated */
 extern NCURSES_EXPORT(int) mvprintw(int, int, const char *, ...)   /* implemented */
-    GCC_PRINTFLIKE(3, 4);
+GCC_PRINTFLIKE(3, 4);
 extern NCURSES_EXPORT(int) mvscanw(int, int, const char *, ...) /* implemented */
-    GCC_SCANFLIKE(3, 4);
+GCC_SCANFLIKE(3, 4);
 extern NCURSES_EXPORT(int) mvvline(int, int, chtype, int);                        /* generated */
 extern NCURSES_EXPORT(int) mvwaddch(WINDOW *, int, int, const chtype);            /* generated */
 extern NCURSES_EXPORT(int) mvwaddchnstr(WINDOW *, int, int, const chtype *, int); /* generated */
@@ -723,7 +723,7 @@ extern NCURSES_EXPORT(int) mvwaddchstr(WINDOW *, int, int, const chtype *);     
 extern NCURSES_EXPORT(int) mvwaddnstr(WINDOW *, int, int, const char *, int);     /* generated */
 extern NCURSES_EXPORT(int) mvwaddstr(WINDOW *, int, int, const char *);           /* generated */
 extern NCURSES_EXPORT(int)
-    mvwchgat(WINDOW *, int, int, int, attr_t, NCURSES_PAIRS_T, const void *); /* generated */
+mvwchgat(WINDOW *, int, int, int, attr_t, NCURSES_PAIRS_T, const void *); /* generated */
 extern NCURSES_EXPORT(int) mvwdelch(WINDOW *, int, int);                      /* generated */
 extern NCURSES_EXPORT(int) mvwgetch(WINDOW *, int, int);                      /* generated */
 extern NCURSES_EXPORT(int) mvwgetnstr(WINDOW *, int, int, char *, int);       /* generated */
@@ -739,9 +739,9 @@ extern NCURSES_EXPORT(int) mvwinsnstr(WINDOW *, int, int, const char *, int); /*
 extern NCURSES_EXPORT(int) mvwinsstr(WINDOW *, int, int, const char *);       /* generated */
 extern NCURSES_EXPORT(int) mvwinstr(WINDOW *, int, int, char *);              /* generated */
 extern NCURSES_EXPORT(int) mvwprintw(WINDOW *, int, int, const char *, ...)   /* implemented */
-    GCC_PRINTFLIKE(4, 5);
+GCC_PRINTFLIKE(4, 5);
 extern NCURSES_EXPORT(int) mvwscanw(WINDOW *, int, int, const char *, ...) /* implemented */
-    GCC_SCANFLIKE(4, 5);
+GCC_SCANFLIKE(4, 5);
 extern NCURSES_EXPORT(int) mvwvline(WINDOW *, int, int, chtype, int);  /* generated */
 extern NCURSES_EXPORT(int) napms(int);                                 /* implemented */
 extern NCURSES_EXPORT(WINDOW *) newpad(int, int);                      /* implemented */
@@ -758,13 +758,13 @@ extern NCURSES_EXPORT(int) notimeout(WINDOW *, bool);                  /* implem
 extern NCURSES_EXPORT(int) overlay(const WINDOW *, WINDOW *);          /* implemented */
 extern NCURSES_EXPORT(int) overwrite(const WINDOW *, WINDOW *);        /* implemented */
 extern NCURSES_EXPORT(int)
-    pair_content(NCURSES_PAIRS_T, NCURSES_COLOR_T *, NCURSES_COLOR_T *);         /* implemented */
+pair_content(NCURSES_PAIRS_T, NCURSES_COLOR_T *, NCURSES_COLOR_T *);         /* implemented */
 extern NCURSES_EXPORT(int) PAIR_NUMBER(int);                                     /* generated */
 extern NCURSES_EXPORT(int) pechochar(WINDOW *, const chtype);                    /* implemented */
 extern NCURSES_EXPORT(int) pnoutrefresh(WINDOW *, int, int, int, int, int, int); /* implemented */
 extern NCURSES_EXPORT(int) prefresh(WINDOW *, int, int, int, int, int, int);     /* implemented */
 extern NCURSES_EXPORT(int) printw(const char *, ...)                             /* implemented */
-    GCC_PRINTFLIKE(1, 2);
+GCC_PRINTFLIKE(1, 2);
 extern NCURSES_EXPORT(int) putwin(WINDOW *, FILE *);                /* implemented */
 extern NCURSES_EXPORT(void) qiflush(void);                          /* implemented */
 extern NCURSES_EXPORT(int) raw(void);                               /* implemented */
@@ -776,7 +776,7 @@ extern NCURSES_EXPORT(int) reset_shell_mode(void);                  /* implement
 extern NCURSES_EXPORT(int) ripoffline(int, int (*)(WINDOW *, int)); /* implemented */
 extern NCURSES_EXPORT(int) savetty(void);                           /* implemented */
 extern NCURSES_EXPORT(int) scanw(const char *, ...)                 /* implemented */
-    GCC_SCANFLIKE(1, 2);
+GCC_SCANFLIKE(1, 2);
 extern NCURSES_EXPORT(int) scr_dump(const char *);             /* implemented */
 extern NCURSES_EXPORT(int) scr_init(const char *);             /* implemented */
 extern NCURSES_EXPORT(int) scrl(int);                          /* generated */
@@ -822,15 +822,15 @@ extern NCURSES_EXPORT(int) vidattr(chtype);                                     
 extern NCURSES_EXPORT(int) vidputs(chtype, NCURSES_OUTC);                       /* implemented */
 extern NCURSES_EXPORT(int) vline(chtype, int);                                  /* generated */
 extern NCURSES_EXPORT(int) vwprintw(WINDOW *, const char *, va_list)
-    GCC_DEPRECATED(use vw_printw) /* implemented */
-    GCC_PRINTFLIKE(2, 0);
+GCC_DEPRECATED(use vw_printw) /* implemented */
+GCC_PRINTFLIKE(2, 0);
 extern NCURSES_EXPORT(int) vw_printw(WINDOW *, const char *, va_list) /* implemented */
-    GCC_PRINTFLIKE(2, 0);
+GCC_PRINTFLIKE(2, 0);
 extern NCURSES_EXPORT(int) vwscanw(WINDOW *, const char *, va_list)
-    GCC_DEPRECATED(use vw_scanw) /* implemented */
-    GCC_SCANFLIKE(2, 0);
+GCC_DEPRECATED(use vw_scanw) /* implemented */
+GCC_SCANFLIKE(2, 0);
 extern NCURSES_EXPORT(int) vw_scanw(WINDOW *, const char *, va_list) /* implemented */
-    GCC_SCANFLIKE(2, 0);
+GCC_SCANFLIKE(2, 0);
 extern NCURSES_EXPORT(int) waddch(WINDOW *, const chtype);            /* implemented */
 extern NCURSES_EXPORT(int) waddchnstr(WINDOW *, const chtype *, int); /* implemented */
 extern NCURSES_EXPORT(int) waddchstr(WINDOW *, const chtype *);       /* generated */
@@ -848,7 +848,7 @@ extern NCURSES_EXPORT(void) wbkgdset(WINDOW *, chtype);                         
 extern NCURSES_EXPORT(int) wborder(WINDOW *, chtype, chtype, chtype, chtype, chtype, chtype, chtype,
                                    chtype); /* implemented */
 extern NCURSES_EXPORT(int)
-    wchgat(WINDOW *, int, attr_t, NCURSES_PAIRS_T, const void *);         /* implemented */
+wchgat(WINDOW *, int, attr_t, NCURSES_PAIRS_T, const void *);         /* implemented */
 extern NCURSES_EXPORT(int) wclear(WINDOW *);                              /* implemented */
 extern NCURSES_EXPORT(int) wclrtobot(WINDOW *);                           /* implemented */
 extern NCURSES_EXPORT(int) wclrtoeol(WINDOW *);                           /* implemented */
@@ -875,11 +875,11 @@ extern NCURSES_EXPORT(int) winstr(WINDOW *, char *);                      /* gen
 extern NCURSES_EXPORT(int) wmove(WINDOW *, int, int);                     /* implemented */
 extern NCURSES_EXPORT(int) wnoutrefresh(WINDOW *);                        /* implemented */
 extern NCURSES_EXPORT(int) wprintw(WINDOW *, const char *, ...)           /* implemented */
-    GCC_PRINTFLIKE(2, 3);
+GCC_PRINTFLIKE(2, 3);
 extern NCURSES_EXPORT(int) wredrawln(WINDOW *, int, int);      /* implemented */
 extern NCURSES_EXPORT(int) wrefresh(WINDOW *);                 /* implemented */
 extern NCURSES_EXPORT(int) wscanw(WINDOW *, const char *, ...) /* implemented */
-    GCC_SCANFLIKE(2, 3);
+GCC_SCANFLIKE(2, 3);
 extern NCURSES_EXPORT(int) wscrl(WINDOW *, int);              /* implemented */
 extern NCURSES_EXPORT(int) wsetscrreg(WINDOW *, int, int);    /* implemented */
 extern NCURSES_EXPORT(int) wstandout(WINDOW *);               /* generated */
@@ -902,9 +902,9 @@ extern NCURSES_EXPORT(int) putp(const char *);        /* implemented */
 extern NCURSES_EXPORT(char *) tparm(const char *, ...); /* special */
 #else
 extern NCURSES_EXPORT(char *)
-    tparm(const char *, NCURSES_TPARM_ARG, NCURSES_TPARM_ARG, NCURSES_TPARM_ARG, NCURSES_TPARM_ARG,
-          NCURSES_TPARM_ARG, NCURSES_TPARM_ARG, NCURSES_TPARM_ARG, NCURSES_TPARM_ARG,
-          NCURSES_TPARM_ARG); /* special */
+tparm(const char *, NCURSES_TPARM_ARG, NCURSES_TPARM_ARG, NCURSES_TPARM_ARG, NCURSES_TPARM_ARG,
+      NCURSES_TPARM_ARG, NCURSES_TPARM_ARG, NCURSES_TPARM_ARG, NCURSES_TPARM_ARG,
+      NCURSES_TPARM_ARG); /* special */
 #endif
 
 extern NCURSES_EXPORT(char *) tiparm(const char *, ...); /* special */
@@ -1011,8 +1011,8 @@ extern NCURSES_EXPORT(bool) NCURSES_SP_NAME(can_change_color)(SCREEN *); /* impl
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(cbreak)(SCREEN *);            /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(curs_set)(SCREEN *, int);     /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(color_content)(SCREEN *, NCURSES_PAIRS_T, NCURSES_COLOR_T *, NCURSES_COLOR_T *,
-                                   NCURSES_COLOR_T *);                     /* implemented:SP_FUNC */
+NCURSES_SP_NAME(color_content)(SCREEN *, NCURSES_PAIRS_T, NCURSES_COLOR_T *, NCURSES_COLOR_T *,
+                               NCURSES_COLOR_T *);                     /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(def_prog_mode)(SCREEN *);       /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(def_shell_mode)(SCREEN *);      /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(delay_output)(SCREEN *, int);   /* implemented:SP_FUNC */
@@ -1029,26 +1029,26 @@ extern NCURSES_EXPORT(bool) NCURSES_SP_NAME(has_colors)(SCREEN *);         /* im
 extern NCURSES_EXPORT(bool) NCURSES_SP_NAME(has_ic)(SCREEN *);             /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(bool) NCURSES_SP_NAME(has_il)(SCREEN *);             /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(init_color)(SCREEN *, NCURSES_COLOR_T, NCURSES_COLOR_T, NCURSES_COLOR_T,
-                                NCURSES_COLOR_T); /* implemented:SP_FUNC */
+NCURSES_SP_NAME(init_color)(SCREEN *, NCURSES_COLOR_T, NCURSES_COLOR_T, NCURSES_COLOR_T,
+                            NCURSES_COLOR_T); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(init_pair)(SCREEN *, NCURSES_PAIRS_T, NCURSES_COLOR_T,
-                                                      NCURSES_COLOR_T); /* implemented:SP_FUNC */
+        NCURSES_COLOR_T); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(intrflush)(SCREEN *, WINDOW *, bool);        /* implemented:SP_FUNC */
+NCURSES_SP_NAME(intrflush)(SCREEN *, WINDOW *, bool);        /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(bool) NCURSES_SP_NAME(isendwin)(SCREEN *); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(NCURSES_CONST char *)
-    NCURSES_SP_NAME(keyname)(SCREEN *, int);                       /* implemented:SP_FUNC */
+NCURSES_SP_NAME(keyname)(SCREEN *, int);                       /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(char) NCURSES_SP_NAME(killchar)(SCREEN *);   /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(char *) NCURSES_SP_NAME(longname)(SCREEN *); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(mvcur)(SCREEN *, int, int, int, int);         /* implemented:SP_FUNC */
+NCURSES_SP_NAME(mvcur)(SCREEN *, int, int, int, int);         /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(napms)(SCREEN *, int); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(WINDOW *)
-    NCURSES_SP_NAME(newpad)(SCREEN *, int, int); /* implemented:SP_FUNC */
+NCURSES_SP_NAME(newpad)(SCREEN *, int, int); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(SCREEN *)
-    NCURSES_SP_NAME(newterm)(SCREEN *, const char *, FILE *, FILE *); /* implemented:SP_FUNC */
+NCURSES_SP_NAME(newterm)(SCREEN *, const char *, FILE *, FILE *); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(WINDOW *)
-    NCURSES_SP_NAME(newwin)(SCREEN *, int, int, int, int);        /* implemented:SP_FUNC */
+NCURSES_SP_NAME(newwin)(SCREEN *, int, int, int, int);        /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(nl)(SCREEN *);         /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(nocbreak)(SCREEN *);   /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(noecho)(SCREEN *);     /* implemented:SP_FUNC */
@@ -1056,41 +1056,41 @@ extern NCURSES_EXPORT(int) NCURSES_SP_NAME(nonl)(SCREEN *);       /* implemented
 extern NCURSES_EXPORT(void) NCURSES_SP_NAME(noqiflush)(SCREEN *); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(noraw)(SCREEN *);      /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(pair_content)(SCREEN *, NCURSES_PAIRS_T, NCURSES_COLOR_T *,
-                                  NCURSES_COLOR_T *);                   /* implemented:SP_FUNC */
+NCURSES_SP_NAME(pair_content)(SCREEN *, NCURSES_PAIRS_T, NCURSES_COLOR_T *,
+                              NCURSES_COLOR_T *);                   /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(void) NCURSES_SP_NAME(qiflush)(SCREEN *);         /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(raw)(SCREEN *);              /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(reset_prog_mode)(SCREEN *);  /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(reset_shell_mode)(SCREEN *); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(resetty)(SCREEN *);          /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(ripoffline)(SCREEN *, int, int (*)(WINDOW *, int)); /* implemented:SP_FUNC */
+NCURSES_SP_NAME(ripoffline)(SCREEN *, int, int (*)(WINDOW *, int)); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(savetty)(SCREEN *);          /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(scr_init)(SCREEN *, const char *); /* implemented:SP_FUNC */
+NCURSES_SP_NAME(scr_init)(SCREEN *, const char *); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(scr_restore)(SCREEN *, const char *); /* implemented:SP_FUNC */
+NCURSES_SP_NAME(scr_restore)(SCREEN *, const char *); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(scr_set)(SCREEN *, const char *); /* implemented:SP_FUNC */
+NCURSES_SP_NAME(scr_set)(SCREEN *, const char *); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(slk_attroff)(SCREEN *, const chtype); /* implemented:SP_FUNC */
+NCURSES_SP_NAME(slk_attroff)(SCREEN *, const chtype); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(slk_attron)(SCREEN *, const chtype); /* implemented:SP_FUNC */
+NCURSES_SP_NAME(slk_attron)(SCREEN *, const chtype); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(slk_attrset)(SCREEN *, const chtype);          /* implemented:SP_FUNC */
+NCURSES_SP_NAME(slk_attrset)(SCREEN *, const chtype);          /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(attr_t) NCURSES_SP_NAME(slk_attr)(SCREEN *); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(slk_attr_set)(SCREEN *, const attr_t, NCURSES_PAIRS_T,
-                                                         void *); /* implemented:SP_FUNC */
+        void *); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(slk_clear)(SCREEN *);  /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(slk_color)(SCREEN *, NCURSES_PAIRS_T);               /* implemented:SP_FUNC */
+NCURSES_SP_NAME(slk_color)(SCREEN *, NCURSES_PAIRS_T);               /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(slk_init)(SCREEN *, int);     /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(char *) NCURSES_SP_NAME(slk_label)(SCREEN *, int); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(slk_noutrefresh)(SCREEN *);   /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(slk_refresh)(SCREEN *);       /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(slk_restore)(SCREEN *);       /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(slk_set)(SCREEN *, int, const char *, int);          /* implemented:SP_FUNC */
+NCURSES_SP_NAME(slk_set)(SCREEN *, int, const char *, int);          /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(slk_touch)(SCREEN *);         /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(start_color)(SCREEN *);       /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(chtype) NCURSES_SP_NAME(termattrs)(SCREEN *);      /* implemented:SP_FUNC */
@@ -1101,54 +1101,54 @@ extern NCURSES_EXPORT(void) NCURSES_SP_NAME(use_env)(SCREEN *, bool);    /* impl
 extern NCURSES_EXPORT(void) NCURSES_SP_NAME(use_tioctl)(SCREEN *, bool); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(vidattr)(SCREEN *, chtype);   /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(vidputs)(SCREEN *, chtype, NCURSES_SP_OUTC); /* implemented:SP_FUNC */
+NCURSES_SP_NAME(vidputs)(SCREEN *, chtype, NCURSES_SP_OUTC); /* implemented:SP_FUNC */
 #if 1
 extern NCURSES_EXPORT(char *)
-    NCURSES_SP_NAME(keybound)(SCREEN *, int, int); /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(keybound)(SCREEN *, int, int); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(alloc_pair)(SCREEN *, int, int); /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(alloc_pair)(SCREEN *, int, int); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(assume_default_colors)(SCREEN *, int, int); /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(assume_default_colors)(SCREEN *, int, int); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(define_key)(SCREEN *, const char *, int); /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(define_key)(SCREEN *, const char *, int); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(extended_color_content)(SCREEN *, int, int *, int *,
-                                            int *); /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(extended_color_content)(SCREEN *, int, int *, int *,
+                                        int *); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(extended_pair_content)(SCREEN *, int, int *,
-                                           int *); /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(extended_pair_content)(SCREEN *, int, int *,
+                                       int *); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(extended_slk_color)(SCREEN *, int);             /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(extended_slk_color)(SCREEN *, int);             /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(get_escdelay)(SCREEN *); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(find_pair)(SCREEN *, int, int);                   /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(find_pair)(SCREEN *, int, int);                   /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(free_pair)(SCREEN *, int); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(init_extended_color)(SCREEN *, int, int, int,
-                                                                int); /* implemented:EXT_SP_FUNC */
+        int); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(init_extended_pair)(SCREEN *, int, int, int); /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(init_extended_pair)(SCREEN *, int, int, int); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(bool)
-    NCURSES_SP_NAME(is_term_resized)(SCREEN *, int, int); /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(is_term_resized)(SCREEN *, int, int); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(key_defined)(SCREEN *, const char *); /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(key_defined)(SCREEN *, const char *); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(keyok)(SCREEN *, int, bool); /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(keyok)(SCREEN *, int, bool); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(void) NCURSES_SP_NAME(nofilter)(SCREEN *);
-    /* implemented */ /* implemented:EXT_SP_FUNC */
+/* implemented */ /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(void)
-    NCURSES_SP_NAME(reset_color_pairs)(SCREEN *); /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(reset_color_pairs)(SCREEN *); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(resize_term)(SCREEN *, int, int); /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(resize_term)(SCREEN *, int, int); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(resizeterm)(SCREEN *, int, int); /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(resizeterm)(SCREEN *, int, int); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(set_escdelay)(SCREEN *, int); /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(set_escdelay)(SCREEN *, int); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(set_tabsize)(SCREEN *, int); /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(set_tabsize)(SCREEN *, int); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(use_default_colors)(SCREEN *); /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(use_default_colors)(SCREEN *); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(use_legacy_coding)(SCREEN *, int); /* implemented:EXT_SP_FUNC */
+NCURSES_SP_NAME(use_legacy_coding)(SCREEN *, int); /* implemented:EXT_SP_FUNC */
 #endif
 #else
 #undef NCURSES_SP_FUNCS
@@ -1785,17 +1785,17 @@ extern NCURSES_EXPORT(int) addwstr(const wchar_t *);          /* generated:WIDEC
 extern NCURSES_EXPORT(int) bkgrnd(const cchar_t *);           /* generated:WIDEC */
 extern NCURSES_EXPORT(void) bkgrndset(const cchar_t *);       /* generated:WIDEC */
 extern NCURSES_EXPORT(int)
-    border_set(const cchar_t *, const cchar_t *, const cchar_t *, const cchar_t *, const cchar_t *,
-               const cchar_t *, const cchar_t *, const cchar_t *); /* generated:WIDEC */
+border_set(const cchar_t *, const cchar_t *, const cchar_t *, const cchar_t *, const cchar_t *,
+           const cchar_t *, const cchar_t *, const cchar_t *); /* generated:WIDEC */
 extern NCURSES_EXPORT(int)
-    box_set(WINDOW *, const cchar_t *, const cchar_t *); /* generated:WIDEC */
+box_set(WINDOW *, const cchar_t *, const cchar_t *); /* generated:WIDEC */
 extern NCURSES_EXPORT(int) echo_wchar(const cchar_t *);  /* generated:WIDEC */
 extern NCURSES_EXPORT(int) erasewchar(wchar_t *);        /* implemented */
 extern NCURSES_EXPORT(int) get_wch(wint_t *);            /* generated:WIDEC */
 extern NCURSES_EXPORT(int) get_wstr(wint_t *);           /* generated:WIDEC */
 extern NCURSES_EXPORT(int) getbkgrnd(cchar_t *);         /* generated:WIDEC */
 extern NCURSES_EXPORT(int)
-    getcchar(const cchar_t *, wchar_t *, attr_t *, NCURSES_PAIRS_T *, void *); /* implemented */
+getcchar(const cchar_t *, wchar_t *, attr_t *, NCURSES_PAIRS_T *, void *); /* implemented */
 extern NCURSES_EXPORT(int) getn_wstr(wint_t *, int);                           /* generated:WIDEC */
 extern NCURSES_EXPORT(int) hline_set(const cchar_t *, int);                    /* generated:WIDEC */
 extern NCURSES_EXPORT(int) in_wch(cchar_t *);                                  /* generated:WIDEC */
@@ -1828,27 +1828,27 @@ extern NCURSES_EXPORT(int) mvinwstr(int, int, wchar_t *);                      /
 extern NCURSES_EXPORT(int) mvvline_set(int, int, const cchar_t *, int);        /* generated:WIDEC */
 extern NCURSES_EXPORT(int) mvwadd_wch(WINDOW *, int, int, const cchar_t *);    /* generated:WIDEC */
 extern NCURSES_EXPORT(int)
-    mvwadd_wchnstr(WINDOW *, int, int, const cchar_t *, int);                  /* generated:WIDEC */
+mvwadd_wchnstr(WINDOW *, int, int, const cchar_t *, int);                  /* generated:WIDEC */
 extern NCURSES_EXPORT(int) mvwadd_wchstr(WINDOW *, int, int, const cchar_t *); /* generated:WIDEC */
 extern NCURSES_EXPORT(int)
-    mvwaddnwstr(WINDOW *, int, int, const wchar_t *, int);                  /* generated:WIDEC */
+mvwaddnwstr(WINDOW *, int, int, const wchar_t *, int);                  /* generated:WIDEC */
 extern NCURSES_EXPORT(int) mvwaddwstr(WINDOW *, int, int, const wchar_t *); /* generated:WIDEC */
 extern NCURSES_EXPORT(int) mvwget_wch(WINDOW *, int, int, wint_t *);        /* generated:WIDEC */
 extern NCURSES_EXPORT(int) mvwget_wstr(WINDOW *, int, int, wint_t *);       /* generated:WIDEC */
 extern NCURSES_EXPORT(int) mvwgetn_wstr(WINDOW *, int, int, wint_t *, int); /* generated:WIDEC */
 extern NCURSES_EXPORT(int)
-    mvwhline_set(WINDOW *, int, int, const cchar_t *, int);                   /* generated:WIDEC */
+mvwhline_set(WINDOW *, int, int, const cchar_t *, int);                   /* generated:WIDEC */
 extern NCURSES_EXPORT(int) mvwin_wch(WINDOW *, int, int, cchar_t *);          /* generated:WIDEC */
 extern NCURSES_EXPORT(int) mvwin_wchnstr(WINDOW *, int, int, cchar_t *, int); /* generated:WIDEC */
 extern NCURSES_EXPORT(int) mvwin_wchstr(WINDOW *, int, int, cchar_t *);       /* generated:WIDEC */
 extern NCURSES_EXPORT(int) mvwinnwstr(WINDOW *, int, int, wchar_t *, int);    /* generated:WIDEC */
 extern NCURSES_EXPORT(int)
-    mvwins_nwstr(WINDOW *, int, int, const wchar_t *, int);                  /* generated:WIDEC */
+mvwins_nwstr(WINDOW *, int, int, const wchar_t *, int);                  /* generated:WIDEC */
 extern NCURSES_EXPORT(int) mvwins_wch(WINDOW *, int, int, const cchar_t *);  /* generated:WIDEC */
 extern NCURSES_EXPORT(int) mvwins_wstr(WINDOW *, int, int, const wchar_t *); /* generated:WIDEC */
 extern NCURSES_EXPORT(int) mvwinwstr(WINDOW *, int, int, wchar_t *);         /* generated:WIDEC */
 extern NCURSES_EXPORT(int)
-    mvwvline_set(WINDOW *, int, int, const cchar_t *, int);        /* generated:WIDEC */
+mvwvline_set(WINDOW *, int, int, const cchar_t *, int);        /* generated:WIDEC */
 extern NCURSES_EXPORT(int) pecho_wchar(WINDOW *, const cchar_t *); /* implemented */
 extern NCURSES_EXPORT(int) setcchar(cchar_t *, const wchar_t *, const attr_t, NCURSES_PAIRS_T,
                                     const void *);                    /* implemented */
@@ -1857,7 +1857,7 @@ extern NCURSES_EXPORT(attr_t) term_attrs(void);                       /* impleme
 extern NCURSES_EXPORT(int) unget_wch(const wchar_t);                  /* implemented */
 extern NCURSES_EXPORT(int) vid_attr(attr_t, NCURSES_PAIRS_T, void *); /* implemented */
 extern NCURSES_EXPORT(int)
-    vid_puts(attr_t, NCURSES_PAIRS_T, void *, NCURSES_OUTC);             /* implemented */
+vid_puts(attr_t, NCURSES_PAIRS_T, void *, NCURSES_OUTC);             /* implemented */
 extern NCURSES_EXPORT(int) vline_set(const cchar_t *, int);              /* generated:WIDEC */
 extern NCURSES_EXPORT(int) wadd_wch(WINDOW *, const cchar_t *);          /* implemented */
 extern NCURSES_EXPORT(int) wadd_wchnstr(WINDOW *, const cchar_t *, int); /* implemented */
@@ -1889,17 +1889,17 @@ extern NCURSES_EXPORT(int) wvline_set(WINDOW *, const cchar_t *, int);    /* imp
 #if NCURSES_SP_FUNCS
 extern NCURSES_EXPORT(attr_t) NCURSES_SP_NAME(term_attrs)(SCREEN *); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(erasewchar)(SCREEN *, wchar_t *); /* implemented:SP_FUNC */
+NCURSES_SP_NAME(erasewchar)(SCREEN *, wchar_t *); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(killwchar)(SCREEN *, wchar_t *); /* implemented:SP_FUNC */
+NCURSES_SP_NAME(killwchar)(SCREEN *, wchar_t *); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(unget_wch)(SCREEN *, const wchar_t); /* implemented:SP_FUNC */
+NCURSES_SP_NAME(unget_wch)(SCREEN *, const wchar_t); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(vid_attr)(SCREEN *, attr_t, NCURSES_PAIRS_T, void *); /* implemented:SP_FUNC */
+NCURSES_SP_NAME(vid_attr)(SCREEN *, attr_t, NCURSES_PAIRS_T, void *); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(vid_puts)(SCREEN *, attr_t, NCURSES_PAIRS_T, void *,
-                                                     NCURSES_SP_OUTC); /* implemented:SP_FUNC */
+        NCURSES_SP_OUTC); /* implemented:SP_FUNC */
 extern NCURSES_EXPORT(wchar_t *)
-    NCURSES_SP_NAME(wunctrl)(SCREEN *, cchar_t *); /* implemented:SP_FUNC */
+NCURSES_SP_NAME(wunctrl)(SCREEN *, cchar_t *); /* implemented:SP_FUNC */
 #endif
 
 #ifndef NCURSES_NOMACROS
@@ -2085,9 +2085,9 @@ extern NCURSES_EXPORT(const char *) _nc_viswibuf(const wint_t *);
 #define BUTTON_RESERVED_EVENT(e, x) ((e)&NCURSES_MOUSE_MASK(x, 040))
 
 typedef struct {
-  short id;       /* ID to distinguish multiple devices */
-  int x, y, z;    /* event coordinates (character-cell) */
-  mmask_t bstate; /* button state bits */
+    short id;       /* ID to distinguish multiple devices */
+    int x, y, z;    /* event coordinates (character-cell) */
+    mmask_t bstate; /* button state bits */
 } MEVENT;
 
 extern NCURSES_EXPORT(bool) has_mouse(void);
@@ -2119,7 +2119,7 @@ extern NCURSES_EXPORT(int) has_key(int);         /* do we have given key? */
 #if NCURSES_SP_FUNCS
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(has_key)(SCREEN *, int); /* do we have given key? */
 extern NCURSES_EXPORT(int)
-    NCURSES_SP_NAME(mcprint)(SCREEN *, char *, int); /* direct data to printer */
+NCURSES_SP_NAME(mcprint)(SCREEN *, char *, int); /* direct data to printer */
 #endif
 
 /* Debugging : use with libncurses_g.a */

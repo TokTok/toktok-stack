@@ -681,23 +681,23 @@ typedef int (*NCURSES_SP_OUTC)(SCREEN *, int);
 #define acs_chars_index 146
 
 typedef struct termtype {  /* in-core form of terminfo data */
-  char *term_names;        /* str_table offset of term names */
-  char *str_table;         /* pointer to string table */
-  NCURSES_SBOOL *Booleans; /* array of boolean values */
-  short *Numbers;          /* array of integer values */
-  char **Strings;          /* array of string offsets */
+    char *term_names;        /* str_table offset of term names */
+    char *str_table;         /* pointer to string table */
+    NCURSES_SBOOL *Booleans; /* array of boolean values */
+    short *Numbers;          /* array of integer values */
+    char **Strings;          /* array of string offsets */
 
 #if NCURSES_XNAMES
-  char *ext_str_table; /* pointer to extended string table */
-  char **ext_Names;    /* corresponding names */
+    char *ext_str_table; /* pointer to extended string table */
+    char **ext_Names;    /* corresponding names */
 
-  unsigned short num_Booleans; /* count total Booleans */
-  unsigned short num_Numbers;  /* count total Numbers */
-  unsigned short num_Strings;  /* count total Strings */
+    unsigned short num_Booleans; /* count total Booleans */
+    unsigned short num_Numbers;  /* count total Numbers */
+    unsigned short num_Strings;  /* count total Strings */
 
-  unsigned short ext_Booleans; /* count extensions to Booleans */
-  unsigned short ext_Numbers;  /* count extensions to Numbers */
-  unsigned short ext_Strings;  /* count extensions to Strings */
+    unsigned short ext_Booleans; /* count extensions to Booleans */
+    unsigned short ext_Numbers;  /* count extensions to Numbers */
+    unsigned short ext_Strings;  /* count extensions to Strings */
 #endif                         /* NCURSES_XNAMES */
 
 } TERMTYPE;
@@ -717,30 +717,30 @@ typedef struct termtype {  /* in-core form of terminfo data */
 TERMINAL;
 
 typedef struct termtype2 { /* in-core form of terminfo data */
-  char *term_names;        /* str_table offset of term names */
-  char *str_table;         /* pointer to string table */
-  NCURSES_SBOOL *Booleans; /* array of boolean values */
-  int *Numbers;            /* array of integer values */
-  char **Strings;          /* array of string offsets */
+    char *term_names;        /* str_table offset of term names */
+    char *str_table;         /* pointer to string table */
+    NCURSES_SBOOL *Booleans; /* array of boolean values */
+    int *Numbers;            /* array of integer values */
+    char **Strings;          /* array of string offsets */
 
 #if NCURSES_XNAMES
-  char *ext_str_table; /* pointer to extended string table */
-  char **ext_Names;    /* corresponding names */
+    char *ext_str_table; /* pointer to extended string table */
+    char **ext_Names;    /* corresponding names */
 
-  unsigned short num_Booleans; /* count total Booleans */
-  unsigned short num_Numbers;  /* count total Numbers */
-  unsigned short num_Strings;  /* count total Strings */
+    unsigned short num_Booleans; /* count total Booleans */
+    unsigned short num_Numbers;  /* count total Numbers */
+    unsigned short num_Strings;  /* count total Strings */
 
-  unsigned short ext_Booleans; /* count extensions to Booleans */
-  unsigned short ext_Numbers;  /* count extensions to Numbers */
-  unsigned short ext_Strings;  /* count extensions to Strings */
+    unsigned short ext_Booleans; /* count extensions to Booleans */
+    unsigned short ext_Numbers;  /* count extensions to Numbers */
+    unsigned short ext_Strings;  /* count extensions to Strings */
 #endif                         /* NCURSES_XNAMES */
 
 } TERMTYPE2;
 #else
 
 typedef struct term { /* describe an actual terminal */
-  TERMTYPE type;      /* terminal type description */
+    TERMTYPE type;      /* terminal type description */
 } TERMINAL;
 
 #endif /* NCURSES_INTERNALS */
@@ -832,7 +832,7 @@ extern NCURSES_EXPORT(int) tigetnum(const char *);
 extern NCURSES_EXPORT(char *) tparm(const char *, ...); /* special */
 #else
 extern NCURSES_EXPORT(char *)
-    tparm(const char *, long, long, long, long, long, long, long, long, long); /* special */
+tparm(const char *, long, long, long, long, long, long, long, long, long); /* special */
 #endif
 
 extern NCURSES_EXPORT(char *) tiparm(const char *, ...); /* special */
@@ -863,7 +863,7 @@ extern NCURSES_EXPORT(int) NCURSES_SP_NAME(tigetnum)(SCREEN *, const char *);
 extern NCURSES_EXPORT(char *) NCURSES_SP_NAME(tparm)(SCREEN *, const char *, ...); /* special */
 #else
 extern NCURSES_EXPORT(char *) NCURSES_SP_NAME(tparm)(SCREEN *, const char *, long, long, long, long,
-                                                     long, long, long, long, long); /* special */
+        long, long, long, long, long); /* special */
 #endif
 
 /* termcap database emulation (XPG4 uses const only for 2nd param of tgetent) */

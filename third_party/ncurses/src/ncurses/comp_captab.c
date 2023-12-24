@@ -1601,27 +1601,27 @@ static const alias_table_data infoalias_data[] = {
 
 #if 1
 static void next_string(const char *strings, unsigned *offset) {
-  *offset += (unsigned)strlen(strings + *offset) + 1;
+    *offset += (unsigned)strlen(strings + *offset) + 1;
 }
 
 static const struct name_table_entry *_nc_build_names(struct name_table_entry **actual,
-                                                      const name_table_data *source,
-                                                      const char *strings) {
-  if (*actual == 0) {
-    *actual = typeCalloc(struct name_table_entry, CAPTABSIZE);
-    if (*actual != 0) {
-      unsigned n;
-      unsigned len = 0;
-      for (n = 0; n < CAPTABSIZE; ++n) {
-        (*actual)[n].nte_name = strings + len;
-        (*actual)[n].nte_type = source[n].nte_type;
-        (*actual)[n].nte_index = source[n].nte_index;
-        (*actual)[n].nte_link = source[n].nte_link;
-        next_string(strings, &len);
-      }
+        const name_table_data *source,
+        const char *strings) {
+    if (*actual == 0) {
+        *actual = typeCalloc(struct name_table_entry, CAPTABSIZE);
+        if (*actual != 0) {
+            unsigned n;
+            unsigned len = 0;
+            for (n = 0; n < CAPTABSIZE; ++n) {
+                (*actual)[n].nte_name = strings + len;
+                (*actual)[n].nte_type = source[n].nte_type;
+                (*actual)[n].nte_index = source[n].nte_index;
+                (*actual)[n].nte_link = source[n].nte_link;
+                next_string(strings, &len);
+            }
+        }
     }
-  }
-  return *actual;
+    return *actual;
 }
 
 #define add_alias(field)                            \
@@ -1630,19 +1630,19 @@ static const struct name_table_entry *_nc_build_names(struct name_table_entry **
   }
 
 static const struct alias *_nc_build_alias(struct alias **actual, const alias_table_data *source,
-                                           const char *strings, size_t tablesize) {
-  if (*actual == 0) {
-    *actual = typeCalloc(struct alias, tablesize + 1);
-    if (*actual != 0) {
-      size_t n;
-      for (n = 0; n < tablesize; ++n) {
-        add_alias(from);
-        add_alias(to);
-        add_alias(source);
-      }
+        const char *strings, size_t tablesize) {
+    if (*actual == 0) {
+        *actual = typeCalloc(struct alias, tablesize + 1);
+        if (*actual != 0) {
+            size_t n;
+            for (n = 0; n < tablesize; ++n) {
+                add_alias(from);
+                add_alias(to);
+                add_alias(source);
+            }
+        }
     }
-  }
-  return *actual;
+    return *actual;
 }
 
 #define build_names(root) _nc_build_names(&_nc_##root##_table, root##_names_data, root##_names_text)
@@ -1655,63 +1655,74 @@ static const struct alias *_nc_build_alias(struct alias **actual, const alias_ta
 #endif
 
 NCURSES_EXPORT(const struct name_table_entry *)
-_nc_get_table(bool termcap) { return termcap ? build_names(cap) : build_names(info); }
+_nc_get_table(bool termcap) {
+    return termcap ? build_names(cap) : build_names(info);
+}
 
 /* entrypoint used by tack 1.07 */
 NCURSES_EXPORT(const HashValue *)
-_nc_get_hash_table(bool termcap) { return termcap ? _nc_cap_hash_table : _nc_info_hash_table; }
+_nc_get_hash_table(bool termcap) {
+    return termcap ? _nc_cap_hash_table : _nc_info_hash_table;
+}
 
 NCURSES_EXPORT(const struct alias *)
-_nc_get_alias_table(bool termcap) { return termcap ? build_alias(cap) : build_alias(info); }
+_nc_get_alias_table(bool termcap) {
+    return termcap ? build_alias(cap) : build_alias(info);
+}
 
 static HashValue info_hash(const char *string) {
-  long sum = 0;
+    long sum = 0;
 
-  DEBUG(9, ("hashing %s", string));
-  while (*string) {
-    sum += (long)(UChar(*string) + (UChar(*(string + 1)) << 8));
-    string++;
-  }
+    DEBUG(9, ("hashing %s", string));
+    while (*string) {
+        sum += (long)(UChar(*string) + (UChar(*(string + 1)) << 8));
+        string++;
+    }
 
-  DEBUG(9, ("sum is %ld", sum));
-  return (HashValue)(sum % HASHTABSIZE);
+    DEBUG(9, ("sum is %ld", sum));
+    return (HashValue)(sum % HASHTABSIZE);
 }
 
 #define TCAP_LEN 2 /* only 1- or 2-character names are used */
 
 static HashValue tcap_hash(const char *string) {
-  char temp[TCAP_LEN + 1];
-  int limit = 0;
+    char temp[TCAP_LEN + 1];
+    int limit = 0;
 
-  while (*string) {
-    temp[limit++] = *string++;
-    if (limit >= TCAP_LEN) break;
-  }
-  temp[limit] = '\0';
-  return info_hash(temp);
+    while (*string) {
+        temp[limit++] = *string++;
+        if (limit >= TCAP_LEN) break;
+    }
+    temp[limit] = '\0';
+    return info_hash(temp);
 }
 
 static int compare_tcap_names(const char *a, const char *b) {
-  return !strncmp(a, b, (size_t)TCAP_LEN);
+    return !strncmp(a, b, (size_t)TCAP_LEN);
 }
 
-static int compare_info_names(const char *a, const char *b) { return !strcmp(a, b); }
+static int compare_info_names(const char *a, const char *b) {
+    return !strcmp(a, b);
+}
 
 static const HashData hash_data[2] = {
     {HASHTABSIZE, _nc_info_hash_table, info_hash, compare_info_names},
-    {HASHTABSIZE, _nc_cap_hash_table, tcap_hash, compare_tcap_names}};
+    {HASHTABSIZE, _nc_cap_hash_table, tcap_hash, compare_tcap_names}
+};
 
 NCURSES_EXPORT(const HashData *)
-_nc_get_hash_info(bool termcap) { return &hash_data[(termcap != FALSE)]; }
+_nc_get_hash_info(bool termcap) {
+    return &hash_data[(termcap != FALSE)];
+}
 
 #if NO_LEAKS
 NCURSES_EXPORT(void)
 _nc_comp_captab_leaks(void) {
 #if 1
-  FreeIfNeeded(_nc_cap_table);
-  FreeIfNeeded(_nc_info_table);
-  FreeIfNeeded(_nc_capalias_table);
-  FreeIfNeeded(_nc_infoalias_table);
+    FreeIfNeeded(_nc_cap_table);
+    FreeIfNeeded(_nc_info_table);
+    FreeIfNeeded(_nc_capalias_table);
+    FreeIfNeeded(_nc_infoalias_table);
 #endif
 }
 #endif /* NO_LEAKS */
