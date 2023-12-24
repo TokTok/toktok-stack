@@ -7,7 +7,10 @@ import sys
 if "--regenerate" in sys.argv:
     subprocess.run(["tools/haskell/gen_haskell_targets"], check=True)
 result = subprocess.run(
-    ["bazel", "run", "//tools/haskell:hie-bios@bios", "--output_groups=hie_bios"],
+    [
+        "bazel", "run", "//tools/haskell:hie-bios@bios",
+        "--output_groups=hie_bios"
+    ],
     check=True,
     capture_output=True,
 )
