@@ -268,7 +268,7 @@ qt_moc = rule(
 # Qt test with MOC for the test .cpp file.
 # =========================================================
 
-def qt_test(name, src, deps, copts = [], mocopts = [], size = None):
+def qt_test(name, src, deps, copts = [], mocopts = [], size = None, **kwargs):
     qt_moc(
         name = "%s_moc_src" % name,
         srcs = [src],
@@ -278,6 +278,8 @@ def qt_test(name, src, deps, copts = [], mocopts = [], size = None):
     cc_library(
         name = "%s_moc" % name,
         hdrs = [":%s_moc_src" % name],
+        tags = ["no-cross"],
+        **kwargs
     )
     cc_test(
         name = name,
@@ -291,6 +293,8 @@ def qt_test(name, src, deps, copts = [], mocopts = [], size = None):
             ":%s_moc" % name,
             "@qt//:qt_test",
         ],
+        tags = ["no-cross"],
+        **kwargs
     )
 
 # Building app bundles for macOS.

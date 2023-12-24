@@ -35,6 +35,7 @@ def hspec_library(name, src_strip_prefix, **kwargs):
         name = name,
         srcs = srcs + [name + "_hspec_driver"],
         src_strip_prefix = src_strip_prefix,
+        tags = ["no-cross"],
         **kwargs
     )
 
@@ -58,6 +59,7 @@ def hspec_test(name, visibility=["//tools/haskell:__pkg__"], **kwargs):
         srcs = srcs + [name + "_hspec_driver"],
         main_file = "test/Spec.hs",
         src_strip_prefix = "test",
+        tags = ["no-cross"],
         visibility = visibility,
         **kwargs
     )
