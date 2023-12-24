@@ -2,8 +2,7 @@
 
 #include <curses.priv.h>
 
-#define IT NCURSES_CONST char * const
-
+#define IT NCURSES_CONST char *const
 
 #if BROKEN_LINKER || USE_REENTRANT
 
@@ -1033,7 +1032,8 @@ DCL(strfnames) = {
     (NCURSES_CONST char *)0,
 };
 
-#define FIX(it) NCURSES_IMPEXP IT * NCURSES_API NCURSES_PUBLIC_VAR(it)(void) { return data##it; }
+#define FIX(it) \
+  NCURSES_IMPEXP IT *NCURSES_API NCURSES_PUBLIC_VAR(it)(void) { return data##it; }
 
 /* remove public definition which conflicts with FIX() */
 #undef boolnames
@@ -1052,20 +1052,21 @@ FIX(strnames)
 FIX(strfnames)
 
 /* restore the public definition */
-#define boolnames  NCURSES_PUBLIC_VAR(boolnames())
+#define boolnames NCURSES_PUBLIC_VAR(boolnames())
 #define boolfnames NCURSES_PUBLIC_VAR(boolfnames())
-#define numnames   NCURSES_PUBLIC_VAR(numnames())
-#define numfnames  NCURSES_PUBLIC_VAR(numfnames())
-#define strnames   NCURSES_PUBLIC_VAR(strnames())
-#define strfnames  NCURSES_PUBLIC_VAR(strfnames())
+#define numnames NCURSES_PUBLIC_VAR(numnames())
+#define numfnames NCURSES_PUBLIC_VAR(numfnames())
+#define strnames NCURSES_PUBLIC_VAR(strnames())
+#define strfnames NCURSES_PUBLIC_VAR(strfnames())
 
-#define FREE_FIX(it) if (ptr_##it) { FreeAndNull(ptr_##it); }
+#define FREE_FIX(it)       \
+  if (ptr_##it) {          \
+    FreeAndNull(ptr_##it); \
+  }
 
 #if NO_LEAKS
 NCURSES_EXPORT(void)
-_nc_names_leaks(void)
-{
-}
+_nc_names_leaks(void) {}
 #endif
 
 #else
@@ -2095,6 +2096,5 @@ DCL(strfnames) = {
 
     (NCURSES_CONST char *)0,
 };
-
 
 #endif /* BROKEN_LINKER */

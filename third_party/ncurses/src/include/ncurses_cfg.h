@@ -128,9 +128,9 @@ void exit (int);
 #define USE_ASSUMED_COLOR 1
 #define USE_HASHMAP 1
 #define GCC_SCANF 1
-#define GCC_SCANFLIKE(fmt,var) __attribute__((format(scanf,fmt,var)))
+#define GCC_SCANFLIKE(fmt, var) __attribute__((format(scanf, fmt, var)))
 #define GCC_PRINTF 1
-#define GCC_PRINTFLIKE(fmt,var) __attribute__((format(printf,fmt,var)))
+#define GCC_PRINTFLIKE(fmt, var) __attribute__((format(printf, fmt, var)))
 #define GCC_UNUSED __attribute__((unused))
 #define GCC_NORETURN __attribute__((noreturn))
 #define HAVE_NC_ALLOC_H 1

@@ -2,8 +2,7 @@
 
 #include <curses.priv.h>
 
-#define IT NCURSES_CONST char * const
-
+#define IT NCURSES_CONST char *const
 
 #if BROKEN_LINKER || USE_REENTRANT
 
@@ -521,7 +520,8 @@ DCL(strcodes) = {
     (NCURSES_CONST char *)0,
 };
 
-#define FIX(it) NCURSES_IMPEXP IT * NCURSES_API NCURSES_PUBLIC_VAR(it)(void) { return data##it; }
+#define FIX(it) \
+  NCURSES_IMPEXP IT *NCURSES_API NCURSES_PUBLIC_VAR(it)(void) { return data##it; }
 
 /* remove public definition which conflicts with FIX() */
 #undef boolcodes
@@ -535,16 +535,17 @@ FIX(strcodes)
 
 /* restore the public definition */
 
-#define FREE_FIX(it) if (ptr_##it) { FreeAndNull(ptr_##it); }
-#define boolcodes  NCURSES_PUBLIC_VAR(boolcodes())
-#define numcodes   NCURSES_PUBLIC_VAR(numcodes())
-#define strcodes   NCURSES_PUBLIC_VAR(strcodes())
+#define FREE_FIX(it)       \
+  if (ptr_##it) {          \
+    FreeAndNull(ptr_##it); \
+  }
+#define boolcodes NCURSES_PUBLIC_VAR(boolcodes())
+#define numcodes NCURSES_PUBLIC_VAR(numcodes())
+#define strcodes NCURSES_PUBLIC_VAR(strcodes())
 
 #if NO_LEAKS
 NCURSES_EXPORT(void)
-_nc_codes_leaks(void)
-{
-}
+_nc_codes_leaks(void) {}
 #endif
 
 #else
@@ -1062,6 +1063,5 @@ DCL(strcodes) = {
 
     (NCURSES_CONST char *)0,
 };
-
 
 #endif /* BROKEN_LINKER */
