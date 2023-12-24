@@ -221,16 +221,16 @@ void exit (int);
 
 #include <ncurses_def.h>
 
-	/* The C compiler may not treat these properly but C++ has to */
+/* The C compiler may not treat these properly but C++ has to */
 #ifdef __cplusplus
 #undef const
 #undef inline
 #endif
 
-	/* On HP-UX, the C compiler doesn't grok mbstate_t without
-	   -D_XOPEN_SOURCE=500. However, this causes problems on
-	   IRIX. So, we #define mbstate_t to int in configure.in
-	   only for the C compiler if needed. */
+/* On HP-UX, the C compiler doesn't grok mbstate_t without
+   -D_XOPEN_SOURCE=500. However, this causes problems on
+   IRIX. So, we #define mbstate_t to int in configure.in
+   only for the C compiler if needed. */
 #ifndef __cplusplus
 #ifdef NEED_MBSTATE_T_DEF
 #define mbstate_t int

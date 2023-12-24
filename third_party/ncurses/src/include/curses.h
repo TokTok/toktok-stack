@@ -490,55 +490,55 @@ struct ldat;
 
 struct _win_st
 {
-	NCURSES_SIZE_T _cury, _curx; /* current cursor position */
+    NCURSES_SIZE_T _cury, _curx; /* current cursor position */
 
-	/* window location and size */
-	NCURSES_SIZE_T _maxy, _maxx; /* maximums of x and y, NOT window size */
-	NCURSES_SIZE_T _begy, _begx; /* screen coords of upper-left-hand corner */
+    /* window location and size */
+    NCURSES_SIZE_T _maxy, _maxx; /* maximums of x and y, NOT window size */
+    NCURSES_SIZE_T _begy, _begx; /* screen coords of upper-left-hand corner */
 
-	short   _flags;		/* window state flags */
+    short   _flags;		/* window state flags */
 
-	/* attribute tracking */
-	attr_t  _attrs;		/* current attribute for non-space character */
-	chtype  _bkgd;		/* current background char/attribute pair */
+    /* attribute tracking */
+    attr_t  _attrs;		/* current attribute for non-space character */
+    chtype  _bkgd;		/* current background char/attribute pair */
 
-	/* option values set by user */
-	bool	_notimeout;	/* no time out on function-key entry? */
-	bool	_clear;		/* consider all data in the window invalid? */
-	bool	_leaveok;	/* OK to not reset cursor on exit? */
-	bool	_scroll;	/* OK to scroll this window? */
-	bool	_idlok;		/* OK to use insert/delete line? */
-	bool	_idcok;		/* OK to use insert/delete char? */
-	bool	_immed;		/* window in immed mode? (not yet used) */
-	bool	_sync;		/* window in sync mode? */
-	bool	_use_keypad;	/* process function keys into KEY_ symbols? */
-	int	_delay;		/* 0 = nodelay, <0 = blocking, >0 = delay */
+    /* option values set by user */
+    bool	_notimeout;	/* no time out on function-key entry? */
+    bool	_clear;		/* consider all data in the window invalid? */
+    bool	_leaveok;	/* OK to not reset cursor on exit? */
+    bool	_scroll;	/* OK to scroll this window? */
+    bool	_idlok;		/* OK to use insert/delete line? */
+    bool	_idcok;		/* OK to use insert/delete char? */
+    bool	_immed;		/* window in immed mode? (not yet used) */
+    bool	_sync;		/* window in sync mode? */
+    bool	_use_keypad;	/* process function keys into KEY_ symbols? */
+    int	_delay;		/* 0 = nodelay, <0 = blocking, >0 = delay */
 
-	struct ldat *_line;	/* the actual line data */
+    struct ldat *_line;	/* the actual line data */
 
-	/* global screen state */
-	NCURSES_SIZE_T _regtop;	/* top line of scrolling region */
-	NCURSES_SIZE_T _regbottom; /* bottom line of scrolling region */
+    /* global screen state */
+    NCURSES_SIZE_T _regtop;	/* top line of scrolling region */
+    NCURSES_SIZE_T _regbottom; /* bottom line of scrolling region */
 
-	/* these are used only if this is a sub-window */
-	int	_parx;		/* x coordinate of this window in parent */
-	int	_pary;		/* y coordinate of this window in parent */
-	WINDOW	*_parent;	/* pointer to parent if a sub-window */
+    /* these are used only if this is a sub-window */
+    int	_parx;		/* x coordinate of this window in parent */
+    int	_pary;		/* y coordinate of this window in parent */
+    WINDOW	*_parent;	/* pointer to parent if a sub-window */
 
-	/* these are used only if this is a pad */
-	struct pdat
-	{
-	    NCURSES_SIZE_T _pad_y,      _pad_x;
-	    NCURSES_SIZE_T _pad_top,    _pad_left;
-	    NCURSES_SIZE_T _pad_bottom, _pad_right;
-	} _pad;
+    /* these are used only if this is a pad */
+    struct pdat
+    {
+        NCURSES_SIZE_T _pad_y,      _pad_x;
+        NCURSES_SIZE_T _pad_top,    _pad_left;
+        NCURSES_SIZE_T _pad_bottom, _pad_right;
+    } _pad;
 
-	NCURSES_SIZE_T _yoffset; /* real begy is _begy + _yoffset */
+    NCURSES_SIZE_T _yoffset; /* real begy is _begy + _yoffset */
 
 #if NCURSES_WIDECHAR
-	cchar_t  _bkgrnd;	/* current background char/attribute pair */
+    cchar_t  _bkgrnd;	/* current background char/attribute pair */
 #if 1
-	int	_color;		/* current color-pair for non-space character */
+    int	_color;		/* current color-pair for non-space character */
 #endif
 #endif
 };
@@ -710,9 +710,9 @@ extern NCURSES_EXPORT(int) mvinsnstr (int, int, const char *, int);	/* generated
 extern NCURSES_EXPORT(int) mvinsstr (int, int, const char *);		/* generated */
 extern NCURSES_EXPORT(int) mvinstr (int, int, char *);			/* generated */
 extern NCURSES_EXPORT(int) mvprintw (int,int, const char *,...)		/* implemented */
-		GCC_PRINTFLIKE(3,4);
+GCC_PRINTFLIKE(3,4);
 extern NCURSES_EXPORT(int) mvscanw (int,int, const char *,...)		/* implemented */
-		GCC_SCANFLIKE(3,4);
+GCC_SCANFLIKE(3,4);
 extern NCURSES_EXPORT(int) mvvline (int, int, chtype, int);		/* generated */
 extern NCURSES_EXPORT(int) mvwaddch (WINDOW *, int, int, const chtype);	/* generated */
 extern NCURSES_EXPORT(int) mvwaddchnstr (WINDOW *, int, int, const chtype *, int);/* generated */
@@ -735,9 +735,9 @@ extern NCURSES_EXPORT(int) mvwinsnstr (WINDOW *, int, int, const char *, int);	/
 extern NCURSES_EXPORT(int) mvwinsstr (WINDOW *, int, int, const char *);	/* generated */
 extern NCURSES_EXPORT(int) mvwinstr (WINDOW *, int, int, char *);		/* generated */
 extern NCURSES_EXPORT(int) mvwprintw (WINDOW*,int,int, const char *,...)	/* implemented */
-		GCC_PRINTFLIKE(4,5);
+GCC_PRINTFLIKE(4,5);
 extern NCURSES_EXPORT(int) mvwscanw (WINDOW *,int,int, const char *,...)	/* implemented */
-		GCC_SCANFLIKE(4,5);
+GCC_SCANFLIKE(4,5);
 extern NCURSES_EXPORT(int) mvwvline (WINDOW *,int, int, chtype, int);	/* generated */
 extern NCURSES_EXPORT(int) napms (int);					/* implemented */
 extern NCURSES_EXPORT(WINDOW *) newpad (int,int);			/* implemented */
@@ -759,7 +759,7 @@ extern NCURSES_EXPORT(int) pechochar (WINDOW *, const chtype);		/* implemented *
 extern NCURSES_EXPORT(int) pnoutrefresh (WINDOW*,int,int,int,int,int,int);/* implemented */
 extern NCURSES_EXPORT(int) prefresh (WINDOW *,int,int,int,int,int,int);	/* implemented */
 extern NCURSES_EXPORT(int) printw (const char *,...)			/* implemented */
-		GCC_PRINTFLIKE(1,2);
+GCC_PRINTFLIKE(1,2);
 extern NCURSES_EXPORT(int) putwin (WINDOW *, FILE *);			/* implemented */
 extern NCURSES_EXPORT(void) qiflush (void);				/* implemented */
 extern NCURSES_EXPORT(int) raw (void);					/* implemented */
@@ -771,7 +771,7 @@ extern NCURSES_EXPORT(int) reset_shell_mode (void);			/* implemented */
 extern NCURSES_EXPORT(int) ripoffline (int, int (*)(WINDOW *, int));	/* implemented */
 extern NCURSES_EXPORT(int) savetty (void);				/* implemented */
 extern NCURSES_EXPORT(int) scanw (const char *,...)			/* implemented */
-		GCC_SCANFLIKE(1,2);
+GCC_SCANFLIKE(1,2);
 extern NCURSES_EXPORT(int) scr_dump (const char *);			/* implemented */
 extern NCURSES_EXPORT(int) scr_init (const char *);			/* implemented */
 extern NCURSES_EXPORT(int) scrl (int);					/* generated */
@@ -817,13 +817,13 @@ extern NCURSES_EXPORT(int) vidattr (chtype);				/* implemented */
 extern NCURSES_EXPORT(int) vidputs (chtype, NCURSES_OUTC);		/* implemented */
 extern NCURSES_EXPORT(int) vline (chtype, int);				/* generated */
 extern NCURSES_EXPORT(int) vwprintw (WINDOW *, const char *, va_list) GCC_DEPRECATED(use vw_printw)	/* implemented */
-		GCC_PRINTFLIKE(2,0);
+GCC_PRINTFLIKE(2,0);
 extern NCURSES_EXPORT(int) vw_printw (WINDOW *, const char *, va_list)	/* implemented */
-		GCC_PRINTFLIKE(2,0);	
+GCC_PRINTFLIKE(2,0);
 extern NCURSES_EXPORT(int) vwscanw (WINDOW *, const char *, va_list) GCC_DEPRECATED(use vw_scanw)	/* implemented */
-		GCC_SCANFLIKE(2,0);
+GCC_SCANFLIKE(2,0);
 extern NCURSES_EXPORT(int) vw_scanw (WINDOW *, const char *, va_list)	/* implemented */
-		GCC_SCANFLIKE(2,0);
+GCC_SCANFLIKE(2,0);
 extern NCURSES_EXPORT(int) waddch (WINDOW *, const chtype);		/* implemented */
 extern NCURSES_EXPORT(int) waddchnstr (WINDOW *,const chtype *,int);	/* implemented */
 extern NCURSES_EXPORT(int) waddchstr (WINDOW *,const chtype *);		/* generated */
@@ -866,11 +866,11 @@ extern NCURSES_EXPORT(int) winstr (WINDOW *, char *);			/* generated */
 extern NCURSES_EXPORT(int) wmove (WINDOW *,int,int);			/* implemented */
 extern NCURSES_EXPORT(int) wnoutrefresh (WINDOW *);			/* implemented */
 extern NCURSES_EXPORT(int) wprintw (WINDOW *, const char *,...)		/* implemented */
-		GCC_PRINTFLIKE(2,3);
+GCC_PRINTFLIKE(2,3);
 extern NCURSES_EXPORT(int) wredrawln (WINDOW *,int,int);		/* implemented */
 extern NCURSES_EXPORT(int) wrefresh (WINDOW *);				/* implemented */
 extern NCURSES_EXPORT(int) wscanw (WINDOW *, const char *,...)		/* implemented */
-		GCC_SCANFLIKE(2,3);
+GCC_SCANFLIKE(2,3);
 extern NCURSES_EXPORT(int) wscrl (WINDOW *,int);			/* implemented */
 extern NCURSES_EXPORT(int) wsetscrreg (WINDOW *,int,int);		/* implemented */
 extern NCURSES_EXPORT(int) wstandout (WINDOW *);			/* generated */
@@ -1647,7 +1647,7 @@ extern NCURSES_EXPORT_VAR(cchar_t *) _nc_wacs;
 #define WACS_PLMINUS	NCURSES_WACS('g') /* plus/minus */
 #define WACS_BULLET	NCURSES_WACS('~') /* bullet */
 
-	/* Teletype 5410v1 symbols */
+/* Teletype 5410v1 symbols */
 #define WACS_LARROW	NCURSES_WACS(',') /* arrow left */
 #define WACS_RARROW	NCURSES_WACS('+') /* arrow right */
 #define WACS_DARROW	NCURSES_WACS('.') /* arrow down */
@@ -1656,7 +1656,7 @@ extern NCURSES_EXPORT_VAR(cchar_t *) _nc_wacs;
 #define WACS_LANTERN	NCURSES_WACS('i') /* lantern symbol */
 #define WACS_BLOCK	NCURSES_WACS('0') /* solid square block */
 
-	/* ncurses extensions */
+/* ncurses extensions */
 #define WACS_S3		NCURSES_WACS('p') /* scan line 3 */
 #define WACS_S7		NCURSES_WACS('r') /* scan line 7 */
 #define WACS_LEQUAL	NCURSES_WACS('y') /* less/equal */
@@ -1665,7 +1665,7 @@ extern NCURSES_EXPORT_VAR(cchar_t *) _nc_wacs;
 #define WACS_NEQUAL	NCURSES_WACS('|') /* not equal */
 #define WACS_STERLING	NCURSES_WACS('}') /* UK pound sign */
 
-	/* double lines */
+/* double lines */
 #define WACS_BDDB	NCURSES_WACS('C')
 #define WACS_DDBB	NCURSES_WACS('D')
 #define WACS_BBDD	NCURSES_WACS('B')
@@ -1690,7 +1690,7 @@ extern NCURSES_EXPORT_VAR(cchar_t *) _nc_wacs;
 #define WACS_D_VLINE	WACS_DBDB
 #define WACS_D_PLUS	WACS_DDDD
 
-	/* thick lines */
+/* thick lines */
 #define WACS_BTTB	NCURSES_WACS('L')
 #define WACS_TTBB	NCURSES_WACS('M')
 #define WACS_BBTT	NCURSES_WACS('K')

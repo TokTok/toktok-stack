@@ -3278,22 +3278,22 @@ next_string(const char *strings, unsigned *offset)
 
 static const struct name_table_entry *
 _nc_build_names(struct name_table_entry **actual,
-		const name_table_data * source,
-		const char *strings)
+                const name_table_data * source,
+                const char *strings)
 {
     if (*actual == 0) {
-	*actual = typeCalloc(struct name_table_entry, CAPTABSIZE);
-	if (*actual != 0) {
-	    unsigned n;
-	    unsigned len = 0;
-	    for (n = 0; n < CAPTABSIZE; ++n) {
-		(*actual)[n].nte_name = strings + len;
-		(*actual)[n].nte_type = source[n].nte_type;
-		(*actual)[n].nte_index = source[n].nte_index;
-		(*actual)[n].nte_link = source[n].nte_link;
-		next_string(strings, &len);
-	    }
-	}
+        *actual = typeCalloc(struct name_table_entry, CAPTABSIZE);
+        if (*actual != 0) {
+            unsigned n;
+            unsigned len = 0;
+            for (n = 0; n < CAPTABSIZE; ++n) {
+                (*actual)[n].nte_name = strings + len;
+                (*actual)[n].nte_type = source[n].nte_type;
+                (*actual)[n].nte_index = source[n].nte_index;
+                (*actual)[n].nte_link = source[n].nte_link;
+                next_string(strings, &len);
+            }
+        }
     }
     return *actual;
 }
@@ -3305,20 +3305,20 @@ _nc_build_names(struct name_table_entry **actual,
 
 static const struct alias *
 _nc_build_alias(struct alias **actual,
-		const alias_table_data * source,
-		const char *strings,
-		size_t tablesize)
+                const alias_table_data * source,
+                const char *strings,
+                size_t tablesize)
 {
     if (*actual == 0) {
-	*actual = typeCalloc(struct alias, tablesize + 1);
-	if (*actual != 0) {
-	    size_t n;
-	    for (n = 0; n < tablesize; ++n) {
-		add_alias(from);
-		add_alias(to);
-		add_alias(source);
-	    }
-	}
+        *actual = typeCalloc(struct alias, tablesize + 1);
+        if (*actual != 0) {
+            size_t n;
+            for (n = 0; n < tablesize; ++n) {
+                add_alias(from);
+                add_alias(to);
+                add_alias(source);
+            }
+        }
     }
     return *actual;
 }
@@ -3361,8 +3361,8 @@ info_hash(const char *string)
 
     DEBUG(9, ("hashing %s", string));
     while (*string) {
-	sum += (long) (UChar(*string) + (UChar(*(string + 1)) << 8));
-	string++;
+        sum += (long) (UChar(*string) + (UChar(*(string + 1)) << 8));
+        string++;
     }
 
     DEBUG(9, ("sum is %ld", sum));
@@ -3378,9 +3378,9 @@ tcap_hash(const char *string)
     int limit = 0;
 
     while (*string) {
-	temp[limit++] = *string++;
-	if (limit >= TCAP_LEN)
-	    break;
+        temp[limit++] = *string++;
+        if (limit >= TCAP_LEN)
+            break;
     }
     temp[limit] = '\0';
     return info_hash(temp);
