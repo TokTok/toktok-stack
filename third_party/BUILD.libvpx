@@ -3,30 +3,27 @@ load("@toktok//third_party/yasm:build_defs.bzl", "asm_library")
 
 asm_library(
     name = "assemblies",
-    srcs = select({
-        "@toktok//tools/config:x86_64": glob([
-            "vp*/**/x86/*.asm",
-        ]) + [
-            "vpx_ports/float_control_word.asm",
-        ],
-    }) + select({
+    srcs = glob([
+        "vp*/**/x86/*.asm",
+    ]) + [
+        "vpx_ports/float_control_word.asm",
+    ] + select({
         "@toktok//tools/config:linux": [],
         "@toktok//tools/config:windows": ["vpx_ports/emms_mmx.asm"],
     }),
-    hdrs = select({
-        "@toktok//tools/config:x86_64": [
-            "third_party/x86inc/x86inc.asm",
-            "vpx_dsp/x86/bitdepth_conversion_sse2.asm",
-            "vpx_ports/x86_abi_support.asm",
-            "@toktok//third_party/libvpx:vpx_config.asm",
-        ],
-    }),
+    hdrs = [
+        "third_party/x86inc/x86inc.asm",
+        "vpx_dsp/x86/bitdepth_conversion_sse2.asm",
+        "vpx_ports/x86_abi_support.asm",
+        "@toktok//third_party/libvpx:linux-x86_64/vpx_config.asm",
+    ],
     archive = False,
     asmopts = [
         "-I$(GENDIR)/external/libvpx",  # Generated headers.
         "-Iexternal/libvpx",
-        "-I$(GENDIR)/third_party/libvpx",
-    ],
+    ] + select({
+        "@toktok//tools/config:linux-x86_64": ["-Ithird_party/libvpx/linux-x86_64"],
+    }),
 )
 
 CONFIGURE = """

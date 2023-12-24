@@ -1,0 +1,6 @@
+licenses(["notice"])
+
+exports_files(
+    srcs = glob(["src/**/*"]),
+    visibility = ["@ncurses//:__pkg__"],
+)

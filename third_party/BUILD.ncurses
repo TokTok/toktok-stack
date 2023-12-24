@@ -1,5 +1,20 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
 
+GENFILES = [
+    "include/MKterm.h.awk",
+    "include/curses.h",
+    "include/ncurses_cfg.h",
+    "include/ncurses_dll.h",
+    "include/termcap.h",
+    "include/unctrl.h",
+    "ncurses/Makefile",
+    "ncurses/expanded.c",
+    "ncurses/fallback.c",
+    "ncurses/init_keytry.h",
+    "ncurses/lib_gen.c",
+    "ncurses/lib_keyname.c",
+]
+
 genrule(
     name = "regen_config",
     srcs = glob([
@@ -20,21 +35,7 @@ genrule(
         "dist.mk",
         "install-sh",
     ],
-    outs = [
-        "configure.log",
-        "include/MKterm.h.awk",
-        "include/curses.h",
-        "include/ncurses_cfg.h",
-        "include/ncurses_dll.h",
-        "include/termcap.h",
-        "include/unctrl.h",
-        "ncurses/Makefile",
-        "ncurses/expanded.c",
-        "ncurses/fallback.c",
-        "ncurses/init_keytry.h",
-        "ncurses/lib_gen.c",
-        "ncurses/lib_keyname.c",
-    ],
+    outs = ["out/" + f for f in GENFILES] + ["out/configure.log"],
     cmd = """
         PATH=$$PATH:`pwd`/`dirname $(location @diffutils//:cmp)`
         MAKE=`pwd`/$(location @gnumake)
@@ -54,7 +55,7 @@ genrule(
         DIR=`pwd`
         cd -
         for i in $(OUTS); do
-          cp $$DIR/`echo $$i | sed -e 's|$(GENDIR)/external/ncurses/||'` $$i
+          cp $$DIR/`echo $$i | sed -e 's|$(GENDIR)/external/ncurses/out/||'` $$i
         done
     """,
     toolchains = ["@rules_cc//cc:current_cc_toolchain"],
@@ -62,6 +63,17 @@ genrule(
         "@diffutils//:cmp",
         "@gnumake",
     ],
+)
+
+genrule(
+    name = "genfiles",
+    srcs = ["@toktok//third_party/ncurses:src/" + f for f in GENFILES],
+    outs = GENFILES,
+    cmd = """
+        for i in $(OUTS); do
+          cp `echo $$i | sed -e 's|$(GENDIR)/external/ncurses/|third_party/ncurses/src/|'` $$i
+        done
+    """,
 )
 
 filegroup(

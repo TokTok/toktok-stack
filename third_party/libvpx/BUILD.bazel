@@ -4,6 +4,7 @@ licenses(["notice"])
 
 exports_files(
     srcs = [
+        "linux-x86_64/vpx_config.asm",
         "vpx_version.h",
     ],
     visibility = ["@libvpx//:__pkg__"],
@@ -15,17 +16,6 @@ alias(
         "@toktok//tools/config:linux-arm64": "linux-arm64/libs-arm64-linux-gcc.mk",
         "@toktok//tools/config:linux-x86_64": "linux-x86_64/libs-x86_64-linux-gcc.mk",
     }),
-    visibility = ["@libvpx//:__pkg__"],
-)
-
-genrule(
-    name = "platform_asm_header",
-    srcs = select({
-        "@toktok//tools/config:linux-arm64": [],
-        "@toktok//tools/config:linux-x86_64": ["linux-x86_64/vpx_config.asm"],
-    }),
-    outs = ["vpx_config.asm"],
-    cmd = "cp $< $@",
     visibility = ["@libvpx//:__pkg__"],
 )
 

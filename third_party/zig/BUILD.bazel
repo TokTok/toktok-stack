@@ -1,0 +1,10 @@
+# TODO(iphydf): Enable once rules_zig is a bit more mature.
+# load("@rules_zig//zig:defs.bzl", "zig_test")
+#
+# zig_test(
+#     name = "testsuite",
+#     csrcs = ["csource.c"],
+#     main = "main.zig",
+#     # TODO(https://github.com/aherrmann/rules_zig/issues/15): Add a C library here.
+#     cdeps = [],
+# )

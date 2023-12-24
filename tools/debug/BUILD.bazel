@@ -25,5 +25,6 @@ cc_library(
 cc_library(
     name = "oomer",
     srcs = ["oomer.c"],
+    tags = ["no-cross"],
     visibility = ["//visibility:public"],
 )

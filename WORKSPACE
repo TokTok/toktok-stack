@@ -25,6 +25,29 @@ load("@hermetic_cc_toolchain//toolchain:defs.bzl", zig_toolchains = "toolchains"
 
 zig_toolchains()
 
+# Actual zig toolchain (the above is for C/C++)
+# =========================================================
+
+github_archive(
+    name = "rules_zig",
+    repo = "aherrmann/rules_zig",
+    sha256 = "3d06e19af1aa7449d3e562914ff02e7f946e67a35f7cd6daa31459a966b9b1bd",
+    version = "864d8e5227f2cadee0f0bcc5c3db75955668a439",
+)
+
+load(
+    "@rules_zig//zig:repositories.bzl",
+    "rules_zig_dependencies",
+    "zig_register_toolchains",
+)
+
+rules_zig_dependencies()
+
+zig_register_toolchains(
+    name = "zig",
+    zig_version = "0.11.0",
+)
+
 # Fuzzing
 # =========================================================
 

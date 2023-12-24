@@ -8,4 +8,5 @@ exclude:
   - "third_party/libzmq/**/*.hpp"
   - "third_party/libvpx/**/*.h"
   - "third_party/libvpx/**/*.mk"
+  - "third_party/ncurses/src/**/*"
   - "third_party/opus/**/*.h"

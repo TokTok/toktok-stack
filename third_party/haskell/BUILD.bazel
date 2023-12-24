@@ -7,7 +7,10 @@ licenses(["notice"])
 # haskell_toolchain_library can access builtin GHC packages
 # and assign them a bazel target name, so that they
 # can be referenced as dependencies.
-[haskell_toolchain_library(name = name) for name in [
+[haskell_toolchain_library(
+    name = name,
+    tags = ["no-cross"],
+) for name in [
     "aeson",
     "aeson-pretty",
     "ansi-wl-pprint",
