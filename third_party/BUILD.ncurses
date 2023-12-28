@@ -236,7 +236,6 @@ genrule(
     tools = [":make_hash"],
 )
 
-# TODO(iphydf): Build ncurses in bazel.
 cc_library(
     name = "ncurses",
     srcs = [

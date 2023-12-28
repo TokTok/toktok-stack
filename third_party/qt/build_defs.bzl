@@ -272,8 +272,9 @@ def qt_test(name, src, deps, copts = [], mocopts = [], size = None, **kwargs):
     qt_moc(
         name = "%s_moc_src" % name,
         srcs = [src],
-        deps = deps,
         mocopts = ["-Iqtox"],
+        tags = ["no-cross"],
+        deps = deps,
     )
     cc_library(
         name = "%s_moc" % name,
