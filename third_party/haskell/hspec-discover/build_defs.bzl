@@ -28,6 +28,7 @@ def hspec_library(name, src_strip_prefix, **kwargs):
                 module_name = module_name,
             ),
         ]),
+        tags = ["no-cross"],
         tools = [_HSPEC_DISCOVER],
     )
 
@@ -51,6 +52,7 @@ def hspec_test(name, visibility=["//tools/haskell:__pkg__"], **kwargs):
             "cd %s/test" % native.package_name(),
             "../../$(location %s) $$(basename $@) Main.hs ../../$@" % _HSPEC_DISCOVER,
         ]),
+        tags = ["no-cross"],
         tools = [_HSPEC_DISCOVER],
     )
 

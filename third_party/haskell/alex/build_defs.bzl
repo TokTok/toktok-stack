@@ -15,5 +15,6 @@ def alex_lexer(name, src):
             "-o $(location %s)" % out,
             "$(location %s)" % src,
         ]),
+        tags = ["no-cross"],
         tools = [_ALEX],
     )

@@ -33,7 +33,7 @@ build --experimental_inmemory_jdeps_files
 build --experimental_objc_include_scanning
 build --experimental_omitfp
 build --experimental_remotable_source_manifests
-#build --experimental_remote_build_event_upload=minimal
+build --experimental_remote_build_event_upload=minimal
 build --experimental_remote_cache_async
 build --experimental_remote_merkle_tree_cache
 #build --experimental_remote_require_cached  # needs newer bazel version
@@ -95,25 +95,15 @@ build:remote --remote_cache=grpc://code.tox.chat:9092
 
 # Use remote execution. Disabled by default, because we don't want everyone to
 # use the remote executors (and they might be down sometimes).
-build:remote-exec --remote_executor=grpc://code.tox.chat:8980
+#build:remote-exec --remote_executor=grpc://code.tox.chat:8980
+build:remote-exec --remote_executor=grpc://10.100.0.1:8980
 
-# Use local docker sandbox. This is a lot slower than linux-sandbox, but is more
-# hermetic and reproducible, so it is used on our CI.
-build:docker-sandbox --experimental_docker_image=toxchat/builder:latest
-build:docker-sandbox --experimental_docker_verbose
-build:docker-sandbox --experimental_enable_docker_sandbox
-build:docker-sandbox --define=EXECUTOR=remote
+# The remote executor doesn't have everything available, so we consider it the
+# same as cross compilation.
+build:remote-exec --build_tag_filters=-no-cross,-macos,-windows
 
-build:docker-sandbox --genrule_strategy=docker
-build:docker-sandbox --spawn_strategy=docker
-build:docker-sandbox --strategy=Javac=docker
-
-# Use sandboxfs, which is much faster than docker, but slightly less hermetic.
-#
-# TODO(https://github.com/tweag/rules_haskell/issues/1265): Enable this by
-# default once rules_haskell supports it.
-build:sandboxfs --experimental_sandboxfs_path=/home/builder/.bin/sandboxfs
-build:sandboxfs --experimental_use_sandboxfs
+# Without this, the build farm needs to have *all* build artifacts in its CAS.
+build:remote-exec --remote_download_outputs=all
 
 ##############################################################################
 #
@@ -584,6 +574,7 @@ build:windows-x86_64 --build_tag_filters=-no-cross,-macos
 #build --config=linux-arm64-musl
 #build --config=linux-x86_64-musl
 #build --config=windows-x86_64
+#build --config=remote-exec
 build --config=nix
 
 try-import %workspace%/.bazelrc.local

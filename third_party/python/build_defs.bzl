@@ -62,7 +62,8 @@ def pyx_library(
             ),
             "cp -r %s/* $(RULEDIR)" % native.package_name(),
         ]),
-        tools = ["@cython//:cython"] + pxd_srcs,
+        tags = tags,
+        tools = ["@cython//:cython"],
     )
 
     # Compile the C code to shared objects.
