@@ -29,9 +29,7 @@ workspace(projects = [
     "toxic",
     "toxins",
     "website",
+    "zig-toxcore-c",
 ])
 
-exports_files(srcs = [
-    "LICENSE.gpl3",
-    "LICENSE.hs-msgpack",
-])
+exports_files(srcs = glob(["LICENSE.*"]))

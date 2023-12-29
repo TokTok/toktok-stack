@@ -28,11 +28,16 @@ zig_toolchains()
 # Actual zig toolchain (the above is for C/C++)
 # =========================================================
 
+# Run before adding the default toolchains below, so this one gets used first.
+register_toolchains(
+    "//third_party/zig:x86_64-linux-nix_toolchain",
+)
+
 github_archive(
     name = "rules_zig",
     repo = "aherrmann/rules_zig",
-    sha256 = "3d06e19af1aa7449d3e562914ff02e7f946e67a35f7cd6daa31459a966b9b1bd",
-    version = "864d8e5227f2cadee0f0bcc5c3db75955668a439",
+    sha256 = "c89162afd5d78591d9ffd1e22a386feeb9e26f185b982f619d5c7b0aaf3f15ad",
+    version = "0363e3f65dae45cb29c76d457cb8a4bd4654604c",
 )
 
 load(
