@@ -1,10 +1,55 @@
-# TODO(iphydf): Enable once rules_zig is a bit more mature.
-# load("@rules_zig//zig:defs.bzl", "zig_test")
-#
-# zig_test(
-#     name = "testsuite",
-#     csrcs = ["csource.c"],
-#     main = "main.zig",
-#     # TODO(https://github.com/aherrmann/rules_zig/issues/15): Add a C library here.
-#     cdeps = [],
-# )
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_zig//zig:defs.bzl", "zig_test")
+load("@rules_zig//zig:toolchain.bzl", "zig_target_toolchain")
+
+CPUS = {
+    "aarch64": {
+        "cpu": "arm64",
+        "dynamic_linker": None,
+    },
+    "x86_64": {
+        "cpu": "x86_64",
+        "dynamic_linker": "/nix/store/qn3ggz5sf3hkjs2c797xf7nan3amdxmp-glibc-2.38-27/lib/ld-linux-x86-64.so.2",
+    },
+}
+
+[platform(
+    name = arch + "-linux-gnu",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:" + CPUS[arch]["cpu"],
+    ],
+) for arch in CPUS]
+
+[zig_target_toolchain(
+    name = arch + "-linux-nix_target",
+    dynamic_linker = CPUS[arch]["dynamic_linker"],
+    target = arch + "-linux-gnu.2.34",
+) for arch in CPUS]
+
+[toolchain(
+    name = arch + "-linux-nix_toolchain",
+    target_compatible_with = [
+        "@platforms//os:linux",
+        "@platforms//cpu:" + CPUS[arch]["cpu"],
+    ],
+    toolchain = arch + "-linux-nix_target",
+    toolchain_type = "@rules_zig//zig/target:toolchain_type",
+) for arch in CPUS]
+
+cc_library(
+    name = "clib",
+    srcs = ["csource.c"],
+    hdrs = ["csource.h"],
+    deps = ["@libsodium"],
+)
+
+zig_test(
+    name = "testsuite",
+    size = "small",
+    cdeps = [
+        ":clib",
+        "@rules_zig//zig/lib:libc",
+    ],
+    main = "main.zig",
+)

@@ -1,7 +1,9 @@
 const std = @import("std");
 
-extern fn get_answer() i32;
+const c = @cImport({
+        @cInclude("third_party/zig/csource.h");
+});
 
 test {
-    try std.io.getStdOut().writer().print("{d}\n", .{get_answer()});
+    try std.io.getStdOut().writer().print("{d}\n", .{c.get_answer(4)});
 }

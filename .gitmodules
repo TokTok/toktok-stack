@@ -82,3 +82,6 @@
 [submodule "website"]
 	path = website
 	url = https://github.com/TokTok/website
+[submodule "zig-toxcore-c"]
+	path = zig-toxcore-c
+	url = https://github.com/TokTok/zig-toxcore-c
