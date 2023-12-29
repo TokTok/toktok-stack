@@ -42,6 +42,9 @@
   programs.ssh = {
     enable = true;
 
+    controlMaster = "auto";
+    controlPersist = "10m";
+
     matchBlocks = {
       code = {
         user = "iphy";

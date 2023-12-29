@@ -31,8 +31,8 @@ zig_toolchains()
 github_archive(
     name = "rules_zig",
     repo = "aherrmann/rules_zig",
-    sha256 = "3d06e19af1aa7449d3e562914ff02e7f946e67a35f7cd6daa31459a966b9b1bd",
-    version = "864d8e5227f2cadee0f0bcc5c3db75955668a439",
+    sha256 = "b5ce85c06c92bb7b7763d9dd38d04efc98c7f89fe66a4c72e3992466e8231d3f",
+    version = "0dfa6a457a5d49d49fc829bee97a1e3f5aab5d4b",
 )
 
 load(
