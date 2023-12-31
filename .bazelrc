@@ -165,6 +165,7 @@ build:sanitizer --copt='-fno-sanitize-ignorelist'
 build:sanitizer --per_file_copt='//c-toxcore[:/]@-O0'
 build:sanitizer --per_file_copt='//c-toxcore[:/]@-fno-inline,-fno-omit-frame-pointer'
 build:sanitizer --flaky_test_attempts=1
+build:sanitizer --build_tag_filters=-no-san,-haskell,-windows,-macos
 
 # Some of this is from "Can I run AddressSanitizer with more aggressive diagnostics enabled?"
 # on https://github.com/google/sanitizers/wiki/AddressSanitizer#faq and some is from
@@ -177,8 +178,6 @@ build:asan --copt='-fsanitize-address-use-after-scope'
 build:asan --linkopt='-fsanitize=address'
 build:asan --action_env=ASAN_OPTIONS=color=always:detect_leaks=1:strict_string_checks=1:check_initialization_order=1:strict_init_order=1:external_symbolizer_path=/nix/store/643f0y8q5yfzrqq4kn56dc13xvz90srv-llvm-16.0.1/bin/llvm-symbolizer
 build:asan --action_env=LSAN_OPTIONS=report_objects=1
-build:asan --test_tag_filters=-haskell
-build:asan --build_tag_filters=-haskell
 
 build:msan --config=sanitizer
 # TODO(iphydf): Get an msan-enabled libc++ into Nix.
