@@ -1,9 +1,16 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   home.username = "builder";
   home.homeDirectory = "/home/builder";
-  home.sessionVariables = { EDITOR = "nvim"; };
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    GITHUB_TOKEN =
+      let tokenFile = "${config.home.homeDirectory}/.github-token"; in
+      if builtins.pathExists tokenFile
+        then lib.removeSuffix "\n" (builtins.readFile tokenFile)
+        else "";
+  };
   home.sessionPath = [
     "${config.home.homeDirectory}/.bin"
     "/src/workspace/hs-github-tools/tools"

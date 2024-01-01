@@ -74,6 +74,7 @@ licenses(["notice"])
     "recursion-schemes",
     "rts",
     "saltine",
+    "scientific",
     "servant",
     "servant-server",
     "split",
@@ -96,4 +97,5 @@ licenses(["notice"])
     "wai-extra",
     "warp",
     "word-wrap",
+    "yaml",
 ]]

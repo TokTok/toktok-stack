@@ -123,6 +123,7 @@ load(
     "nixpkgs_cc_configure",
     "nixpkgs_git_repository",
     "nixpkgs_java_configure",
+    "nixpkgs_nodejs_configure_platforms",
     "nixpkgs_package",
     "nixpkgs_python_configure",
 )
@@ -780,6 +781,34 @@ github_archive(
     repo = "cython/cython",
     sha256 = "0f603cc12658ef1f22da47b729ca987d43fad08a61a22b4539ad2e6460fc7263",
     version = "3.0.2",
+)
+
+# Node.js
+# =========================================================
+
+github_archive(
+    name = "build_bazel_rules_nodejs",
+    repo = "bazelbuild/rules_nodejs",
+    sha256 = "adabe513387911365169a1403ca04f72ad5c4c079489fd5896b15ddb526ce3bd",
+    version = "5.8.0",
+)
+
+load("@build_bazel_rules_nodejs//:repositories.bzl", "build_bazel_rules_nodejs_dependencies")
+
+build_bazel_rules_nodejs_dependencies()
+
+nixpkgs_nodejs_configure_platforms(
+    repository = "@nixpkgs",
+)
+
+load("@build_bazel_rules_nodejs//:index.bzl", "npm_install")
+
+npm_install(
+    name = "npm",
+    exports_directories_only = True,
+    node_repository = "nixpkgs_nodejs",
+    package_json = "//js-toxcore-c:package.json",
+    package_lock_json = "//js-toxcore-c:package-lock.json",
 )
 
 ## Node.js

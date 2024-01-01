@@ -65,6 +65,7 @@ with (import <nixpkgs> { });
     random
     recursion-schemes
     saltine
+    scientific
     servant
     servant-server
     split
@@ -87,5 +88,6 @@ with (import <nixpkgs> { });
     wai-extra
     warp
     word-wrap
+    yaml
   ]);
 }
