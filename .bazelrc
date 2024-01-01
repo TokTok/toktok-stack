@@ -166,6 +166,7 @@ build:sanitizer --per_file_copt='//c-toxcore[:/]@-O0'
 build:sanitizer --per_file_copt='//c-toxcore[:/]@-fno-inline,-fno-omit-frame-pointer'
 build:sanitizer --flaky_test_attempts=1
 build:sanitizer --build_tag_filters=-no-san,-haskell,-windows,-macos
+build:sanitizer --test_tag_filters=-no-san,-haskell,-windows,-macos
 
 # Some of this is from "Can I run AddressSanitizer with more aggressive diagnostics enabled?"
 # on https://github.com/google/sanitizers/wiki/AddressSanitizer#faq and some is from
@@ -547,23 +548,23 @@ build:docker --config=ci
 
 build:nix --build_tag_filters=-windows,-macos
 
-build:zig --copt=-fPIC
-build:zig --dynamic_mode=off
-build:zig --features=fully_static_link
+build:zig-cross --copt=-fPIC
+build:zig-cross --dynamic_mode=off
+build:zig-cross --features=fully_static_link
 # See: https://github.com/uber/hermetic_cc_toolchain/issues/134
-build:zig --sandbox_add_mount_pair=/tmp
+build:zig-cross --sandbox_add_mount_pair=/tmp
 
-build:linux-arm64-musl --config=zig
+build:linux-arm64-musl --config=zig-cross
 build:linux-arm64-musl --platforms=@zig_sdk//platform:linux_arm64
 build:linux-arm64-musl --extra_toolchains=@zig_sdk//toolchain:linux_arm64_musl
 build:linux-arm64-musl --build_tag_filters=-no-cross,-windows,-macos
 
-build:linux-x86_64-musl --config=zig
+build:linux-x86_64-musl --config=zig-cross
 build:linux-x86_64-musl --platforms=@zig_sdk//platform:linux_amd64
 build:linux-x86_64-musl --extra_toolchains=@zig_sdk//toolchain:linux_amd64_musl
 build:linux-x86_64-musl --build_tag_filters=-no-cross,-windows,-macos
 
-build:windows-x86_64 --config=zig
+build:windows-x86_64 --config=zig-cross
 build:windows-x86_64 --platforms=@zig_sdk//platform:windows_amd64
 build:windows-x86_64 --extra_toolchains=@zig_sdk//toolchain:windows_amd64
 build:windows-x86_64 --build_tag_filters=-no-cross,-macos

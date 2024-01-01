@@ -110,6 +110,7 @@ jobs:
 
   docker-built:
     strategy:
+      fail-fast: false
       matrix:
         flavour: [release, debug, asan, msan, tsan, arm64]
     runs-on: ubuntu-latest
