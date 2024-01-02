@@ -105,6 +105,7 @@ github_archive(
     repo = "tweag/rules_haskell",
     sha256 = "713d03014f08f20ad9d68fe458703f3f7bdbc8c94c21be22748af5728f5c7c4b",
     # TODO(https://github.com/tweag/rules_haskell/issues/2097): Upgrade once this bug is fixed.
+    # version = "300963d75f4559398600f25b7f90afeba83d2b41",
     version = "d14584e7f227fee55d857694d6ba7dc7e74d8f3c",
 )
 

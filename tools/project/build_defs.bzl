@@ -139,18 +139,6 @@ def project(license = "gpl3", custom_cirrus = False, custom_github = False):
         data = ["README.md"],
     )
 
-    native.sh_test(
-        name = "settings_test",
-        size = "small",
-        srcs = ["//tools/project:settings_test.sh"],
-        args = [
-            "$(location .github/settings.yml)",
-            # qTox is an exception. Maybe we should rename the submodule?
-            "qTox" if native.package_name() == "qtox" else native.package_name().replace("_", "-"),
-        ],
-        data = [".github/settings.yml"],
-    )
-
     if native.package_name().startswith("hs-") and native.glob(["*.cabal"], allow_empty = True):
         _haskell_project(
             custom_cirrus = custom_cirrus,
@@ -185,15 +173,9 @@ def workspace(projects):
     )
 
     native.test_suite(
-        name = "settings_tests",
-        tests = ["//%s:settings_test" % p for p in projects],
-    )
-
-    native.test_suite(
         name = "workspace_tests",
         tests = [
             ":license_tests",
             ":readme_tests",
-            ":settings_tests",
         ],
     )

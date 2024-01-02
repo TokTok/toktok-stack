@@ -94,7 +94,7 @@
       map Q gqap
 
       au BufEnter BUILD.* set ft=bzl
-      au FileType sh set ts=2 sw=2
+      au FileType sh,javascript set ts=2 sw=2
       au FileType go set noexpandtab
       " .lhs files need a long distance sync for highlighting
       au FileType lhaskell :au BufEnter * :syntax sync fromstart
