@@ -6,18 +6,19 @@ load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
 github_archive(
     name = "bazel_skylib",
     repo = "bazelbuild/bazel-skylib",
-    sha256 = "4060f1efdb6e12e72dd531700271e281e66f5fd46a708bbfadba194588111f42",
-    version = "652c8f0b2817daaa2570b7a3b2147643210f7dc7",
+    sha256 = "19a99bc16079c8853f96d50e627afa158aa00bf52460f45f923466105ff8fe13",
+    version = "1.5.0",
 )
 
 # Third-party Bazel
 # =========================================================
 
 # https://github.com/uber/hermetic_cc_toolchain
-http_archive(
+github_archive(
     name = "hermetic_cc_toolchain",
-    sha256 = "a5caccbf6d86d4f60afd45b541a05ca4cc3f5f523aec7d3f7711e584600fb075",
-    url = "https://github.com/uber/hermetic_cc_toolchain/releases/download/v2.1.3/hermetic_cc_toolchain-v2.1.3.tar.gz",
+    repo = "uber/hermetic_cc_toolchain",
+    sha256 = "c35f6e2110cdb147964fabe94fad6d30749d7b9d853cc8cb24890a9269d4153b",
+    version = "v2.1.3",
 )
 
 # hermetic_cc_toolchain
@@ -57,11 +58,11 @@ zig_register_toolchains(
 # Fuzzing
 # =========================================================
 
-http_archive(
+github_archive(
     name = "rules_fuzzing",
-    sha256 = "c0dc1f90dea236299271e558d8303dd4cc8c7554b2b0639561e5007d2d33328e",
-    strip_prefix = "rules_fuzzing-0.4.0",
-    urls = ["https://github.com/bazelbuild/rules_fuzzing/archive/v0.4.0.zip"],
+    repo = "bazelbuild/rules_fuzzing",
+    sha256 = "ff52ef4845ab00e95d29c02a9e32e9eff4e0a4c9c8a6bcf8407a2f19eb3f9190",
+    version = "v0.4.1",
 )
 
 load("@rules_fuzzing//fuzzing:repositories.bzl", "rules_fuzzing_dependencies")
@@ -84,6 +85,9 @@ github_archive(
     repo = "bazelbuild/rules_go",
     sha256 = "82f7ae1c9ffcfde827f4164123a6775c5c28d9993d291e4fd40bf40698926569",
     version = "v0.41.0",
+    # TODO(https://github.com/tweag/rules_nixpkgs/pull/422): Update once rules_haskell can be updated.
+    # sha256 = "e07e25e11068dcc570af1dfe30b01e893f89543671df194b7ebf39085ebffaf5",
+    # version = "v0.44.1",
 )
 
 github_archive(
@@ -236,8 +240,8 @@ nixpkgs_java_configure(
 github_archive(
     name = "rules_proto",
     repo = "bazelbuild/rules_proto",
-    sha256 = "91e8dc46c147a67f1fd7801f1733966db44cade148c1e9a248d90a7e7238bbe7",
-    version = "6.0.0-rc0",
+    sha256 = "25f3acf1c73df6be2d920bbe42c2a0df2bea1c12daad9cc7e82fc0090b8ac922",
+    version = "6.0.0-rc1",
 )
 
 github_archive(
@@ -494,6 +498,19 @@ nixpkgs_package(
     repository = "@nixpkgs",
 )
 
+nixpkgs_package(
+    name = "glvnd.out",
+    attribute_path = "libGL.out",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "glvnd",
+    attribute_path = "libglvnd.dev",
+    build_file = "@toktok//third_party:BUILD.glvnd",
+    repository = "@nixpkgs",
+)
+
 http_archive(
     name = "json",
     build_file = "@toktok//third_party:BUILD.json",
@@ -611,6 +628,10 @@ http_archive(
     sha256 = "349268f695c02efbc9b9148a70b85e58cefbbf704abd3e91be654db7f1e2c863",
     strip_prefix = "SDL2-2.0.12",
     urls = ["https://www.libsdl.org/release/SDL2-2.0.12.tar.gz"],
+    # TODO(iphydf): Update.
+    # sha256 = "332cb37d0be20cb9541739c61f79bae5a477427d79ae85e352089afdaf6666e4",
+    # strip_prefix = "SDL2-2.28.5",
+    # urls = ["https://www.libsdl.org/release/SDL2-2.28.5.tar.gz"],
 )
 
 new_github_archive(

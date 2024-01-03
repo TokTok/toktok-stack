@@ -10,7 +10,8 @@ genrule(
     name = "regen_config",
     srcs = glob(["**/*"]),
     outs = ["SDL_config.h"],
-    cmd = "$(location configure) && cp include/SDL_config.h $@",
+    cmd = "$(location configure) CC='$(CC)' && cp include/SDL_config.h $@",
+    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
 )
 
 HDRS = glob(
@@ -131,6 +132,7 @@ cc_library(
         ":sdl2_sysdep",
         "@asound",
         "@gl",
+        "@glvnd",
         "@xcb",
         "@xext",
         "@xproto",

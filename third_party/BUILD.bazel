@@ -23,9 +23,9 @@ filegroup(
     ] + select({
         "@toktok//tools/config:arm64": [],
         "@toktok//tools/config:x86_64": [
-            "BUILD.ffmpeg",
-            "BUILD.openal",
-            "BUILD.sdl2",
+            "@ffmpeg",
+            "@openal",
+            "@sdl2",
         ],
     }),
 )
