@@ -45,6 +45,7 @@ with (import <nixpkgs> { });
     http-types
     integer-gmp
     iproute
+    insert-ordered-containers
     language-c
     lens-family
     microlens
