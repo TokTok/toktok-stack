@@ -114,7 +114,7 @@ def _haskell_project(custom_cirrus, custom_github):
         custom_github = custom_github,
     )
 
-def project(license = "gpl3", custom_cirrus = False, custom_github = False):
+def project(name = "project", license = "gpl3", custom_cirrus = False, custom_github = False):
     """Adds some checks to make sure the project is uniform."""
     native.sh_test(
         name = "license_test",
@@ -145,7 +145,7 @@ def project(license = "gpl3", custom_cirrus = False, custom_github = False):
             custom_github = custom_github,
         )
 
-def workspace(projects):
+def workspace(projects, name = "workspace"):
     native.sh_test(
         name = "git_modules_test",
         size = "small",

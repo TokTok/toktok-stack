@@ -1,11 +1,10 @@
 # Pre-build //third_party in msan mode for speedy PR builds on sub-repos.
 FROM toxchat/toktok-stack:latest
 
-RUN echo 'build --config=release' >> .bazelrc.local \
- && echo 'build --config=msan'    >> .bazelrc.local
+RUN echo 'build --config=msan' >> .bazelrc.local
 
 # Don't build any Go code. It needs sanitizer/msan_interface.h.
 RUN sudo nix-daemon --daemon \
-  & bazel build -k --build_tag_filters='-go' //third_party/...
+  & bazel build -k --build_tag_filters='-go,-no-cross' //third_party/...
 
 # vim:ft=dockerfile
