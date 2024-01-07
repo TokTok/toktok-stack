@@ -143,22 +143,9 @@ nixpkgs_git_repository(
     sha256 = "bc9a0a74e8d7fb0e11434dd3abaa0cb0572ccd3a65b5a192eea41832b286e8a0",
 )
 
-FULLY_STATIC = False
-
-NIXPKGS = {
-    "cc": "gcc",
-    "prefix": "pkgsStatic.",
-    "suffix": ".pkgsStatic",
-} if FULLY_STATIC else {
-    #"cc": "libcxxClang",
-    "cc": "clang",
-    "prefix": "",
-    "suffix": "",
-}
-
 nixpkgs_cc_configure(
-    attribute_path = NIXPKGS["cc"],
-    nix_file_content = "(import <nixpkgs> {})" + NIXPKGS["suffix"],
+    attribute_path = "clang",
+    nix_file_content = "(import <nixpkgs> {})",
     repository = "@nixpkgs",
 )
 
@@ -167,7 +154,7 @@ nixpkgs_go_configure(
 )
 
 nixpkgs_python_configure(
-    python3_attribute_path = NIXPKGS["prefix"] + "python3",
+    python3_attribute_path = "python3",
     repository = "@nixpkgs",
 )
 
@@ -393,13 +380,13 @@ go_repository(
 
 nixpkgs_package(
     name = "alsa-lib",
-    attribute_path = NIXPKGS["prefix"] + "alsa-lib",
+    attribute_path = "alsa-lib",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "asound",
-    attribute_path = NIXPKGS["prefix"] + "alsa-lib.dev",
+    attribute_path = "alsa-lib.dev",
     build_file = "//third_party:BUILD.asound",
     repository = "@nixpkgs",
 )
@@ -650,26 +637,26 @@ new_github_archive(
 
 nixpkgs_package(
     name = "x11.out",
-    attribute_path = NIXPKGS["prefix"] + "xorg.libX11.out",
+    attribute_path = "xorg.libX11.out",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "x11",
-    attribute_path = NIXPKGS["prefix"] + "xorg.libX11.dev",
+    attribute_path = "xorg.libX11.dev",
     build_file = "@toktok//third_party:BUILD.x11",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "xcb.out",
-    attribute_path = NIXPKGS["prefix"] + "xorg.libxcb.out",
+    attribute_path = "xorg.libxcb.out",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "xcb",
-    attribute_path = NIXPKGS["prefix"] + "xorg.libxcb.dev",
+    attribute_path = "xorg.libxcb.dev",
     build_file = "@toktok//third_party:BUILD.xcb",
     repository = "@nixpkgs",
 )
@@ -803,6 +790,28 @@ github_archive(
     repo = "cython/cython",
     sha256 = "0f603cc12658ef1f22da47b729ca987d43fad08a61a22b4539ad2e6460fc7263",
     version = "3.0.2",
+)
+
+new_github_archive(
+    name = "mypy",
+    repo = "python/mypy",
+    sha256 = "57788ce99c6e7e6f41ac9e5f514a08ee4b2121847e3dcaa16a1aec941d025d27",
+    version = "v1.6.0",
+)
+
+new_github_archive(
+    name = "mypy_extensions",
+    repo = "python/mypy_extensions",
+    sha256 = "73a374063a9e5685d9e424462bf8ba1013c79169733eefbd20010ee5d6157a73",
+    version = "1.0.0",
+)
+
+new_github_archive(
+    name = "typing_extensions",
+    repo = "python/typing_extensions",
+    sha256 = "23d3202b2a220832bf81b8f0184d4d91b8d21abde2700fdcdca6ff9f02eb2619",
+    strip_prefix = "/src",
+    version = "4.9.0",
 )
 
 # Node.js

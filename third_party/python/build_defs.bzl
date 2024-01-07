@@ -28,6 +28,7 @@ def pyx_library(
         cython_directives = {},
         cython_options = [],
         tags = [],
+        copts = [],
         **kwargs):
     # First filter out files that should be run compiled vs. passed through.
     py_srcs = []
@@ -74,6 +75,7 @@ def pyx_library(
         cc_binary(
             name = bins[-1],
             srcs = [base + ".c"],
+            copts = copts,
             linkshared = True,
             tags = tags,
             deps = ["@python3//:python"] + cdeps,
