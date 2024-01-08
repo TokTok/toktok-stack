@@ -53,9 +53,9 @@ def pyx_library(
     native.genrule(
         name = name + "_cythonize",
         srcs = pyx_srcs + pxd_srcs,
-        outs = [src.split(".")[0] + ".c" for src in pyx_srcs],
+        outs = [src.split(".")[0] + ".cpp" for src in pyx_srcs],
         cmd = "\n".join([
-            "PYTHONHASHSEED=0 $(location @cython//:cython) -I %s -I $(GENDIR)/%s %s %s" % (
+            "PYTHONHASHSEED=0 $(location @cython//:cython) --cplus -I %s -I $(GENDIR)/%s %s %s" % (
                 native.package_name(),
                 native.package_name(),
                 extra_flags,
@@ -74,7 +74,7 @@ def pyx_library(
         bins.append(base + ".so")
         cc_binary(
             name = bins[-1],
-            srcs = [base + ".c"],
+            srcs = [base + ".cpp"],
             copts = copts,
             linkshared = True,
             tags = tags,

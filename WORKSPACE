@@ -788,8 +788,8 @@ python_repository(
 github_archive(
     name = "cython",
     repo = "cython/cython",
-    sha256 = "0f603cc12658ef1f22da47b729ca987d43fad08a61a22b4539ad2e6460fc7263",
-    version = "3.0.2",
+    sha256 = "6fac075cab5fed1e20a284b1caba3ac09b31867daef480f0149eec1a1c981c61",
+    version = "3.0.7",
 )
 
 new_github_archive(
