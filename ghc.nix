@@ -32,6 +32,7 @@ with (import <nixpkgs> { });
     exceptions
     expiring-cache-map
     extra
+    file-embed
     filepath
     generic-arbitrary
     github

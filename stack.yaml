@@ -3,6 +3,7 @@ packages:
   - hs-apigen/
   - hs-cimple/
   - hs-github-tools/
+  - hs-happy-arbitrary/
   - hs-msgpack-arbitrary/
   - hs-msgpack-binary/
   - hs-msgpack-rpc-conduit/

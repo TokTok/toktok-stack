@@ -86,6 +86,10 @@ our %REPOS = (
       upstream => 'toktok',
       repo 'iphydf',
    }],
+   'hs-happy-arbitrary' => ['hs-happy-arbitrary', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
    'hs-msgpack-arbitrary' => ['hs-msgpack-arbitrary', {
       upstream => 'toktok',
       repo 'iphydf',

@@ -28,6 +28,9 @@
 [submodule "hs-github-tools"]
 	path = hs-github-tools
 	url = https://github.com/TokTok/hs-github-tools
+[submodule "hs-happy-arbitrary"]
+	path = hs-happy-arbitrary
+	url = https://github.com/TokTok/hs-happy-arbitrary
 [submodule "hs-msgpack-arbitrary"]
 	path = hs-msgpack-arbitrary
 	url = https://github.com/TokTok/hs-msgpack-arbitrary
