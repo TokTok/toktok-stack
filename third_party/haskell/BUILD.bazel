@@ -40,6 +40,7 @@ licenses(["notice"])
     "exceptions",
     "expiring-cache-map",
     "extra",
+    "file-embed",
     "filepath",
     "generic-arbitrary",
     "github",

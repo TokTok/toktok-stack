@@ -4,6 +4,12 @@ import re
 import subprocess
 import sys
 
+def skip(line: str) -> bool:
+    # Ignore linker flags (don't need them for HLS).
+    # Ignore preprocessor defines (they can differ per project).
+    return line.startswith("-l") or line.startswith( "-D")
+
+
 if "--regenerate" in sys.argv:
     subprocess.run(["tools/haskell/gen_haskell_targets"], check=True)
 subprocess.run(["bazel", "build", "//tools/haskell:hie-bios@bios"], check=True)
@@ -28,7 +34,7 @@ with open(os.environ["HIE_BIOS_OUTPUT"], "w") as fh:
             "/src/workspace/",
             line,
         )
-        if line != prev and not line.startswith("-l"):
+        if line != prev and not skip(line):
             fh.write(line)
         prev = line
     # Make warnings non-fatal

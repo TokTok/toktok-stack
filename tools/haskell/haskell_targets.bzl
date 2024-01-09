@@ -15,6 +15,8 @@ HASKELL_TARGETS = [
     "//hs-github-tools:github-events",
     "//hs-github-tools:hs-github-tools",
     "//hs-github-tools:testsuite",
+    "//hs-happy-arbitrary:hs-happy-arbitrary",
+    "//hs-happy-arbitrary:testsuite",
     "//hs-msgpack-arbitrary:hs-msgpack-arbitrary",
     "//hs-msgpack-arbitrary:testsuite",
     "//hs-msgpack-binary:hs-msgpack-binary",

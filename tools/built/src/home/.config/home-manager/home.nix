@@ -94,6 +94,7 @@
       nnoremap <C-l> :noh<CR><C-l>
       map Q gqap
 
+      au BufEnter *.x,*.y set ts=8 sw=8 noexpandtab
       au BufEnter BUILD.* set ft=bzl
       au FileType sh,javascript set ts=2 sw=2
       au FileType go set noexpandtab
