@@ -50,16 +50,11 @@ def main() -> None:
         query = " ".join(sys.argv[1:])
     else:
         query = "//c-toxcore/..."
-    targets = (
-        subprocess.run(
-            ["bazel", "query", f"kind(fuzzing_regression_test, {query})"],
-            check=True,
-            capture_output=True,
-        )
-        .stdout.decode("utf-8")
-        .strip()
-        .split("\n")
-    )
+    targets = (subprocess.run(
+        ["bazel", "query", f"kind(fuzzing_regression_test, {query})"],
+        check=True,
+        capture_output=True,
+    ).stdout.decode("utf-8").strip().split("\n"))
 
     for target in targets:
         name = target.split(":")[1]
