@@ -10,6 +10,12 @@
       if builtins.pathExists tokenFile
         then lib.removeSuffix "\n" (builtins.readFile tokenFile)
         else "";
+
+    ASAN_OPTIONS = "color=always:detect_leaks=1:strict_string_checks=1:check_initialization_order=1:strict_init_order=1";
+    LSAN_OPTIONS = "report_objects=1";
+    MSAN_OPTIONS = "color=always";
+    TSAN_OPTIONS = "color=always,history_size=7,force_seq_cst_atomics=1";
+    UBSAN_OPTIONS = "color=always,print_stacktrace=1";
   };
   home.sessionPath = [
     "${config.home.homeDirectory}/.bin"
@@ -19,6 +25,8 @@
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
     astyle                  # C code formatting
+    bazel-watcher           # runs bazel test/build in a loop when files change
+    clang-tools             # C++ code formatting
     connect                 # for ssh proxy via tor
     gdb                     # debugger for C code
     gnupg                   # for signing git commits

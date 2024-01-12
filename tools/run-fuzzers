@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+import glob
+import os
+import subprocess
+import sys
+
+CLEANUP = True
+SELF_DIR = os.path.dirname(os.path.abspath(__file__))
+TMP_CORPUS = "/tmp/fuzzing/corpus/"
+
+
+def update_corpus(target: str, corpus: str) -> None:
+    with open(os.path.join(corpus, "bootstrap"), "w"):
+        # Touch one file so the corpus isn't empty.
+        pass
+    subprocess.run(
+        [
+            "bazel",
+            "run",
+            "--config=asan-libfuzzer",
+            target + "_run",
+            "--",
+            "--timeout_secs=30",
+        ],
+        check=True,
+    )
+    for file in glob.glob(os.path.join(corpus, "*")):
+        if os.path.basename(file) != "bootstrap":
+            subprocess.run(["mv", file, TMP_CORPUS], check=True)
+    subprocess.run(
+        [
+            "bazel",
+            "run",
+            "--config=asan-libfuzzer",
+            target + "_bin",
+            "--",
+            "-merge=1",
+            corpus,
+            TMP_CORPUS,
+        ],
+        check=True,
+    )
+    if CLEANUP:
+        for file in glob.glob(os.path.join(TMP_CORPUS, "*")):
+            os.remove(file)
+
+
+def main() -> None:
+    if len(sys.argv) > 1:
+        query = " ".join(sys.argv[1:])
+    else:
+        query = "//c-toxcore/..."
+    targets = (subprocess.run(
+        ["bazel", "query", f"kind(fuzzing_regression_test, {query})"],
+        check=True,
+        capture_output=True,
+    ).stdout.decode("utf-8").strip().split("\n"))
+
+    for target in targets:
+        name = target.split(":")[1]
+        corpus = os.path.join(SELF_DIR, "toktok-fuzzer", "corpus", name)
+        if os.path.exists(corpus):
+            update_corpus(target, corpus)
+
+
+if __name__ == "__main__":
+    main()
