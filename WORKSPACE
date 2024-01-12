@@ -442,6 +442,13 @@ github_archive(
     version = "b3a9ba2b8e975550799838332803d468797ae2e1",
 )
 
+github_archive(
+    name = "benchmark",
+    repo = "google/benchmark",
+    sha256 = "abfc22e33e3594d0edf8eaddaf4d84a2ffc491ad74b6a7edc6e7a608f690e691",
+    version = "v1.8.3",
+)
+
 new_github_archive(
     name = "curl",
     repo = "curl/curl",

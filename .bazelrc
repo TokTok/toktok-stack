@@ -177,7 +177,7 @@ build:asan --copt='-fsanitize=address'
 build:asan --copt='-fsanitize-address-use-after-return=always'
 build:asan --copt='-fsanitize-address-use-after-scope'
 build:asan --linkopt='-fsanitize=address'
-build:asan --action_env=ASAN_OPTIONS=color=always:detect_leaks=1:strict_string_checks=1:check_initialization_order=1:strict_init_order=1:external_symbolizer_path=/nix/store/643f0y8q5yfzrqq4kn56dc13xvz90srv-llvm-16.0.1/bin/llvm-symbolizer
+build:asan --action_env=ASAN_OPTIONS=color=always:detect_leaks=1:strict_string_checks=1:check_initialization_order=1:strict_init_order=1:external_symbolizer_path=/nix/store/d0r6r274cpcr6gslqx16gn0m38qpy5p3-llvm-16.0.6/bin/llvm-symbolizer
 build:asan --action_env=LSAN_OPTIONS=report_objects=1
 
 build:msan --config=sanitizer
@@ -186,14 +186,14 @@ build:msan --config=sanitizer
 build:msan --copt='-fsanitize=memory'
 build:msan --copt='-fsanitize-memory-track-origins=2'
 build:msan --linkopt='-fsanitize=memory'
-build:msan --test_env=MSAN_OPTIONS=color=always:external_symbolizer_path=/nix/store/643f0y8q5yfzrqq4kn56dc13xvz90srv-llvm-16.0.1/bin/llvm-symbolizer
+build:msan --test_env=MSAN_OPTIONS=color=always:external_symbolizer_path=/nix/store/d0r6r274cpcr6gslqx16gn0m38qpy5p3-llvm-16.0.6/bin/llvm-symbolizer
 build:msan --per_file_copt='//toxic[:/]@-UAUDIO,-UVIDEO,-UPYTHON'
 
 build:tsan --config=sanitizer
 build:tsan --features=tsan
 build:tsan --copt='-fsanitize=thread'
 build:tsan --linkopt='-fsanitize=thread'
-build:tsan --test_env=TSAN_OPTIONS=color=always,history_size=7,force_seq_cst_atomics=1:external_symbolizer_path=/nix/store/643f0y8q5yfzrqq4kn56dc13xvz90srv-llvm-16.0.1/bin/llvm-symbolizer
+build:tsan --test_env=TSAN_OPTIONS=color=always,history_size=7,force_seq_cst_atomics=1:external_symbolizer_path=/nix/store/d0r6r274cpcr6gslqx16gn0m38qpy5p3-llvm-16.0.6/bin/llvm-symbolizer
 
 build:ubsan --config=sanitizer
 build:ubsan --features=ubsan
@@ -204,7 +204,7 @@ build:ubsan --linkopt='-fsanitize=integer,nullability,undefined'
 # https://github.com/bazelbuild/bazel/issues/11122
 build:ubsan --linkopt='-fsanitize-link-c++-runtime'
 build:ubsan --per_file_copt='//c-toxcore[:/]@-D_DEBUG'
-build:ubsan --test_env=UBSAN_OPTIONS=color=always,print_stacktrace=1:external_symbolizer_path=/nix/store/643f0y8q5yfzrqq4kn56dc13xvz90srv-llvm-16.0.1/bin/llvm-symbolizer
+build:ubsan --test_env=UBSAN_OPTIONS=color=always,print_stacktrace=1:external_symbolizer_path=/nix/store/d0r6r274cpcr6gslqx16gn0m38qpy5p3-llvm-16.0.6/bin/llvm-symbolizer
 
 # Link-time optimization.
 build:lto --copt='-flto'
@@ -286,7 +286,7 @@ build:gcc --config=gnulike
 # Use GNU versions of the C standard, because runtime/cgo doesn't set feature
 # flags correctly. We then override it in *all* per-file flags, which ends up
 # not matching runtime/cgo/gcc_setenv.c for some reason.
-build:gnulike --cxxopt='-std=c++17'
+build:gnulike --cxxopt='-std=c++20'
 build:gnulike --conlyopt='-std=gnu17'
 build:gnulike --per_file_copt='\\.c$@-std=c17'
 
@@ -386,7 +386,8 @@ build:windows-x86_64 --per_file_copt='//c-toxcore/toxcore:network.c@-Wno-cast-qu
 
 build:clang --per_file_copt='//c-toxcore/toxav:video.c@-Wno-used-but-marked-unused'
 build:clang --per_file_copt='//c-toxcore/super_donators@-w'
-build:clang --per_file_copt='_test\\.(cc|cpp)$@-Wno-global-constructors,-Wno-exit-time-destructors'
+build:clang --per_file_copt='_bench\\.(cc|cpp)$@-Wno-weak-vtables,-Wno-zero-as-null-pointer-constant'
+build:clang --per_file_copt='_(test|bench)\\.(cc|cpp)$@-Wno-global-constructors,-Wno-exit-time-destructors'
 build:clang --per_file_copt='_test\\.(cc|cpp)$@-Wno-c99-extensions'
 build:clang --per_file_copt='_test\\.(cc|cpp)$@-Wno-zero-as-null-pointer-constant'
 build:clang --per_file_copt='_test\\.cpp$@-Wno-extra-semi-stmt'
@@ -467,7 +468,8 @@ build:gnulike --per_file_copt='/go_default_library%@-w'
 # Ignore warnings for protobuf generated files.
 build:gnulike --per_file_copt='\\.pb\\.cc$@-w'
 
-# Disable some clang warnings on ffmpeg.
+# Disable some clang warnings on various third party dependencies.
+build:clang --per_file_copt='external/benchmark[:/]@-Wno-weak-vtables'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-bool-operation'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-braced-scalar-init'
 build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-dangling-else'
@@ -505,6 +507,7 @@ build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-stringop-truncation'
 build:gcc --per_file_copt='external/libidn2[:/]@-Wno-unused-const-variable'
 build:gcc --per_file_copt='external/opus[:/]@-Wno-maybe-uninitialized'
 
+build:clang --per_file_copt='external/openal[:/]@-std=c++17'
 build:clang --per_file_copt='external/openal[:/]@-Wno-unused-value'
 build:gcc --host_per_file_copt='external/openal[:/]@-Wno-use-after-free'
 

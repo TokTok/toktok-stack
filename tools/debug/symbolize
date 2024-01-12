@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+
+import re
+import subprocess
+import sys
+
+SYMBOLIZER = "/nix/store/d0r6r274cpcr6gslqx16gn0m38qpy5p3-llvm-16.0.6/bin/llvm-symbolizer"
+
+for line in sys.stdin:
+    m = re.fullmatch("#(\d+) (0x[0-9a-f]+)  \((.*)\+(0x[0-9a-f]+)\)( \(BuildId: [0-9a-f]+\))?", line.strip())
+    if m:
+        num = m.group(1)
+        addr = m.group(2)
+        prog = m.group(3)
+        off = m.group(4)
+        buildid = m.group(5) or ""
+
+        try:
+            fun = subprocess.run([SYMBOLIZER, "--pretty-print", f"--exe={prog}", off], check=True, capture_output=True).stdout.decode("utf-8").split("\n")[0]
+            print(f"    #{num} {fun}")
+        except:
+            print(f"    #{num} {addr}  ({prog}+{off}){buildid}")
+    else:
+        print(line, end="")
