@@ -14,14 +14,16 @@ def update_corpus(target: str, corpus: str) -> None:
         # Touch one file so the corpus isn't empty.
         pass
     subprocess.run(
-            ["bazel", "run", "--config=asan-libfuzzer", target + "_run", "--", "--timeout_secs=30"],
-            check=True)
+        ["bazel", "run", "--config=asan-libfuzzer",
+            target + "_run", "--", "--timeout_secs=30"],
+        check=True)
     for file in glob.glob(os.path.join(corpus, "*")):
         if os.path.basename(file) != "bootstrap":
             subprocess.run(["mv", file, TMP_CORPUS], check=True)
     subprocess.run(
-            ["bazel", "run", "--config=asan-libfuzzer", target + "_bin", "--", "-merge=1", corpus, TMP_CORPUS],
-            check=True)
+        ["bazel", "run", "--config=asan-libfuzzer", target +
+            "_bin", "--", "-merge=1", corpus, TMP_CORPUS],
+        check=True)
     if CLEANUP:
         for file in glob.glob(os.path.join(TMP_CORPUS, "*")):
             os.remove(file)
@@ -33,8 +35,8 @@ def main() -> None:
     else:
         query = "//c-toxcore/..."
     targets = subprocess.run(
-            ["bazel", "query", f"kind(fuzzing_regression_test, {query})"],
-            check=True, capture_output=True).stdout.decode("utf-8").strip().split("\n")
+        ["bazel", "query", f"kind(fuzzing_regression_test, {query})"],
+        check=True, capture_output=True).stdout.decode("utf-8").strip().split("\n")
 
     for target in targets:
         name = target.split(":")[1]
