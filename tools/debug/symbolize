@@ -7,17 +7,14 @@ SYMBOLIZER = (
     "/nix/store/d0r6r274cpcr6gslqx16gn0m38qpy5p3-llvm-16.0.6/bin/llvm-symbolizer"
 )
 
+REGEX = r"\b(0x[0-9a-f]{8,})  \(([^ +]*)\+(0x[0-9a-f]+)\)"
+
 for line in sys.stdin:
-    m = re.fullmatch(
-        "#(\d+) (0x[0-9a-f]+)  \((.*)\+(0x[0-9a-f]+)\)( \(BuildId: [0-9a-f]+\))?",
-        line.strip(),
-    )
+    m = re.search(REGEX, line.strip())
     if m:
-        num = m.group(1)
-        addr = m.group(2)
-        prog = m.group(3)
-        off = m.group(4)
-        buildid = m.group(5) or ""
+        addr = m.group(1)
+        prog = m.group(2)
+        off = m.group(3)
 
         try:
             fun = (subprocess.run(
@@ -25,8 +22,8 @@ for line in sys.stdin:
                 check=True,
                 capture_output=True,
             ).stdout.decode("utf-8").split("\n")[0])
-            print(f"    #{num} {fun}")
+            print(re.sub(REGEX, fun, line), end="")
         except subprocess.CalledProcessError:
-            print(f"    #{num} {addr}  ({prog}+{off}){buildid}")
+            print(line, end="")
     else:
         print(line, end="")

@@ -5,6 +5,6 @@ RUN echo 'build --config=msan' >> .bazelrc.local
 
 # Don't build any Go code. It needs sanitizer/msan_interface.h.
 RUN sudo nix-daemon --daemon \
-  & bazel build -k --build_tag_filters='-go,-no-cross' //third_party/...
+  & bazel build -k --build_tag_filters='-go,-no-cross,-no-san' //third_party/...
 
 # vim:ft=dockerfile
