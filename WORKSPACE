@@ -621,7 +621,7 @@ http_archive(
     build_file = "@toktok//third_party:BUILD.sdl2",
     sha256 = "349268f695c02efbc9b9148a70b85e58cefbbf704abd3e91be654db7f1e2c863",
     strip_prefix = "SDL2-2.0.12",
-    urls = ["https://www.libsdl.org/release/SDL2-2.0.12.tar.gz"],
+    urls = ["https://github.com/libsdl-org/SDL/releases/download/release-2.0.12/SDL2-2.0.12.tar.gz"],
     # TODO(iphydf): Update.
     # sha256 = "332cb37d0be20cb9541739c61f79bae5a477427d79ae85e352089afdaf6666e4",
     # strip_prefix = "SDL2-2.28.5",

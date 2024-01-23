@@ -570,6 +570,7 @@ build:zig-cross --dynamic_mode=off
 build:zig-cross --features=fully_static_link
 # See: https://github.com/uber/hermetic_cc_toolchain/issues/134
 build:zig-cross --sandbox_add_mount_pair=/tmp
+build:zig-cross --per_file_copt='external/ncurses[:/]@-fno-sanitize=undefined'
 
 build:linux-arm64-musl --config=zig-cross
 build:linux-arm64-musl --platforms=@zig_sdk//platform:linux_arm64
