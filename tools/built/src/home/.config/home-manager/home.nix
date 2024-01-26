@@ -108,6 +108,7 @@
       au FileType go set noexpandtab
       " .lhs files need a long distance sync for highlighting
       au FileType lhaskell :au BufEnter * :syntax sync fromstart
+      au FileType make :au BufEnter * :set ts=8 sw=8 noexpandtab
     '';
   };
 
