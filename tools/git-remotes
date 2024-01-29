@@ -98,6 +98,10 @@ our %REPOS = (
       upstream => 'toktok',
       repo 'iphydf',
    }],
+   'hs-msgpack-json' => ['hs-msgpack-json', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
    'hs-msgpack-rpc-conduit' => ['hs-msgpack-rpc-conduit', {
       upstream => 'toktok',
       repo 'iphydf',

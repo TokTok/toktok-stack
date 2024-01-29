@@ -6,6 +6,7 @@ packages:
   - hs-happy-arbitrary/
   - hs-msgpack-arbitrary/
   - hs-msgpack-binary/
+  - hs-msgpack-json/
   - hs-msgpack-rpc-conduit/
   - hs-msgpack-testsuite/
   - hs-msgpack-types/

@@ -21,6 +21,8 @@ HASKELL_TARGETS = [
     "//hs-msgpack-arbitrary:testsuite",
     "//hs-msgpack-binary:hs-msgpack-binary",
     "//hs-msgpack-binary:testsuite",
+    "//hs-msgpack-json:hs-msgpack-json",
+    "//hs-msgpack-json:testsuite",
     "//hs-msgpack-rpc-conduit:hs-msgpack-rpc-conduit",
     "//hs-msgpack-rpc-conduit:testsuite",
     "//hs-msgpack-testsuite:hs-msgpack-testsuite",

@@ -37,6 +37,9 @@
 [submodule "hs-msgpack-binary"]
 	path = hs-msgpack-binary
 	url = https://github.com/TokTok/hs-msgpack-binary
+[submodule "hs-msgpack-json"]
+	path = hs-msgpack-json
+	url = https://github.com/TokTok/hs-msgpack-json
 [submodule "hs-msgpack-rpc-conduit"]
 	path = hs-msgpack-rpc-conduit
 	url = https://github.com/TokTok/hs-msgpack-rpc-conduit
