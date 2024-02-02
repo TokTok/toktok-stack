@@ -323,7 +323,7 @@ build:gnulike --per_file_copt='external/com_google_absl[:/]@-UNO_FRAME_POINTER,-
 build:linux-arm64-musl --per_file_copt='external/com_google_absl/absl/base/internal/low_level_alloc.cc@-Doff64_t=long'
 
 # Compile toxcore as C++.
-build:c-as-cpp --per_file_copt='//c-toxcore/@-xc++,-std=c++17'
+build:c-as-cpp --per_file_copt='//c-toxcore/@-xc++,-std=c++20'
 build:c-as-cpp --per_file_copt='//c-toxcore/@-Wno-alloca'
 build:c-as-cpp --per_file_copt='//c-toxcore/@-Wno-c99-extensions'
 build:c-as-cpp --per_file_copt='//c-toxcore/@-Wno-old-style-cast'

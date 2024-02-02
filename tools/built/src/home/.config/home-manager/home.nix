@@ -23,7 +23,7 @@
   ];
 
   # Packages that should be installed to the user profile.
-  home.packages = with pkgs; [
+  home.packages = with pkgs; if config.home.sessionVariables.GITHUB_TOKEN == "" then [] else [
     astyle                  # C code formatting
     bazel-watcher           # runs bazel test/build in a loop when files change
     clang-tools             # C++ code formatting

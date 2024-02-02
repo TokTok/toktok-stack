@@ -86,8 +86,8 @@ github_archive(
     sha256 = "82f7ae1c9ffcfde827f4164123a6775c5c28d9993d291e4fd40bf40698926569",
     version = "v0.41.0",
     # TODO(https://github.com/tweag/rules_nixpkgs/pull/422): Update once rules_haskell can be updated.
-    # sha256 = "e07e25e11068dcc570af1dfe30b01e893f89543671df194b7ebf39085ebffaf5",
-    # version = "v0.44.1",
+    # sha256 = "c8dc57d266d997e75025e55bbbb9bae8a44b82e0bc2cb16f6d47c8225ada942d",
+    # version = "v0.45.1",
 )
 
 github_archive(
@@ -107,10 +107,8 @@ go_rules_dependencies()
 github_archive(
     name = "rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "713d03014f08f20ad9d68fe458703f3f7bdbc8c94c21be22748af5728f5c7c4b",
-    # TODO(https://github.com/tweag/rules_haskell/issues/2097): Upgrade once this bug is fixed.
-    # version = "300963d75f4559398600f25b7f90afeba83d2b41",
-    version = "d14584e7f227fee55d857694d6ba7dc7e74d8f3c",
+    sha256 = "955e2fcd758babac3742d3d4775788692bd54366460754bc33bc928185fcae4c",
+    version = "ff51c3652a07d0c413cbc7bbf8967825c49f3b40",
 )
 
 load(
@@ -161,13 +159,6 @@ nixpkgs_python_configure(
 nixpkgs_package(
     name = "diffutils",
     build_file = "//third_party:BUILD.diffutils",
-    repository = "@nixpkgs",
-)
-
-nixpkgs_package(
-    name = "libllvm",
-    attribute_path = "libllvm",
-    build_file = "//third_party:BUILD.libllvm",
     repository = "@nixpkgs",
 )
 
