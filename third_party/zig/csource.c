@@ -4,10 +4,10 @@
 #include <sodium.h>
 #include <string.h>
 
-static char answer_data[sizeof(int)];
+static char answer_data[sizeof(unsigned int)];
 
-int get_answer(int question) {
-  int previous_answer;
+unsigned int get_answer(unsigned int question) {
+  unsigned int previous_answer;
   memcpy(&previous_answer, answer_data, sizeof(int));
   // Not available in the default zig toolchain, so tests whether we have the
   // correct glibc.

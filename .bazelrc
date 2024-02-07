@@ -121,11 +121,33 @@ build --experimental_run_validations
 #
 ##############################################################################
 
+# Flags for systems with GNU linker or compatible.
+build --linkopt='-Wl,-z,noexecstack'
+
+build --host_linkopt='-Wl,-z,defs'
+build --host_linkopt='-Wl,-z,noexecstack'
+
+build:nix      --linkopt='-fPIE'
+build:nix --host_linkopt='-fPIE'
+build:nix      --linkopt='-Wl,--detect-odr-violations'
+build:nix --host_linkopt='-Wl,--detect-odr-violations'
+build:nix      --linkopt='-Wl,--fatal-warnings'
+build:nix --host_linkopt='-Wl,--fatal-warnings'
+build:nix      --linkopt='-Wl,--gc-sections'
+build:nix --host_linkopt='-Wl,--gc-sections'
+build:nix      --linkopt='-Wl,--rosegment'
+build:nix --host_linkopt='-Wl,--rosegment'
+build:nix      --linkopt='-Wl,--warn-common'
+build:nix --host_linkopt='-Wl,--warn-common'
+
+build:nix --host_linkopt='-Wl,--warn-execstack'
+
 # Always enable assert() in tests.
 build --per_file_copt='_test.cc?@-UNDEBUG'
-# Optimize libsodium even in debug mode. It's simply too slow (tests time out)
-# otherwise.
+# Optimize libsodium and opus even in debug mode.
+# They are simply too slow (tests time out) otherwise.
 build --per_file_copt='external/libsodium[:/]@-O3'
+build --per_file_copt='external/opus[:/]@-O3'
 
 # Debug mode.
 build:debug -c dbg
@@ -166,6 +188,7 @@ build:sanitizer --copt='-O3'
 build:sanitizer --copt='-fno-sanitize-ignorelist'
 build:sanitizer --per_file_copt='//c-toxcore[:/]@-O0'
 build:sanitizer --per_file_copt='//c-toxcore[:/]@-fno-inline,-fno-omit-frame-pointer'
+build:sanitizer --linkopt='-Wl,--no-fatal-warnings'
 build:sanitizer --flaky_test_attempts=1
 build:sanitizer --build_tag_filters=-no-san,-haskell,-windows,-macos
 build:sanitizer --test_tag_filters=-no-san,-haskell,-windows,-macos
@@ -218,31 +241,27 @@ build:android --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 build:android --verbose_failures
 build:android --copt='-Wno-unused-macros'
 
-build:gnulike      --per_file_copt='external/.*[-_]avx\\.c$@-mavx,-w'
-build:gnulike --host_per_file_copt='external/.*[-_]avx\\.c$@-mavx,-w'
-build:gnulike      --per_file_copt='external/.*[-_]avx2\\.c$@-mavx2,-w'
-build:gnulike --host_per_file_copt='external/.*[-_]avx2\\.c$@-mavx2,-w'
-build:gnulike      --per_file_copt='external/.*[-_]avx512f\\.c$@-mavx512f,-w'
-build:gnulike --host_per_file_copt='external/.*[-_]avx512f\\.c$@-mavx512f,-w'
-build:gnulike      --per_file_copt='external/.*[-_]sse\\.c$@-mssse3,-msse4,-w'
-build:gnulike --host_per_file_copt='external/.*[-_]sse\\.c$@-mssse3,-msse4,-w'
-build:gnulike      --per_file_copt='external/.*[-_]sse4\\.c$@-msse4,-msse4.1,-w'
-build:gnulike --host_per_file_copt='external/.*[-_]sse4\\.c$@-msse4,-msse4.1,-w'
-build:gnulike      --per_file_copt='external/.*[-_]sse41\\.c$@-msse4.1,-w'
-build:gnulike --host_per_file_copt='external/.*[-_]sse41\\.c$@-msse4.1,-w'
-build:gnulike      --per_file_copt='external/.*[-_]sse4_1\\.c$@-msse4.1,-w'
-build:gnulike --host_per_file_copt='external/.*[-_]sse4_1\\.c$@-msse4.1,-w'
-build:gnulike      --per_file_copt='external/.*[-_]ssse3\\.c$@-mssse3,-w'
-build:gnulike --host_per_file_copt='external/.*[-_]ssse3\\.c$@-mssse3,-w'
+build --per_file_copt='external/.*[-_]neon_dotprod\\.c$@-march=generic+dotprod'
+build --per_file_copt='external/.*[-_]neon_i8mm\\.c$@-march=generic+dotprod+i8mm'
+build --per_file_copt='external/.*[-_]sve\\.c$@-march=generic+dotprod+i8mm+sve'
+
+build --per_file_copt='external/.*[-_]avx\\.c$@-mavx'
+build --per_file_copt='external/.*[-_]avx2\\.c$@-mavx2'
+build --per_file_copt='external/.*[-_]avx512f\\.c$@-mavx512f'
+build --per_file_copt='external/.*[-_]sse\\.c$@-mssse3,-msse4'
+build --per_file_copt='external/.*[-_]sse4\\.c$@-msse4,-msse4.1'
+build --per_file_copt='external/.*[-_]sse41\\.c$@-msse4.1'
+build --per_file_copt='external/.*[-_]sse4_1\\.c$@-msse4.1'
+build --per_file_copt='external/.*[-_]ssse3\\.c$@-mssse3'
 
 # Colour diagnostics, even though bazel uses non-tty pipes.
-build:gnulike --copt='-fdiagnostics-color=always'
+build --copt='-fdiagnostics-color=always'
 
 # ABI and source behaviour options.
-build:gnulike --copt='-funsigned-char'
-build:gnulike --cxxopt='-fno-exceptions'
-build:gnulike --cxxopt='-fno-rtti'
-build:gnulike --cxxopt='-DGOOGLE_PROTOBUF_NO_RTTI'
+build --copt='-funsigned-char'
+build --cxxopt='-fno-exceptions'
+build --cxxopt='-fno-rtti'
+build --cxxopt='-DGOOGLE_PROTOBUF_NO_RTTI'
 
 # Enable trace logging for toxcore.
 build --per_file_copt='//c-toxcore/@-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_TRACE'
@@ -266,12 +285,8 @@ build:mallocfail --test_env=MALLOCFAIL_TIMEOUT=5
 build:mallocfail --run_under="mallocfail"
 build:mallocfail --config=ubsan
 
-# Use this config to put tox into a test network that speaks an incompatible
-# protocol (all packet ids are shifted).
-build:testnet --per_file_copt='//c-toxcore[:/]@-DUSE_TEST_NETWORK=1'
-
 # Always build debugging tools with debug info.
-build:gnulike --per_file_copt='//tools/debug[:/]@-g'
+build --per_file_copt='//tools/debug[:/]@-g'
 
 test --test_output=errors
 test --test_verbose_timeout_warnings=true
@@ -282,269 +297,329 @@ test --test_verbose_timeout_warnings=true
 #
 ##############################################################################
 
-build:clang --config=gnulike
-build:gcc --config=gnulike
-
 # Use GNU versions of the C standard, because runtime/cgo doesn't set feature
 # flags correctly. We then override it in *all* per-file flags, which ends up
 # not matching runtime/cgo/gcc_setenv.c for some reason.
-build:gnulike --cxxopt='-std=c++20'
-build:gnulike --host_cxxopt='-std=c++20'
-build:gnulike --conlyopt='-std=gnu17'
-build:gnulike --per_file_copt='\\.c$@-std=c17'
+build --cxxopt='-std=c++20'
+build --host_cxxopt='-std=c++20'
+build --conlyopt='-std=gnu17'
+build --per_file_copt='\\.c$@-std=c17'
 
-build:gnulike --copt='-Wall'
-build:gnulike --copt='-Werror'
-build:gnulike --copt='-Wformat'
-build:gnulike --copt='-Wformat-security'
+build --per_file_copt='@-Wall'
+build --per_file_copt='@-Werror'
+build --per_file_copt='@-Weverything'
+build --per_file_copt='@-pedantic'
+build --copt='-Wno-c++98-compat'
+build --copt='-Wno-c++98-compat-pedantic'
+build --copt='-Wno-conversion'
+build --copt='-Wno-covered-switch-default'
+build --copt='-Wno-disabled-macro-expansion'
+build --copt='-Wno-documentation-deprecated-sync'
+build --copt='-Wno-missing-field-initializers'
+build --copt='-Wno-missing-noreturn'
+build --copt='-Wno-padded'
+build --copt='-Wno-reserved-id-macro'
+build --copt='-Wno-unused-parameter'
+build --copt='-Wno-vla'
+build --copt='-ftrapv'
 
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Weverything'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-c++98-compat'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-c++98-compat-pedantic'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-conversion'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-covered-switch-default'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-disabled-macro-expansion'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-documentation-deprecated-sync'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-missing-field-initializers'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-missing-noreturn'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-padded'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-reserved-id-macro'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-unused-parameter'
-build:clang --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-Wno-vla'
-build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-ftrapv'
-build:gnulike --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins)@-pedantic'
+# This isn't a useful warning and makes code uglier.
+build --per_file_copt='@-Wno-missing-braces'
+# __attribute__((nonnull)) warns about defensive null checks.
+build --per_file_copt='@-Wno-tautological-pointer-compare'
+
+# This warning triggers when system header macros introduce reserved
+# identifiers, which is exactly the point of them being reserved.
+build --copt='-Wno-reserved-identifier'
+# This is a C89 requirement, we use C99.
+build --copt='-Wno-declaration-after-statement'
+# Useless warning, see https://stackoverflow.com/questions/77017567.
+build --copt='-Wno-unsafe-buffer-usage'
+# Used in absl, for some reason doesn't work with per_file_copt.
+# TODO(iphydf): Find out why.
+build --copt='-Wno-deprecated-builtins'
 
 # NO_FRAME_POINTER is set when compiling fuzzers (for some reason), causing absl to use the
 # libunwind stack trace implementation, which is Google internal-only, so fails to compile in Open
 # Source software.
-build:gnulike --per_file_copt='external/com_google_absl[:/]@-UNO_FRAME_POINTER,-fno-omit-frame-pointer'
+build --per_file_copt='external/com_google_absl[:/]@-UNO_FRAME_POINTER,-fno-omit-frame-pointer'
+
+# Compile toxcore as C++.
+build:c-as-cpp --per_file_copt='//c-toxcore[:/]@-xc++,-std=c++20'
+build:c-as-cpp --per_file_copt='//c-toxcore[:/]@-Wno-alloca'
+build:c-as-cpp --per_file_copt='//c-toxcore[:/]@-Wno-c99-extensions'
+build:c-as-cpp --per_file_copt='//c-toxcore[:/]@-Wno-old-style-cast'
+build:c-as-cpp --per_file_copt='//c-toxcore[:/]@-Wno-unreachable-code-return'
+build:c-as-cpp --per_file_copt='//c-toxcore[:/]@-Wno-unused-macros'
+
+# Cython code isn't very clean.
+build --per_file_copt='//py_toxcore_c[:/]@-Wno-cast-align'
+build --per_file_copt='//py_toxcore_c[:/]@-Wno-cast-function-type-strict'
+build --per_file_copt='//py_toxcore_c[:/]@-Wno-cast-qual'
+build --per_file_copt='//py_toxcore_c[:/]@-Wno-conditional-uninitialized'
+build --per_file_copt='//py_toxcore_c[:/]@-Wno-extra-semi-stmt'
+build --per_file_copt='//py_toxcore_c[:/]@-Wno-missing-variable-declarations'
+build --per_file_copt='//py_toxcore_c[:/]@-Wno-old-style-cast'
+build --per_file_copt='//py_toxcore_c[:/]@-Wno-shadow'
+build --per_file_copt='//py_toxcore_c[:/]@-Wno-undef'
+build --per_file_copt='//py_toxcore_c[:/]@-Wno-unreachable-code'
+build --per_file_copt='//py_toxcore_c[:/]@-Wno-unused-macros'
+build --per_file_copt='//py_toxcore_c[:/]@-Wno-used-but-marked-unused'
+build --per_file_copt='//py_toxcore_c[:/]@-Wno-zero-as-null-pointer-constant'
+
+# X11/Xfuncproto.h does this.
+build --per_file_copt='//qtox[:/].*x11@-Wno-variadic-macros'
+
+# VPX macros cause this.
+build --per_file_copt='//c-toxcore/toxav:video.c@-Wno-used-but-marked-unused'
+
+# Ignore super donators stuff. It's verbatim. We compile it, but don't care about cleanliness.
+build --per_file_copt='//c-toxcore/super_donators@-Wno-comma,-Wno-extra-semi-stmt,-Wno-unreachable-code-return'
+
+# Tests
+build --per_file_copt='_bench\\.(cc|cpp)$@-Wno-weak-vtables,-Wno-zero-as-null-pointer-constant'
+build --per_file_copt='_(test|bench)\\.(cc|cpp)$@-Wno-global-constructors,-Wno-exit-time-destructors'
+build --per_file_copt='_test\\.(cc|cpp)$@-Wno-c99-extensions'
+build --per_file_copt='_test\\.(cc|cpp)$@-Wno-zero-as-null-pointer-constant'
+build --per_file_copt='_test\\.cpp$@-Wno-extra-semi-stmt'
+build --per_file_copt='_test\\.cpp$@-Wno-redundant-parens'
+build --per_file_copt='_test\\.cpp$@-Wno-undefined-reinterpret-cast'
+
+# Qt generated code.
+build --per_file_copt='rcc_.*\\.cpp$@-Wno-global-constructors,-Wno-exit-time-destructors'
+build --per_file_copt='moc_.*\\.cpp$@-Wno-deprecated'
+build --per_file_copt='moc_.*\\.cpp$@-Wno-extra-semi-stmt'
+build --per_file_copt='moc_.*\\.cpp$@-Wno-gnu-zero-variadic-macro-arguments'
+build --per_file_copt='moc_.*\\.cpp$@-Wno-redundant-parens'
+build --per_file_copt='moc_.*\\.cpp$@-Wno-undefined-reinterpret-cast'
+
+# TODO(iphydf): Fix these.
+build --per_file_copt='//c-toxcore@-Wno-shadow-uncaptured-local'
+build --per_file_copt='//c-toxcore@-Wno-sign-compare'
+build --per_file_copt='//c-toxcore@-Wno-unused-but-set-variable'
+build --per_file_copt='//experimental@-Wno-switch-enum'
+build --per_file_copt='//experimental@-Wno-used-but-marked-unused'
+build --per_file_copt='//qtox@-Wno-comma'
+build --per_file_copt='//qtox@-Wno-deprecated'
+build --per_file_copt='//qtox@-Wno-documentation'
+build --per_file_copt='//qtox@-Wno-documentation-unknown-command'
+build --per_file_copt='//qtox@-Wno-double-promotion'
+build --per_file_copt='//qtox@-Wno-duplicate-enum'
+build --per_file_copt='//qtox@-Wno-float-equal'
+build --per_file_copt='//qtox@-Wno-global-constructors,-Wno-exit-time-destructors'
+build --per_file_copt='//qtox@-Wno-implicit-fallthrough'
+build --per_file_copt='//qtox@-Wno-inconsistent-missing-destructor-override'
+build --per_file_copt='//qtox@-Wno-missing-prototypes'
+build --per_file_copt='//qtox@-Wno-non-virtual-dtor'
+build --per_file_copt='//qtox@-Wno-error=range-loop-analysis'
+build --per_file_copt='//qtox@-Wno-shadow'
+build --per_file_copt='//qtox@-Wno-shadow-field'
+build --per_file_copt='//qtox@-Wno-suggest-destructor-override'
+build --per_file_copt='//qtox@-Wno-suggest-override'
+build --per_file_copt='//qtox@-Wno-switch-enum'
+build --per_file_copt='//qtox@-Wno-undef'
+build --per_file_copt='//qtox@-Wno-unreachable-code-break'
+build --per_file_copt='//qtox@-Wno-unreachable-code-return'
+build --per_file_copt='//qtox@-Wno-unused-but-set-variable'
+build --per_file_copt='//qtox@-Wno-unused-macros'
+build --per_file_copt='//qtox@-Wno-used-but-marked-unused'
+build --per_file_copt='//qtox@-Wno-weak-vtables'
+build --per_file_copt='//toxic@-Wno-implicit-fallthrough'
+build --per_file_copt='//toxic@-Wno-missing-prototypes'
+build --per_file_copt='//toxic@-Wno-missing-variable-declarations'
+build --per_file_copt='//toxic@-Wno-sign-compare'
+build --per_file_copt='//toxic@-Wno-switch-enum'
+build --per_file_copt='//toxic@-Wno-undef'
+build --per_file_copt='//toxic@-Wno-unused-macros'
+build --per_file_copt='//toxins@-Wno-cast-align'
+build --per_file_copt='//toxins@-Wno-global-constructors,-Wno-exit-time-destructors'
+build --per_file_copt='//toxins@-Wno-missing-prototypes'
+build --per_file_copt='//toxins@-Wno-missing-variable-declarations'
+build --per_file_copt='//toxins@-Wno-non-virtual-dtor'
+build --per_file_copt='//toxins@-Wno-old-style-cast'
+build --per_file_copt='//toxins@-Wno-sign-compare'
+build --per_file_copt='//toxins@-Wno-switch-enum'
+build --per_file_copt='//toxins@-Wno-unreachable-code'
+build --per_file_copt='//toxins@-Wno-unreachable-code-return'
+
+# Disable some clang warnings on various third party dependencies.
+build --per_file_copt='external[:/]@-Wno-assign-enum'
+build --per_file_copt='external[:/]@-Wno-bad-function-cast'
+build --per_file_copt='external[:/]@-Wno-c++20-compat'
+build --per_file_copt='external[:/]@-Wno-cast-align'
+build --per_file_copt='external[:/]@-Wno-cast-qual'
+build --per_file_copt='external[:/]@-Wno-comma'
+build --per_file_copt='external[:/]@-Wno-conditional-uninitialized'
+build --per_file_copt='external[:/]@-Wno-deprecated'
+build --per_file_copt='external[:/]@-Wno-documentation'
+build --per_file_copt='external[:/]@-Wno-documentation-unknown-command'
+build --per_file_copt='external[:/]@-Wno-double-promotion'
+build --per_file_copt='external[:/]@-Wno-duplicate-enum'
+build --per_file_copt='external[:/]@-Wno-extra-semi-stmt'
+build --per_file_copt='external[:/]@-Wno-float-equal'
+build --per_file_copt='external[:/]@-Wno-format-nonliteral'
+build --per_file_copt='external[:/]@-Wno-gcc-compat'
+build --per_file_copt='external[:/]@-Wno-global-constructors,-Wno-exit-time-destructors'
+build --per_file_copt='external[:/]@-Wno-implicit-fallthrough'
+build --per_file_copt='external[:/]@-Wno-missing-prototypes'
+build --per_file_copt='external[:/]@-Wno-missing-variable-declarations'
+build --per_file_copt='external[:/]@-Wno-newline-eof'
+build --per_file_copt='external[:/]@-Wno-old-style-cast'
+build --per_file_copt='external[:/]@-Wno-shadow'
+build --per_file_copt='external[:/]@-Wno-strict-prototypes'
+build --per_file_copt='external[:/]@-Wno-switch-enum'
+build --per_file_copt='external[:/]@-Wno-thread-safety-negative'
+build --per_file_copt='external[:/]@-Wno-undef'
+build --per_file_copt='external[:/]@-Wno-unreachable-code'
+build --per_file_copt='external[:/]@-Wno-unreachable-code-break'
+build --per_file_copt='external[:/]@-Wno-unreachable-code-return'
+build --per_file_copt='external[:/]@-Wno-unused-macros'
+build --per_file_copt='external[:/]@-Wno-weak-vtables'
+build --per_file_copt='external[:/]@-Wno-zero-as-null-pointer-constant'
+build --per_file_copt='external/benchmark[:/]@-Wno-used-but-marked-unused'
+build --per_file_copt='external/boringssl[:/]@-Wno-c11-extensions'
+build --per_file_copt='external/boringssl[:/]@-Wno-cast-function-type'
+build --per_file_copt='external/boringssl[:/]@-Wno-extra-semi'
+build --per_file_copt='external/boringssl[:/]@-Wno-gnu-binary-literal'
+build --per_file_copt='external/boringssl[:/]@-Wno-overlength-strings'
+build --per_file_copt='external/boringssl[:/]@-Wno-redundant-parens'
+build --per_file_copt='external/boringssl[:/]@-Wno-tautological-value-range-compare'
+build --per_file_copt='external/boringssl[:/]@-Wno-used-but-marked-unused'
+build --per_file_copt='external/com_google_absl[:/]@-Wno-atomic-implicit-seq-cst'
+build --per_file_copt='external/com_google_absl[:/]@-Wno-tautological-type-limit-compare'
+build --per_file_copt='external/com_google_absl[:/]@-Wno-unused-template'
+build --per_file_copt='external/curl[:/]@-Wno-cast-function-type-strict'
+build --per_file_copt='external/curl[:/]@-Wno-used-but-marked-unused'
+build --per_file_copt='external/ev[:/]@-Wno-bitwise-op-parentheses'
+build --per_file_copt='external/ev[:/]@-Wno-comment'
+build --per_file_copt='external/ev[:/]@-Wno-extra-semi'
+build --per_file_copt='external/ev[:/]@-Wno-return-type'
+build --per_file_copt='external/ev[:/]@-Wno-sign-compare'
+build --per_file_copt='external/ev[:/]@-Wno-unused'
+build --per_file_copt='external/ev[:/]@-Wno-used-but-marked-unused'
+build --per_file_copt='external/ffmpeg/fftools[:/]@-Wno-single-bit-bitfield-constant-conversion'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-atomic-implicit-seq-cst'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-bool-operation'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-braced-scalar-init'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-cast-function-type'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-dangling-else'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-deprecated-pragma'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-format-pedantic'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-implicit-const-int-float-conversion'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-incompatible-function-pointer-types-strict'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-incompatible-pointer-types-discards-qualifiers'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-overlength-strings'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-parentheses'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-pedantic'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-pointer-bool-conversion'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-redundant-parens'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-shorten-64-to-32'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-sign-compare'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-sometimes-uninitialized'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-string-plus-int'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-switch'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-tautological-constant-out-of-range-compare'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-unneeded-internal-declaration'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-unused-but-set-variable'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-unused-const-variable'
+build --per_file_copt='external/ffmpeg[:/]@-Wno-used-but-marked-unused'
+build --per_file_copt='external/libcap[:/]@-Wno-gnu-zero-variadic-macro-arguments'
+build --per_file_copt='external/libcap[:/]@-Wno-sign-compare'
+build --per_file_copt='external/libcap[:/]@-Wno-tautological-unsigned-enum-zero-compare'
+build --per_file_copt='external/libcap[:/]@-Wno-variadic-macros'
+build --per_file_copt='external/libconfig[:/]@-Wno-deprecated-non-prototype'
+build --per_file_copt='external/libconfig[:/]@-Wno-unused-but-set-variable'
+build --per_file_copt='external/libidn2[:/]@-Wno-alloca'
+build --per_file_copt='external/libidn2[:/]@-Wno-cast-function-type-strict'
+build --per_file_copt='external/libidn2[:/]@-Wno-pedantic'
+build --per_file_copt='external/libidn2[:/]@-Wno-sign-compare'
+build --per_file_copt='external/libidn2[:/]@-Wno-unused-const-variable'
+build --per_file_copt='external/libqrencode[:/]@-Wno-tautological-unsigned-enum-zero-compare'
+build --per_file_copt='external/libsodium[:/]@-Wno-unknown-pragmas'
+build --per_file_copt='external/libsodium[:/]@-Wno-unused-but-set-variable'
+build --per_file_copt='external/libsodium[:/]@-Wno-unused-function'
+build --per_file_copt='external/libsodium[:/]@-Wno-unused-variable'
+build --per_file_copt='external/libvpx[:/]@-Wno-incompatible-pointer-types'
+build --per_file_copt='external/libvpx[:/]@-Wno-unused-but-set-variable'
+build --per_file_copt='external/libvpx[:/]@-Wno-unused-variable'
+build --per_file_copt='external/libxz[:/]@-Wno-cast-function-type-strict'
+build --per_file_copt='external/libxz[:/]@-Wno-unused-function'
+build --per_file_copt='external/libzmq[:/]@-Wno-abstract-vbase-init'
+build --per_file_copt='external/libzmq[:/]@-Wno-extra-semi'
+build --per_file_copt='external/libzmq[:/]@-Wno-suggest-destructor-override'
+build --per_file_copt='external/libzmq[:/]@-Wno-suggest-override'
+build --per_file_copt='external/libzmq[:/]@-Wno-tautological-type-limit-compare'
+build --per_file_copt='external/libzmq[:/]@-Wno-unused-variable'
+build --per_file_copt='external/ncurses[:/]@-Wno-tautological-value-range-compare'
+build --per_file_copt='external/ncurses[:/]@-Wno-unused-but-set-variable'
+build --per_file_copt='external/ncurses[:/]@-Wno-used-but-marked-unused'
+build --per_file_copt='external/openal[:/]@-std=c++17'
+build --per_file_copt='external/openal[:/]@-Wno-switch'
+build --per_file_copt='external/openal[:/]@-Wno-undefined-func-template'
+build --per_file_copt='external/openal[:/]@-Wno-unused-function'
+build --per_file_copt='external/openal[:/]@-Wno-unused-value'
+build --per_file_copt='external/pthread_w32[:/]@-Wno-cast-function-type'
+build --per_file_copt='external/pthread_w32[:/]@-Wno-gnu-statement-expression-from-macro-expansion'
+build --per_file_copt='external/pthread_w32[:/]@-Wno-pedantic'
+build --per_file_copt='external/pthread_w32[:/]@-Wno-tautological-unsigned-zero-compare'
+build --per_file_copt='external/sdl2[:/]@-Wno-alloca'
+build --per_file_copt='external/sdl2[:/]@-Wno-atomic-implicit-seq-cst'
+build --per_file_copt='external/sdl2[:/]@-Wno-cast-function-type'
+build --per_file_copt='external/sdl2[:/]@-Wno-invalid-utf8'
+build --per_file_copt='external/sdl2[:/]@-Wno-overlength-strings'
+build --per_file_copt='external/sdl2[:/]@-Wno-pedantic'
+build --per_file_copt='external/sdl2[:/]@-Wno-sign-compare'
+build --per_file_copt='external/sdl2[:/]@-Wno-tautological-value-range-compare'
+build --per_file_copt='external/sdl2[:/]@-Wno-unused-but-set-variable'
+build --per_file_copt='external/sqlcipher[:/]@-Wno-atomic-implicit-seq-cst'
+build --per_file_copt='external/sqlcipher[:/]@-Wno-cast-function-type-strict'
+build --per_file_copt='external/sqlcipher[:/]@-Wno-empty-translation-unit'
+build --per_file_copt='external/sqlcipher[:/]@-Wno-gnu-pointer-arith'
+build --per_file_copt='external/sqlcipher[:/]@-Wno-sign-compare'
+build --per_file_copt='external/sqlcipher[:/]@-Wno-unused'
+build --per_file_copt='external/tcl[:/]@-Wno-cast-function-type-strict'
+build --per_file_copt='external/tcl[:/]@-Wno-extra-semi'
+build --per_file_copt='external/tcl[:/]@-Wno-flexible-array-extensions'
+build --per_file_copt='external/tcl[:/]@-Wno-format-pedantic'
+build --per_file_copt='external/tcl[:/]@-Wno-gnu-statement-expression-from-macro-expansion'
+build --per_file_copt='external/tcl[:/]@-Wno-overlength-strings'
+build --per_file_copt='external/tcl[:/]@-Wno-tautological-type-limit-compare'
+build --per_file_copt='external/tcl[:/]@-Wno-tautological-value-range-compare'
+build --per_file_copt='external/tcl[:/]@-Wno-typedef-redefinition'
+build --per_file_copt='external/tox_extension_messages[:/]@-Wno-gnu-statement-expression-from-macro-expansion'
+build --per_file_copt='external/toxext[:/]@-Wno-gnu-statement-expression-from-macro-expansion'
+build --per_file_copt='external/xcb[:/]@-Wno-unused-but-set-variable'
+build --per_file_copt='external/yasm[:/]@-Wno-c2x-compat'
+build --per_file_copt='external/yasm[:/]@-Wno-cast-function-type'
+build --per_file_copt='external/yasm[:/]@-Wno-gnu-null-pointer-arithmetic'
+build --per_file_copt='external/yasm[:/]@-Wno-null-pointer-subtraction'
+build --per_file_copt='external/zlib[:/]@-std=gnu17'
+build --per_file_copt='external/zlib[:/]@-Wno-deprecated-non-prototype'
+build --per_file_copt='external/zlib[:/]@-Wno-implicit-function-declaration'
+build --per_file_copt='third_party/libidn2[:/]@-Wno-missing-prototypes'
+
+# Disable some default warnings also present in the host config.
+build      --per_file_copt='external/tcl[:/]@-Wno-unused'
+build --host_per_file_copt='external/tcl[:/]@-Wno-unused'
+build      --per_file_copt='external/yasm[:/]@-Wno-misleading-indentation'
+build --host_per_file_copt='external/yasm[:/]@-Wno-misleading-indentation'
+build      --per_file_copt='external/yasm[:/]@-Wno-unused-but-set-variable'
+build --host_per_file_copt='external/yasm[:/]@-Wno-unused-but-set-variable'
 
 # Hack to get absl to compile for arm64.
 build:linux-arm64-musl --per_file_copt='external/com_google_absl/absl/base/internal/low_level_alloc.cc@-Doff64_t=long'
 
-# Compile toxcore as C++.
-build:c-as-cpp --per_file_copt='//c-toxcore/@-xc++,-std=c++20'
-build:c-as-cpp --per_file_copt='//c-toxcore/@-Wno-alloca'
-build:c-as-cpp --per_file_copt='//c-toxcore/@-Wno-c99-extensions'
-build:c-as-cpp --per_file_copt='//c-toxcore/@-Wno-old-style-cast'
-build:c-as-cpp --per_file_copt='//c-toxcore/@-Wno-unreachable-code-return'
-build:c-as-cpp --per_file_copt='//c-toxcore/@-Wno-unused-macros'
-
-# Cython code isn't very clean.
-build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-cast-function-type-strict'
-build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-conditional-uninitialized'
-build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-cast-qual'
-build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-extra-semi-stmt'
-build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-missing-variable-declarations'
-build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-old-style-cast'
-build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-undef'
-build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-unused-macros'
-build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-unreachable-code'
-build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-used-but-marked-unused'
-build:clang --per_file_copt='//py_toxcore_c[:/]@-Wno-zero-as-null-pointer-constant'
-build:gcc --per_file_copt='//py_toxcore_c[:/]@-Wno-pedantic'
-build:gnulike --per_file_copt='//py_toxcore_c[:/]@-Wno-cast-align'
-build:gnulike --per_file_copt='//py_toxcore_c[:/]@-Wno-shadow'
-
-# GCC warning flags.
-# __attribute__((nonnull)) causes this warning on defensive null checks.
-build:gcc --copt='-Wno-nonnull-compare'
-#build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.c$@-Wsuggest-attribute=const'
-#build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.c$@-Wsuggest-attribute=pure'
-build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.c$@-Wold-style-declaration,-Wold-style-definition'
-build:gcc --per_file_copt='//(c-|go-|hs-|jvm-|py_|qtox|toxic|toxins).*\\.(cc|cpp)$@-Wzero-as-null-pointer-constant'
-
-# X11/Xfuncproto.h does this.
-build:gnulike --per_file_copt='//qtox[:/].*x11@-Wno-variadic-macros'
-
-# TODO(iphydf): Fix these.
-build:gcc --per_file_copt='//toxins/tox_shell@-Wno-unused-result'
-build:gcc --per_file_copt='//toxins/toxvpn:import/src/listener.cpp@-Wno-stringop-truncation'
-build:gnulike --per_file_copt='//toxins/toxvpn:import/src/main.cpp@-Wno-unused-result'
-build:gnulike --per_file_copt='//toxins/toxvpn:import/src/toxvpn-remote.cpp@-Wno-unused-result'
-
-# This isn't a useful warning and makes code uglier.
-build:gnulike --copt='-Wno-missing-braces'
-
-# Clang warning flags.
-build:clang --copt='-Wthread-safety-analysis'
-build:clang --copt='-Wno-error=thread-safety-analysis'
-build:clang --copt='-Wno-error=inconsistent-missing-override'
-# This warning triggers when system header macros introduce reserved
-# identifiers, which is exactly the point of them being reserved.
-build:clang --copt='-Wno-reserved-identifier'
-# __attribute__((nonnull)) causes these warnings on defensive null checks.
-build:clang --copt='-Wno-pointer-bool-conversion'
-build:clang --copt='-Wno-tautological-pointer-compare'
-# This is a C89 requirement, we use C99.
-build:clang --copt='-Wno-declaration-after-statement'
-# Useless warning, see https://stackoverflow.com/questions/77017567.
-build:clang --copt='-Wno-unsafe-buffer-usage'
-# Used in absl, for some reason doesn't work with per_file_copt.
-# TODO(iphydf): Find out why.
-build:clang --copt='-Wno-deprecated-builtins'
-
 # LPTSTR cast for WSAStringToAddress is necessary.
 build:windows-x86_64 --per_file_copt='//c-toxcore/toxcore:network.c@-Wno-cast-qual'
 
-build:clang --per_file_copt='//c-toxcore/toxav:video.c@-Wno-used-but-marked-unused'
-build:clang --per_file_copt='//c-toxcore/super_donators@-w'
-build:clang --per_file_copt='_bench\\.(cc|cpp)$@-Wno-weak-vtables,-Wno-zero-as-null-pointer-constant'
-build:clang --per_file_copt='_(test|bench)\\.(cc|cpp)$@-Wno-global-constructors,-Wno-exit-time-destructors'
-build:clang --per_file_copt='_test\\.(cc|cpp)$@-Wno-c99-extensions'
-build:clang --per_file_copt='_test\\.(cc|cpp)$@-Wno-zero-as-null-pointer-constant'
-build:clang --per_file_copt='_test\\.cpp$@-Wno-extra-semi-stmt'
-build:clang --per_file_copt='_test\\.cpp$@-Wno-redundant-parens'
-build:clang --per_file_copt='_test\\.cpp$@-Wno-undefined-reinterpret-cast'
-build:clang --per_file_copt='rcc_.*\\.cpp$@-Wno-global-constructors,-Wno-exit-time-destructors'
-build:clang --per_file_copt='moc_.*\\.cpp$@-Wno-deprecated'
-build:clang --per_file_copt='moc_.*\\.cpp$@-Wno-extra-semi-stmt'
-build:clang --per_file_copt='moc_.*\\.cpp$@-Wno-gnu-zero-variadic-macro-arguments'
-build:clang --per_file_copt='moc_.*\\.cpp$@-Wno-redundant-parens'
-build:clang --per_file_copt='moc_.*\\.cpp$@-Wno-undefined-reinterpret-cast'
-
-build:gnulike --per_file_copt='//jvm-toxcore-c@-Wno-error=switch'
-build:gnulike --per_file_copt='//jvm-toxcore-c@-Wno-parentheses'
-
-# TODO(iphydf): Fix these.
-build:clang --per_file_copt='//c-toxcore@-Wno-shadow-uncaptured-local'
-build:clang --per_file_copt='//c-toxcore@-Wno-sign-compare'
-build:clang --per_file_copt='//c-toxcore@-Wno-unused-but-set-variable'
-build:clang --per_file_copt='//jvm-toxcore-c@-Wno-global-constructors,-Wno-exit-time-destructors'
-build:clang --per_file_copt='//qtox@-Wno-comma'
-build:clang --per_file_copt='//qtox@-Wno-deprecated'
-build:clang --per_file_copt='//qtox@-Wno-documentation'
-build:clang --per_file_copt='//qtox@-Wno-documentation-unknown-command'
-build:clang --per_file_copt='//qtox@-Wno-double-promotion'
-build:clang --per_file_copt='//qtox@-Wno-duplicate-enum'
-build:clang --per_file_copt='//qtox@-Wno-float-equal'
-build:clang --per_file_copt='//qtox@-Wno-global-constructors,-Wno-exit-time-destructors'
-build:clang --per_file_copt='//qtox@-Wno-implicit-fallthrough'
-build:clang --per_file_copt='//qtox@-Wno-inconsistent-missing-destructor-override'
-build:clang --per_file_copt='//qtox@-Wno-missing-prototypes'
-build:clang --per_file_copt='//qtox@-Wno-non-virtual-dtor'
-build:clang --per_file_copt='//qtox@-Wno-error=range-loop-analysis'
-build:clang --per_file_copt='//qtox@-Wno-shadow'
-build:clang --per_file_copt='//qtox@-Wno-shadow-field'
-build:clang --per_file_copt='//qtox@-Wno-suggest-destructor-override'
-build:clang --per_file_copt='//qtox@-Wno-suggest-override'
-build:clang --per_file_copt='//qtox@-Wno-switch-enum'
-build:clang --per_file_copt='//qtox@-Wno-undef'
-build:clang --per_file_copt='//qtox@-Wno-unreachable-code-break'
-build:clang --per_file_copt='//qtox@-Wno-unreachable-code-return'
-build:clang --per_file_copt='//qtox@-Wno-unused-but-set-variable'
-build:clang --per_file_copt='//qtox@-Wno-unused-macros'
-build:clang --per_file_copt='//qtox@-Wno-used-but-marked-unused'
-build:clang --per_file_copt='//qtox@-Wno-weak-vtables'
-build:clang --per_file_copt='//toxic@-Wno-cast-align'
-build:clang --per_file_copt='//toxic@-Wno-cast-qual'
-build:clang --per_file_copt='//toxic@-Wno-format-nonliteral'
-build:clang --per_file_copt='//toxic@-Wno-implicit-fallthrough'
-build:clang --per_file_copt='//toxic@-Wno-missing-prototypes'
-build:clang --per_file_copt='//toxic@-Wno-missing-variable-declarations'
-build:clang --per_file_copt='//toxic@-Wno-shadow'
-build:clang --per_file_copt='//toxic@-Wno-sign-compare'
-build:clang --per_file_copt='//toxic@-Wno-switch-enum'
-build:clang --per_file_copt='//toxic@-Wno-undef'
-build:clang --per_file_copt='//toxic@-Wno-unreachable-code-return'
-build:clang --per_file_copt='//toxic@-Wno-unused-macros'
-build:clang --per_file_copt='//toxins@-Wno-cast-align'
-build:clang --per_file_copt='//toxins@-Wno-global-constructors,-Wno-exit-time-destructors'
-build:clang --per_file_copt='//toxins@-Wno-missing-prototypes'
-build:clang --per_file_copt='//toxins@-Wno-missing-variable-declarations'
-build:clang --per_file_copt='//toxins@-Wno-non-virtual-dtor'
-build:clang --per_file_copt='//toxins@-Wno-old-style-cast'
-build:clang --per_file_copt='//toxins@-Wno-sign-compare'
-build:clang --per_file_copt='//toxins@-Wno-switch-enum'
-build:clang --per_file_copt='//toxins@-Wno-unreachable-code'
-build:clang --per_file_copt='//toxins@-Wno-unreachable-code-return'
-build:gcc --per_file_copt='//c-toxcore@-Wno-error=pedantic'
-build:gcc --per_file_copt='//toxic@-Wno-format-overflow'
-build:gcc --per_file_copt='//toxic@-Wno-format-truncation'
-build:gcc --per_file_copt='//toxic@-Wno-nonnull'
-build:gcc --per_file_copt='//toxic@-Wno-overflow'
-build:gcc --per_file_copt='//toxins@-Wno-format-overflow'
-
-# Ignore warnings for Go generated internal files and external libraries.
-build:gnulike --per_file_copt='/go_default_library%@-w'
-
-# Ignore warnings for protobuf generated files.
-build:gnulike --per_file_copt='\\.pb\\.cc$@-w'
-
-# Disable some clang warnings on various third party dependencies.
-build:clang --per_file_copt='external/benchmark[:/]@-Wno-weak-vtables'
-build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-bool-operation'
-build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-braced-scalar-init'
-build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-dangling-else'
-build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-deprecated-pragma'
-build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-implicit-const-int-float-conversion'
-build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-incompatible-pointer-types-discards-qualifiers'
-build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-parentheses'
-build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-pointer-bool-conversion'
-build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-shorten-64-to-32'
-build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-sometimes-uninitialized'
-build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-string-plus-int'
-build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-switch'
-build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-tautological-constant-out-of-range-compare'
-build:clang --per_file_copt='external/ffmpeg[:/]@-Wno-unneeded-internal-declaration'
-build:clang --per_file_copt='external/ffmpeg/fftools[:/]@-Wno-single-bit-bitfield-constant-conversion'
-build:clang --per_file_copt='external/libconfig[:/]@-Wno-deprecated-non-prototype'
-build:clang --per_file_copt='external/libconfig[:/]@-Wno-unused-but-set-variable'
-build:clang --per_file_copt='external/libsodium[:/]@-Wno-unknown-pragmas'
-build:clang --per_file_copt='external/libsodium[:/]@-Wno-unused-function'
-build:clang --per_file_copt='external/libsodium[:/]@-Wno-unused-variable'
-build:clang --per_file_copt='external/libvpx[:/]@-Wno-unused-but-set-variable'
-build:clang --per_file_copt='external/libzmq[:/]@-Wno-unused-variable'
-build:clang --per_file_copt='external/sdl2[:/]@-Wno-unused-but-set-variable'
-build:clang --per_file_copt='external/xcb[:/]@-Wno-unused-but-set-variable'
-build:clang --per_file_copt='external/zlib[:/]@-Wno-deprecated-non-prototype'
-build:clang --host_per_file_copt='external/zlib[:/]@-Wno-deprecated-non-prototype'
-build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-array-parameter'
-build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-bool-operation'
-build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-discarded-qualifiers'
-build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-format-truncation'
-build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-int-in-bool-context'
-build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-maybe-uninitialized'
-build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-stringop-overread'
-build:gcc --per_file_copt='external/ffmpeg[:/]@-Wno-stringop-truncation'
-build:gcc --per_file_copt='external/libidn2[:/]@-Wno-unused-const-variable'
-build:gcc --per_file_copt='external/opus[:/]@-Wno-maybe-uninitialized'
-
-build:clang --per_file_copt='external/openal[:/]@-std=c++17'
-build:clang --per_file_copt='external/openal[:/]@-Wno-unused-value'
-build:gcc --host_per_file_copt='external/openal[:/]@-Wno-use-after-free'
-
-build:clang --per_file_copt='external/tcl[:/]@-Wno-typedef-redefinition'
-build:gnulike      --per_file_copt='external/tcl[:/]@-Wno-unused'
-build:gnulike --host_per_file_copt='external/tcl[:/]@-Wno-unused'
-
-build:gcc      --per_file_copt='external/yasm[:/]@-Wno-format-overflow'
-build:gcc --host_per_file_copt='external/yasm[:/]@-Wno-format-overflow'
-build:gcc      --per_file_copt='external/yasm[:/]@-Wno-stringop-truncation'
-build:gcc --host_per_file_copt='external/yasm[:/]@-Wno-stringop-truncation'
-build:gcc      --per_file_copt='external/yasm[:/]@-Wno-tautological-compare'
-build:gcc --host_per_file_copt='external/yasm[:/]@-Wno-tautological-compare'
-build:gnulike      --per_file_copt='external/yasm[:/]@-Wno-misleading-indentation'
-build:gnulike --host_per_file_copt='external/yasm[:/]@-Wno-misleading-indentation'
-build:gnulike      --per_file_copt='external/yasm[:/]@-Wno-unused-but-set-variable'
-build:gnulike --host_per_file_copt='external/yasm[:/]@-Wno-unused-but-set-variable'
+# snprintf is marked unused.
+build:windows-x86_64 --per_file_copt='//c-toxcore/toxcore:network.c@-Wno-used-but-marked-unused'
 
 ##############################################################################
 #
-# :: System/compiler-specific optional flags.
+# :: Continuous Integration and docker build flags
 #
 ##############################################################################
-
-build --config=clang
-
-# Flags for systems with GNU linker or compatible.
-build --host_linkopt='-Wl,-z,noexecstack'
-#build --host_linkopt='-Wl,--fatal-warnings'
-#build --host_linkopt='-Wl,--warn-common'
-build --host_linkopt='-fPIE'
-# Not enabled, because (at least - I gave up when trying to fix libvpx)
-# libsodium and libvpx assembly code doesn't define noexecstack.
-#build --host_linkopt='-Wl,--warn-execstack'
 
 # Continuous Integration platforms tend to not have IPv6.
 build:ci --per_file_copt='//c-toxcore/auto_tests@-DUSE_IPV6=0'

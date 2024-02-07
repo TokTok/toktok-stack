@@ -1,3 +1,3 @@
 #pragma once
 
-int get_answer(int question);
+unsigned int get_answer(unsigned int question);

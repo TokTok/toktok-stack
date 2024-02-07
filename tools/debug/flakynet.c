@@ -98,7 +98,8 @@ static bool can_send(void) {
     --headstart;
     return true;
   }
-  return (double)rand_r(&seed) / (double)RAND_MAX > flakiness;
+  const double rn = rand_r(&seed);
+  return rn / (double)RAND_MAX > flakiness;
 }
 
 ssize_t sendto(int sockfd, const void *buf, size_t len, int flags, const struct sockaddr *dest_addr,

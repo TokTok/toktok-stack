@@ -60,7 +60,7 @@ typedef struct Oomer_Config {
 
 static Oomer_Config config = {INT32_MAX, 5, 0, 0, 123456789, false, false};
 
-uint32_t rand_u32(void) {
+static uint32_t rand_u32(void) {
   // Numerical Recipes in C. The Art of Scientific Computing, 2nd Edition, 1992
   config.seed = (1664525 * config.seed + 1013904223);
   return config.seed;

@@ -3,6 +3,7 @@ workspace(name = "toktok")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
 
+# https://github.com/bazelbuild/bazel-skylib
 github_archive(
     name = "bazel_skylib",
     repo = "bazelbuild/bazel-skylib",
@@ -17,8 +18,8 @@ github_archive(
 github_archive(
     name = "hermetic_cc_toolchain",
     repo = "uber/hermetic_cc_toolchain",
-    sha256 = "c35f6e2110cdb147964fabe94fad6d30749d7b9d853cc8cb24890a9269d4153b",
-    version = "v2.1.3",
+    sha256 = "be4f8151f773d03b2a19a9705ef9bd7fe2bf343b7502abb42445ea2fe3f5a7e3",
+    version = "v2.2.1",
 )
 
 # hermetic_cc_toolchain
@@ -35,11 +36,12 @@ register_toolchains(
     "//third_party/zig:x86_64-linux-nix_toolchain",
 )
 
+# https://github.com/aherrmann/rules_zig
 github_archive(
     name = "rules_zig",
     repo = "aherrmann/rules_zig",
-    sha256 = "c89162afd5d78591d9ffd1e22a386feeb9e26f185b982f619d5c7b0aaf3f15ad",
-    version = "0363e3f65dae45cb29c76d457cb8a4bd4654604c",
+    sha256 = "0a7da1ea28abd2dcb09f01917c49f1036861a8a17366793455fdd9e723600bf1",
+    version = "766a11afd418c181babbf01b121748ded37938d1",
 )
 
 load(
@@ -58,6 +60,7 @@ zig_register_toolchains(
 # Fuzzing
 # =========================================================
 
+# https://github.com/bazelbuild/rules_fuzzing
 github_archive(
     name = "rules_fuzzing",
     repo = "bazelbuild/rules_fuzzing",
@@ -80,6 +83,7 @@ install_deps()
 # Go
 # =========================================================
 
+# https://github.com/bazelbuild/rules_go
 github_archive(
     name = "io_bazel_rules_go",
     repo = "bazelbuild/rules_go",
@@ -90,6 +94,7 @@ github_archive(
     # version = "v0.45.1",
 )
 
+# https://github.com/bazelbuild/bazel-gazelle
 github_archive(
     name = "bazel_gazelle",
     repo = "bazelbuild/bazel-gazelle",
@@ -104,11 +109,12 @@ go_rules_dependencies()
 # Nixpkgs
 # =========================================================
 
+# https://github.com/tweag/rules_haskell
 github_archive(
     name = "rules_haskell",
     repo = "tweag/rules_haskell",
-    sha256 = "955e2fcd758babac3742d3d4775788692bd54366460754bc33bc928185fcae4c",
-    version = "ff51c3652a07d0c413cbc7bbf8967825c49f3b40",
+    sha256 = "6c38d06e58d7c4d95985e7c3923c84c1341a32a9e26446c72b2efea5290d3da6",
+    version = "3a2cad09c20dcd728d9a136cd8d60abe11378915",
 )
 
 load(
@@ -215,6 +221,7 @@ nixpkgs_java_configure(
     toolchain_version = "11",
 )
 
+# https://github.com/bazelbuild/rules_proto
 github_archive(
     name = "rules_proto",
     repo = "bazelbuild/rules_proto",
@@ -222,6 +229,7 @@ github_archive(
     version = "6.0.0-rc1",
 )
 
+# https://github.com/bazelbuild/rules_pkg
 github_archive(
     name = "rules_pkg",
     repo = "bazelbuild/rules_pkg",
@@ -254,6 +262,7 @@ http_archive(
     ],
 )
 
+# https://github.com/bazelbuild/rules_jvm_external
 github_archive(
     name = "rules_jvm_external",
     repo = "bazelbuild/rules_jvm_external",
@@ -261,6 +270,7 @@ github_archive(
     version = "5.3",
 )
 
+# https://github.com/bazelbuild/stardoc
 github_archive(
     name = "io_bazel_stardoc",
     repo = "bazelbuild/stardoc",
@@ -268,6 +278,7 @@ github_archive(
     version = "0.6.2",
 )
 
+# https://github.com/bazelbuild/rules_kotlin
 github_archive(
     name = "rules_kotlin",
     repo = "bazelbuild/rules_kotlin",
@@ -411,11 +422,12 @@ http_archive(
     urls = ["http://dist.schmorp.de/libev/libev-4.33.tar.gz"],
 )
 
+# https://github.com/google/boringssl
 github_archive(
     name = "boringssl",
     repo = "google/boringssl",
-    sha256 = "9a1a9db5d0f6c1add527cccbd86a1bb75659afb4f9e1c26f44c97c3517db2400",
-    version = "bf221ee64323dcebd2c64bd4c4a3269fc231d2bf",
+    sha256 = "383fd3e5ac59ab15b372d2e39efdfaf507ed480b9e0e92bb218128d96bc3d611",
+    version = "311e6f6d8e77da1f64c3256b30bd1992a555ce6c",
 )
 
 http_archive(
@@ -426,13 +438,15 @@ http_archive(
     urls = ["http://http.debian.net/debian/pool/main/b/bzip2/bzip2_1.0.8.orig.tar.gz"],
 )
 
+# https://github.com/google/googletest
 github_archive(
     name = "com_google_googletest",
     repo = "google/googletest",
-    sha256 = "93b52882cff4e8fb344070106facee0df5e61be91b1948a69c8581b3bcbe0c61",
-    version = "b3a9ba2b8e975550799838332803d468797ae2e1",
+    sha256 = "1f357c27ca988c3f7c6b4bf68a9395005ac6761f034046e9dde0896e3aba00e4",
+    version = "v1.14.0",
 )
 
+# https://github.com/google/benchmark
 github_archive(
     name = "benchmark",
     repo = "google/benchmark",
@@ -440,18 +454,20 @@ github_archive(
     version = "v1.8.3",
 )
 
+# https://github.com/curl/curl
 new_github_archive(
     name = "curl",
     repo = "curl/curl",
-    sha256 = "a5850615a9f4a1fdf55dc6023cf9b10c8b320eb6cc17ed77dc7edb7603e06684",
-    version = "curl-8_2_1",
+    sha256 = "36dc348e94666f297039b7cd954532db44f59039167b4c654bf417bcb1e584b3",
+    version = "curl-8_5_0",
 )
 
+# https://github.com/FFmpeg/nv-codec-headers
 new_github_archive(
     name = "ffnvcodec",
     repo = "FFmpeg/nv-codec-headers",
-    sha256 = "f1fd5adb2ed6815e7debff30cb44b21188dc65da42b7a67537f28256e8e71c29",
-    version = "250292dd20af60edc6e0d07f1d6e489a2f8e1c44",
+    sha256 = "c4d1a7c624cb6f107c276c5218eeb0e60f65548d3f600d6abc68260edaae765a",
+    version = "75f032b24263c2b684b9921755cafc1c08e41b9d",
 )
 
 http_archive(
@@ -465,9 +481,9 @@ http_archive(
 http_archive(
     name = "gettext",
     build_file = "@toktok//third_party:BUILD.gettext",
-    sha256 = "839a260b2314ba66274dae7d245ec19fce190a3aa67869bf31354cb558df42c7",
-    strip_prefix = "gettext-0.22.3",
-    urls = ["https://ftp.gnu.org/pub/gnu/gettext/gettext-0.22.3.tar.gz"],
+    sha256 = "c1e0bb2a4427a9024390c662cd532d664c4b36b8ff444ed5e54b115fdb7a1aea",
+    strip_prefix = "gettext-0.22.4",
+    urls = ["https://ftp.gnu.org/pub/gnu/gettext/gettext-0.22.4.tar.gz"],
 )
 
 nixpkgs_package(
@@ -512,18 +528,20 @@ http_archive(
     urls = ["https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.33.tar.gz"],
 )
 
+# https://github.com/hyperrealm/libconfig
 new_github_archive(
     name = "libconfig",
     repo = "hyperrealm/libconfig",
-    sha256 = "a3ae202153fafb40558c26831429ce39845b2395ad8d30269a50e309a7585a8c",
-    version = "v1.7.2",
+    sha256 = "6552f0872929a90c25d161a817e701f149a78ddc2d74a5256ffd575c4765cc0d",
+    version = "v1.7.3",
 )
 
+# https://github.com/libexif/libexif
 new_github_archive(
     name = "libexif",
     repo = "libexif/libexif",
-    sha256 = "7f283fee7c949944eb3e0066cd5763355dc5591ad15ea96910cb2f24adca43f3",
-    version = "154189b77491191e00e1204083ab51c4ad5a60ff",
+    sha256 = "34bbe47d4ae7fbb98d56def87f3afb187364396039a608667222be8d414a2317",
+    version = "0477ce1f39565332d0bb6d26c04324259f172809",
 )
 
 http_archive(
@@ -534,6 +552,7 @@ http_archive(
     urls = ["https://ftp.gnu.org/gnu/libidn/libidn2-2.3.0.tar.gz"],
 )
 
+# https://github.com/fukuchi/libqrencode
 new_github_archive(
     name = "libqrencode",
     repo = "fukuchi/libqrencode",
@@ -541,6 +560,7 @@ new_github_archive(
     version = "715e29fd4cd71b6e452ae0f4e36d917b43122ce8",
 )
 
+# https://github.com/jedisct1/libsodium
 new_github_archive(
     name = "libsodium",
     patches = ["@toktok//third_party/patches:libsodium.patch"],
@@ -549,13 +569,15 @@ new_github_archive(
     version = "1.0.19",
 )
 
+# https://github.com/webmproject/libvpx
 new_github_archive(
     name = "libvpx",
     repo = "webmproject/libvpx",
-    sha256 = "24ab597b3598503e9af89262bcacda2185e7865ddcb2cf004355833bc33fcf1b",
-    version = "v1.13.1",
+    sha256 = "946835f055f8c9604d503557b7b581db93f580dac876dddf8ef4f28e51dd9f3b",
+    version = "v1.14.0",
 )
 
+# https://github.com/zeromq/libzmq
 new_github_archive(
     name = "libzmq",
     repo = "zeromq/libzmq",
@@ -563,6 +585,7 @@ new_github_archive(
     version = "v4.3.5",
 )
 
+# https://github.com/kcat/openal-soft
 new_github_archive(
     name = "openal",
     repo = "kcat/openal-soft",
@@ -572,6 +595,7 @@ new_github_archive(
     version = "openal-soft-1.20.1",
 )
 
+# https://github.com/xiph/opus
 new_github_archive(
     name = "opus",
     repo = "xiph/opus",
@@ -619,18 +643,20 @@ http_archive(
     # urls = ["https://www.libsdl.org/release/SDL2-2.28.5.tar.gz"],
 )
 
+# https://github.com/sqlcipher/sqlcipher
 new_github_archive(
     name = "sqlcipher",
     repo = "sqlcipher/sqlcipher",
-    sha256 = "a35364ce8ecbcf4f3ef21d5e4139cea0f6bec3aaaeb749bae3c2988fcc2b1b6a",
-    version = "v4.5.5",
+    sha256 = "5d269166c33c39c4dc6fc14be4ac8cd78b022f8bd59b0775becf0c896331a539",
+    version = "v4.5.6",
 )
 
+# https://github.com/tcltk/tcl
 new_github_archive(
     name = "tcl",
     repo = "tcltk/tcl",
-    sha256 = "a2a8789d6fbe8dcbb17ed5c19d71539045f818cf657128bcef8740f6a40436f7",
-    version = "149b0e616bdf5f74071665caf6bf4f59d80ea0fc",
+    sha256 = "f9e6cdf634320673daaf2b7ad5d466c796f4dc161600eb1552bd861e0a0b0b89",
+    version = "83d99eabcf81170811c5e493c6d3626bc07414a8",
 )
 
 nixpkgs_package(
@@ -699,16 +725,18 @@ nixpkgs_package(
     repository = "@nixpkgs",
 )
 
+# https://github.com/yasm/yasm
 new_github_archive(
     name = "yasm",
     repo = "yasm/yasm",
-    sha256 = "3d0938894e065b10a1a14b6e29e67208125dab18f6061bc6b73713cd75dd265d",
-    version = "2cd3bb50e256f5ed5f611ac611d25fe673f2cec3",
+    sha256 = "3cdcef621265b50d2db6ca8ee9a498411999a9584cad857b1cc20314b03c7664",
+    version = "9defefae9fbcb6958cddbfa778c1ea8605da8b8b",
 )
 
 # Apple frameworks
 # =========================================================
 
+# https://github.com/bazelbuild/rules_apple
 github_archive(
     name = "build_bazel_rules_apple",
     repo = "bazelbuild/rules_apple",
@@ -716,6 +744,7 @@ github_archive(
     version = "07f5f2dd14f56e54eaca176630450c2abcc52eb9",
 )
 
+# https://github.com/bazelbuild/rules_swift
 github_archive(
     name = "build_bazel_rules_swift",
     repo = "bazelbuild/rules_swift",
@@ -723,6 +752,7 @@ github_archive(
     version = "7b8558cab8e402eb21e2fc655989bae378171486",
 )
 
+# https://github.com/bazelbuild/apple_support
 github_archive(
     name = "build_bazel_apple_support",
     repo = "bazelbuild/apple_support",
@@ -783,20 +813,23 @@ python_repository(
     name = "python3",
 )
 
+# https://github.com/cython/cython
 github_archive(
     name = "cython",
     repo = "cython/cython",
-    sha256 = "6fac075cab5fed1e20a284b1caba3ac09b31867daef480f0149eec1a1c981c61",
-    version = "3.0.7",
+    sha256 = "ca1d767ebd1296f4dc93da397595f9ea3cd5f7d3347748b12c19cfd9eee6fee7",
+    version = "3.0.8",
 )
 
+# https://github.com/python/mypy
 new_github_archive(
     name = "mypy",
     repo = "python/mypy",
-    sha256 = "57788ce99c6e7e6f41ac9e5f514a08ee4b2121847e3dcaa16a1aec941d025d27",
-    version = "v1.6.0",
+    sha256 = "9fa0ac71f11162280e54768381614d1ad0b1648e4198633a9033bbad7574ce67",
+    version = "v1.8.0",
 )
 
+# https://github.com/python/mypy_extensions
 new_github_archive(
     name = "mypy_extensions",
     repo = "python/mypy_extensions",
@@ -804,6 +837,7 @@ new_github_archive(
     version = "1.0.0",
 )
 
+# https://github.com/python/typing_extensions
 new_github_archive(
     name = "typing_extensions",
     repo = "python/typing_extensions",
@@ -815,6 +849,7 @@ new_github_archive(
 # Node.js
 # =========================================================
 
+# https://github.com/bazelbuild/rules_nodejs
 github_archive(
     name = "build_bazel_rules_nodejs",
     repo = "bazelbuild/rules_nodejs",
@@ -840,108 +875,10 @@ npm_install(
     package_lock_json = "//js-toxcore-c:package-lock.json",
 )
 
-## Node.js
-## =========================================================
-#
-##github_archive(
-##    name = "rules_codeowners",
-##    repo = "zegl/rules_codeowners",
-##    #sha256 = "06910242c6d47c5719efd5789cf34dac393034dc0fe4c73f1ed3aac739ffabdc",
-##    version = "bdc2f987cd0e15ebfa9b76689a4c9a472730a6f0",
-##)
-##
-##github_archive(
-##    name = "build_bazel_rules_nodejs",
-##    repo = "bazelbuild/rules_nodejs",
-##    sha256 = "171bdbd8386576ed2f6a3f8aff87eeb048f963981870a3a8432be7d12cf5b2cc",
-##    version = "1.3.0",
-##)
-##
-##load("@build_bazel_rules_nodejs//:index.bzl", "yarn_install")
-##
-##yarn_install(
-##    name = "npm",
-##    package_json = "//js-toxcore-c:package.json",
-##    yarn_lock = "//js-toxcore-c:yarn.lock",
-##)
-#
-##load("@npm//:install_bazel_dependencies.bzl", "install_bazel_dependencies")
-##install_bazel_dependencies()
-#
-##load("@org_pubref_rules_node//node:rules.bzl", "node_repositories", "yarn_modules")
-##
-##node_repositories()
-##
-##yarn_modules(
-##    name = "yarn_modules",
-##    install_tools = [
-##        "sh",
-##        "dirname",
-##    ],
-##    deps = {
-##        "ansi-to-html": "0.6.4",
-##        "async": "2.6.0",
-##        "buffertools": "2.1.6",
-##        "ffi": "2.2.0",
-##        "firebase": "3.9.0",
-##        "firepad": "1.4.0",
-##        "grunt": "1.0.1",
-##        "grunt-jsdoc": "2.2.1",
-##        "grunt-shell": "2.1.0",
-##        "ink-docstrap": "1.3.2",
-##        "jsdoc": "3.5.5",
-##        "mktemp": "0.4.0",
-##        "mocha": "3.5.3",
-##        "ref": "1.3.5",
-##        "ref-array": "1.2.0",
-##        "ref-struct": "1.1.0",
-##        "should": "13.2.1",
-##        "underscore": "1.8.3",
-##    },
-##)
-##
-##yarn_modules(
-##    name = "mocha_modules",
-##    deps = {"mocha": "3.5.3"},
-##)
-#
-## Compilation database
-## =========================================================
-#
-## Tool used for creating a compilation database.
-#github_archive(
-#    name = "io_kythe",
-#    repo = "kythe/kythe",
-#    sha256 = "6e4358e780768cae8a98ddf7059e588228bfd3319b24a4ab03cedc84231b14b4",
-#    version = "v0.0.63",
-#)
-#
-#http_archive(
-#    name = "com_github_tencent_rapidjson",
-#    build_file = "@io_kythe//third_party:rapidjson.BUILD",
-#    sha256 = "e6fc99c7df7f29995838a764dd68df87b71db360f7727ace467b21b82c85efda",
-#    strip_prefix = "rapidjson-8f4c021fa2f1e001d2376095928fc0532adf2ae6",
-#    url = "https://github.com/Tencent/rapidjson/archive/8f4c021fa2f1e001d2376095928fc0532adf2ae6.zip",
-#)
-#
-#new_github_archive(
-#    name = "com_github_google_glog",
-#    build_file_content = "\n".join([
-#        "load(\"//:bazel/glog.bzl\", \"glog_library\")",
-#        "glog_library(with_gflags=0)",
-#    ]),
-#    repo = "google/glog",
-#    sha256 = "feca3c7e29a693cab7887409756d89d342d4a992d54d7c5599bebeae8f7b50be",
-#    version = "3ba8976592274bc1f907c402ce22558011d6fc5e",
-#)
-#
-#load("@io_kythe//:setup.bzl", "kythe_rule_repositories")
-#
-#kythe_rule_repositories()
-
 # Tox Extension modules
 # =========================================================
 
+# https://github.com/toxext/toxext
 new_github_archive(
     name = "toxext",
     repo = "toxext/toxext",
@@ -949,6 +886,7 @@ new_github_archive(
     version = "v0.0.3",
 )
 
+# https://github.com/toxext/tox_extension_messages
 new_github_archive(
     name = "tox_extension_messages",
     repo = "toxext/tox_extension_messages",

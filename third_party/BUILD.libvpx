@@ -50,6 +50,7 @@ export PATH="$$PATH:$$PWD/gcc-wrapper"
     --disable-webm-io \
     --enable-pic \
     --enable-shared \
+    --enable-postproc \
     --enable-vp9-temporal-denoising \
     --enable-vp9-highbitdepth \
     --enable-error-concealment \
@@ -173,7 +174,8 @@ cc_library(
             "**/ppc/**",
             "**/x86/**",
             "vp8/encoder/mr_dissim.c",
-            "vpx_ports/arm_cpudetect.c",
+            "vpx_ports/aarch32_cpudetect.c",
+            "vpx_ports/aarch64_cpudetect.c",
             "vpx_ports/loongarch_cpudetect.c",
             "vpx_ports/mips_cpudetect.c",
             "vpx_ports/ppc_cpudetect.c",
@@ -182,10 +184,8 @@ cc_library(
     ) + select({
         "@toktok//tools/config:arm64": glob(
             ["vp*/**/arm/**/*.c"],
-            exclude = [
-                "vpx_dsp/arm/vpx_convolve8_neon.c",
-            ],
-        ) + ["vpx_ports/arm_cpudetect.c"],
+            exclude = ["vpx_dsp/arm/vpx_convolve8_neon_asm.c"],
+        ) + ["vpx_ports/aarch64_cpudetect.c"],
         "@toktok//tools/config:x86_64": glob(
             ["vp*/**/x86/**/*.c"],
             exclude = ["**/*_avx512.c"],
