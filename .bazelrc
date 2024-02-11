@@ -441,6 +441,7 @@ build --per_file_copt='//toxins@-Wno-sign-compare'
 build --per_file_copt='//toxins@-Wno-switch-enum'
 build --per_file_copt='//toxins@-Wno-unreachable-code'
 build --per_file_copt='//toxins@-Wno-unreachable-code-return'
+build --per_file_copt='//toxins@-Wno-unused-result'
 
 # Disable some clang warnings on various third party dependencies.
 build --per_file_copt='external[:/]@-Wno-assign-enum'
