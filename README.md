@@ -4,19 +4,19 @@ This repository contains git submodules for all directly supported Tox-related
 repositories. This ensures that any changes made to any of the submodules are
 always compatible in the snapshot taken by toktok-stack. Before a toxcore
 release, toktok-stack must cleanly build with the latest `master` commit in
-`c-toxcore`. Clients, bindings, and support programs must always pass all
-tests in this snapshot. We don't guarantee security of the snapshot, merely
+`c-toxcore`. Clients, bindings, and support programs must always pass all tests
+in this snapshot. We don't guarantee security of the snapshot, merely
 interoperability, so don't rely on the security or even error-freeness of
 anything here. If you need that, use released versions of the submodules
 themselves.
 
-Beyond the clients, bindings, and programs directly maintained and supported
-by the TokTok team, here are some additional repositories of interest that
-develop their code separately. We hope to integrate some of them into
-toktok-stack at some point.
+Beyond the clients, bindings, and programs directly maintained and supported by
+the TokTok team, here are some additional repositories of interest that develop
+their code separately. We hope to integrate some of them into toktok-stack at
+some point.
 
-- [aTox](https://github.com/evilcorpltd/aTox) Android Tox client. Developed in
-  a fairly rigorous manner and moves slowly but safely. Not as feature-rich as
+- [aTox](https://github.com/evilcorpltd/aTox) Android Tox client. Developed in a
+  fairly rigorous manner and moves slowly but safely. Not as feature-rich as
   other clients, but reliable and secure.
 - [rstox](https://github.com/tox-rs/rstox) Rust bindings to c-toxcore.
 - [trifa_material](https://github.com/Zoxcore/trifa_material) Experimental
@@ -24,10 +24,10 @@ toktok-stack at some point.
   Linux.
 - [zoxcore](https://github.com/Zoxcore/c-toxcore) Experimental c-toxcore fork
   with additional toxav (audio/video) development such as x264 video encoding,
-  an improved messaging protocol (with stable message IDs). Go here if you
-  want to implement your own experimental features in a more fast-paced
-  environment. Features here can eventually be merged back into TokTok's
-  toxcore after more rigorous testing and review.
+  an improved messaging protocol (with stable message IDs). Go here if you want
+  to implement your own experimental features in a more fast-paced environment.
+  Features here can eventually be merged back into TokTok's toxcore after more
+  rigorous testing and review.
 
 ## Dev Containers
 
