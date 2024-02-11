@@ -374,7 +374,7 @@ build --per_file_copt='//qtox[:/].*x11@-Wno-variadic-macros'
 build --per_file_copt='//c-toxcore/toxav:video.c@-Wno-used-but-marked-unused'
 
 # Ignore super donators stuff. It's verbatim. We compile it, but don't care about cleanliness.
-build --per_file_copt='//c-toxcore/super_donators@-Wno-comma,-Wno-extra-semi-stmt,-Wno-unreachable-code-return'
+build --per_file_copt='//c-toxcore/super_donators@-Wno-comma,-Wno-extra-semi-stmt,-Wno-unreachable-code-return,-Wno-unused-result'
 
 # Tests
 build --per_file_copt='_bench\\.(cc|cpp)$@-Wno-weak-vtables,-Wno-zero-as-null-pointer-constant'
