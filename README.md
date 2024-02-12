@@ -20,8 +20,8 @@ some point.
   other clients, but reliable and secure.
 - [rstox](https://github.com/tox-rs/rstox) Rust bindings to c-toxcore.
 - [trifa_material](https://github.com/Zoxcore/trifa_material) Experimental
-  client using zoxcore (below) written in Kotlin. Works on macOS, Windows, and
-  Linux.
+  desktop client using zoxcore (below) written in Kotlin. Works on macOS,
+  Windows, and Linux.
 - [zoxcore](https://github.com/Zoxcore/c-toxcore) Experimental c-toxcore fork
   with additional toxav (audio/video) development such as x264 video encoding,
   an improved messaging protocol (with stable message IDs). Go here if you want
