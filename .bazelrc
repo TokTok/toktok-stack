@@ -394,9 +394,10 @@ build --per_file_copt='moc_.*\\.cpp$@-Wno-redundant-parens'
 build --per_file_copt='moc_.*\\.cpp$@-Wno-undefined-reinterpret-cast'
 
 # Protobuf generated code.
+build --per_file_copt='\\.pb\\.cc$@-Wno-c++20-compat'
 build --per_file_copt='\\.pb\\.cc$@-Wno-global-constructors,-Wno-exit-time-destructors'
 build --per_file_copt='\\.pb\\.cc$@-Wno-missing-prototypes'
-build --per_file_copt='\\.pb\\.cc$@-Wno-c++20-compat'
+build --per_file_copt='\\.pb\\.cc$@-Wno-weak-vtables'
 
 # TODO(iphydf): Fix these.
 build --per_file_copt='//c-toxcore@-Wno-shadow-uncaptured-local'

@@ -347,8 +347,8 @@ github_archive(
 github_archive(
     name = "rules_kotlin",
     repo = "bazelbuild/rules_kotlin",
-    sha256 = "eec67a1438949f0bec00d6941223ba8009a5e232ef969e6110ccdcfb6d71349c",
-    version = "v1.9.0",
+    sha256 = "606420f926e91476d3205f4e5a98e4e6af3bc9dabe10ee34569109f7b35a2427",
+    version = "58fde1a5d0ab6fa812ba3fb93331b2d7652fd3b6",
 )
 
 load("@rules_kotlin//kotlin:repositories.bzl", "kotlin_repositories")

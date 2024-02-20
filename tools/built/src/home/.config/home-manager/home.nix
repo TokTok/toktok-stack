@@ -35,6 +35,7 @@
     man-pages               # libc documentation
     man-pages-posix         # libc documentation (POSIX functions)
     openssh                 # ssh server
+    protobuf                # needed to build protobuf files in jvm-toxcore-c
     python3                 # needed for .hie-bios
     screen                  # terminal window manager
     strace                  # debugging system calls
