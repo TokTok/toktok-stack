@@ -135,6 +135,10 @@ our %REPOS = (
       upstream => 'toktok',
       repo 'iphydf',
    }],
+   'jvm-toxcore-c' => ['jvm-toxcore-c', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
    'py_toxcore_c' => ['py-toxcore-c', {
       upstream => 'toktok',
       repo ['aitjcize', 'PyTox'],

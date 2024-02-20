@@ -64,6 +64,9 @@
 [submodule "js-toxcore-c"]
 	path = js-toxcore-c
 	url = https://github.com/TokTok/js-toxcore-c
+[submodule "jvm-toxcore-c"]
+	path = jvm-toxcore-c
+	url = https://github.com/TokTok/jvm-toxcore-c
 [submodule "py-toxcore-c"]
 	path = py_toxcore_c
 	url = https://github.com/TokTok/py-toxcore-c
