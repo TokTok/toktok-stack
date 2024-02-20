@@ -37,13 +37,8 @@ if ! (ps aux | grep nix-daemon | grep -v grep); then
   sleep 1
 fi
 
-# Generate compile_commands.json, used by YCM.
+# Generate compile_commands.json, used by YCM and vscode.
 nix-shell -p python3 --run "python3 $HOME/.bin/bazel-compdb"
-
-# Download the entire remote build cache so it's available locally in the dev
-# container. Really we only need the headers for YCM, but I don't know how to
-# easily limit this to headers only.
-bazel build --show_timestamps --remote_download_outputs=all //...
 
 # Run all tests to completion, so the dev container starts out with all tests
 # passing (so any potential breakage is local only).
