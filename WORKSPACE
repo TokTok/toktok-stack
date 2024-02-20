@@ -327,8 +327,8 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 maven_install(
     artifacts = [
-        "junit:junit:4.13.2",
-        "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2",
+        "org.jetbrains.kotlin:kotlin-test-junit:1.9.22",
+        "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0",
     ],
     repositories = [
         "https://repo1.maven.org/maven2",
