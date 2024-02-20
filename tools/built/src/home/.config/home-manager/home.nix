@@ -30,6 +30,7 @@
     connect                 # for ssh proxy via tor
     gdb                     # debugger for C code
     gnupg                   # for signing git commits
+    go                      # for vscode to understand Go
     haskell-language-server # for vscode to understand Haskell
     man-pages               # libc documentation
     man-pages-posix         # libc documentation (POSIX functions)

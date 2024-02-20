@@ -57,6 +57,59 @@ zig_register_toolchains(
     zig_version = "0.11.0",
 )
 
+# Python
+# =========================================================
+
+load("//tools/workspace:python.bzl", "python_repository")
+
+github_archive(
+    name = "rules_python",
+    repo = "bazelbuild/rules_python",
+    sha256 = "9110e83a233c9edce177241f3ae95eae4e4cc3b602d845878d76ad4e3bab7c60",
+    version = "0.31.0",
+)
+
+load("@rules_python//python:repositories.bzl", "py_repositories")
+
+py_repositories()
+
+python_repository(
+    name = "python3",
+)
+
+# https://github.com/cython/cython
+github_archive(
+    name = "cython",
+    repo = "cython/cython",
+    sha256 = "ca1d767ebd1296f4dc93da397595f9ea3cd5f7d3347748b12c19cfd9eee6fee7",
+    version = "3.0.8",
+)
+
+# https://github.com/python/mypy
+new_github_archive(
+    name = "mypy",
+    repo = "python/mypy",
+    sha256 = "9fa0ac71f11162280e54768381614d1ad0b1648e4198633a9033bbad7574ce67",
+    version = "v1.8.0",
+)
+
+# https://github.com/python/mypy_extensions
+new_github_archive(
+    name = "mypy_extensions",
+    repo = "python/mypy_extensions",
+    sha256 = "73a374063a9e5685d9e424462bf8ba1013c79169733eefbd20010ee5d6157a73",
+    version = "1.0.0",
+)
+
+# https://github.com/python/typing_extensions
+new_github_archive(
+    name = "typing_extensions",
+    repo = "python/typing_extensions",
+    sha256 = "23d3202b2a220832bf81b8f0184d4d91b8d21abde2700fdcdca6ff9f02eb2619",
+    strip_prefix = "/src",
+    version = "4.9.0",
+)
+
 # Fuzzing
 # =========================================================
 
@@ -64,8 +117,8 @@ zig_register_toolchains(
 github_archive(
     name = "rules_fuzzing",
     repo = "bazelbuild/rules_fuzzing",
-    sha256 = "ff52ef4845ab00e95d29c02a9e32e9eff4e0a4c9c8a6bcf8407a2f19eb3f9190",
-    version = "v0.4.1",
+    sha256 = "15e3fc7fd7d41b77b30eed059821bdf0bac714f4686c69a9e5379762326bc9b4",
+    version = "d17a7d79c881cb8b1a1ba1d2e41c1adf1d60b23b",
 )
 
 load("@rules_fuzzing//fuzzing:repositories.bzl", "rules_fuzzing_dependencies")
@@ -268,6 +321,17 @@ github_archive(
     repo = "bazelbuild/rules_jvm_external",
     sha256 = "6cc8444b20307113a62b676846c29ff018402fd4c7097fcd6d0a0fd5f2e86429",
     version = "5.3",
+)
+
+load("@rules_jvm_external//:defs.bzl", "maven_install")
+
+maven_install(
+    artifacts = [
+        "junit:junit:4.13.2",
+    ],
+    repositories = [
+        "https://repo1.maven.org/maven2",
+    ],
 )
 
 # https://github.com/bazelbuild/stardoc
@@ -802,48 +866,6 @@ nixpkgs_package(
     attribute_path = "qt5.qttools.dev",
     build_file = "//third_party:BUILD.qt",
     repository = "@nixpkgs",
-)
-
-# Python
-# =========================================================
-
-load("//tools/workspace:python.bzl", "python_repository")
-
-python_repository(
-    name = "python3",
-)
-
-# https://github.com/cython/cython
-github_archive(
-    name = "cython",
-    repo = "cython/cython",
-    sha256 = "ca1d767ebd1296f4dc93da397595f9ea3cd5f7d3347748b12c19cfd9eee6fee7",
-    version = "3.0.8",
-)
-
-# https://github.com/python/mypy
-new_github_archive(
-    name = "mypy",
-    repo = "python/mypy",
-    sha256 = "9fa0ac71f11162280e54768381614d1ad0b1648e4198633a9033bbad7574ce67",
-    version = "v1.8.0",
-)
-
-# https://github.com/python/mypy_extensions
-new_github_archive(
-    name = "mypy_extensions",
-    repo = "python/mypy_extensions",
-    sha256 = "73a374063a9e5685d9e424462bf8ba1013c79169733eefbd20010ee5d6157a73",
-    version = "1.0.0",
-)
-
-# https://github.com/python/typing_extensions
-new_github_archive(
-    name = "typing_extensions",
-    repo = "python/typing_extensions",
-    sha256 = "23d3202b2a220832bf81b8f0184d4d91b8d21abde2700fdcdca6ff9f02eb2619",
-    strip_prefix = "/src",
-    version = "4.9.0",
 )
 
 # Node.js
