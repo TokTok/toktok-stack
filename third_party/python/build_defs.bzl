@@ -19,12 +19,13 @@ pyx_library(
 """
 
 load("@rules_cc//cc:defs.bzl", "cc_binary")
-load("@rules_python//python:defs.bzl", "py_library")
+load("@rules_python//python:defs.bzl", "py_library", "py_test")
 
 def pyx_library(
         name,
         cdeps = [],
         srcs = [],
+        data = [],
         cython_directives = {},
         cython_options = [],
         tags = [],
@@ -47,13 +48,15 @@ def pyx_library(
     # Invoke cython to generate C code.
     extra_flags = " ".join(
         ["-X '%s=%s'" % x for x in cython_directives.items()] +
-        cython_options + ["-Werror", "-Wextra", "--line-directives"],
+        cython_options + ["-Werror", "-Wextra", "--line-directives", "--gdb"],
     )
 
+    cpp_srcs = ["%s.cpp" % src.split(".")[0] for src in pyx_srcs]
+    debug_info = ["cython_debug/cython_debug_info_%s" % src.split(".")[0].split("/")[-1] for src in pyx_srcs]
     native.genrule(
         name = name + "_cythonize",
         srcs = pyx_srcs + pxd_srcs,
-        outs = [src.split(".")[0] + ".cpp" for src in pyx_srcs],
+        outs = cpp_srcs + debug_info,
         cmd = "\n".join([
             "PYTHONHASHSEED=0 $(location @cython//:cython) --cplus -I %s -I $(GENDIR)/%s %s %s" % (
                 native.package_name(),
@@ -61,6 +64,7 @@ def pyx_library(
                 extra_flags,
                 " ".join(["$(location %s)" % s for s in pyx_srcs]),
             ),
+            "cp -r cython_debug $(RULEDIR)",
             "cp -r %s/* $(RULEDIR)" % native.package_name(),
         ]),
         tags = tags,
@@ -85,8 +89,22 @@ def pyx_library(
     py_library(
         name = name,
         srcs = py_srcs,
-        data = bins + pyx_srcs + pxd_srcs,
+        data = bins + pyx_srcs + pxd_srcs + data,
         imports = ["."],
         tags = tags,
         **kwargs
+    )
+
+def mypy_test(name, srcs, deps = [], path = []):
+    py_test(
+        name = name,
+        size = "small",
+        srcs = ["//third_party/python:mypy_test.py"],
+        args = [
+            "--extra-checks",
+            "--strict",
+        ] + ["$(location :%s)" % s for s in srcs],
+        data = srcs,
+        env = {"MYPYPATH": ":".join(path)},
+        deps = deps + ["@mypy"],
     )

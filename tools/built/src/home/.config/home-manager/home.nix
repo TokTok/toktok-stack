@@ -32,6 +32,7 @@
     gnupg                   # for signing git commits
     go                      # for vscode to understand Go
     haskell-language-server # for vscode to understand Haskell
+    ktfmt                   # Kotlin formatter
     man-pages               # libc documentation
     man-pages-posix         # libc documentation (POSIX functions)
     openssh                 # ssh server
