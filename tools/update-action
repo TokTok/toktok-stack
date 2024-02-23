@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -eux
+
+ACTION="$1"
+VERSION="$2"
+
+sed -i -e "s!$ACTION@v.!$ACTION@$VERSION!g" $(find . -name "*.yml" | xargs grep -l "$ACTION@")
