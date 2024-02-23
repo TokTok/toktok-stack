@@ -852,31 +852,24 @@ apple_support_dependencies()
 
 QT_LIBS = [
     "base",
-    "multimedia",
     "svg",
 ]
 
-nixpkgs_package(
-    name = "qt5.qtbase.bin",
-    build_file = "//third_party/qt:BUILD.qtbase.bin",
-    repository = "@nixpkgs",
-)
-
 [nixpkgs_package(
-    name = "qt5.qt%s.out" % lib,
+    name = "qt6.qt%s.out" % lib,
     build_file = "//third_party/qt:BUILD.qt%s.out" % lib,
     repository = "@nixpkgs",
 ) for lib in QT_LIBS]
 
 [nixpkgs_package(
-    name = "qt5.qt%s.dev" % lib,
+    name = "qt6.qt%s" % lib,
     build_file = "//third_party/qt:BUILD.qt%s.dev" % lib,
     repository = "@nixpkgs",
 ) for lib in QT_LIBS]
 
 nixpkgs_package(
     name = "qt",
-    attribute_path = "qt5.qttools.dev",
+    attribute_path = "qt6.qttools.dev",
     build_file = "//third_party:BUILD.qt",
     repository = "@nixpkgs",
 )

@@ -8,7 +8,7 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
         "include/Qt" + mod,
     ],
     visibility = ["//visibility:public"],
-    deps = ["@qt5.qtsvg.out//:" + mod.lower()],
+    deps = ["@qt6.qtsvg.out//:" + mod.lower()],
 ) for mod in [
     "Svg",
 ]]

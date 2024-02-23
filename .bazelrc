@@ -391,11 +391,16 @@ build --per_file_copt='_test\\.cpp$@-Wno-undefined-reinterpret-cast'
 
 # Qt generated code.
 build --per_file_copt='rcc_.*\\.cpp$@-Wno-global-constructors,-Wno-exit-time-destructors'
+build --per_file_copt='moc_.*\\.cpp$@-Wno-c++20-compat'
 build --per_file_copt='moc_.*\\.cpp$@-Wno-deprecated'
 build --per_file_copt='moc_.*\\.cpp$@-Wno-extra-semi-stmt'
 build --per_file_copt='moc_.*\\.cpp$@-Wno-gnu-zero-variadic-macro-arguments'
 build --per_file_copt='moc_.*\\.cpp$@-Wno-redundant-parens'
 build --per_file_copt='moc_.*\\.cpp$@-Wno-undefined-reinterpret-cast'
+
+# May include Qt generated code.
+build --per_file_copt='//experimental/users/iphydf/qt-toxcore-c@-Wno-c++20-compat'
+build --per_file_copt='//qtox@-Wno-c++20-compat'
 
 # Protobuf generated code.
 build --per_file_copt='\\.pb\\.cc$@-Wno-c++20-compat'

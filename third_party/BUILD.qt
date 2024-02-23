@@ -1,6 +1,6 @@
 [alias(
     name = name,
-    actual = "@qt5.qtbase.dev//:bin/%s" % name,
+    actual = "@qt6.qtbase//:libexec/%s" % name,
     visibility = ["//visibility:public"],
 ) for name in [
     "moc",
@@ -18,13 +18,13 @@
 
 alias(
     name = "qt_platform",
-    actual = "@qt5.qtbase.bin//:platforms",
+    actual = "@qt6.qtbase//:platforms",
     visibility = ["//visibility:public"],
 )
 
 [alias(
     name = "qt_" + mod.lower(),
-    actual = "@qt5.qtbase.dev//:" + mod.lower(),
+    actual = "@qt6.qtbase//:" + mod.lower(),
     visibility = ["//visibility:public"],
 ) for mod in [
     "Concurrent",
@@ -39,16 +39,7 @@ alias(
 
 [alias(
     name = "qt_" + mod.lower(),
-    actual = "@qt5.qtmultimedia.dev//:" + mod.lower(),
-    visibility = ["//visibility:public"],
-) for mod in [
-    "Multimedia",
-    "MultimediaWidgets",
-]]
-
-[alias(
-    name = "qt_" + mod.lower(),
-    actual = "@qt5.qtsvg.dev//:" + mod.lower(),
+    actual = "@qt6.qtsvg//:" + mod.lower(),
     visibility = ["//visibility:public"],
 ) for mod in [
     "Svg",
@@ -60,8 +51,6 @@ filegroup(
         ":qt_concurrent",
         ":qt_core",
         ":qt_gui",
-        ":qt_multimedia",
-        ":qt_multimediawidgets",
         ":qt_network",
         ":qt_opengl",
         ":qt_svg",

@@ -1,4 +1,4 @@
-"""Starlark rules and macros to support Qt5 compilation.
+"""Starlark rules and macros to support Qt6 compilation.
 
 This file defines three macros:
 - qt_uic, compiles .ui files into header files.
@@ -12,7 +12,6 @@ This file defines three macros:
 
 load("@build_bazel_rules_apple//apple:macos.bzl", "macos_application")
 load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
-load("//third_party:nixpkgs.bzl", "QT_VERSION")
 
 def _qt_uic_impl(ctx):
     uic = ctx.executable._uic
@@ -288,9 +287,8 @@ def qt_test(name, src, deps, copts = [], mocopts = [], size = None, **kwargs):
         size = size,
         srcs = [src],
         copts = copts + ["-I$(GENDIR)/%s/%s" % (native.package_name(), src[:src.rindex("/")])],
-        # TODO(iphydf): Infer this, rather than hard-coding the Qt version number.
-        env = {"QT_PLUGIN_PATH": "external/qt5.qtbase.bin/lib/qt-%s/plugins" % QT_VERSION},
-        data = ["@qt//:qt_platform"],
+        env = {"QT_PLUGIN_PATH": "external/qt6.qtbase/lib/qt-6/plugins"},
+        data = ["@qt//:qt_platform", "@openssl.out//:lib"],
         deps = deps + [
             ":%s_moc" % name,
             "@qt//:qt_test",

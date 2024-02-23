@@ -1,10 +1,19 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
 exports_files([
-    "bin/moc",
-    "bin/rcc",
-    "bin/uic",
+    "libexec/moc",
+    "libexec/rcc",
+    "libexec/uic",
 ])
+
+filegroup(
+    name = "platforms",
+    srcs = glob([
+        "lib/qt-6/plugins/platforms/*offscreen*",
+        "lib/qt-6/plugins/tls/*opensslbackend*",
+    ]),
+    visibility = ["//visibility:public"],
+)
 
 [cc_library(
     name = mod.lower(),
@@ -14,7 +23,7 @@ exports_files([
         "include/Qt" + mod,
     ],
     visibility = ["//visibility:public"],
-    deps = ["@qt5.qtbase.out//:" + mod.lower()],
+    deps = ["@qt6.qtbase.out//:" + mod.lower()],
 ) for mod in [
     "Concurrent",
     "Core",
