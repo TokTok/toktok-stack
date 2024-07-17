@@ -691,9 +691,9 @@ new_local_repository(
 http_archive(
     name = "libxz",
     build_file = "@toktok//third_party:BUILD.libxz",
-    sha256 = "135c90b934aee8fbc0d467de87a05cb70d627da36abe518c357a873709e5b7d6",
-    strip_prefix = "xz-5.4.5",
-    urls = ["https://netix.dl.sourceforge.net/project/lzmautils/xz-5.4.5.tar.gz"],
+    sha256 = "8db6664c48ca07908b92baedcfe7f3ba23f49ef2476864518ab5db6723836e71",
+    strip_prefix = "xz-5.4.7",
+    urls = ["https://github.com/tukaani-project/xz/releases/download/v5.4.7/xz-5.4.7.tar.gz"],
 )
 
 http_archive(
