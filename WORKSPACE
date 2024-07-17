@@ -630,8 +630,8 @@ new_github_archive(
     name = "libsodium",
     patches = ["@toktok//third_party/patches:libsodium.patch"],
     repo = "jedisct1/libsodium",
-    sha256 = "310cb8149ba12342d0cd64ae81d0c7ed60d608732685e3c6b8c359bba572cfd3",
-    version = "1.0.19",
+    sha256 = "46e5f10a41e44cf24f1f8baf4f3e2d2ca21416e842b2c92e2be3ddd5e473b81b",
+    version = "1.0.19-RELEASE",
 )
 
 # https://github.com/webmproject/libvpx
