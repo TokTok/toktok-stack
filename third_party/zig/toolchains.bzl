@@ -1,4 +1,9 @@
+"""
+Toolchain definitions for Zig.
+"""
+
 load("@rules_zig//zig:toolchain.bzl", "zig_target_toolchain")
+load("//third_party:nixpkgs.bzl", "LD_LINUX")
 
 CPUS = {
     "aarch64": {
@@ -7,11 +12,17 @@ CPUS = {
     },
     "x86_64": {
         "cpu": "x86_64",
-        "dynamic_linker": "/nix/store/qn3ggz5sf3hkjs2c797xf7nan3amdxmp-glibc-2.38-27/lib/ld-linux-x86-64.so.2",
+        "dynamic_linker": LD_LINUX,
     },
 }
 
-def zig_nix_toolchains():
+def zig_nix_toolchains(name = "zig_nix_toolchains"):
+    """
+    Define toolchains for each supported CPU.
+
+    Args:
+        name: The name of the rule (unused).
+    """
     for arch in CPUS:
         native.platform(
             name = arch + "-linux-gnu",

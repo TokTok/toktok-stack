@@ -2,7 +2,7 @@
 with (import <nixpkgs> { });
 
 {
-  ghc = haskellPackages.ghcWithPackages (p: with p; [
+  ghc = haskellPackages.ghcWithPackages.override { installDocumentation = false; } (p: with p; [
     aeson
     aeson-pretty
     ansi-wl-pprint

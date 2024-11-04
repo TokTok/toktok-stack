@@ -196,8 +196,8 @@ load(
 
 nixpkgs_git_repository(
     name = "nixpkgs",
-    revision = "23.11",
-    sha256 = "bc9a0a74e8d7fb0e11434dd3abaa0cb0572ccd3a65b5a192eea41832b286e8a0",
+    revision = "24.05",
+    sha256 = "911314b81780f26fdaf87e17174210bdbd40c86bac1795212f257cdc236a1e78",
 )
 
 nixpkgs_cc_configure(
@@ -267,7 +267,7 @@ nixpkgs_package(
 # =========================================================
 
 nixpkgs_java_configure(
-    attribute_path = "jdk11.home",
+    attribute_path = "jdk11_headless.home",
     repository = "@nixpkgs",
     toolchain = True,
     toolchain_name = "nixpkgs_java",
@@ -290,21 +290,23 @@ github_archive(
     version = "0.9.1",
 )
 
+load("//third_party:nixpkgs.bzl", "GCC_LIB", "LD_LINUX", "PATCHELF")
+
 http_archive(
     name = "remote_java_tools_linux",
     patch_cmds = [
         "chmod 755 java_tools/ijar/ijar",
         "{patchelf} --set-interpreter {ld_linux} --add-rpath {gcc_lib} java_tools/ijar/ijar".format(
-            gcc_lib = "/nix/store/myw67gkgayf3s2mniij7zwd79lxy8v0k-gcc-12.3.0-lib/lib",
-            ld_linux = "/nix/store/qn3ggz5sf3hkjs2c797xf7nan3amdxmp-glibc-2.38-27/lib64/ld-linux-x86-64.so.2",
-            patchelf = "/nix/store/85jldj870vzcl72yz03labc93bwvqayx-patchelf-0.15.0/bin/patchelf",
+            gcc_lib = GCC_LIB,
+            ld_linux = LD_LINUX,
+            patchelf = PATCHELF,
         ),
         "chmod 555 java_tools/ijar/ijar",
         "chmod 755 java_tools/src/tools/singlejar/singlejar_local",
         "{patchelf} --set-interpreter {ld_linux} --add-rpath {gcc_lib} java_tools/src/tools/singlejar/singlejar_local".format(
-            gcc_lib = "/nix/store/myw67gkgayf3s2mniij7zwd79lxy8v0k-gcc-12.3.0-lib/lib",
-            ld_linux = "/nix/store/qn3ggz5sf3hkjs2c797xf7nan3amdxmp-glibc-2.38-27/lib64/ld-linux-x86-64.so.2",
-            patchelf = "/nix/store/85jldj870vzcl72yz03labc93bwvqayx-patchelf-0.15.0/bin/patchelf",
+            gcc_lib = GCC_LIB,
+            ld_linux = LD_LINUX,
+            patchelf = PATCHELF,
         ),
         "chmod 555 java_tools/src/tools/singlejar/singlejar_local",
     ],
@@ -380,13 +382,15 @@ haskell_register_ghc_nixpkgs(
         "-fdiagnostics-color=always",
         # TODO(iphydf): Move to hs-cimple.
         "-Wno-redundant-constraints",
+        # TODO(iphydf): Move to hs-schema.
+        "-Wno-unused-imports",
         "-optc=-Wno-unused-command-line-argument",
         "-optl=-Wl,--no-fatal-warnings",
     ],
     nix_file = "//:ghc.nix",
     repositories = {"nixpkgs": "@nixpkgs"},
     #static_runtime = True,
-    version = "9.4.8",
+    version = "9.6.5",
 )
 
 [nixpkgs_package(

@@ -1,4 +1,0 @@
----
-build:
-  docker:
-    web: tools/kythe/csrch/Dockerfile
