@@ -16,6 +16,6 @@ WORKDIR /src/workspace
 RUN sudo nix-daemon --daemon & bazel aquery --output=proto --show_timestamps //... > /dev/null
 
 # TODO(https://github.com/tweag/rules_nixpkgs/issues/439): Remove.
-RUN sudo sed -Eie "s!\b(mktemp|rm)\b!$(echo -n /nix/store/*-coreutils-9.3/bin/)\1!" /nix/store/*-clang-wrapper-*/bin/cc
+RUN sudo sed -Eie 's!\b(mktemp |rm )!'"$(echo -n /nix/store/*-coreutils-*/bin/)"'\1!' /nix/store/*-clang-wrapper-*/bin/cc
 
 # vim:ft=dockerfile

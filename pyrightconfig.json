@@ -1,0 +1,4 @@
+{
+  "include": ["/src/workspace"],
+  "exclude": ["bazel-*"]
+}
