@@ -13,3 +13,6 @@ if [ -f "$REPO/.bazelrc.local" ]; then
   # If the repo has customisations, add those here.
   cp "$REPO/.bazelrc.local" ".bazelrc.local"
 fi
+
+# Disable remote caching for now (Cirrus doesn't seem to like gRPC).
+sed -i -e 's/build --config=remote/# build --config=remote/' ".bazelrc.local"
