@@ -19,8 +19,8 @@ github_archive(
 github_archive(
     name = "hermetic_cc_toolchain",
     repo = "uber/hermetic_cc_toolchain",
-    sha256 = "be4f8151f773d03b2a19a9705ef9bd7fe2bf343b7502abb42445ea2fe3f5a7e3",
-    version = "v2.2.1",
+    sha256 = "680a3e008976d2c21ba2fbb7155ac38afe3b7a4e4c1f634f6ed8e55a65e368e8",
+    version = "v3.1.1",
 )
 
 # hermetic_cc_toolchain
@@ -41,8 +41,8 @@ register_toolchains(
 github_archive(
     name = "rules_zig",
     repo = "aherrmann/rules_zig",
-    sha256 = "0a7da1ea28abd2dcb09f01917c49f1036861a8a17366793455fdd9e723600bf1",
-    version = "766a11afd418c181babbf01b121748ded37938d1",
+    sha256 = "89f0b42a004c3f267d772eb20e4d7f74c9f0b93ce13009584c2aac9f2d0ff0f5",
+    version = "v0.4.0",
 )
 
 load(
