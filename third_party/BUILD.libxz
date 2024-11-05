@@ -50,6 +50,7 @@ cc_library(
         "//conditions:default": [
             "-D_POSIX_C_SOURCE=199506L",
             "-DMYTHREAD_POSIX",
+            "-Wno-overlength-strings",
             "-Wno-unused-function",
         ],
     }),

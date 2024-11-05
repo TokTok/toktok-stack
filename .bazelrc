@@ -244,6 +244,7 @@ build:android --copt='-Wno-unused-macros'
 build --per_file_copt='external/.*[-_]neon_dotprod\\.c$@-march=generic+dotprod'
 build --per_file_copt='external/.*[-_]neon_i8mm\\.c$@-march=generic+dotprod+i8mm'
 build --per_file_copt='external/.*[-_]sve\\.c$@-march=generic+dotprod+i8mm+sve'
+build --per_file_copt='external/.*[-_]sve2\\.c$@-march=generic+dotprod+i8mm+sve+sve2'
 
 build --per_file_copt='external/.*[-_]avx\\.c$@-mavx'
 build --per_file_copt='external/.*[-_]avx2\\.c$@-mavx2'

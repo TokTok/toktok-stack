@@ -67,6 +67,7 @@ cc_library(
         ],
     ) + [
         "src/analysis.c",
+        "src/extensions.c",
         "src/mlp.c",
         "src/mlp_data.c",
         "src/opus.c",
