@@ -61,6 +61,8 @@ with (import <nixpkgs> { });
       network
       parallel
       pretty
+      prettyprinter
+      prettyprinter-ansi-terminal
       process
       QuickCheck
       quickcheck-instances
