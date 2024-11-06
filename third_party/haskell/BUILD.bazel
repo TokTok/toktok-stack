@@ -13,7 +13,6 @@ licenses(["notice"])
 ) for name in [
     "aeson",
     "aeson-pretty",
-    "ansi-wl-pprint",
     "array",
     "async",
     "base",

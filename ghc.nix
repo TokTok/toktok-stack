@@ -6,7 +6,6 @@ with (import <nixpkgs> { });
     p: with p; [
       aeson
       aeson-pretty
-      ansi-wl-pprint
       array
       async
       base
