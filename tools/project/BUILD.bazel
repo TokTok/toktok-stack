@@ -1,14 +1,39 @@
+load(":build_defs.bzl", "WORKFLOWS")
+
 exports_files(srcs = [
     "cabal_test",
-    "common/github/workflows/release.yml",
     "diff_test.sh",
     "haskell/cirrus.yml.in",
     "haskell/github/docker/Dockerfile.in",
-    "haskell/github/workflows/checks.yml",
-    "haskell/github/workflows/ci.yml",
-    "haskell/github/workflows/publish.yml",
     "readme_test.sh",
     "settings_test.sh",
     "yamllint.rc",
     "yamllint_test.sh",
+] + [
+    "%s/github/workflows/%s.yml" % (lang, wf)
+    for lang, wfs in WORKFLOWS.items()
+    for wf in wfs
 ])
+
+# Test that language-specific workflows are supersets of common workflows.
+[sh_test(
+    name = "%s_github_%s_test" % (lang, wf),
+    size = "small",
+    srcs = ["//hs-github-tools/tools:check-workflows"],
+    args = [
+        "$(location common/github/workflows/%s.base.yml)" % wf,
+        "$(location %s/github/workflows/%s.yml)" % (lang, wf),
+    ],
+    data = [
+        "common/github/workflows/%s.base.yml" % wf,
+        "%s/github/workflows/%s.yml" % (lang, wf),
+    ],
+    tags = ["no-cross"],
+) for lang in WORKFLOWS.keys() for wf in [
+    wf[wf.rfind("/") + 1:wf.rfind(".")]
+    for wf in glob(["%s/github/workflows/*.yml" % lang])
+    if glob(
+        ["common/github/workflows/%s.base.yml" % wf[wf.rfind("/") + 1:wf.rfind(".")]],
+        allow_empty = True,
+    )
+]]

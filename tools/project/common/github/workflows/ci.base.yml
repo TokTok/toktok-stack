@@ -1,0 +1,12 @@
+# Base CI configuration for all projects.
+#
+# Requires that all projects run the common checks from ci-tools.
+name: ci
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  common:
+    uses: TokTok/ci-tools/.github/workflows/common-ci.yml@master
