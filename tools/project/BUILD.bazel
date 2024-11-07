@@ -1,5 +1,6 @@
 exports_files(srcs = [
     "cabal_test",
+    "common/github/workflows/release.yml",
     "diff_test.sh",
     "haskell/cirrus.yml.in",
     "haskell/github/docker/Dockerfile.in",

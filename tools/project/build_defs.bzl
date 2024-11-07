@@ -28,25 +28,30 @@ _haskell_ci = rule(
     implementation = _haskell_ci_impl,
 )
 
-def _haskell_ci_tests(haskell_package, custom_cirrus, custom_github):
-    if not custom_github and native.glob([".github/workflows/ci.yml"], allow_empty = True):
-        for workflow in ["workflows/checks.yml", "workflows/ci.yml", "workflows/publish.yml"]:
-            yml_cur = ".github/%s" % workflow
-            yml_ref = "//tools/project:haskell/github/%s" % workflow
-            native.sh_test(
-                name = "github_%s_test" % workflow,
-                size = "small",
-                srcs = ["@diffutils//:diff"],
-                args = [
-                    "-u",
-                    "$(location %s)" % yml_cur,
-                    "$(location %s)" % yml_ref,
-                ],
-                data = [
-                    yml_cur,
-                    yml_ref,
-                ],
-            )
+def _workflow_test(group, workflow, tests):
+    workflow_yml = "workflows/%s.yml" % workflow
+    yml_cur = ".github/%s" % workflow_yml
+    yml_ref = "//tools/project:%s/github/%s" % (group, workflow_yml)
+    test_name = "github_%s_test" % workflow
+    tests.append(test_name)
+    native.sh_test(
+        name = test_name,
+        size = "small",
+        srcs = ["@diffutils//:diff"],
+        args = [
+            "-u",
+            "$(location %s)" % yml_cur,
+            "$(location %s)" % yml_ref,
+        ],
+        data = [
+            yml_cur,
+            yml_ref,
+        ],
+    )
+
+def _haskell_ci_tests(haskell_package, custom_cirrus, tests):
+    for workflow in ["checks", "ci", "publish"]:
+        _workflow_test("haskell", workflow, tests)
 
     _haskell_ci(
         name = "dockerfile",
@@ -54,6 +59,7 @@ def _haskell_ci_tests(haskell_package, custom_cirrus, custom_github):
         template = "//tools/project:haskell/github/docker/Dockerfile.in",
     )
 
+    tests.append("dockerfile_test")
     native.sh_test(
         name = "dockerfile_test",
         size = "small",
@@ -76,6 +82,7 @@ def _haskell_ci_tests(haskell_package, custom_cirrus, custom_github):
             template = "//tools/project:haskell/cirrus.yml.in",
         )
 
+        tests.append("cirrus_test")
         native.sh_test(
             name = "cirrus_test",
             size = "small",
@@ -91,9 +98,11 @@ def _haskell_ci_tests(haskell_package, custom_cirrus, custom_github):
             ],
         )
 
-def _haskell_project(custom_cirrus, custom_github):
+def _haskell_project(custom_cirrus, tests):
     haskell_package = native.package_name()[3:]
     cabal_file = haskell_package + ".cabal"
+
+    tests.append("cabal_test")
     native.sh_test(
         name = "cabal_test",
         size = "small",
@@ -111,11 +120,23 @@ def _haskell_project(custom_cirrus, custom_github):
     _haskell_ci_tests(
         haskell_package = haskell_package,
         custom_cirrus = custom_cirrus,
-        custom_github = custom_github,
+        tests = tests,
     )
 
-def project(name = "project", license = "gpl3", custom_cirrus = False, custom_github = False):
-    """Adds some checks to make sure the project is uniform."""
+def project(name = "project", license = "gpl3", custom_cirrus = False):
+    """Adds some checks to make sure the project is uniform.
+
+    Args:
+        name: The name of the project.
+        license: The license to check for.
+        custom_cirrus: Whether to skip the Cirrus CI checks.
+    """
+    tests = []
+
+    if native.package_name() != "ci-tools" and native.glob([".github/workflows/*.yml"], allow_empty = True):
+        _workflow_test("common", "release", tests)
+
+    tests.append("license_test")
     native.sh_test(
         name = "license_test",
         size = "small",
@@ -131,6 +152,7 @@ def project(name = "project", license = "gpl3", custom_cirrus = False, custom_gi
         ],
     )
 
+    tests.append("readme_test")
     native.sh_test(
         name = "readme_test",
         size = "small",
@@ -142,8 +164,13 @@ def project(name = "project", license = "gpl3", custom_cirrus = False, custom_gi
     if native.package_name().startswith("hs-") and native.glob(["*.cabal"], allow_empty = True):
         _haskell_project(
             custom_cirrus = custom_cirrus,
-            custom_github = custom_github,
+            tests = tests,
         )
+
+    native.test_suite(
+        name = "project_tests",
+        tests = tests,
+    )
 
 def workspace(projects, name = "workspace"):
     native.sh_test(
@@ -163,19 +190,6 @@ def workspace(projects, name = "workspace"):
     )
 
     native.test_suite(
-        name = "license_tests",
-        tests = ["//%s:license_test" % p for p in projects],
-    )
-
-    native.test_suite(
-        name = "readme_tests",
-        tests = ["//%s:readme_test" % p for p in projects],
-    )
-
-    native.test_suite(
         name = "workspace_tests",
-        tests = [
-            ":license_tests",
-            ":readme_tests",
-        ],
+        tests = ["//%s:project_tests" % p for p in projects],
     )
