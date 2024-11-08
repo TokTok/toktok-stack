@@ -374,6 +374,9 @@ build --per_file_copt='//qtox[:/].*x11@-Wno-variadic-macros'
 # VPX macros cause this.
 build --per_file_copt='//c-toxcore/toxav:video.c@-Wno-used-but-marked-unused'
 
+# xproto's keysymdef.h causes this.
+build --per_file_copt='//toxic[:/]@-Wno-documentation'
+
 # Ignore super donators stuff. It's verbatim. We compile it, but don't care about cleanliness.
 build --per_file_copt='//c-toxcore/super_donators@-Wno-comma,-Wno-extra-semi-stmt,-Wno-unreachable-code-return,-Wno-unused-result'
 
@@ -401,12 +404,15 @@ build --per_file_copt='\\.pb\\.cc$@-Wno-missing-prototypes'
 build --per_file_copt='\\.pb\\.cc$@-Wno-weak-vtables'
 
 # TODO(iphydf): Fix these soon.
+build --per_file_copt='//c-toxcore@-Wno-sign-compare'
 build --per_file_copt='//qtox@-Wno-error=switch'
+build --per_file_copt='//toxins/toxvpn@-Wno-format'
+build --per_file_copt='//toxins/toxvpn@-Wno-unaligned-access'
+build --per_file_copt='//toxins/toxvpn@-Wno-unused-value'
+build --per_file_copt='//toxins/toxvpn@-Wno-zero-as-null-pointer-constant'
+build --per_file_copt='//toxins/toxvpn@-Wno-zero-length-array'
 
 # TODO(iphydf): Fix these.
-build --per_file_copt='//c-toxcore@-Wno-shadow-uncaptured-local'
-build --per_file_copt='//c-toxcore@-Wno-sign-compare'
-build --per_file_copt='//c-toxcore@-Wno-unused-but-set-variable'
 build --per_file_copt='//experimental@-Wno-switch-enum'
 build --per_file_copt='//experimental@-Wno-used-but-marked-unused'
 build --per_file_copt='//jvm-toxcore-c@-Wno-error=switch'
@@ -437,7 +443,6 @@ build --per_file_copt='//qtox@-Wno-unused-macros'
 build --per_file_copt='//qtox@-Wno-used-but-marked-unused'
 build --per_file_copt='//qtox@-Wno-weak-vtables'
 build --per_file_copt='//toxic@-Wno-implicit-fallthrough'
-build --per_file_copt='//toxic@-Wno-missing-prototypes'
 build --per_file_copt='//toxic@-Wno-missing-variable-declarations'
 build --per_file_copt='//toxic@-Wno-sign-compare'
 build --per_file_copt='//toxic@-Wno-switch-enum'
