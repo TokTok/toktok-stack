@@ -1,4 +1,4 @@
-FROM toxchat/bazel:latest
+FROM toxchat/bazel:24.05
 
 # Needed for Cirrus CI to work.
 RUN ["mkdir", "/tmp/cirrus-ci-build"]
