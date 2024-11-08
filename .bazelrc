@@ -400,6 +400,9 @@ build --per_file_copt='\\.pb\\.cc$@-Wno-global-constructors,-Wno-exit-time-destr
 build --per_file_copt='\\.pb\\.cc$@-Wno-missing-prototypes'
 build --per_file_copt='\\.pb\\.cc$@-Wno-weak-vtables'
 
+# TODO(iphydf): Fix these soon.
+build --per_file_copt='//qtox@-Wno-error=switch'
+
 # TODO(iphydf): Fix these.
 build --per_file_copt='//c-toxcore@-Wno-shadow-uncaptured-local'
 build --per_file_copt='//c-toxcore@-Wno-sign-compare'

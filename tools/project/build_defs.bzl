@@ -59,7 +59,7 @@ def _workflow_test(group, workflow, verbatim, tests):
                 yml_ref,
                 yml_cur,
             ],
-            tags = ["no-cross"],
+            tags = ["no-cross", "haskell"],
         )
 
 def _expand_template_impl(ctx):
@@ -209,7 +209,7 @@ def project(name = "project", license = "gpl3", custom_cirrus = False):
     native.test_suite(
         name = "project_tests",
         tests = tests,
-        tags = ["no-cross"],
+        tags = ["no-cross", "haskell"],
     )
 
 def workspace(projects, name = "workspace"):
@@ -232,5 +232,5 @@ def workspace(projects, name = "workspace"):
     native.test_suite(
         name = "workspace_tests",
         tests = ["//%s:project_tests" % p for p in projects],
-        tags = ["no-cross"],
+        tags = ["no-cross", "haskell"],
     )
