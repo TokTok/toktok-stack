@@ -413,6 +413,7 @@ build --per_file_copt='//toxins/toxvpn@-Wno-zero-as-null-pointer-constant'
 build --per_file_copt='//toxins/toxvpn@-Wno-zero-length-array'
 
 # TODO(iphydf): Fix these.
+build --per_file_copt='//c-toxcore@-Wno-unused-but-set-variable'
 build --per_file_copt='//experimental@-Wno-switch-enum'
 build --per_file_copt='//experimental@-Wno-used-but-marked-unused'
 build --per_file_copt='//jvm-toxcore-c@-Wno-error=switch'

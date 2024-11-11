@@ -5,6 +5,7 @@
   home.homeDirectory = "/home/builder";
   home.sessionVariables = {
     EDITOR = "nvim";
+    GITHUB_API_URL = "https://api.github.com";
     GITHUB_TOKEN =
       let tokenFile = "${config.home.homeDirectory}/.github-token"; in
       if builtins.pathExists tokenFile
@@ -37,7 +38,12 @@
     man-pages-posix         # libc documentation (POSIX functions)
     openssh                 # ssh server
     protobuf                # needed to build protobuf files in jvm-toxcore-c
-    python3                 # needed for .hie-bios
+    # needed for .hie-bios
+    (python3.withPackages(ps: with ps; [
+      cython
+      requests
+      types-requests
+    ]))
     screen                  # terminal window manager
     strace                  # debugging system calls
     stylish-haskell         # formatter for Haskell

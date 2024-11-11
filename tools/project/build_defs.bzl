@@ -5,7 +5,7 @@ and correctness of the license text.
 """
 
 WORKFLOWS = {
-    "common": ["ci.base", "release"],
+    "common": ["checks.base", "ci.base", "release.base"],
     "haskell": ["checks", "ci", "publish"],
 }
 
@@ -219,12 +219,12 @@ def workspace(projects, name = "workspace"):
         srcs = ["@perl"],
         args = [
             "$(location git_modules_test.pl)",
-            "$(location gitmodules)",
+            "$(location //:.gitmodules)",
             "$(location git-remotes)",
         ] + projects,
         data = [
+            "//:.gitmodules",
             "git_modules_test.pl",
-            "gitmodules",
             "git-remotes",
         ],
     )

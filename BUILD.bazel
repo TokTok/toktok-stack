@@ -1,5 +1,7 @@
 load("@bazel_gazelle//:def.bzl", "gazelle")
 
+exports_files([".gitmodules"])
+
 # gazelle:prefix github.com/TokTok
 # gazelle:exclude go-toxcore-c/tools
 # gazelle:exclude jvm-toxcore-c
