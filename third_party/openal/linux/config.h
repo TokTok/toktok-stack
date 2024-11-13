@@ -1,5 +1,5 @@
 /* API declaration export attribute */
-#define AL_API  __attribute__((visibility("protected")))
+#define AL_API __attribute__((visibility("protected")))
 #define ALC_API __attribute__((visibility("protected")))
 
 /* Define a restrict macro for non-aliased pointers */
@@ -72,7 +72,7 @@
 #define HAVE_WAVE
 
 /* Define if we have the SDL2 backend */
-//#define HAVE_SDL2
+#define HAVE_SDL2
 
 /* Define if we have the stat function */
 #define HAVE_STAT

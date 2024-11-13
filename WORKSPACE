@@ -68,8 +68,8 @@ load("//tools/workspace:python.bzl", "python_repository")
 github_archive(
     name = "rules_python",
     repo = "bazelbuild/rules_python",
-    sha256 = "e8bbc6dc81693f450c99559fb05f3f764ad7c2529cc5854379f2e3f41c4748fa",
-    version = "0.37.2",
+    sha256 = "4a9dd5d619747af777d1a3195d08f1340e78d142b80ea82685416e25ad2e4359",
+    version = "0.38.0",
 )
 
 load("@rules_python//python:repositories.bzl", "py_repositories")
@@ -410,14 +410,14 @@ gazelle_dependencies()
 # https://github.com/things-go/go-socks5
 go_repository(
     name = "com_github_things_go_go_socks5",
-    commit = "2710f15218a8a0919385dfea9f9aa1434acbe4b3",
+    commit = "ebe069a7b637b8a57b5586c31dca909bf35521e7",
     importpath = "github.com/things-go/go-socks5",
 )
 
 # https://github.com/gorilla/websocket
 go_repository(
     name = "com_github_gorilla_websocket",
-    commit = "666c197fc9157896b57515c3a3326c3f8c8319fe",
+    commit = "5e002381133d322c5f1305d171f3bdd07decf229",
     importpath = "github.com/gorilla/websocket",
 )
 
@@ -431,14 +431,14 @@ go_repository(
 # https://github.com/petermattis/goid
 go_repository(
     name = "com_github_petermattis_goid",
-    commit = "1876fd5063bc764851a18bc0e050b9ab7adca065",
+    commit = "66cb2e6d7274e9d57368662b1e3dd92eeb21492b",
     importpath = "github.com/petermattis/goid",
 )
 
 # https://github.com/sasha-s/go-deadlock
 go_repository(
     name = "com_github_sasha_s_go_deadlock",
-    commit = "5afde13977e624ab3bd64e5801f75f9e8eb1f41b",
+    commit = "464d34347a399b840a4f963cc96dfc993ccf8c62",
     importpath = "github.com/sasha-s/go-deadlock",
 )
 
@@ -499,8 +499,8 @@ http_archive(
 github_archive(
     name = "boringssl",
     repo = "google/boringssl",
-    sha256 = "0011537cb5a637617ea699f105da2365391f8196ecad139862882d93e95b23c7",
-    version = "ddc0647304a8ed854b2d84117f095a5f73571d37",
+    sha256 = "34282aa15e2d7c53d6fdf2d32990b24f26b54edcf9266782d74fc1535fc39ae2",
+    version = "eca12891ed873dc183624f28e4e5442e7bc2f4a2",
 )
 
 http_archive(
@@ -547,9 +547,9 @@ new_github_archive(
 http_archive(
     name = "ffmpeg",
     build_file = "@toktok//third_party:BUILD.ffmpeg",
-    sha256 = "eb7da3de7dd3ce48a9946ab447a7346bd11a3a85e6efb8f2c2ce637e7f547611",
-    strip_prefix = "ffmpeg-6.1",
-    urls = ["https://ffmpeg.org/releases/ffmpeg-6.1.tar.bz2"],
+    sha256 = "fd59e6160476095082e94150ada5a6032d7dcc282fe38ce682a00c18e7820528",
+    strip_prefix = "ffmpeg-7.1",
+    urls = ["https://ffmpeg.org/releases/ffmpeg-7.1.tar.bz2"],
 )
 
 # https://ftp.gnu.org/pub/gnu/gettext
@@ -576,7 +576,7 @@ nixpkgs_package(
 
 nixpkgs_package(
     name = "glvnd.out",
-    attribute_path = "libGL.out",
+    attribute_path = "libglvnd.out",
     repository = "@nixpkgs",
 )
 
@@ -847,7 +847,7 @@ swift_rules_dependencies()
 
 apple_support_dependencies()
 
-# Qt5
+# Qt6
 # =========================================================
 
 QT_LIBS = [

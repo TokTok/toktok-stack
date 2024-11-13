@@ -117,7 +117,6 @@ cc_library(
             "src/*/qnx/*",
             "src/*/generic/*.c",
             "src/*/pthread/*.c",
-            "src/render/opengles2/**/*",
             "src/video/SDL_egl.c",
             "src/hidapi/SDL_hidapi.c",
         ],
@@ -131,7 +130,6 @@ cc_library(
     deps = [
         ":sdl2_sysdep",
         "@asound",
-        "@gl",
         "@glvnd",
         "@xcb",
         "@xext",

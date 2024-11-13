@@ -6,8 +6,6 @@ COPTS = [
     "-Iexternal/openal/alc",
     "-Iexternal/openal/common",
     "-fexceptions",
-    "-Wno-unused-function",
-    "-Wno-switch",
 ] + select({
     "@toktok//tools/config:arm64": [],
     "@toktok//tools/config:x86_64": ["-msse4.1"],
@@ -88,7 +86,7 @@ cc_library(
         "alc/backends/loopback.cpp",
         "alc/backends/null.cpp",
         # TODO(iphydf): Make SDL2 build under docker-sandbox and enable this.
-        #"alc/backends/sdl2.cpp",
+        "alc/backends/sdl2.cpp",
         "alc/backends/wave.cpp",
         "bsinc_inc.h",
         "hrtf_default.h",
@@ -107,7 +105,7 @@ cc_library(
     linkopts = ["-ldl"],
     strip_include_prefix = "include",
     deps = [
-        #"@sdl2",
+        "@sdl2",
         "@toktok//third_party/openal:config",
     ] + select({
         "@toktok//tools/config:freebsd": [],
