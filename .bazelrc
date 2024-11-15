@@ -380,7 +380,8 @@ build --per_file_copt='//toxic[:/]@-Wno-documentation'
 # Ignore super donators stuff. It's verbatim. We compile it, but don't care about cleanliness.
 build --per_file_copt='//c-toxcore/super_donators@-Wno-comma,-Wno-extra-semi-stmt,-Wno-unreachable-code-return,-Wno-unused-result'
 
-# Tests
+# Tests (Google Test) use global constructors and destructors and some other
+# slightly unclean things.
 build --per_file_copt='_bench\\.(cc|cpp)$@-Wno-weak-vtables,-Wno-zero-as-null-pointer-constant'
 build --per_file_copt='_(test|bench)\\.(cc|cpp)$@-Wno-global-constructors,-Wno-exit-time-destructors'
 build --per_file_copt='_test\\.(cc|cpp)$@-Wno-c99-extensions'
@@ -409,7 +410,6 @@ build --per_file_copt='\\.pb\\.cc$@-Wno-missing-prototypes'
 build --per_file_copt='\\.pb\\.cc$@-Wno-weak-vtables'
 
 # TODO(iphydf): Fix these soon.
-build --per_file_copt='//c-toxcore@-Wno-sign-compare'
 build --per_file_copt='//qtox@-Wno-error=switch'
 build --per_file_copt='//toxins/toxvpn@-Wno-format'
 build --per_file_copt='//toxins/toxvpn@-Wno-unaligned-access'
@@ -418,13 +418,11 @@ build --per_file_copt='//toxins/toxvpn@-Wno-zero-as-null-pointer-constant'
 build --per_file_copt='//toxins/toxvpn@-Wno-zero-length-array'
 
 # TODO(iphydf): Fix these.
-build --per_file_copt='//c-toxcore@-Wno-unused-but-set-variable'
 build --per_file_copt='//experimental@-Wno-switch-enum'
 build --per_file_copt='//experimental@-Wno-used-but-marked-unused'
 build --per_file_copt='//jvm-toxcore-c@-Wno-error=switch'
 build --per_file_copt='//jvm-toxcore-c@-Wno-global-constructors,-Wno-exit-time-destructors'
 build --per_file_copt='//qtox@-Wno-comma'
-build --per_file_copt='//qtox@-Wno-deprecated'
 build --per_file_copt='//qtox@-Wno-documentation'
 build --per_file_copt='//qtox@-Wno-documentation-unknown-command'
 build --per_file_copt='//qtox@-Wno-double-promotion'

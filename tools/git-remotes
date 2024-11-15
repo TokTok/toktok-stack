@@ -149,6 +149,10 @@ our %REPOS = (
       repo 'iphydf',
       repo 'qtox',
    }],
+   'wiki/qtox.wiki' => ['qtox.wiki', {
+      upstream => 'toktok',
+      repo 'qtox',
+   }],
    'spec' => ['spec', {
       upstream => 'toktok',
       repo 'iphydf',

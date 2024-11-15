@@ -4,7 +4,6 @@ load("@toktok//third_party/yasm:build_defs.bzl", "asm_library")
 COPTS = [
     "-DPIC",
     "-DZLIB_CONST",
-    "-DHAVE_AV_CONFIG_H",
     "-Iexternal/ffmpeg/libavcodec",
     "-I$(GENDIR)/third_party/ffmpeg/platform",
 ] + select({
@@ -369,7 +368,7 @@ cc_library(
         "libavdevice/timefilter.c",
         "libavformat/tls.c",
     ],
-    copts = COPTS,
+    copts = COPTS + ["-DHAVE_AV_CONFIG_H"],
     deps = [
         ":headers",
         "@toktok//third_party/ffmpeg:config",
@@ -378,7 +377,7 @@ cc_library(
 
 objc_library(
     name = "ffmpeg_osx_objc",
-    copts = COPTS,
+    copts = COPTS + ["-DHAVE_AV_CONFIG_H"],
     non_arc_srcs = [
         "libavdevice/avfoundation.m",
         "libavfilter/vf_coreimage.m",
@@ -413,7 +412,7 @@ cc_library(
         "libavutil/hwcontext_videotoolbox.c",
         "libavutil/pixdesc.c",
     ],
-    copts = COPTS,
+    copts = COPTS + ["-DHAVE_AV_CONFIG_H"],
     linkopts = [
         "-lpthread",
         "-liconv",
@@ -446,7 +445,7 @@ cc_library(
         "libavutil/hwcontext_d3d11va.c",
         "libavutil/hwcontext_dxva2.c",
     ],
-    copts = COPTS,
+    copts = COPTS + ["-DHAVE_AV_CONFIG_H"],
     linkopts = [
         "/DEFAULTLIB:Bcrypt.lib",
         "/DEFAULTLIB:D3D11.lib",
@@ -481,7 +480,7 @@ cc_library(
         "libavdevice/xcbgrab.c",
         "libavformat/unix.c",
     ],
-    copts = COPTS,
+    copts = COPTS + ["-DHAVE_AV_CONFIG_H"],
     linkopts = [
         "-lpthread",
         "-lm",
@@ -516,7 +515,7 @@ cc_library(
         "libavdevice/v4l2-common.c",
         "libavdevice/v4l2enc.c",
     ],
-    copts = COPTS,
+    copts = COPTS + ["-DHAVE_AV_CONFIG_H"],
     linkopts = [
         "-lpthread",
         "-ldl",
@@ -2652,7 +2651,7 @@ cc_library(
         "libavutil/imgutils.h",
         "libswscale/swscale.h",
     ],
-    copts = COPTS,
+    copts = COPTS + ["-DHAVE_AV_CONFIG_H"],
     includes = ["."],
     visibility = ["//visibility:public"],
     deps = [
@@ -2672,14 +2671,16 @@ cc_library(
     name = "fftools",
     srcs = [
         "fftools/cmdutils.c",
-        "fftools/ffmpeg.c",
+        "fftools/ffmpeg_dec.c",
         "fftools/ffmpeg_demux.c",
+        "fftools/ffmpeg_enc.c",
         "fftools/ffmpeg_filter.c",
         "fftools/ffmpeg_hw.c",
         "fftools/ffmpeg_mux.c",
         "fftools/ffmpeg_mux_init.c",
         "fftools/ffmpeg_opt.c",
-        "fftools/ffprobe.c",
+        "fftools/ffmpeg_sched.c",
+        "fftools/ffplay_renderer.c",
         "fftools/objpool.c",
         "fftools/opt_common.c",
         "fftools/sync_queue.c",
