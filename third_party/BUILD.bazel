@@ -6,6 +6,7 @@ filegroup(
         ["BUILD.*"],
         exclude = [
             "BUILD.bazel*",
+            "BUILD.*.out",
             # TODO
             "BUILD.asound",
             "BUILD.ffmpeg",

@@ -750,8 +750,22 @@ nixpkgs_package(
 )
 
 nixpkgs_package(
+    name = "gdk-pixbuf.out",
+    attribute_path = "gdk-pixbuf",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "gdk-pixbuf",
+    attribute_path = "gdk-pixbuf.dev",
+    build_file = "@toktok//third_party:BUILD.gdk-pixbuf",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
     name = "glib.out",
     attribute_path = "glib.out",
+    build_file = "@toktok//third_party:BUILD.glib.out",
     repository = "@nixpkgs",
 )
 

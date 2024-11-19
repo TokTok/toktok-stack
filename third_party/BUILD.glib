@@ -7,4 +7,5 @@ cc_library(
     hdrs = glob(["include/glib-2.0/**/*.h"]),
     strip_include_prefix = "include/glib-2.0",
     visibility = ["//visibility:public"],
+    deps = ["@glib.out//:glibconfig"],
 )

@@ -1,0 +1,21 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+filegroup(
+    name = "lib",
+    srcs = glob(
+        [
+            "lib/**/*.so*",
+            "lib/**/*.dylib",
+            "lib/**/*.a",
+        ],
+        allow_empty = True,
+    ),
+    visibility = ["@glib//:__pkg__"],
+)
+
+cc_library(
+    name = "glibconfig",
+    hdrs = ["lib/glib-2.0/include/glibconfig.h"],
+    strip_include_prefix = "lib/glib-2.0/include",
+    visibility = ["@glib//:__pkg__"],
+)
