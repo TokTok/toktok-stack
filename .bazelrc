@@ -371,6 +371,9 @@ build --per_file_copt='//py_toxcore_c[:/]@-Wno-zero-as-null-pointer-constant'
 # X11/Xfuncproto.h does this.
 build --per_file_copt='//qtox[:/].*x11@-Wno-variadic-macros'
 
+# glib does a lot of inline C stuff that C++ doesn't like.
+build --per_file_copt='//qtox/src:platform/desktop_notifications/desktopnotify.cpp@-Wno-cast-function-type,-Wno-old-style-cast,-Wno-zero-as-null-pointer-constant'
+
 # VPX macros cause this.
 build --per_file_copt='//c-toxcore/toxav:video.c@-Wno-used-but-marked-unused'
 
