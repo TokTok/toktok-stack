@@ -737,6 +737,32 @@ new_github_archive(
 )
 
 nixpkgs_package(
+    name = "libnotify.out",
+    attribute_path = "libnotify",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "libnotify",
+    attribute_path = "libnotify.dev",
+    build_file = "@toktok//third_party:BUILD.libnotify",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "glib.out",
+    attribute_path = "glib.out",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "glib",
+    attribute_path = "glib.dev",
+    build_file = "@toktok//third_party:BUILD.glib",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
     name = "x11.out",
     attribute_path = "xorg.libX11.out",
     repository = "@nixpkgs",
