@@ -27,6 +27,7 @@ filegroup(
 ) for mod in [
     "Concurrent",
     "Core",
+    "DBus",
     "Gui",
     "OpenGL",
     "Network",

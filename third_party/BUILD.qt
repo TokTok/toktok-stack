@@ -29,6 +29,7 @@ alias(
 ) for mod in [
     "Concurrent",
     "Core",
+    "DBus",
     "Gui",
     "OpenGL",
     "Network",
@@ -50,6 +51,7 @@ filegroup(
     srcs = [
         ":qt_concurrent",
         ":qt_core",
+        ":qt_dbus",
         ":qt_gui",
         ":qt_network",
         ":qt_opengl",
