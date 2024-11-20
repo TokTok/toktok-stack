@@ -18,6 +18,7 @@ filegroup(
 [cc_library(
     name = mod.lower(),
     hdrs = glob(["include/Qt%s/**" % mod]),
+    defines = ["QT_%s_LIB" % mod.upper()],
     includes = [
         "include",
         "include/Qt" + mod,

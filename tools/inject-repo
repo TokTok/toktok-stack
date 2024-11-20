@@ -14,5 +14,5 @@ if [ -f "$REPO/.bazelrc.local" ]; then
   cp "$REPO/.bazelrc.local" ".bazelrc.local"
 fi
 
-# Disable remote caching for now (Cirrus doesn't seem to like gRPC).
-sed -i -e 's/build --config=remote/# build --config=remote/' ".bazelrc.local"
+# Cirrus doesn't like gRPC.
+sed -i -e 's/build --config=remote-grpc/build --config=remote-http/' ".bazelrc.local"

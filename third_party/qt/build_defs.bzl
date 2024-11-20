@@ -271,6 +271,7 @@ qt_moc = rule(
 def qt_test(name, src, deps, copts = [], mocopts = [], size = None, **kwargs):
     qt_moc(
         name = "%s_moc_src" % name,
+        testonly = True,
         srcs = [src],
         mocopts = mocopts,
         tags = ["no-cross"],
@@ -278,6 +279,7 @@ def qt_test(name, src, deps, copts = [], mocopts = [], size = None, **kwargs):
     )
     cc_library(
         name = "%s_moc" % name,
+        testonly = True,
         hdrs = [":%s_moc_src" % name],
         tags = ["no-cross"],
         **kwargs
@@ -286,9 +288,18 @@ def qt_test(name, src, deps, copts = [], mocopts = [], size = None, **kwargs):
         name = name,
         size = size,
         srcs = [src],
-        copts = copts + ["-I$(GENDIR)/%s/%s" % (native.package_name(), src[:src.rindex("/")])],
-        env = {"QT_PLUGIN_PATH": "external/qt6.qtbase/lib/qt-6/plugins"},
-        data = ["@qt//:qt_platform", "@openssl.out//:lib"],
+        copts = copts + ["-I$(GENDIR)/%s/%s" % (
+            native.package_name(),
+            src[:src.rindex("/")],
+        )],
+        env = {
+            "QT_PLUGIN_PATH": "external/qt6.qtbase/lib/qt-6/plugins",
+            "QT_QPA_PLATFORM": "offscreen",
+        },
+        data = [
+            "@openssl.out//:lib",
+            "@qt//:qt_platform",
+        ],
         deps = deps + [
             ":%s_moc" % name,
             "@qt//:qt_test",

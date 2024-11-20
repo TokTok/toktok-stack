@@ -34,9 +34,8 @@ build --experimental_objc_include_scanning
 build --experimental_omitfp
 build --experimental_remotable_source_manifests
 build --experimental_remote_build_event_upload=minimal
-build --experimental_remote_cache_async
 build --experimental_remote_merkle_tree_cache
-#build --experimental_remote_require_cached  # needs newer bazel version
+build --experimental_remote_require_cached
 build --experimental_repository_cache_hardlinks
 
 build --experimental_android_compress_java_resources=true
@@ -90,8 +89,9 @@ build:libc++ --linkopt='-stdlib=libc++'
 
 # Use remote caching. This is disabled by default, because unless you have a
 # fairly fast connection (like on our CI systems), this is not very useful.
-#build:remote --remote_cache=code.tox.chat:8980
-build:remote --remote_cache=grpc://code.tox.chat:9092
+build:remote-grpc --remote_cache=grpc://code.tox.chat:9092
+build:remote-http --remote_cache=https://code.tox.chat/bazel
+build:remote --config=remote-grpc
 
 # Use remote execution. Disabled by default, because we don't want everyone to
 # use the remote executors (and they might be down sometimes).
@@ -413,6 +413,7 @@ build --per_file_copt='\\.pb\\.cc$@-Wno-missing-prototypes'
 build --per_file_copt='\\.pb\\.cc$@-Wno-weak-vtables'
 
 # TODO(iphydf): Fix these soon.
+build --per_file_copt='//c-toxcore/toxcore:Messenger.c@-Wno-error=unused-but-set-variable'
 build --per_file_copt='//qtox@-Wno-error=switch'
 build --per_file_copt='//toxins/toxvpn@-Wno-format'
 build --per_file_copt='//toxins/toxvpn@-Wno-unaligned-access'
