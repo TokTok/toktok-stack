@@ -119,6 +119,11 @@ def _qt_rcc_impl(ctx):
         arguments = [src.path for src in srcs] + [
             "--name",
             ctx.attr.name,
+            # Drop the file modification time of source files from generated files
+            # to help with reproducible builds. We do not use QFileInfo.lastModified
+            # so this has no unwanted side effects.
+            "-format-version",
+            "1",
             "--compress",
             "9",
             "--threshold",
