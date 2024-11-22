@@ -7,10 +7,11 @@ exports_files([
 ])
 
 filegroup(
-    name = "platforms",
+    name = "plugins",
     srcs = glob([
         "lib/qt-6/plugins/platforms/*offscreen*",
         "lib/qt-6/plugins/tls/*opensslbackend*",
+        "lib/qt-6/plugins/imageformats/*",
     ]),
     visibility = ["//visibility:public"],
 )

@@ -17,8 +17,14 @@
 ]]
 
 alias(
-    name = "qt_platform",
-    actual = "@qt6.qtbase//:platforms",
+    name = "qt_base_plugins",
+    actual = "@qt6.qtbase//:plugins",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "qt_svg_plugins",
+    actual = "@qt6.qtsvg//:plugins",
     visibility = ["//visibility:public"],
 )
 

@@ -298,12 +298,16 @@ def qt_test(name, src, deps, copts = [], mocopts = [], size = None, **kwargs):
             src[:src.rindex("/")],
         )],
         env = {
-            "QT_PLUGIN_PATH": "external/qt6.qtbase/lib/qt-6/plugins",
+            "QT_PLUGIN_PATH": ":".join([
+                "external/qt6.qtbase/lib/qt-6/plugins",
+                "external/qt6.qtsvg/lib/qt-6/plugins",
+            ]),
             "QT_QPA_PLATFORM": "offscreen",
         },
         data = [
             "@openssl.out//:lib",
-            "@qt//:qt_platform",
+            "@qt//:qt_base_plugins",
+            "@qt//:qt_svg_plugins",
         ],
         deps = deps + [
             ":%s_moc" % name,
