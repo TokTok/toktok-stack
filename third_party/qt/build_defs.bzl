@@ -368,7 +368,7 @@ def qt_win_deploy(name, deps):
             "tar zcf $(location {name}.tar.gz) --strip-components=1 $$$$/{name}".format(name = name),
         ]),
         tags = ["manual"],
-        exec_tools = ["@qt//:windeployqt"],
+        tools = ["@qt//:windeployqt"],
     )
 
     native.sh_binary(

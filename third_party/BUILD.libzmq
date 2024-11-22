@@ -15,11 +15,11 @@ genrule(
           cp "$$DIR"/`echo $$i | sed -e 's|$(GENDIR)/external/libzmq/||'` $$i
         done
     """,
-    exec_tools = [
+    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
+    tools = [
         "@cmake",
         "@gnumake",
     ],
-    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
 )
 
 cc_library(

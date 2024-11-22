@@ -72,13 +72,13 @@ genrule(
         "linux-arm64/vpx_version.h",
     ],
     cmd = CONFIGURE,
-    exec_tools = [
+    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
+    tools = [
         "@diffutils//:diff",
         "@gnumake",
         "@perl",
         "@yasm",
     ],
-    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
 )
 
 genrule(
@@ -91,13 +91,13 @@ genrule(
         "linux-x86_64/vpx_version.h",
     ],
     cmd = CONFIGURE,
-    exec_tools = [
+    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
+    tools = [
         "@diffutils//:diff",
         "@gnumake",
         "@perl",
         "@yasm",
     ],
-    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
 )
 
 alias(

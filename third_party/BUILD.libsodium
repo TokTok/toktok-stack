@@ -34,17 +34,17 @@ genrule(
           | sed -e 's/^-D/#define /;s/=/ /;s/\\\\//g' \\
           > "$(location src/sodium_config.h)"
     """,
-    exec_tools = [
-        "@autoconf//:autoconf",
+    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
+    tools = [
+        "@autoconf",
         "@autoconf//:autoreconf",
+        "@automake",
         "@automake//:aclocal",
-        "@automake//:automake",
         "@diffutils//:cmp",
         "@gnumake",
         "@libtool//:libtoolize",
         "@m4",
     ],
-    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
 )
 
 HEADERS = glob([

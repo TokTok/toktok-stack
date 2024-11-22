@@ -50,14 +50,14 @@ genrule(
     srcs = ["hrtf/Default HRTF.mhr"],
     outs = ["hrtf_default.h"],
     cmd = "$(location :bin2h) '$<' '$@' hrtf_default",
-    exec_tools = [":bin2h"],
+    tools = [":bin2h"],
 )
 
 genrule(
     name = "bsinc",
     outs = ["bsinc_inc.h"],
     cmd = "$(location :bsincgen) $@",
-    exec_tools = [":bsincgen"],
+    tools = [":bsincgen"],
 )
 
 cc_library(

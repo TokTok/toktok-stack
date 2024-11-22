@@ -238,8 +238,8 @@ genrule(
           cp $$DIR/`echo $$i | sed -e 's|$(GENDIR)/external/ffmpeg/||'` $$i
         done
     """,
-    exec_tools = ["@yasm"],
     toolchains = ["@rules_cc//cc:current_cc_toolchain"],
+    tools = ["@yasm"],
 )
 
 genrule(

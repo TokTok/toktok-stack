@@ -72,7 +72,7 @@ genrule(
     srcs = ["COPYING"],
     outs = ["license.c"],
     cmd = "$(location genstring) license_msg $@ $(location COPYING)",
-    exec_tools = [
+    tools = [
         "genstring",
     ],
 )
@@ -143,7 +143,7 @@ genrule(
     name = "version_mac",
     outs = ["version.mac"],
     cmd = "$(location genversion) $@",
-    exec_tools = ["genversion"],
+    tools = ["genversion"],
 )
 
 genrule(
@@ -151,7 +151,7 @@ genrule(
     srcs = ["version.mac"],
     outs = ["nasm-version.c"],
     cmd = "$(location genmacro) $@ nasm_version_mac $(location version.mac)",
-    exec_tools = ["genmacro"],
+    tools = ["genmacro"],
 )
 
 genrule(
@@ -159,7 +159,7 @@ genrule(
     srcs = ["modules/parsers/nasm/nasm-std.mac"],
     outs = ["nasm-macros.c"],
     cmd = "$(location genmacro) $@ nasm_standard_mac $(location modules/parsers/nasm/nasm-std.mac)",
-    exec_tools = ["genmacro"],
+    tools = ["genmacro"],
 )
 
 genrule(
@@ -167,7 +167,7 @@ genrule(
     srcs = ["modules/objfmts/coff/win64-nasm.mac"],
     outs = ["win64-nasm.c"],
     cmd = "$(location genmacro) $@ win64_nasm_stdmac $(location modules/objfmts/coff/win64-nasm.mac)",
-    exec_tools = ["genmacro"],
+    tools = ["genmacro"],
 )
 
 genrule(
@@ -175,7 +175,7 @@ genrule(
     srcs = ["modules/objfmts/coff/win64-gas.mac"],
     outs = ["win64-gas.c"],
     cmd = "$(location genmacro) $@ win64_gas_stdmac $(location modules/objfmts/coff/win64-gas.mac)",
-    exec_tools = ["genmacro"],
+    tools = ["genmacro"],
 )
 
 genrule(
@@ -183,7 +183,7 @@ genrule(
     srcs = ["modules/arch/x86/x86regtmod.gperf"],
     outs = ["x86regtmod.c"],
     cmd = "$(location genperf) $(location modules/arch/x86/x86regtmod.gperf) $@",
-    exec_tools = ["genperf"],
+    tools = ["genperf"],
 )
 
 genrule(
@@ -191,7 +191,7 @@ genrule(
     srcs = ["modules/arch/x86/x86cpu.gperf"],
     outs = ["x86cpu.c"],
     cmd = "$(location genperf) $(location modules/arch/x86/x86cpu.gperf) $@",
-    exec_tools = ["genperf"],
+    tools = ["genperf"],
 )
 
 genrule(
@@ -199,7 +199,7 @@ genrule(
     srcs = ["x86insn_nasm.gperf"],
     outs = ["x86insn_nasm.c"],
     cmd = "$(location genperf) $(location x86insn_nasm.gperf) $@",
-    exec_tools = ["genperf"],
+    tools = ["genperf"],
 )
 
 genrule(
@@ -207,7 +207,7 @@ genrule(
     srcs = ["x86insn_gas.gperf"],
     outs = ["x86insn_gas.c"],
     cmd = "$(location genperf) $(location x86insn_gas.gperf) $@",
-    exec_tools = ["genperf"],
+    tools = ["genperf"],
 )
 
 cc_binary(
@@ -230,7 +230,7 @@ genrule(
     srcs = ["modules/arch/lc3b/lc3bid.re"],
     outs = ["lc3bid.c"],
     cmd = "$(location re2c) -b -o $@ $(location modules/arch/lc3b/lc3bid.re)",
-    exec_tools = ["re2c"],
+    tools = ["re2c"],
 )
 
 genrule(
@@ -238,7 +238,7 @@ genrule(
     srcs = ["modules/parsers/gas/gas-token.re"],
     outs = ["gas-token.c"],
     cmd = "$(location re2c) -b -o $@ $(location modules/parsers/gas/gas-token.re)",
-    exec_tools = ["re2c"],
+    tools = ["re2c"],
 )
 
 genrule(
@@ -246,7 +246,7 @@ genrule(
     srcs = ["modules/parsers/nasm/nasm-token.re"],
     outs = ["nasm-token.c"],
     cmd = "$(location re2c) -b -o $@ $(location modules/parsers/nasm/nasm-token.re)",
-    exec_tools = ["re2c"],
+    tools = ["re2c"],
 )
 
 genrule(

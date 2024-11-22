@@ -26,7 +26,6 @@ build --enable_platform_specific_config
 build --watchfs
 build --local_cpu_resources=HOST_CPUS
 build --features=layering_check
-build --distinct_host_configuration=false
 
 build --experimental_inmemory_dotd_files
 build --experimental_inmemory_jdeps_files
@@ -45,7 +44,6 @@ build --experimental_android_resource_shrinking=true
 build --incompatible_check_testonly_for_output_files
 build --incompatible_default_to_explicit_init_py
 build --incompatible_disable_native_android_rules
-build --incompatible_disable_runtimes_filegroups
 build --incompatible_dont_use_javasourceinfoprovider
 build --incompatible_enable_android_toolchain_resolution
 build --incompatible_enable_apple_toolchain_resolution
@@ -438,7 +436,6 @@ build --per_file_copt='//qtox@-Wno-inconsistent-missing-destructor-override'
 build --per_file_copt='//qtox@-Wno-missing-prototypes'
 build --per_file_copt='//qtox@-Wno-non-virtual-dtor'
 build --per_file_copt='//qtox@-Wno-error=range-loop-analysis'
-build --per_file_copt='//qtox@-Wno-shadow'
 build --per_file_copt='//qtox@-Wno-shadow-field'
 build --per_file_copt='//qtox@-Wno-suggest-destructor-override'
 build --per_file_copt='//qtox@-Wno-suggest-override'

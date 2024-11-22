@@ -689,13 +689,13 @@ http_archive(
 
 new_local_repository(
     name = "pthread",
-    build_file = "third_party/BUILD.pthread",
+    build_file = "//third_party:BUILD.pthread",
     path = "third_party",
 )
 
 new_local_repository(
     name = "psocket",
-    build_file = "third_party/BUILD.psocket",
+    build_file = "//third_party:BUILD.psocket",
     path = "third_party",
 )
 
