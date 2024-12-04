@@ -234,3 +234,15 @@ def workspace(projects, name = "workspace"):
         tests = ["//%s:project_tests" % p for p in projects],
         tags = ["no-cross", "haskell"],
     )
+
+def mkstamp(name, hdr=None):
+    if hdr:
+        native.genrule(
+            name = name,
+            outs = [hdr],
+            cmd = """$(location //tools/project:mkstamp_c.sh) %s >$@""" % native.package_name(),
+            srcs = ["//tools/project:mkstamp_c.sh"],
+            stamp = True,
+        )
+    else:
+        fail("mkstamp requires a `hdr` argument")

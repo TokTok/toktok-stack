@@ -10,6 +10,8 @@ import %workspace%/tools/bazelrc.boot
 
 build --show_progress_rate_limit=0.5
 
+build --workspace_status_command=tools/project/mkstamp.sh
+
 build --check_licenses=true
 build --process_headers_in_dependencies
 # TODO(iphydf): needs bazel 7

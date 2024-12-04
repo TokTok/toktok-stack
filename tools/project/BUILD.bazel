@@ -5,6 +5,7 @@ exports_files(srcs = [
     "diff_test.sh",
     "haskell/cirrus.yml.in",
     "haskell/github/docker/Dockerfile.in",
+    "mkstamp_c.sh",
     "readme_test.sh",
     "settings_test.sh",
     "yamllint.rc",
