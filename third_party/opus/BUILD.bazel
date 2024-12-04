@@ -7,6 +7,7 @@ genrule(
     srcs = select({
         "@toktok//tools/config:linux-arm64": ["linux-arm64/config.h"],
         "@toktok//tools/config:linux-x86_64": ["linux-x86_64/config.h"],
+        "@toktok//tools/config:windows-x86_64": ["windows-x86_64/config.h"],
     }),
     outs = ["config.h"],
     cmd = "cp $< $@",

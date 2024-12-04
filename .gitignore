@@ -9,6 +9,7 @@
 /cov-analysis*
 /external
 /toolchain
+/MODULE.bazel.lock
 *.log
 *.jar
 *.tar

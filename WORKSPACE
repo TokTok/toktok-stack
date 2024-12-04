@@ -7,6 +7,7 @@ load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
 # https://github.com/bazelbuild/bazel-skylib
 github_archive(
     name = "bazel_skylib",
+    #integrity = "sha256-s6wuTWaJ/u/ZzA7hIycriiOmdRJg8+iK38fKheZjybs=",
     repo = "bazelbuild/bazel-skylib",
     sha256 = "385c4e9cef8538388e7e457c8cf282ecd2415e70970ad99f885a934ca9071220",
     # boringssl is not compatible with 1.7.0+.
@@ -19,9 +20,9 @@ github_archive(
 # https://github.com/uber/hermetic_cc_toolchain
 github_archive(
     name = "hermetic_cc_toolchain",
+    integrity = "sha256-MfL5fnXBtFa25YrsZkgAxjVP+4v5viC47EyZwyjDLsY=",
     repo = "uber/hermetic_cc_toolchain",
-    sha256 = "680a3e008976d2c21ba2fbb7155ac38afe3b7a4e4c1f634f6ed8e55a65e368e8",
-    version = "v3.1.1",
+    version = "8e68b7221ca72c10268338eb1734530438e5ccb7",
 )
 
 # hermetic_cc_toolchain
@@ -41,9 +42,9 @@ register_toolchains(
 # https://github.com/aherrmann/rules_zig
 github_archive(
     name = "rules_zig",
+    integrity = "sha256-93KFvVQzhf5ptnFjDEc56wtntkTcD2kYTs3XEj3w4uA=",
     repo = "aherrmann/rules_zig",
-    sha256 = "3fab1ae229b439e0ebe1d428e8b65a9a3ff1bf0b620b62a12a7a5c99bbeda658",
-    version = "v0.5.0",
+    version = "v0.6.0",
 )
 
 load(
@@ -67,9 +68,9 @@ load("//tools/workspace:python.bzl", "python_repository")
 # https://github.com/bazelbuild/rules_python
 github_archive(
     name = "rules_python",
+    integrity = "sha256-QztU/bqTx7ImS00d9FjdaV9VF4l+9Ihu7r2Ns9/53m4=",
     repo = "bazelbuild/rules_python",
-    sha256 = "4a9dd5d619747af777d1a3195d08f1340e78d142b80ea82685416e25ad2e4359",
-    version = "0.38.0",
+    version = "0.40.0",
 )
 
 load("@rules_python//python:repositories.bzl", "py_repositories")
@@ -150,14 +151,16 @@ github_archive(
 # https://github.com/bazelbuild/bazel-gazelle
 github_archive(
     name = "bazel_gazelle",
+    integrity = "sha256-Hp3LG4q5mRKH6wjFbPZsNB3JHbAv2yGQrLiNVvccSYQ=",
     repo = "bazelbuild/bazel-gazelle",
-    sha256 = "93e56f21daba6c65022dc9ca906928799c8cffe4de1d4c13a6a1e4bff1bc47cd",
-    version = "v0.39.1",
+    version = "v0.40.0",
 )
 
-load("@io_bazel_rules_go//go:deps.bzl", "go_rules_dependencies")
+load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 
 go_rules_dependencies()
+
+go_register_toolchains(version = "1.23.4")
 
 # Nixpkgs
 # =========================================================
@@ -165,9 +168,9 @@ go_rules_dependencies()
 # https://github.com/tweag/rules_haskell
 github_archive(
     name = "rules_haskell",
+    integrity = "sha256-Y2TEjneI/dKVDlKrQ82fIsYoUEyzU/mR/Pd+w7ETcbs=",
     repo = "tweag/rules_haskell",
-    sha256 = "7fe5bd441299757d1a645f27a44bf9bf7f30acc55be7ae75f9d9d0eb7d530a25",
-    version = "v1.0",
+    version = "c3fdf9107e3ba00b687181140a7be26c85f314bc",
 )
 
 load(
@@ -189,10 +192,6 @@ load(
     "nixpkgs_package",
     "nixpkgs_python_configure",
 )
-load(
-    "@io_tweag_rules_nixpkgs//toolchains/go:go.bzl",
-    "nixpkgs_go_configure",
-)
 
 nixpkgs_git_repository(
     name = "nixpkgs",
@@ -203,10 +202,6 @@ nixpkgs_git_repository(
 nixpkgs_cc_configure(
     attribute_path = "clang",
     nix_file_content = "(import <nixpkgs> {})",
-    repository = "@nixpkgs",
-)
-
-nixpkgs_go_configure(
     repository = "@nixpkgs",
 )
 
@@ -267,22 +262,19 @@ nixpkgs_package(
 # =========================================================
 
 nixpkgs_java_configure(
-    attribute_path = "jdk11_headless.home",
+    attribute_path = "jdk17_headless.home",
     repository = "@nixpkgs",
     toolchain = True,
     toolchain_name = "nixpkgs_java",
-    toolchain_version = "11",
+    toolchain_version = "17",
 )
 
 # https://github.com/bazelbuild/rules_proto
 github_archive(
     name = "rules_proto",
+    integrity = "sha256-izdEYHo671xV0XkJ8HPV7UCZByP+/mMbIuqzXidriT0=",
     repo = "bazelbuild/rules_proto",
-    # TODO(iphydf): 6.0.2 requires rules_jvm_external 6.0+.
-    # sha256 = "8b3744607a3aef5c55d17909f073d5ed40990723fefe631b22eab35e276b893d",
-    # version = "6.0.2",
-    sha256 = "25f3acf1c73df6be2d920bbe42c2a0df2bea1c12daad9cc7e82fc0090b8ac922",
-    version = "6.0.0-rc1",
+    version = "6.0.2",
 )
 
 http_archive(
@@ -313,21 +305,18 @@ http_archive(
 # https://github.com/bazelbuild/rules_jvm_external
 github_archive(
     name = "rules_jvm_external",
+    integrity = "sha256-xbJ5KO648HYfCAVUBYdmDw7MaUbpwEvw1MieL30zKys=",
     repo = "bazelbuild/rules_jvm_external",
-    # TODO(iphydf): 6.5 loads rules_java, which seems to be incompatible with our arm64 build.
-    # sha256 = "c5b27928eeb8f0761f0805540587660f0ecc6946e9c04bf0d4c89e2f7d332b2b",
-    # version = "6.5",
-    sha256 = "6cc8444b20307113a62b676846c29ff018402fd4c7097fcd6d0a0fd5f2e86429",
-    version = "5.3",
+    version = "6.5",
 )
 
-# load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
+load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
 
-# rules_jvm_external_deps()
+rules_jvm_external_deps()
 
-# load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
+load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
 
-# rules_jvm_external_setup()
+rules_jvm_external_setup()
 
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 
@@ -498,9 +487,9 @@ http_archive(
 # https://github.com/google/boringssl
 github_archive(
     name = "boringssl",
+    integrity = "sha256-aE4zQXpj8PfJFqCtg1a+qTcSpvQQpeR60Q4pqEo9Lgc=",
     repo = "google/boringssl",
-    sha256 = "34282aa15e2d7c53d6fdf2d32990b24f26b54edcf9266782d74fc1535fc39ae2",
-    version = "eca12891ed873dc183624f28e4e5442e7bc2f4a2",
+    version = "391bd56eaaa8b0a00cdb0f9a4ed25cc0f11c9791",
 )
 
 http_archive(
@@ -523,8 +512,8 @@ github_archive(
 github_archive(
     name = "benchmark",
     repo = "google/benchmark",
-    sha256 = "1a6f0678cbcac65a12e2178d77d3c97d050d173389220c9df57e9249a40827ec",
-    version = "v1.9.0",
+    sha256 = "8a63c9c6adf9e7ce8d0d81f251c47de83efb5e077e147d109fa2045daac8368b",
+    version = "v1.9.1",
 )
 
 # https://github.com/curl/curl
@@ -607,9 +596,9 @@ http_archive(
 # https://github.com/hyperrealm/libconfig
 new_github_archive(
     name = "libconfig",
+    integrity = "sha256-hTSG4pEWJa0E/mHY7m5tZ5TUu5ID5qMQC9as6Loqrk0=",
     repo = "hyperrealm/libconfig",
-    sha256 = "6552f0872929a90c25d161a817e701f149a78ddc2d74a5256ffd575c4765cc0d",
-    version = "v1.7.3",
+    version = "e4c5d2cadb72c988ba0b7265610b448cba521f79",
 )
 
 # https://github.com/libexif/libexif
@@ -690,7 +679,7 @@ http_archive(
 new_local_repository(
     name = "pthread",
     build_file = "//third_party:BUILD.pthread",
-    path = "third_party",
+    path = "third_party/pthread",
 )
 
 new_local_repository(
@@ -856,25 +845,25 @@ new_github_archive(
 # https://github.com/bazelbuild/rules_apple
 github_archive(
     name = "build_bazel_rules_apple",
+    integrity = "sha256-GhXdvG95AvfUVbLvJKutxf9C3FLcR2m6q7t7XZyEHcc=",
     repo = "bazelbuild/rules_apple",
-    sha256 = "b6a45e2fc047e4da9f474259dc9ab5cd19391db0e0fbfe9acd0fc1ee361266ff",
-    version = "07f5f2dd14f56e54eaca176630450c2abcc52eb9",
+    version = "3.13.0",
 )
 
 # https://github.com/bazelbuild/rules_swift
 github_archive(
     name = "build_bazel_rules_swift",
+    integrity = "sha256-jrlSxoisDI576ktm9DCbw00427lz4FPW13K52i0HQPE=",
     repo = "bazelbuild/rules_swift",
-    sha256 = "cf74bbd9dc803b9b551de03bdb43feb75666cdd74cd70513c07b950a12a829c8",
-    version = "7b8558cab8e402eb21e2fc655989bae378171486",
+    version = "2.2.4",
 )
 
 # https://github.com/bazelbuild/apple_support
 github_archive(
     name = "build_bazel_apple_support",
+    integrity = "sha256-nkBofrYnBESl4mMGVm3DmOK6Zva3JTc1JxDeBDSGbGw=",
     repo = "bazelbuild/apple_support",
-    sha256 = "0c255725a9be81cde845fd3b9a936c4d5f46b0e1891c02082259f387e0db9e3c",
-    version = "2659bae1f561e34b89fcc230df26aaf6dada2646",
+    version = "1.17.1",
 )
 
 load("@build_bazel_apple_support//lib:repositories.bzl", "apple_support_dependencies")
@@ -941,23 +930,4 @@ npm_install(
     node_repository = "nixpkgs_nodejs",
     package_json = "//js-toxcore-c:package.json",
     package_lock_json = "//js-toxcore-c:package-lock.json",
-)
-
-# Tox Extension modules
-# =========================================================
-
-# https://github.com/toxext/toxext
-new_github_archive(
-    name = "toxext",
-    repo = "toxext/toxext",
-    sha256 = "55c2aabc7ba87a435bb5c68d7ae0513aa3ada11c18a55a3fca2e42231d351a08",
-    version = "v0.0.3",
-)
-
-# https://github.com/toxext/tox_extension_messages
-new_github_archive(
-    name = "tox_extension_messages",
-    repo = "toxext/tox_extension_messages",
-    sha256 = "f72da1fff2f6048c60fd8993fce2fc64aae58aa689744ae5ee5fc4381209b41e",
-    version = "v0.0.3",
 )

@@ -109,6 +109,6 @@ def mypy_test(name, srcs, deps = [], path = [], tags = []):
         ] + ["$(location :%s)" % s for s in srcs],
         data = srcs,
         env = {"MYPYPATH": ":".join(path)},
-        tags = tags,
+        tags = tags + ["no-windows"],
         deps = deps + ["@mypy"],
     )

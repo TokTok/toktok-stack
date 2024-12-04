@@ -1,7 +1,7 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
 
 genrule(
-    name = "config",
+    name = "regen_config",
     srcs = glob([
         "**/*.am",
         "**/*.in",
@@ -11,6 +11,7 @@ genrule(
         "acinclude.m4",
         "configure.ac",
         "include/curl/curlver.h",
+        "lib/Makefile.soname",
         "lib/urldata.h",
     ],
     outs = ["lib/curl_config.h"],
@@ -18,7 +19,7 @@ genrule(
         cd `dirname $(location configure.ac)`
         autoreconf -fi
         sed -i -e 's/curl_off_t/off_t/g' configure
-        ./configure --disable-ldap --with-ssl=/usr/local/Cellar/openssl/1.0.2p
+        ./configure --disable-ldap --without-ssl
         DIR=`pwd`
         sed -i -e 's/SIZEOF_CURL_OFF_T 0/SIZEOF_CURL_OFF_T 8/' lib/curl_config.h
         cd -

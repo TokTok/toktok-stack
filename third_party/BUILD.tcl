@@ -263,13 +263,6 @@ cc_library(
             "-DHAVE_OSSPINLOCKLOCK=1",
         ],
         "@toktok//tools/config:windows": [],
-    }) + select({
-        "@toktok//tools/config:linux-x86_64": [
-            "-DHAVE_FTS=1",
-            "-DHAVE_SYS_EPOLL_H=1",
-            "-DNOTIFIER_EPOLL=1",
-        ],
-        "//conditions:default": [],
     }),
     defines = ["STATIC_BUILD"],
     # TODO(iphydf): Enable once @zlib stops being so private.

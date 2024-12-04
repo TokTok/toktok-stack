@@ -1,0 +1,7 @@
+module(
+    name = "toktok-stack",
+    version = "0.1",
+)
+
+# https://github.com/bazelbuild/platforms/releases
+bazel_dep(name = "platforms", version = "0.0.10")

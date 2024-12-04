@@ -78,10 +78,10 @@ cc_library(
         "src/opus_multistream_encoder.c",
         "src/repacketizer.c",
     ] + select({
-        "@toktok//tools/config:linux-arm64": [
+        "@toktok//tools/config:arm64": [
             "celt/arm/armcpu.c",
         ],
-        "@toktok//tools/config:linux-x86_64": [
+        "@toktok//tools/config:x86_64": [
             "celt/x86/pitch_sse.c",
             "celt/x86/pitch_sse2.c",
             "celt/x86/pitch_sse4_1.c",

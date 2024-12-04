@@ -13,7 +13,8 @@ COPY --chown=builder:users third_party /src/workspace/third_party
 COPY --chown=builder:users tools/config /src/workspace/tools/config
 COPY --chown=builder:users tools/workspace /src/workspace/tools/workspace
 WORKDIR /src/workspace
-RUN sudo nix-daemon --daemon & bazel aquery --output=proto --show_timestamps //... > /dev/null
+RUN echo 'build --config=nix' >>.bazelrc \
+ && sudo nix-daemon --daemon & bazel aquery --output=proto --show_timestamps //... > /dev/null
 
 # TODO(https://github.com/tweag/rules_nixpkgs/issues/439): Remove.
 RUN sudo sed -Eie 's!\b(mktemp |rm )!'"$(echo -n /nix/store/*-coreutils-*/bin/)"'\1!' /nix/store/*-clang-wrapper-*/bin/cc

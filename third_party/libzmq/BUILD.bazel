@@ -8,6 +8,7 @@ cc_library(
         "//tools/config:freebsd": ["freebsd/platform.hpp"],
         "//tools/config:linux": ["linux/platform.hpp"],
         "//tools/config:osx": ["osx/platform.hpp"],
+        "//tools/config:windows": ["windows/platform.hpp"],
     }),
     visibility = ["@libzmq//:__pkg__"],
 )

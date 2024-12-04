@@ -8,6 +8,7 @@ cc_library(
         "//tools/config:freebsd": ["linux/curl_config.h"],
         "//tools/config:linux": ["linux/curl_config.h"],
         "//tools/config:osx": ["osx/curl_config.h"],
+        "//tools/config:windows": ["windows/curl_config.h"],
     }),
     visibility = ["@curl//:__pkg__"],
 )

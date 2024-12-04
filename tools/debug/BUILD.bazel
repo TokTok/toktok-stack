@@ -5,6 +5,7 @@ py_binary(
     name = "run_flakynet",
     srcs = ["run_flakynet.py"],
     data = [":flakynet.so"],
+    tags = ["no-windows"],
     visibility = ["//visibility:public"],
 )
 
@@ -13,12 +14,14 @@ cc_binary(
     srcs = ["flakynet.c"],
     linkopts = ["-ldl"],
     linkshared = True,
+    tags = ["no-windows"],
     visibility = ["//visibility:public"],
 )
 
 cc_library(
     name = "mallocfail",
     srcs = ["mallocfail.c"],
+    tags = ["no-windows"],
     visibility = ["//visibility:public"],
 )
 

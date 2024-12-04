@@ -12,7 +12,9 @@ build --show_progress_rate_limit=0.5
 
 build --check_licenses=true
 build --process_headers_in_dependencies
-#build --remote_cache_compression  # needs newer bazel version
+# TODO(iphydf): needs bazel 7
+#build --remote_build_event_upload=minimal
+#build --remote_cache_compression
 build --remote_download_outputs=minimal  # use "all" to make YCM work
 build --strict_filesets=true
 build --strict_proto_deps=error
@@ -24,7 +26,7 @@ build --experimental_strict_fileset_output
 build --experimental_strict_java_deps=error
 build --enable_platform_specific_config
 build --watchfs
-build --local_cpu_resources=HOST_CPUS
+#build --local_resources=cpu=HOST_CPUS  # TODO(iphydf): needs bazel 7
 build --features=layering_check
 
 build --experimental_inmemory_dotd_files
@@ -32,16 +34,20 @@ build --experimental_inmemory_jdeps_files
 build --experimental_objc_include_scanning
 build --experimental_omitfp
 build --experimental_remotable_source_manifests
-build --experimental_remote_build_event_upload=minimal
 build --experimental_remote_merkle_tree_cache
 build --experimental_remote_require_cached
 build --experimental_repository_cache_hardlinks
+
+build --experimental_guard_against_concurrent_changes
+build --experimental_import_deps_checking=warning
+build --experimental_run_validations
 
 build --experimental_android_compress_java_resources=true
 build --experimental_android_resource_shrinking=true
 #build --experimental_desugar_java8_libs=true
 
 build --incompatible_check_testonly_for_output_files
+build --incompatible_config_setting_private_default_visibility
 build --incompatible_default_to_explicit_init_py
 build --incompatible_disable_native_android_rules
 build --incompatible_dont_use_javasourceinfoprovider
@@ -53,15 +59,14 @@ build --incompatible_remote_output_paths_relative_to_input_root
 build --incompatible_remote_use_new_exit_code_for_lost_inputs
 build --incompatible_sandbox_hermetic_tmp
 build --incompatible_strict_action_env
+build --incompatible_struct_has_no_methods
 build --incompatible_use_host_features
+build --incompatible_visibility_private_attributes_at_definition
 
 # These don't work, yet.
 #build --incompatible_stop_exporting_language_modules
 #build --incompatible_disallow_struct_provider_syntax
 #build --incompatible_no_rule_outputs_param
-#build --incompatible_config_setting_private_default_visibility
-#build --incompatible_visibility_private_attributes_at_definition
-#build --incompatible_struct_has_no_methods
 #build --incompatible_disable_starlark_host_transitions
 
 # TODO(iphydf): Make this work somehow with clang.
@@ -98,20 +103,11 @@ build:remote-exec --remote_executor=grpc://10.100.0.1:8980
 
 # The remote executor doesn't have everything available, so we consider it the
 # same as cross compilation.
-build:remote-exec --build_tag_filters=-no-cross,-macos,-windows
+build:remote-exec --build_tag_filters=-no-cross,-qt,-macos,-windows
+build:remote-exec --test_tag_filters=-no-cross,-qt,-macos,-windows
 
 # Without this, the build farm needs to have *all* build artifacts in its CAS.
 build:remote-exec --remote_download_outputs=all
-
-##############################################################################
-#
-# :: Extra strictness in rule execution.
-#
-##############################################################################
-
-build --experimental_guard_against_concurrent_changes
-build --experimental_import_deps_checking=warning
-build --experimental_run_validations
 
 ##############################################################################
 #
@@ -308,6 +304,7 @@ build --per_file_copt='@-Wall'
 build --per_file_copt='@-Werror'
 build --per_file_copt='@-Weverything'
 build --per_file_copt='@-pedantic'
+build --copt='-Wno-c++20-compat'
 build --copt='-Wno-c++98-compat'
 build --copt='-Wno-c++98-compat-pedantic'
 build --copt='-Wno-conversion'
@@ -369,9 +366,6 @@ build --per_file_copt='//py_toxcore_c[:/]@-Wno-zero-as-null-pointer-constant'
 # X11/Xfuncproto.h does this.
 build --per_file_copt='//qtox[:/].*x11@-Wno-variadic-macros'
 
-# glib does a lot of inline C stuff that C++ doesn't like.
-build --per_file_copt='//qtox/src:platform/desktop_notifications/desktopnotify.cpp@-Wno-cast-function-type,-Wno-old-style-cast,-Wno-zero-as-null-pointer-constant'
-
 # VPX macros cause this.
 build --per_file_copt='//c-toxcore/toxav:video.c@-Wno-used-but-marked-unused'
 
@@ -393,26 +387,14 @@ build --per_file_copt='_test\\.cpp$@-Wno-undefined-reinterpret-cast'
 
 # Qt generated code.
 build --per_file_copt='rcc_.*\\.cpp$@-Wno-global-constructors,-Wno-exit-time-destructors'
-build --per_file_copt='moc_.*\\.cpp$@-Wno-c++20-compat'
 build --per_file_copt='moc_.*\\.cpp$@-Wno-deprecated'
 build --per_file_copt='moc_.*\\.cpp$@-Wno-extra-semi-stmt'
 build --per_file_copt='moc_.*\\.cpp$@-Wno-gnu-zero-variadic-macro-arguments'
 build --per_file_copt='moc_.*\\.cpp$@-Wno-redundant-parens'
 build --per_file_copt='moc_.*\\.cpp$@-Wno-undefined-reinterpret-cast'
 
-# May include Qt generated code.
-build --per_file_copt='//experimental/users/iphydf/qt-toxcore-c@-Wno-c++20-compat'
-build --per_file_copt='//qtox@-Wno-c++20-compat'
-
-# Protobuf generated code.
-build --per_file_copt='\\.pb\\.cc$@-Wno-c++20-compat'
-build --per_file_copt='\\.pb\\.cc$@-Wno-global-constructors,-Wno-exit-time-destructors'
-build --per_file_copt='\\.pb\\.cc$@-Wno-missing-prototypes'
-build --per_file_copt='\\.pb\\.cc$@-Wno-weak-vtables'
-
 # TODO(iphydf): Fix these soon.
 build --per_file_copt='//c-toxcore/toxcore:Messenger.c@-Wno-error=unused-but-set-variable'
-build --per_file_copt='//qtox@-Wno-error=switch'
 build --per_file_copt='//toxins/toxvpn@-Wno-format'
 build --per_file_copt='//toxins/toxvpn@-Wno-unaligned-access'
 build --per_file_copt='//toxins/toxvpn@-Wno-unused-value'
@@ -424,11 +406,8 @@ build --per_file_copt='//experimental@-Wno-switch-enum'
 build --per_file_copt='//experimental@-Wno-used-but-marked-unused'
 build --per_file_copt='//jvm-toxcore-c@-Wno-error=switch'
 build --per_file_copt='//jvm-toxcore-c@-Wno-global-constructors,-Wno-exit-time-destructors'
-build --per_file_copt='//qtox@-Wno-comma'
 build --per_file_copt='//qtox@-Wno-documentation'
-build --per_file_copt='//qtox@-Wno-documentation-unknown-command'
 build --per_file_copt='//qtox@-Wno-double-promotion'
-build --per_file_copt='//qtox@-Wno-duplicate-enum'
 build --per_file_copt='//qtox@-Wno-float-equal'
 build --per_file_copt='//qtox@-Wno-global-constructors,-Wno-exit-time-destructors'
 build --per_file_copt='//qtox@-Wno-implicit-fallthrough'
@@ -441,12 +420,9 @@ build --per_file_copt='//qtox@-Wno-suggest-destructor-override'
 build --per_file_copt='//qtox@-Wno-suggest-override'
 build --per_file_copt='//qtox@-Wno-switch-enum'
 build --per_file_copt='//qtox@-Wno-undef'
-build --per_file_copt='//qtox@-Wno-unreachable-code-break'
-build --per_file_copt='//qtox@-Wno-unreachable-code-return'
 build --per_file_copt='//qtox@-Wno-unused-but-set-variable'
 build --per_file_copt='//qtox@-Wno-unused-macros'
 build --per_file_copt='//qtox@-Wno-used-but-marked-unused'
-build --per_file_copt='//qtox@-Wno-weak-vtables'
 build --per_file_copt='//toxic@-Wno-implicit-fallthrough'
 build --per_file_copt='//toxic@-Wno-missing-variable-declarations'
 build --per_file_copt='//toxic@-Wno-sign-compare'
@@ -467,7 +443,6 @@ build --per_file_copt='//toxins@-Wno-unused-result'
 # Disable some clang warnings on various third party dependencies.
 build --per_file_copt='external[:/]@-Wno-assign-enum'
 build --per_file_copt='external[:/]@-Wno-bad-function-cast'
-build --per_file_copt='external[:/]@-Wno-c++20-compat'
 build --per_file_copt='external[:/]@-Wno-cast-align'
 build --per_file_copt='external[:/]@-Wno-cast-qual'
 build --per_file_copt='external[:/]@-Wno-comma'
@@ -514,6 +489,10 @@ build --per_file_copt='external/com_google_protobuf[:/]@-Wno-extra-semi'
 build --per_file_copt='external/com_google_protobuf[:/]@-Wno-unused-function'
 build --per_file_copt='external/com_google_protobuf[:/]@-Wno-unused-member-function'
 build --per_file_copt='external/com_google_protobuf[:/]@-Wno-unused-template'
+build --per_file_copt='external/protobuf~[:/]@-Wno-extra-semi'
+build --per_file_copt='external/protobuf~[:/]@-Wno-unused-function'
+build --per_file_copt='external/protobuf~[:/]@-Wno-unused-member-function'
+build --per_file_copt='external/protobuf~[:/]@-Wno-unused-template'
 build --per_file_copt='external/curl[:/]@-Wno-cast-function-type-strict'
 build --per_file_copt='external/curl[:/]@-Wno-used-but-marked-unused'
 build --per_file_copt='external/ev[:/]@-Wno-bitwise-op-parentheses'
@@ -620,16 +599,12 @@ build --per_file_copt='external/tcl[:/]@-Wno-overlength-strings'
 build --per_file_copt='external/tcl[:/]@-Wno-tautological-type-limit-compare'
 build --per_file_copt='external/tcl[:/]@-Wno-tautological-value-range-compare'
 build --per_file_copt='external/tcl[:/]@-Wno-typedef-redefinition'
-build --per_file_copt='external/tox_extension_messages[:/]@-Wno-gnu-statement-expression-from-macro-expansion'
-build --per_file_copt='external/toxext[:/]@-Wno-gnu-statement-expression-from-macro-expansion'
 build --per_file_copt='external/xcb[:/]@-Wno-unused-but-set-variable'
 build --per_file_copt='external/yasm[:/]@-Wno-c2x-compat'
 build --per_file_copt='external/yasm[:/]@-Wno-cast-function-type'
 build --per_file_copt='external/yasm[:/]@-Wno-gnu-null-pointer-arithmetic'
 build --per_file_copt='external/yasm[:/]@-Wno-null-pointer-subtraction'
-build --per_file_copt='external/zlib[:/]@-std=gnu17'
-build --per_file_copt='external/zlib[:/]@-Wno-deprecated-non-prototype'
-build --per_file_copt='external/zlib[:/]@-Wno-implicit-function-declaration'
+build --per_file_copt='external/zlib~?[:/]@-include,unistd.h'
 build --per_file_copt='third_party/libidn2[:/]@-Wno-missing-prototypes'
 
 # Disable some default warnings also present in the host config.
@@ -646,8 +621,26 @@ build:linux-arm64-musl --per_file_copt='external/com_google_absl/absl/base/inter
 # LPTSTR cast for WSAStringToAddress is necessary.
 build:windows-x86_64 --per_file_copt='//c-toxcore/toxcore:network.c@-Wno-cast-qual'
 
-# snprintf is marked unused.
-build:windows-x86_64 --per_file_copt='//c-toxcore/toxcore:network.c@-Wno-used-but-marked-unused'
+# snprintf and some others are marked unused.
+build:windows-x86_64 --copt=-Wno-used-but-marked-unused
+
+# libvpx warnings on Windows.
+build:windows-x86_64 --per_file_copt='external/libvpx[:/]@-Wno-absolute-value'
+
+build:windows-x86_64 --per_file_copt='external/com_google_absl[:/]@-Wno-cast-function-type'
+build:windows-x86_64 --per_file_copt='external/com_google_absl[:/]@-Wno-unknown-pragmas'
+build:windows-x86_64 --per_file_copt='external/com_google_absl/absl/base/internal/thread_identity.cc@-U__MINGW32__'
+build:windows-x86_64 --per_file_copt='external/com_google_googletest[:/]@-Wno-suggest-override'
+build:windows-x86_64 --per_file_copt='external/com_google_googletest[:/]@-Wno-unused-const-variable'
+build:windows-x86_64 --per_file_copt='external/com_google_googletest[:/]@-Wno-unused-member-function'
+
+# Needed for absl symbolize.
+build:windows-x86_64 --linkopt='-ldbghelp'
+
+build:windows-x86_64 --per_file_copt='external/libzmq[:/]@-Wno-cast-function-type'
+build:windows-x86_64 --per_file_copt='external/libzmq[:/]@-Wno-unused-template'
+
+build:windows-x86_64 --per_file_copt='external/bazel_tools[:/]@-Wno-sign-compare'
 
 ##############################################################################
 #
@@ -658,13 +651,13 @@ build:windows-x86_64 --per_file_copt='//c-toxcore/toxcore:network.c@-Wno-used-bu
 # Continuous Integration platforms tend to not have IPv6.
 build:ci --per_file_copt='//c-toxcore/auto_tests@-DUSE_IPV6=0'
 build:ci --curses=no
-build:ci --jobs=50
 build:ci --show_timestamps
 build:ci --verbose_failures
 build:ci --flaky_test_attempts=6  # try a bit harder - toxcore tests are flaky
 
 # Docker build doesn't support IPv6.
 build:docker --config=ci
+build:docker --config=nix
 
 ##############################################################################
 #
@@ -673,36 +666,39 @@ build:docker --config=ci
 ##############################################################################
 
 build:nix --build_tag_filters=-windows,-macos
+build:nix --test_tag_filters=-windows,-macos
+
+# Non-Nix local toolchains. Nix-Haskell doesn't work with local toolchains.
+build:local --build_tag_filters=-no-cross,-windows,-macos
+build:local --test_tag_filters=-no-cross,-windows,-macos
 
 build:zig-cross --copt=-fPIC
 build:zig-cross --dynamic_mode=off
 build:zig-cross --features=fully_static_link
 # See: https://github.com/uber/hermetic_cc_toolchain/issues/134
 build:zig-cross --sandbox_add_mount_pair=/tmp
+build:zig-cross --per_file_copt='external/ffmpeg[:/]@-Wno-incompatible-function-pointer-types'
 build:zig-cross --per_file_copt='external/ncurses[:/]@-fno-sanitize=undefined'
+build:zig-cross --per_file_copt='external/sdl2[:/]@-DICONV_INBUF_NONCONST=1'
 
 build:linux-arm64-musl --config=zig-cross
 build:linux-arm64-musl --platforms=@zig_sdk//platform:linux_arm64
 build:linux-arm64-musl --extra_toolchains=@zig_sdk//toolchain:linux_arm64_musl
-build:linux-arm64-musl --build_tag_filters=-no-cross,-windows,-macos
+build:linux-arm64-musl --build_tag_filters=-no-cross,-qt,-windows,-macos,-java
+build:linux-arm64-musl --test_tag_filters=-no-cross,-qt,-windows,-macos,-java
 
 build:linux-x86_64-musl --config=zig-cross
 build:linux-x86_64-musl --platforms=@zig_sdk//platform:linux_amd64
 build:linux-x86_64-musl --extra_toolchains=@zig_sdk//toolchain:linux_amd64_musl
-build:linux-x86_64-musl --build_tag_filters=-no-cross,-windows,-macos
+build:linux-x86_64-musl --build_tag_filters=-no-cross,-qt,-windows,-macos
+build:linux-x86_64-musl --test_tag_filters=-no-cross,-qt,-windows,-macos
+build:linux-x86_64-musl --linkopt='-static'
 
 build:windows-x86_64 --config=zig-cross
 build:windows-x86_64 --platforms=@zig_sdk//platform:windows_amd64
 build:windows-x86_64 --extra_toolchains=@zig_sdk//toolchain:windows_amd64
-build:windows-x86_64 --build_tag_filters=-no-cross,-macos
-
-# Pick *one* of these for the target platform. "nix" is the default Linux target.
-# TODO(iphydf): Move to .bazelrc.local.
-#build --config=linux-arm64-musl
-#build --config=linux-x86_64-musl
-#build --config=windows-x86_64
-#build --config=remote-exec
-build --config=nix
+build:windows-x86_64 --build_tag_filters=-no-cross,-qt,-macos,-java,-no-windows
+build:windows-x86_64 --test_tag_filters=-no-cross,-qt,-macos,-java,-no-windows
 
 try-import %workspace%/.bazelrc.local
 

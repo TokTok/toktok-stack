@@ -91,6 +91,22 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "sdl2_windows",
+    srcs = glob(
+        [
+            "src/*/steam/*.h",
+            "src/*/steam/*.c",
+            "src/*/windows/*.h",
+            "src/*/windows/*.c",
+        ],
+    ),
+    hdrs = glob(["src/**/*.h"]),
+    deps = [
+        ":headers",
+    ],
+)
+
 alias(
     name = "sdl2_sysdep",
     actual = select({

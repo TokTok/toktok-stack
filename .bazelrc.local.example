@@ -2,32 +2,32 @@
 #
 # Copy this file to .bazelrc.local and adjust to meet your needs.
 
-# Note that bazel will still only run as many jobs as it can on your number of
-# CPU cores. The number 16 here just means it will look ahead and schedule more
-# jobs to make sure all cores are always busy. If you have more than 16 cores,
-# you'll want to change this number to at least `$(($(nproc) + 4))`.
-build --jobs=16
-
 # You may choose one of the possible sandboxing technologies.
 #build --config=sandboxfs
 #build --config=docker-sandbox
-
-# You may use the remote cache. This is mostly only useful when building with
-# docker-sandbox, as that way you'll be sharing build artifacts with the CI
-# builds, speeding up your builds significantly.
-#build --config=remote
-#build --config=remote-exec
 
 # Optionally enable *one* of the following configs. If none is enabled, we build
 # in fastbuild mode (no optimisation, minimal debugging information).
 #build --config=debug
 #build --config=release
 
-# Use this config to put tox into a test network that speaks an incompatible
-# protocol (all packet ids are shifted).
-#build --config=testnet
-
 # Run with LLVM sanitizers.
 #build --config=asan
 #build --config=msan
 #build --config=tsan
+#build --config=ubsan
+
+# You may use the remote cache. This is mostly only useful when building with
+# docker-sandbox, as that way you'll be sharing build artifacts with the CI
+# builds, speeding up your builds significantly.
+#build --config=remote
+
+# Pick *one* of these for the target platform. "nix" is the default Linux target.
+#
+# remote-exec will also cache, so no need for remote in that case.
+#build --config=linux-arm64-musl
+#build --config=linux-x86_64-musl
+#build --config=windows-x86_64
+#build --config=remote-exec
+#build --config=local
+build --config=nix

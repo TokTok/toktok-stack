@@ -15,14 +15,17 @@ asm_library(
         "third_party/x86inc/x86inc.asm",
         "vpx_dsp/x86/bitdepth_conversion_sse2.asm",
         "vpx_ports/x86_abi_support.asm",
-        "@toktok//third_party/libvpx:linux-x86_64/vpx_config.asm",
-    ],
+    ] + select({
+        "@toktok//tools/config:linux": ["@toktok//third_party/libvpx:linux-x86_64/vpx_config.asm"],
+        "@toktok//tools/config:windows": ["@toktok//third_party/libvpx:windows-x86_64/vpx_config.asm"],
+    }),
     archive = False,
     asmopts = [
         "-I$(GENDIR)/external/libvpx",  # Generated headers.
         "-Iexternal/libvpx",
     ] + select({
         "@toktok//tools/config:linux-x86_64": ["-Ithird_party/libvpx/linux-x86_64"],
+        "@toktok//tools/config:windows-x86_64": ["-Ithird_party/libvpx/windows-x86_64"],
     }),
 )
 
@@ -100,11 +103,31 @@ genrule(
     ],
 )
 
+genrule(
+    name = "config-windows-x86_64",
+    srcs = glob(["**/*"]),
+    outs = [
+        "windows-x86_64/libs-x86_64-windows-gcc.mk",
+        "windows-x86_64/vpx_config.asm",
+        "windows-x86_64/vpx_config.h",
+        "windows-x86_64/vpx_version.h",
+    ],
+    cmd = CONFIGURE,
+    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
+    tools = [
+        "@diffutils//:diff",
+        "@gnumake",
+        "@perl",
+        "@yasm",
+    ],
+)
+
 alias(
     name = "config",
     actual = select({
         "@toktok//tools/config:linux-arm64": ":config-linux-arm64",
         "@toktok//tools/config:linux-x86_64": ":config-linux-x86_64",
+        "@toktok//tools/config:windows-x86_64": ":config-windows-x86_64",
     }),
 )
 
@@ -142,8 +165,8 @@ RTCDS = [
 [genrule(
     name = "%s_rtcd" % mod,
     srcs = select({
-        "@toktok//tools/config:linux-arm64": ["arm64_%s_rtcd" % mod],
-        "@toktok//tools/config:linux-x86_64": ["x86_64_%s_rtcd" % mod],
+        "@toktok//tools/config:arm64": ["arm64_%s_rtcd" % mod],
+        "@toktok//tools/config:x86_64": ["x86_64_%s_rtcd" % mod],
     }),
     outs = ["%s_rtcd.h" % mod],
     cmd = "cp $< $@",

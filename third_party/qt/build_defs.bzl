@@ -11,7 +11,7 @@ This file defines three macros:
 # =========================================================
 
 load("@build_bazel_rules_apple//apple:macos.bzl", "macos_application")
-load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
 
 def _qt_uic_impl(ctx):
     uic = ctx.executable._uic
@@ -270,6 +270,27 @@ qt_moc = rule(
     implementation = _qt_moc_impl,
 )
 
+# Qt binary, making sure we can `bazel run` it.
+# =========================================================
+
+def qt_binary(name, tags=[], **kwargs):
+    cc_binary(
+        name = name,
+        env = {
+            "QT_PLUGIN_PATH": ":".join([
+                "external/qt6.qtbase/lib/qt-6/plugins",
+                "external/qt6.qtsvg/lib/qt-6/plugins",
+            ]),
+        },
+        data = [
+            "@openssl.out//:lib",
+            "@qt//:qt_base_plugins",
+            "@qt//:qt_svg_plugins",
+        ],
+        tags = ["qt"] + tags,
+        **kwargs
+    )
+
 # Qt test with MOC for the test .cpp file.
 # =========================================================
 
@@ -279,14 +300,14 @@ def qt_test(name, src, deps, copts = [], mocopts = [], size = None, **kwargs):
         testonly = True,
         srcs = [src],
         mocopts = mocopts,
-        tags = ["no-cross"],
+        tags = ["qt"],
         deps = deps,
     )
     cc_library(
         name = "%s_moc" % name,
         testonly = True,
         hdrs = [":%s_moc_src" % name],
-        tags = ["no-cross"],
+        tags = ["qt"],
         **kwargs
     )
     cc_test(
@@ -313,7 +334,7 @@ def qt_test(name, src, deps, copts = [], mocopts = [], size = None, **kwargs):
             ":%s_moc" % name,
             "@qt//:qt_test",
         ],
-        tags = ["no-cross"],
+        tags = ["qt"],
         **kwargs
     )
 

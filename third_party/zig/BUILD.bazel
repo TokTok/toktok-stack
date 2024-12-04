@@ -8,6 +8,7 @@ cc_library(
     name = "clib",
     srcs = ["csource.c"],
     hdrs = ["csource.h"],
+    tags = ["no-windows"],
     deps = ["@libsodium"],
 )
 
@@ -19,5 +20,8 @@ zig_test(
         "@rules_zig//zig/lib:libc",
     ],
     main = "main.zig",
-    tags = ["no-san"],
+    tags = [
+        "no-san",
+        "no-windows",
+    ],
 )

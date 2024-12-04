@@ -1,7 +1,6 @@
-static const AVInputFormat * const indev_list[] = {
-    &ff_dshow_demuxer,
-    &ff_gdigrab_demuxer,
+static const FFInputFormat * const indev_list[] = {
+    &ff_fbdev_demuxer,
     &ff_lavfi_demuxer,
-    &ff_openal_demuxer,
-    &ff_vfwcap_demuxer,
+    &ff_oss_demuxer,
+    &ff_v4l2_demuxer,
     NULL };

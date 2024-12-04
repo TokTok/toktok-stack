@@ -2,31 +2,27 @@
 # sees them in the first aquery and can download the dependencies.
 filegroup(
     name = "third_party",
-    srcs = ["@{pkg}//:{pkg}".format(pkg = pkg[len("BUILD."):]) for pkg in glob(
-        ["BUILD.*"],
-        exclude = [
-            "BUILD.bazel*",
-            "BUILD.*.out",
-            # TODO
-            "BUILD.asound",
-            "BUILD.ffmpeg",
-            "BUILD.openal",
-            "BUILD.openssl",
-            "BUILD.sdl2",
-            "BUILD.x264",
-            # These depend on //c-toxcore, so can't be pre-built.
-            "BUILD.toxext",
-            "BUILD.tox_extension_messages",
-        ],
-    )] + [
-        "@com_google_googletest//:gtest",
-        "@com_google_googletest//:gtest_main",
-    ] + select({
+    srcs = select({
         "@toktok//tools/config:arm64": [],
-        "@toktok//tools/config:x86_64": [
-            "@ffmpeg",
-            "@openal",
-            "@sdl2",
+        "@toktok//tools/config:linux-x86_64": ["@{pkg}//:{pkg}".format(pkg = pkg[len("BUILD."):]) for pkg in glob(
+            ["BUILD.*"],
+            exclude = [
+                "BUILD.bazel*",
+                "BUILD.*.out",
+                # TODO
+                "BUILD.asound",
+                "BUILD.curl",
+                "BUILD.ffmpeg",
+                "BUILD.libconfig",
+                "BUILD.openal",
+                "BUILD.openssl",
+                "BUILD.sdl2",
+                "BUILD.x264",
+            ],
+        )] + [
+            "@com_google_googletest//:gtest",
+            "@com_google_googletest//:gtest_main",
         ],
+        "@toktok//tools/config:windows": [],
     }),
 )

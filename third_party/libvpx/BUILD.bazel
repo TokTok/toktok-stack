@@ -6,6 +6,7 @@ exports_files(
     srcs = [
         "linux-x86_64/vpx_config.asm",
         "vpx_version.h",
+        "windows-x86_64/vpx_config.asm",
     ],
     visibility = ["@libvpx//:__pkg__"],
 )
@@ -15,6 +16,7 @@ alias(
     actual = select({
         "@toktok//tools/config:linux-arm64": "linux-arm64/libs-arm64-linux-gcc.mk",
         "@toktok//tools/config:linux-x86_64": "linux-x86_64/libs-x86_64-linux-gcc.mk",
+        "@toktok//tools/config:windows-x86_64": "windows-x86_64/libs-x86_64-windows-gcc.mk",
     }),
     visibility = ["@libvpx//:__pkg__"],
 )
@@ -24,6 +26,7 @@ genrule(
     srcs = select({
         "@toktok//tools/config:linux-arm64": ["linux-arm64/vpx_config.h"],
         "@toktok//tools/config:linux-x86_64": ["linux-x86_64/vpx_config.h"],
+        "@toktok//tools/config:windows-x86_64": ["windows-x86_64/vpx_config.h"],
     }),
     outs = ["vpx_config.h"],
     cmd = "cp $< $@",

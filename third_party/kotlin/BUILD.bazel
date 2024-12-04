@@ -4,4 +4,5 @@ kt_jvm_binary(
     name = "mytest",
     srcs = glob(["*.kt"]),
     main_class = "third_party.kotlin.MainKt",
+    tags = ["java"],
 )
