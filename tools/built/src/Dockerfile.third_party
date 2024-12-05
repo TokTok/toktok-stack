@@ -1,4 +1,4 @@
-FROM toxchat/bazel:24.05
+FROM toxchat/bazel:latest
 
 # Needed for Cirrus CI to work.
 RUN ["mkdir", "/tmp/cirrus-ci-build"]
@@ -8,7 +8,7 @@ RUN ["mkdir", "/tmp/cirrus-ci-build"]
 # minimum number of files to avoid rebuilding this when making changes to the
 # toktok-stack tools.
 COPY --chown=builder:users tools/bazelrc.boot /src/workspace/.bazelrc
-COPY --chown=builder:users BUILD.bazel WORKSPACE .bazelignore ghc.nix /src/workspace/
+COPY --chown=builder:users BUILD.bazel MODULE.bazel WORKSPACE .bazelignore ghc.nix /src/workspace/
 COPY --chown=builder:users third_party /src/workspace/third_party
 COPY --chown=builder:users tools/config /src/workspace/tools/config
 COPY --chown=builder:users tools/workspace /src/workspace/tools/workspace
