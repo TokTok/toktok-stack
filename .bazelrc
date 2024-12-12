@@ -123,12 +123,13 @@ build --linkopt='-Wl,-z,noexecstack'
 build --host_linkopt='-Wl,-z,defs'
 build --host_linkopt='-Wl,-z,noexecstack'
 
+build:local      --linkopt='-Wl,--fatal-warnings'
+build:local --host_linkopt='-Wl,--fatal-warnings'
+
 build:nix      --linkopt='-fPIE'
 build:nix --host_linkopt='-fPIE'
 build:nix      --linkopt='-Wl,--detect-odr-violations'
 build:nix --host_linkopt='-Wl,--detect-odr-violations'
-build:nix      --linkopt='-Wl,--fatal-warnings'
-build:nix --host_linkopt='-Wl,--fatal-warnings'
 build:nix      --linkopt='-Wl,--gc-sections'
 build:nix --host_linkopt='-Wl,--gc-sections'
 build:nix      --linkopt='-Wl,--rosegment'
@@ -184,7 +185,6 @@ build:sanitizer --copt='-O3'
 build:sanitizer --copt='-fno-sanitize-ignorelist'
 build:sanitizer --per_file_copt='//c-toxcore[:/]@-O0'
 build:sanitizer --per_file_copt='//c-toxcore[:/]@-fno-inline,-fno-omit-frame-pointer'
-build:sanitizer --linkopt='-Wl,--no-fatal-warnings'
 build:sanitizer --flaky_test_attempts=1
 build:sanitizer --build_tag_filters=-no-san,-haskell,-windows,-macos
 build:sanitizer --test_tag_filters=-no-san,-haskell,-windows,-macos

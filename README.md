@@ -70,7 +70,7 @@ bazel build //...
 
 To build the stack, first you need to install some software. This guide assumes
 an installation of Debian GNU/Linux version 9 and that you are in the
-`toktok-stack` directory. There is partial support for Mac OS X and FreeBSD, but
+`toktok-stack` directory. There is partial support for macOS and FreeBSD, but
 not all targets can be built on those systems.
 
 #### Bazel
