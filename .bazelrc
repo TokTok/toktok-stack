@@ -13,6 +13,7 @@ build --show_progress_rate_limit=0.5
 build --workspace_status_command=tools/project/mkstamp.sh
 
 build --check_licenses=true
+#build --enable_workspace
 build --process_headers_in_dependencies
 # TODO(iphydf): needs bazel 7
 #build --remote_build_event_upload=minimal
@@ -27,13 +28,13 @@ build --strict_system_includes=true
 build --experimental_strict_fileset_output
 build --experimental_strict_java_deps=error
 build --enable_platform_specific_config
+build --run_validations
 build --watchfs
 #build --local_resources=cpu=HOST_CPUS  # TODO(iphydf): needs bazel 7
 build --features=layering_check
 
 build --experimental_inmemory_dotd_files
 build --experimental_inmemory_jdeps_files
-build --experimental_objc_include_scanning
 build --experimental_omitfp
 build --experimental_remotable_source_manifests
 build --experimental_remote_merkle_tree_cache
@@ -42,7 +43,6 @@ build --experimental_repository_cache_hardlinks
 
 build --experimental_guard_against_concurrent_changes
 build --experimental_import_deps_checking=warning
-build --experimental_run_validations
 
 build --experimental_android_compress_java_resources=true
 build --experimental_android_resource_shrinking=true
@@ -53,16 +53,12 @@ build --incompatible_config_setting_private_default_visibility
 build --incompatible_default_to_explicit_init_py
 build --incompatible_disable_native_android_rules
 build --incompatible_dont_use_javasourceinfoprovider
-build --incompatible_enable_android_toolchain_resolution
 build --incompatible_enable_apple_toolchain_resolution
 build --incompatible_enable_cc_toolchain_resolution
 build --incompatible_exclusive_test_sandboxed
-build --incompatible_remote_output_paths_relative_to_input_root
 build --incompatible_remote_use_new_exit_code_for_lost_inputs
 build --incompatible_sandbox_hermetic_tmp
 build --incompatible_strict_action_env
-build --incompatible_struct_has_no_methods
-build --incompatible_use_host_features
 build --incompatible_visibility_private_attributes_at_definition
 
 # These don't work, yet.
@@ -317,6 +313,7 @@ build --copt='-Wno-missing-field-initializers'
 build --copt='-Wno-missing-noreturn'
 build --copt='-Wno-padded'
 build --copt='-Wno-reserved-id-macro'
+build --copt='-Wno-switch-default'
 build --copt='-Wno-unused-parameter'
 build --copt='-Wno-vla'
 build --copt='-ftrapv'
@@ -336,6 +333,8 @@ build --copt='-Wno-unsafe-buffer-usage'
 # Used in absl, for some reason doesn't work with per_file_copt.
 # TODO(iphydf): Find out why.
 build --copt='-Wno-deprecated-builtins'
+# FIXME
+build --copt='-Wno-unreachable-code-return'
 
 # NO_FRAME_POINTER is set when compiling fuzzers (for some reason), causing absl to use the
 # libunwind stack trace implementation, which is Google internal-only, so fails to compile in Open

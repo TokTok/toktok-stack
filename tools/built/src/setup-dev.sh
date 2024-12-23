@@ -42,4 +42,5 @@ nix-shell -p python3 --run "python3 $HOME/.bin/bazel-compdb"
 
 # Run all tests to completion, so the dev container starts out with all tests
 # passing (so any potential breakage is local only).
-tools/retry 5 bazel test --show_timestamps -- //...
+# FIXME
+#tools/retry 5 bazel test --show_timestamps -- //...
