@@ -34,7 +34,7 @@ def _python_config(repository_ctx, versions):
             python_config = [python_config]
 
             # From version 3.8 and upwards, we need to pass --embed to get -lpython3.x.
-            if version in ["3.11", "3.10", "3.9", "3.8"]:
+            if version in ["3.12", "3.11", "3.10", "3.9", "3.8"]:
                 python_config.append("--embed")
             return python_config, version
 
@@ -47,7 +47,7 @@ def _impl(repository_ctx):
     elif version == "2":
         versions = ["2.7"]
     elif version == "3":
-        versions = ["3.11", "3.10", "3.9", "3.8", "3.7", "3.6", "3.5"]
+        versions = ["3.12", "3.11", "3.10", "3.9", "3.8", "3.7", "3.6", "3.5"]
     else:
         fail("Unsupported Python version: %s " % version +
              "(need 2, 3, or an exact version number)")
