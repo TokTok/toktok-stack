@@ -266,11 +266,11 @@ nixpkgs_package(
 # =========================================================
 
 nixpkgs_java_configure(
-    attribute_path = "jdk17_headless.home",
+    attribute_path = "jdk21_headless.home",
     repository = "@nixpkgs",
     toolchain = True,
     toolchain_name = "nixpkgs_java",
-    toolchain_version = "17",
+    toolchain_version = "21",
 )
 
 # https://github.com/bazelbuild/rules_proto

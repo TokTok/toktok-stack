@@ -10,4 +10,4 @@ docker run --rm \
   --volume="/etc/shadow:/etc/shadow:ro" \
   --volume="$PWD:/home/ubuntu/toktok-stack" \
   -e HIE_BIOS_OUTPUT=/dev/stdout \
-  -t gcr.io/bazel-public/bazel:6.4.0
+  -t gcr.io/bazel-public/bazel:7.4.1
