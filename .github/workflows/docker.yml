@@ -112,8 +112,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        #flavour: [release, debug, asan, msan, tsan, arm64, windows]
-        flavour: [release, debug, asan, msan, tsan]
+        flavour: [release, debug, asan, msan, tsan, arm64, windows]
     runs-on: ubuntu-22.04
     needs: [docker]
     steps:

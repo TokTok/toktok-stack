@@ -4,11 +4,9 @@ FROM toxchat/toktok-stack:latest-third_party
 # includes all of the sources of all projects.
 COPY --chown=builder:users . /src/workspace/
 
-# Append the Docker image default configs to .bazelrc. This allows child images
-# to have their own .bazelrc.local.
-RUN echo "import %workspace%/tools/bazelrc.docker" >> /src/workspace/.bazelrc
+RUN echo 'build --config=ci --config=nix' >/src/workspace/.bazelrc.local
 
 # Finally, we run another aquery. This will download some more dependencies, but
 # the most expensive ones should already have been downloaded in the third_party
 # image we built before this one.
-RUN sudo nix-daemon --daemon & bazel aquery --output=proto //... > /dev/null
+RUN sudo nix-daemon --daemon & bazel aquery --output=proto //... >/dev/null

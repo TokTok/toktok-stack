@@ -114,26 +114,24 @@ build:remote-exec --remote_download_outputs=all
 ##############################################################################
 
 # Flags for systems with GNU linker or compatible.
-build --linkopt='-Wl,-z,noexecstack'
 
+build --host_linkopt='-fPIE'
 build --host_linkopt='-Wl,-z,defs'
+build      --linkopt='-Wl,-z,noexecstack'
 build --host_linkopt='-Wl,-z,noexecstack'
+build --host_linkopt='-Wl,--warn-execstack'
 
 build:local      --linkopt='-Wl,--fatal-warnings'
 build:local --host_linkopt='-Wl,--fatal-warnings'
 
-build:nix      --linkopt='-fPIE'
-build:nix --host_linkopt='-fPIE'
-build:nix      --linkopt='-Wl,--detect-odr-violations'
-build:nix --host_linkopt='-Wl,--detect-odr-violations'
-build:nix      --linkopt='-Wl,--gc-sections'
-build:nix --host_linkopt='-Wl,--gc-sections'
-build:nix      --linkopt='-Wl,--rosegment'
-build:nix --host_linkopt='-Wl,--rosegment'
-build:nix      --linkopt='-Wl,--warn-common'
-build:nix --host_linkopt='-Wl,--warn-common'
-
-build:nix --host_linkopt='-Wl,--warn-execstack'
+build:strict      --linkopt='-Wl,--detect-odr-violations'
+build:strict --host_linkopt='-Wl,--detect-odr-violations'
+build:strict      --linkopt='-Wl,--gc-sections'
+build:strict --host_linkopt='-Wl,--gc-sections'
+build:strict      --linkopt='-Wl,--rosegment'
+build:strict --host_linkopt='-Wl,--rosegment'
+build:strict      --linkopt='-Wl,--warn-common'
+build:strict --host_linkopt='-Wl,--warn-common'
 
 # Always enable assert() in tests.
 build --per_file_copt='_test.cc?@-UNDEBUG'
@@ -656,10 +654,6 @@ build:ci --show_timestamps
 build:ci --verbose_failures
 build:ci --flaky_test_attempts=6  # try a bit harder - toxcore tests are flaky
 
-# Docker build doesn't support IPv6.
-build:docker --config=ci
-build:docker --config=nix
-
 ##############################################################################
 #
 # :: Compilation targets (including cross compilation)
@@ -696,6 +690,7 @@ build:linux-x86_64-musl --test_tag_filters=-no-cross,-qt,-windows,-macos
 build:linux-x86_64-musl --linkopt='-static'
 
 build:windows-x86_64 --config=zig-cross
+build:windows-x86_64 --linkopt="-lshlwapi"
 build:windows-x86_64 --platforms=@zig_sdk//platform:windows_amd64
 build:windows-x86_64 --extra_toolchains=@zig_sdk//toolchain:windows_amd64
 build:windows-x86_64 --build_tag_filters=-no-cross,-qt,-macos,-java,-no-windows

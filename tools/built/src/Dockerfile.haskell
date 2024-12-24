@@ -6,7 +6,7 @@ RUN cmake -Bc-toxcore/_build -Hc-toxcore -GNinja -DBOOTSTRAP_DAEMON=OFF -DCMAKE_
  && cmake --build c-toxcore/_build --parallel "$(nproc)" \
  && sudo cmake --build c-toxcore/_build --parallel "$(nproc)" --target install \
  && rm -rf /work/c-toxcore \
- && mkdir -p $HOME/.local/bin
+ && mkdir -p "$HOME/.local/bin"
 
 COPY --chown=builder:users hs-apigen/ /work/hs-apigen/
 COPY --chown=builder:users hs-cimple/ /work/hs-cimple/

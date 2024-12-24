@@ -19,12 +19,15 @@
 # Pick *one* of these for the target platform. "nix" is the default Linux target.
 #
 # remote-exec will also cache, so no need for remote in that case.
+build --config=nix
+#build --config=remote-exec
+#build --config=local
+
+# You may also pick a cross-compile target, which should be combined with one
+# of the above (needed to have a host toolchain available).
 #build --config=linux-arm64-musl
 #build --config=linux-x86_64-musl
 #build --config=windows-x86_64
-#build --config=remote-exec
-#build --config=local
-build --config=nix
 
 # Run with LLVM sanitizers.
 #build --config=asan

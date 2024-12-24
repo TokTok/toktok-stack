@@ -1,7 +1,7 @@
 # Pre-build //third_party in asan mode for speedy PR builds on sub-repos.
 FROM toxchat/toktok-stack:latest
 
-RUN echo 'build --config=asan' >> .bazelrc.local
+RUN echo 'build --config=asan' >>.bazelrc.local
 
 RUN sudo nix-daemon --daemon \
   & bazel build -k //third_party/...
