@@ -37,7 +37,6 @@ ENV BAZEL_COMPDB_BAZEL_PATH=bazel-nomodules
 COPY tools/built/src/setup-dev.sh /src/workspace/tools/built/src/
 RUN ["/src/workspace/tools/built/src/setup-dev.sh"]
 
-VOLUME [ "/sys/fs/cgroup" ]
 EXPOSE 22/tcp
 
 # vim:ft=dockerfile
