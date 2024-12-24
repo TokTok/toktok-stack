@@ -165,12 +165,16 @@ go_register_toolchains(version = "1.23.4")
 # Nixpkgs
 # =========================================================
 
+load("//tools/workspace:rules_nixpkgs.bzl", "rules_nixpkgs_dependencies")
+
+rules_nixpkgs_dependencies()
+
 # https://github.com/tweag/rules_haskell
 github_archive(
     name = "rules_haskell",
-    integrity = "sha256-Y2TEjneI/dKVDlKrQ82fIsYoUEyzU/mR/Pd+w7ETcbs=",
+    integrity = "sha256-SgLeJQFI4JmSeN8SNnwRAIpB2MXfN8bAA5x0uw6VkRo=",
     repo = "tweag/rules_haskell",
-    version = "c3fdf9107e3ba00b687181140a7be26c85f314bc",
+    version = "4169f8acc725669d50c801d216480b8e192841cb",
 )
 
 load(

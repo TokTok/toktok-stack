@@ -3,6 +3,9 @@ FROM toxchat/bazel:24.11
 # Needed for Cirrus CI to work.
 RUN ["mkdir", "/tmp/cirrus-ci-build"]
 
+# Needed by some bazel scripts.
+RUN ["sudo", "ln", "-s", "/bin/sh", "/bin/bash"]
+
 # We copy the bare minimum to run a successful aquery. The aquery will
 # download GHC and some other large dependencies that rarely change. We copy the
 # minimum number of files to avoid rebuilding this when making changes to the

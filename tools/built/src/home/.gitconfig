@@ -10,3 +10,5 @@
     defaultRemote = origin
 [pull]
     rebase = true
+[tag]
+    forceSignAnnotated = true

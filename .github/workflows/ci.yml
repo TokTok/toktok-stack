@@ -17,7 +17,7 @@ jobs:
     uses: TokTok/ci-tools/.github/workflows/common-ci.yml@master
 
   hie-bios:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,7 +28,7 @@ jobs:
         run: git diff --exit-code
 
   docker-haskell:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -40,7 +40,7 @@ jobs:
           cache-from: type=registry,ref=toxchat/toktok-stack:haskell
 
   docker-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -58,11 +58,11 @@ jobs:
       - name: Build toxchat/toktok-stack:latest-fastbuild
         run: docker build -t toxchat/toktok-stack:latest-fastbuild -f tools/built/src/Dockerfile.fastbuild .
 
-      - name: Build toxchat/toktok-stack:latest-arm64
-        run: docker build -t toxchat/toktok-stack:latest-arm64 -f tools/built/src/Dockerfile.arm64 .
+#     - name: Build toxchat/toktok-stack:latest-arm64
+#       run: docker build -t toxchat/toktok-stack:latest-arm64 -f tools/built/src/Dockerfile.arm64 .
 
-      - name: Build toxchat/toktok-stack:latest-windows
-        run: docker build -t toxchat/toktok-stack:latest-windows -f tools/built/src/Dockerfile.windows .
+#     - name: Build toxchat/toktok-stack:latest-windows
+#       run: docker build -t toxchat/toktok-stack:latest-windows -f tools/built/src/Dockerfile.windows .
 
       - name: Build toxchat/toktok-stack:latest-dev
         run: |
@@ -70,7 +70,7 @@ jobs:
           docker build -t toxchat/toktok-stack:latest-dev -f tools/built/src/Dockerfile.dev .
 
   mypy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python 3.9
