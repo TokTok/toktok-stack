@@ -316,6 +316,9 @@ build --copt='-Wno-unused-parameter'
 build --copt='-Wno-vla'
 build --copt='-ftrapv'
 
+# snprintf and some others are marked unused, but are used in many places.
+build --copt='-Wno-used-but-marked-unused'
+
 # This isn't a useful warning and makes code uglier.
 build --per_file_copt='@-Wno-missing-braces'
 # __attribute__((nonnull)) warns about defensive null checks.
@@ -331,7 +334,7 @@ build --copt='-Wno-unsafe-buffer-usage'
 # Used in absl, for some reason doesn't work with per_file_copt.
 # TODO(iphydf): Find out why.
 build --copt='-Wno-deprecated-builtins'
-# FIXME
+# TODO(iphydf): FIXME
 build --copt='-Wno-unreachable-code-return'
 
 # NO_FRAME_POINTER is set when compiling fuzzers (for some reason), causing absl to use the
@@ -359,14 +362,10 @@ build --per_file_copt='//py_toxcore_c[:/]@-Wno-shadow'
 build --per_file_copt='//py_toxcore_c[:/]@-Wno-undef'
 build --per_file_copt='//py_toxcore_c[:/]@-Wno-unreachable-code'
 build --per_file_copt='//py_toxcore_c[:/]@-Wno-unused-macros'
-build --per_file_copt='//py_toxcore_c[:/]@-Wno-used-but-marked-unused'
 build --per_file_copt='//py_toxcore_c[:/]@-Wno-zero-as-null-pointer-constant'
 
 # X11/Xfuncproto.h does this.
 build --per_file_copt='//qtox[:/].*x11@-Wno-variadic-macros'
-
-# VPX macros cause this.
-build --per_file_copt='//c-toxcore/toxav:video.c@-Wno-used-but-marked-unused'
 
 # xproto's keysymdef.h causes this.
 build --per_file_copt='//toxic[:/]@-Wno-documentation'
@@ -402,7 +401,6 @@ build --per_file_copt='//toxins/toxvpn@-Wno-zero-length-array'
 
 # TODO(iphydf): Fix these.
 build --per_file_copt='//experimental@-Wno-switch-enum'
-build --per_file_copt='//experimental@-Wno-used-but-marked-unused'
 build --per_file_copt='//jvm-toxcore-c@-Wno-error=switch'
 build --per_file_copt='//jvm-toxcore-c@-Wno-global-constructors,-Wno-exit-time-destructors'
 build --per_file_copt='//qtox@-Wno-documentation'
@@ -421,7 +419,6 @@ build --per_file_copt='//qtox@-Wno-switch-enum'
 build --per_file_copt='//qtox@-Wno-undef'
 build --per_file_copt='//qtox@-Wno-unused-but-set-variable'
 build --per_file_copt='//qtox@-Wno-unused-macros'
-build --per_file_copt='//qtox@-Wno-used-but-marked-unused'
 build --per_file_copt='//toxic@-Wno-implicit-fallthrough'
 build --per_file_copt='//toxic@-Wno-missing-variable-declarations'
 build --per_file_copt='//toxic@-Wno-sign-compare'
@@ -472,7 +469,6 @@ build --per_file_copt='external[:/]@-Wno-unreachable-code-return'
 build --per_file_copt='external[:/]@-Wno-unused-macros'
 build --per_file_copt='external[:/]@-Wno-weak-vtables'
 build --per_file_copt='external[:/]@-Wno-zero-as-null-pointer-constant'
-build --per_file_copt='external/benchmark[:/]@-Wno-used-but-marked-unused'
 build --per_file_copt='external/boringssl[:/]@-Wno-c11-extensions'
 build --per_file_copt='external/boringssl[:/]@-Wno-cast-function-type'
 build --per_file_copt='external/boringssl[:/]@-Wno-extra-semi'
@@ -480,7 +476,6 @@ build --per_file_copt='external/boringssl[:/]@-Wno-gnu-binary-literal'
 build --per_file_copt='external/boringssl[:/]@-Wno-overlength-strings'
 build --per_file_copt='external/boringssl[:/]@-Wno-redundant-parens'
 build --per_file_copt='external/boringssl[:/]@-Wno-tautological-value-range-compare'
-build --per_file_copt='external/boringssl[:/]@-Wno-used-but-marked-unused'
 build --per_file_copt='external/com_google_absl[:/]@-Wno-atomic-implicit-seq-cst'
 build --per_file_copt='external/com_google_absl[:/]@-Wno-tautological-type-limit-compare'
 build --per_file_copt='external/com_google_absl[:/]@-Wno-unused-template'
@@ -493,14 +488,12 @@ build --per_file_copt='external/protobuf~[:/]@-Wno-unused-function'
 build --per_file_copt='external/protobuf~[:/]@-Wno-unused-member-function'
 build --per_file_copt='external/protobuf~[:/]@-Wno-unused-template'
 build --per_file_copt='external/curl[:/]@-Wno-cast-function-type-strict'
-build --per_file_copt='external/curl[:/]@-Wno-used-but-marked-unused'
 build --per_file_copt='external/ev[:/]@-Wno-bitwise-op-parentheses'
 build --per_file_copt='external/ev[:/]@-Wno-comment'
 build --per_file_copt='external/ev[:/]@-Wno-extra-semi'
 build --per_file_copt='external/ev[:/]@-Wno-return-type'
 build --per_file_copt='external/ev[:/]@-Wno-sign-compare'
 build --per_file_copt='external/ev[:/]@-Wno-unused'
-build --per_file_copt='external/ev[:/]@-Wno-used-but-marked-unused'
 build --per_file_copt='external/ffmpeg/fftools[:/]@-Wno-single-bit-bitfield-constant-conversion'
 build --per_file_copt='external/ffmpeg[:/]@-Wno-absolute-value'
 build --per_file_copt='external/ffmpeg[:/]@-Wno-atomic-implicit-seq-cst'
@@ -533,7 +526,6 @@ build --per_file_copt='external/ffmpeg[:/]@-Wno-unused-but-set-variable'
 build --per_file_copt='external/ffmpeg[:/]@-Wno-unused-const-variable'
 build --per_file_copt='external/ffmpeg[:/]@-Wno-unused-function'
 build --per_file_copt='external/ffmpeg[:/]@-Wno-unused'
-build --per_file_copt='external/ffmpeg[:/]@-Wno-used-but-marked-unused'
 build --per_file_copt='external/libcap[:/]@-Wno-gnu-zero-variadic-macro-arguments'
 build --per_file_copt='external/libcap[:/]@-Wno-sign-compare'
 build --per_file_copt='external/libcap[:/]@-Wno-tautological-unsigned-enum-zero-compare'
@@ -564,7 +556,6 @@ build --per_file_copt='external/libzmq[:/]@-Wno-tautological-type-limit-compare'
 build --per_file_copt='external/libzmq[:/]@-Wno-unused-variable'
 build --per_file_copt='external/ncurses[:/]@-Wno-tautological-value-range-compare'
 build --per_file_copt='external/ncurses[:/]@-Wno-unused-but-set-variable'
-build --per_file_copt='external/ncurses[:/]@-Wno-used-but-marked-unused'
 build --per_file_copt='external/openal[:/]@-std=c++17'
 build --per_file_copt='external/openal[:/]@-Wno-switch'
 build --per_file_copt='external/openal[:/]@-Wno-undefined-func-template'
@@ -619,9 +610,6 @@ build:linux-arm64-musl --per_file_copt='external/com_google_absl/absl/base/inter
 
 # LPTSTR cast for WSAStringToAddress is necessary.
 build:windows-x86_64 --per_file_copt='//c-toxcore/toxcore:network.c@-Wno-cast-qual'
-
-# snprintf and some others are marked unused.
-build:windows-x86_64 --copt=-Wno-used-but-marked-unused
 
 # libvpx warnings on Windows.
 build:windows-x86_64 --per_file_copt='external/libvpx[:/]@-Wno-absolute-value'
