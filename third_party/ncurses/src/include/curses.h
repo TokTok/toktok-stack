@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2018-2020,2021 Thomas E. Dickey                                *
+ * Copyright 2018-2023,2024 Thomas E. Dickey                                *
  * Copyright 1998-2016,2017 Free Software Foundation, Inc.                  *
  *                                                                          *
  * Permission is hereby granted, free of charge, to any person obtaining a  *
@@ -33,7 +33,7 @@
  *     and: Thomas E. Dickey                        1996-on                 *
  ****************************************************************************/
 
-/* $Id: curses.h.in,v 1.277 2021/09/24 16:07:37 tom Exp $ */
+/* $Id: curses.h.in,v 1.282 2024/01/19 11:50:07 tom Exp $ */
 
 #ifndef __NCURSES_H
 #define __NCURSES_H
@@ -64,6 +64,7 @@
  NCURSES_OSPEED_COMPAT
  NCURSES_PATHSEP
  NCURSES_REENTRANT
+ NCURSES_SIGWINCH
  */
 
 #define CURSES 1
@@ -71,12 +72,12 @@
 
 /* These are defined only in curses.h, and are used for conditional compiles */
 #define NCURSES_VERSION_MAJOR 6
-#define NCURSES_VERSION_MINOR 3
-#define NCURSES_VERSION_PATCH 20211021
+#define NCURSES_VERSION_MINOR 5
+#define NCURSES_VERSION_PATCH 20240427
 
 /* This is defined in more than one ncurses header, for identification */
 #undef  NCURSES_VERSION
-#define NCURSES_VERSION "6.3"
+#define NCURSES_VERSION "6.5"
 
 /*
  * Identify the mouse encoding version.
@@ -148,10 +149,10 @@
  * Definitions used to make WINDOW and similar structs opaque.
  */
 #ifndef NCURSES_INTERNALS
-#define NCURSES_OPAQUE       0
-#define NCURSES_OPAQUE_FORM  0
-#define NCURSES_OPAQUE_MENU  0
-#define NCURSES_OPAQUE_PANEL 0
+#define NCURSES_OPAQUE       1
+#define NCURSES_OPAQUE_FORM  1
+#define NCURSES_OPAQUE_MENU  1
+#define NCURSES_OPAQUE_PANEL 1
 #endif
 
 /*
@@ -168,6 +169,19 @@
  */
 #ifndef NCURSES_REENTRANT
 #define NCURSES_REENTRANT 0
+#endif
+
+/*
+ * KEY_RESIZE is an extended feature that relies upon the SIGWINCH handler
+ * in ncurses.
+ */
+#if 1
+#ifndef NCURSES_SIGWINCH
+#define NCURSES_SIGWINCH 1
+#endif
+#else
+#undef NCURSES_SIGWINCH
+#define NCURSES_SIGWINCH 0
 #endif
 
 /*
@@ -477,7 +491,7 @@ typedef struct
     wchar_t	chars[CCHARW_MAX];
 #if 1
 #undef NCURSES_EXT_COLORS
-#define NCURSES_EXT_COLORS 20211021
+#define NCURSES_EXT_COLORS 20240427
     int		ext_color;	/* color pair, must be more than 16-bits */
 #endif
 }
@@ -896,6 +910,8 @@ extern NCURSES_EXPORT(char *) tparm (const char *, NCURSES_TPARM_ARG,NCURSES_TPA
 #endif
 
 extern NCURSES_EXPORT(char *) tiparm (const char *, ...);		/* special */
+extern NCURSES_EXPORT(char *) tiparm_s (int, int, const char *, ...);	/* special */
+extern NCURSES_EXPORT(int) tiscan_s (int *, int *, const char *);	/* special */
 
 /*
  * These functions are not in X/Open, but we use them in macro definitions:
@@ -922,14 +938,12 @@ extern NCURSES_EXPORT(int) getpary (const WINDOW *);			/* generated */
  */
 #if 1
 #undef  NCURSES_EXT_FUNCS
-#define NCURSES_EXT_FUNCS 20211021
+#define NCURSES_EXT_FUNCS 20240427
 typedef int (*NCURSES_WINDOW_CB)(WINDOW *, void *);
 typedef int (*NCURSES_SCREEN_CB)(SCREEN *, void *);
-extern NCURSES_EXPORT(bool) is_term_resized (int, int);
-extern NCURSES_EXPORT(char *) keybound (int, int);
-extern NCURSES_EXPORT(const char *) curses_version (void);
 extern NCURSES_EXPORT(int) alloc_pair (int, int);
 extern NCURSES_EXPORT(int) assume_default_colors (int, int);
+extern NCURSES_EXPORT(const char *) curses_version (void);
 extern NCURSES_EXPORT(int) define_key (const char *, int);
 extern NCURSES_EXPORT(int) extended_color_content(int, int *, int *, int *);
 extern NCURSES_EXPORT(int) extended_pair_content(int, int *, int *);
@@ -939,20 +953,31 @@ extern NCURSES_EXPORT(int) free_pair (int);
 extern NCURSES_EXPORT(int) get_escdelay (void);
 extern NCURSES_EXPORT(int) init_extended_color(int, int, int, int);
 extern NCURSES_EXPORT(int) init_extended_pair(int, int, int);
+extern NCURSES_EXPORT(int) is_cbreak(void);
+extern NCURSES_EXPORT(int) is_echo(void);
+extern NCURSES_EXPORT(int) is_nl(void);
+extern NCURSES_EXPORT(int) is_raw(void);
+extern NCURSES_EXPORT(bool) is_term_resized (int, int);
 extern NCURSES_EXPORT(int) key_defined (const char *);
+extern NCURSES_EXPORT(char *) keybound (int, int);
 extern NCURSES_EXPORT(int) keyok (int, bool);
+extern NCURSES_EXPORT(void) nofilter(void);
 extern NCURSES_EXPORT(void) reset_color_pairs (void);
 extern NCURSES_EXPORT(int) resize_term (int, int);
 extern NCURSES_EXPORT(int) resizeterm (int, int);
 extern NCURSES_EXPORT(int) set_escdelay (int);
 extern NCURSES_EXPORT(int) set_tabsize (int);
 extern NCURSES_EXPORT(int) use_default_colors (void);
-extern NCURSES_EXPORT(int) use_extended_names (bool);
 extern NCURSES_EXPORT(int) use_legacy_coding (int);
 extern NCURSES_EXPORT(int) use_screen (SCREEN *, NCURSES_SCREEN_CB, void *);
 extern NCURSES_EXPORT(int) use_window (WINDOW *, NCURSES_WINDOW_CB, void *);
 extern NCURSES_EXPORT(int) wresize (WINDOW *, int, int);
-extern NCURSES_EXPORT(void) nofilter(void);
+
+#if 1
+#undef  NCURSES_XNAMES
+#define NCURSES_XNAMES 1
+extern NCURSES_EXPORT(int) use_extended_names (bool);
+#endif
 
 /*
  * These extensions provide access to information stored in the WINDOW even
@@ -984,7 +1009,7 @@ extern NCURSES_EXPORT(int) wgetscrreg (const WINDOW *, int *, int *); /* generat
  */
 #if 1
 #undef  NCURSES_SP_FUNCS
-#define NCURSES_SP_FUNCS 20211021
+#define NCURSES_SP_FUNCS 20240427
 #define NCURSES_SP_NAME(name) name##_sp
 
 /* Define the sp-funcs helper function */
@@ -1067,20 +1092,24 @@ extern NCURSES_EXPORT(void) NCURSES_SP_NAME(use_tioctl) (SCREEN*, bool); /* impl
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(vidattr) (SCREEN*, chtype);	/* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(vidputs) (SCREEN*, chtype, NCURSES_SP_OUTC); /* implemented:SP_FUNC */
 #if 1
-extern NCURSES_EXPORT(char *) NCURSES_SP_NAME(keybound) (SCREEN*, int, int);	/* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(alloc_pair) (SCREEN*, int, int); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(assume_default_colors) (SCREEN*, int, int);	/* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(define_key) (SCREEN*, const char *, int);	/* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(extended_color_content) (SCREEN*, int, int *, int *, int *);	/* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(extended_pair_content) (SCREEN*, int, int *, int *);	/* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(extended_slk_color) (SCREEN*, int);	/* implemented:EXT_SP_FUNC */
-extern NCURSES_EXPORT(int) NCURSES_SP_NAME(get_escdelay) (SCREEN*);	/* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(find_pair) (SCREEN*, int, int); /* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(free_pair) (SCREEN*, int); /* implemented:EXT_SP_FUNC */
+extern NCURSES_EXPORT(int) NCURSES_SP_NAME(get_escdelay) (SCREEN*);	/* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(init_extended_color) (SCREEN*, int, int, int, int);	/* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(init_extended_pair) (SCREEN*, int, int, int);	/* implemented:EXT_SP_FUNC */
+extern NCURSES_EXPORT(int) NCURSES_SP_NAME(is_cbreak) (SCREEN*);	/* implemented:EXT_SP_FUNC */
+extern NCURSES_EXPORT(int) NCURSES_SP_NAME(is_echo) (SCREEN*);	/* implemented:EXT_SP_FUNC */
+extern NCURSES_EXPORT(int) NCURSES_SP_NAME(is_nl) (SCREEN*);	/* implemented:EXT_SP_FUNC */
+extern NCURSES_EXPORT(int) NCURSES_SP_NAME(is_raw) (SCREEN*);	/* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(bool) NCURSES_SP_NAME(is_term_resized) (SCREEN*, int, int);	/* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(key_defined) (SCREEN*, const char *);	/* implemented:EXT_SP_FUNC */
+extern NCURSES_EXPORT(char *) NCURSES_SP_NAME(keybound) (SCREEN*, int, int);	/* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(keyok) (SCREEN*, int, bool);	/* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(void) NCURSES_SP_NAME(nofilter) (SCREEN*); /* implemented */	/* implemented:EXT_SP_FUNC */
 extern NCURSES_EXPORT(void) NCURSES_SP_NAME(reset_color_pairs) (SCREEN*); /* implemented:EXT_SP_FUNC */
@@ -1596,7 +1625,7 @@ extern NCURSES_EXPORT_VAR(int) TABSIZE;
 #define KEY_UNDO	0630		/* undo key */
 #define KEY_MOUSE	0631		/* Mouse event has occurred */
 
-#ifdef NCURSES_EXT_FUNCS
+#if NCURSES_SIGWINCH
 #define KEY_RESIZE	0632		/* Terminal resize event */
 #endif
 
@@ -1915,7 +1944,7 @@ extern NCURSES_EXPORT(const char *) _nc_viswibuf(const wint_t *);
 #endif
 
 #endif /* NCURSES_WIDECHAR */
-/* $Id: curses.tail,v 1.26 2021/03/20 15:49:25 tom Exp $ */
+/* $Id: curses.tail,v 1.27 2023/08/05 19:43:46 tom Exp $ */
 /*
  * vile:cmode:
  * This file is part of ncurses, designed to be appended after curses.h.in
@@ -1930,12 +1959,12 @@ extern NCURSES_EXPORT(const char *) _nc_viswibuf(const wint_t *);
 #define NCURSES_MOUSE_MASK(b,m) ((m) << (((b) - 1) * 6))
 #endif
 
-#define	NCURSES_BUTTON_RELEASED	001L
-#define	NCURSES_BUTTON_PRESSED	002L
-#define	NCURSES_BUTTON_CLICKED	004L
-#define	NCURSES_DOUBLE_CLICKED	010L
-#define	NCURSES_TRIPLE_CLICKED	020L
-#define	NCURSES_RESERVED_EVENT	040L
+#define	NCURSES_BUTTON_RELEASED	001UL
+#define	NCURSES_BUTTON_PRESSED	002UL
+#define	NCURSES_BUTTON_CLICKED	004UL
+#define	NCURSES_DOUBLE_CLICKED	010UL
+#define	NCURSES_TRIPLE_CLICKED	020UL
+#define	NCURSES_RESERVED_EVENT	040UL
 
 /* event masks */
 #define	BUTTON1_RELEASED	NCURSES_MOUSE_MASK(1, NCURSES_BUTTON_RELEASED)

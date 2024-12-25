@@ -11,9 +11,7 @@ filegroup(
                 "BUILD.*.out",
                 # TODO
                 "BUILD.asound",
-                "BUILD.curl",
                 "BUILD.ffmpeg",
-                "BUILD.libconfig",
                 "BUILD.openal",
                 "BUILD.openssl",
                 "BUILD.sdl2",
