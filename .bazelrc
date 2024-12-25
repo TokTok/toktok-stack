@@ -140,11 +140,15 @@ build --per_file_copt='_test.cc?@-UNDEBUG'
 build --per_file_copt='external/libsodium[:/]@-O3'
 build --per_file_copt='external/opus[:/]@-O3'
 
+# Fastbuild (default) mode.
+build --strip=never
+
 # Debug mode.
 build:debug -c dbg
 
 # Release mode.
 build:release -c opt
+build:release --strip=always
 # NDEBUG disables asserts.
 #build:release --copt='-Wno-unused-variable'
 
@@ -152,7 +156,6 @@ build:strace --run_under="/run/current-system/sw/bin/strace -f"
 
 build:dynamic-analysis --jobs=4
 build:dynamic-analysis --test_timeout=300
-build:dynamic-analysis --strip=never
 build:dynamic-analysis --per_file_copt='//c-toxcore[:/]@-g,-UNDEBUG'
 
 build:valgrind --run_under="valgrind --track-origins=yes --error-exitcode=1 --fullpath-after=/proc/self/cwd/"
@@ -341,6 +344,7 @@ build --copt='-Wno-unreachable-code-return'
 # libunwind stack trace implementation, which is Google internal-only, so fails to compile in Open
 # Source software.
 build --per_file_copt='external/com_google_absl[:/]@-UNO_FRAME_POINTER,-fno-omit-frame-pointer'
+build --per_file_copt='external/abseil-cpp~[:/]@-UNO_FRAME_POINTER,-fno-omit-frame-pointer'
 
 # Compile toxcore as C++.
 build:c-as-cpp --per_file_copt='//c-toxcore[:/]@-xc++,-std=c++20'
@@ -364,11 +368,14 @@ build --per_file_copt='//py_toxcore_c[:/]@-Wno-unreachable-code'
 build --per_file_copt='//py_toxcore_c[:/]@-Wno-unused-macros'
 build --per_file_copt='//py_toxcore_c[:/]@-Wno-zero-as-null-pointer-constant'
 
+# Protobuf generated code has so many warnings we just ignore all of them.
+build --per_file_copt='\.pb\.cc$@-w'
+
 # X11/Xfuncproto.h does this.
-build --per_file_copt='//qtox[:/].*x11@-Wno-variadic-macros'
+build --per_file_copt='//qtox[:/].*x11.cpp$@-Wno-variadic-macros'
 
 # xproto's keysymdef.h causes this.
-build --per_file_copt='//toxic[:/]@-Wno-documentation'
+build --per_file_copt='//toxic:src/video_device.c@-Wno-documentation'
 
 # Ignore super donators stuff. It's verbatim. We compile it, but don't care about cleanliness.
 build --per_file_copt='//c-toxcore/super_donators@-Wno-comma,-Wno-extra-semi-stmt,-Wno-unreachable-code-return,-Wno-unused-result'
@@ -479,15 +486,20 @@ build --per_file_copt='external/boringssl[:/]@-Wno-tautological-value-range-comp
 build --per_file_copt='external/com_google_absl[:/]@-Wno-atomic-implicit-seq-cst'
 build --per_file_copt='external/com_google_absl[:/]@-Wno-tautological-type-limit-compare'
 build --per_file_copt='external/com_google_absl[:/]@-Wno-unused-template'
+build --per_file_copt='external/abseil-cpp~[:/]@-Wno-tautological-type-limit-compare'
+build --per_file_copt='external/abseil-cpp~[:/]@-Wno-unused-template'
 build --per_file_copt='external/com_google_protobuf[:/]@-Wno-extra-semi'
 build --per_file_copt='external/com_google_protobuf[:/]@-Wno-unused-function'
 build --per_file_copt='external/com_google_protobuf[:/]@-Wno-unused-member-function'
 build --per_file_copt='external/com_google_protobuf[:/]@-Wno-unused-template'
 build --per_file_copt='external/protobuf~[:/]@-Wno-extra-semi'
+build --per_file_copt='external/protobuf~[:/]@-Wno-inconsistent-missing-destructor-override'
+build --per_file_copt='external/protobuf~[:/]@-Wno-suggest-destructor-override'
 build --per_file_copt='external/protobuf~[:/]@-Wno-unused-function'
 build --per_file_copt='external/protobuf~[:/]@-Wno-unused-member-function'
 build --per_file_copt='external/protobuf~[:/]@-Wno-unused-template'
-build --per_file_copt='external/curl[:/]@-Wno-cast-function-type-strict'
+build --per_file_copt='external/curl~[:/]@-D_POSIX_C_SOURCE=200809L'
+build --per_file_copt='external/curl~[:/]@-Wno-cast-function-type-strict'
 build --per_file_copt='external/ev[:/]@-Wno-bitwise-op-parentheses'
 build --per_file_copt='external/ev[:/]@-Wno-comment'
 build --per_file_copt='external/ev[:/]@-Wno-extra-semi'
@@ -531,8 +543,7 @@ build --per_file_copt='external/libcap[:/]@-Wno-sign-compare'
 build --per_file_copt='external/libcap[:/]@-Wno-tautological-unsigned-enum-zero-compare'
 build --per_file_copt='external/libcap[:/]@-Wno-unused-result'
 build --per_file_copt='external/libcap[:/]@-Wno-variadic-macros'
-build --per_file_copt='external/libconfig[:/]@-Wno-deprecated-non-prototype'
-build --per_file_copt='external/libconfig[:/]@-Wno-unused-but-set-variable'
+build --per_file_copt='external/libconfig~[:/]@-D_POSIX_C_SOURCE=200809L'
 build --per_file_copt='external/libidn2[:/]@-Wno-alloca'
 build --per_file_copt='external/libidn2[:/]@-Wno-cast-function-type-strict'
 build --per_file_copt='external/libidn2[:/]@-Wno-pedantic'

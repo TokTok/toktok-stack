@@ -1,6 +1,6 @@
-# $Id: Makefile.in,v 1.182 2021/08/19 23:43:40 tom Exp $
+# $Id: Makefile.in,v 1.184 2024/01/19 12:00:00 tom Exp $
 ##############################################################################
-# Copyright 2018-2020,2021 Thomas E. Dickey                                  #
+# Copyright 2018-2022,2024 Thomas E. Dickey                                  #
 # Copyright 1998-2017,2018 Free Software Foundation, Inc.                    #
 #                                                                            #
 # Permission is hereby granted, free of charge, to any person obtaining a    #
@@ -82,8 +82,8 @@ LIBTOOL_INSTALL	=
 LIBTOOL_UNINSTALL = 
 LT_UNDEF	= 
 
-INSTALL		= /nix/store/bblyj5b3ii8n6v4ra0nb37cmi3lf8rz9-coreutils-9.3/bin/install -c
-INSTALL_LIB	= /nix/store/bblyj5b3ii8n6v4ra0nb37cmi3lf8rz9-coreutils-9.3/bin/install -c -m 644 -p
+INSTALL		= /nix/store/b1wvkjx96i3s7wblz38ya0zr8i93zbc5-coreutils-9.5/bin/install -c
+INSTALL_LIB	= /nix/store/b1wvkjx96i3s7wblz38ya0zr8i93zbc5-coreutils-9.5/bin/install -c -m 644 -p
 INSTALL_PROG	= ${INSTALL} -s
 INSTALL_DATA	= ${INSTALL} -m 644
 
@@ -97,8 +97,8 @@ NM		= nm
 CTAGS		= 
 ETAGS		= 
 
-CC		= /nix/store/n37gxbg343hxin3wdryx092mz2dkafy8-clang-wrapper-16.0.6/bin/cc
-CPP		= /nix/store/n37gxbg343hxin3wdryx092mz2dkafy8-clang-wrapper-16.0.6/bin/cc -E
+CC		= /nix/store/03bq5hc45d5wkw8pajmz4vgd5s0ivyq8-clang-wrapper-18.1.8/bin/cc
+CPP		= /nix/store/03bq5hc45d5wkw8pajmz4vgd5s0ivyq8-clang-wrapper-18.1.8/bin/cc -E
 CFLAGS		= -O2 -Qunused-arguments -Wno-error=implicit-function-declaration 
 LIBS		= 
 
@@ -141,8 +141,8 @@ VERSIONED_SYMS	=
 MK_SHARED_LIB	= ${CC} ${LDFLAGS} ${CFLAGS} -shared -Wl,-soname,`basename $@ .${REL_VERSION}`.${ABI_VERSION},-stats,-lc -o $@
 
 NCURSES_MAJOR	= 6
-NCURSES_MINOR	= 3
-REL_VERSION	= 6.3
+NCURSES_MINOR	= 5
+REL_VERSION	= 6.5
 ABI_VERSION	= 6
 
 RANLIB		= ':'
@@ -208,7 +208,7 @@ TEST_PROGS = \
 	link_test$x \
 	report_hashing$x
 
-LOCAL_LIBDIR	= /home/builder/.cache/bazel/_bazel_builder/a08c2e4811c846650b733c6fc815a920/sandbox/processwrapper-sandbox/909/execroot/toktok/external/ncurses/lib
+LOCAL_LIBDIR	= /home/builder/.cache/bazel/_bazel_builder/a08c2e4811c846650b733c6fc815a920/sandbox/linux-sandbox/5642/execroot/_main/external/ncurses/lib
 
 base	 = $(srcdir)/base
 serial	 = $(srcdir)/tty
@@ -245,13 +245,13 @@ $(DESTDIR)$(libdir) :
 	$(SHELL) -e $(tinfo)/MKfallback.sh $(TERMINFO) $(TERMINFO_SRC) "$(TIC_PATH)" "$(INFOCMP_PATH)" $(FALLBACK_LIST) >$@
 
 ./lib_gen.c : $(base)/MKlib_gen.sh ../include/curses.h
-	$(SHELL) -e $(base)/MKlib_gen.sh "$(CPP) $(CPPFLAGS)" "$(AWK)" generated <../include/curses.h >$@
+	FGREP="grep -F" $(SHELL) -e $(base)/MKlib_gen.sh "$(CPP) $(CPPFLAGS)" "$(AWK)" generated <../include/curses.h >$@
 
 init_keytry.h : make_keys$(BUILD_EXEEXT) keys.list
 	./make_keys$(BUILD_EXEEXT) keys.list > $@
 
 keys.list :	$(tinfo)/MKkeys_list.sh
-	AWK=$(AWK) $(SHELL) $(tinfo)/MKkeys_list.sh $(CAPLIST) | LC_ALL=C sort >$@
+	AWK=$(AWK) USE_SIGWINCH=1 $(SHELL) $(tinfo)/MKkeys_list.sh $(CAPLIST) | LC_ALL=C sort >$@
 
 make_keys$(BUILD_EXEEXT) : \
 		build.priv.h \
@@ -288,7 +288,7 @@ report_offsets$(BUILD_EXEEXT) : \
 	$(SHELL) -e $(tinfo)/MKuserdefs.sh $(AWK) $(USE_BIG_STRINGS) $(CAPLIST) > $@
 
 ./lib_keyname.c: keys.list $(base)/MKkeyname.awk
-	$(AWK) -f $(base)/MKkeyname.awk bigstrings=$(USE_BIG_STRINGS) keys.list > $@
+	$(AWK) -f $(base)/MKkeyname.awk use_sigwinch=1 bigstrings=$(USE_BIG_STRINGS) keys.list > $@
 
 ./codes.c: $(tinfo)/MKcodes.awk
 	$(AWK) -f $(tinfo)/MKcodes.awk bigstrings=$(USE_BIG_STRINGS) $(CAPLIST) >$@
@@ -333,7 +333,7 @@ realclean :: distclean
 test_progs : $(TEST_PROGS)
 
 ./link_test.c : $(base)/MKlib_gen.sh ../include/curses.h
-	$(SHELL) -e $(base)/MKlib_gen.sh "$(CPP) $(CPPFLAGS)" "$(AWK)" implemented <../include/curses.h >$@
+	FGREP="grep -F" $(SHELL) -e $(base)/MKlib_gen.sh "$(CPP) $(CPPFLAGS)" "$(AWK)" implemented <../include/curses.h >$@
 
 captoinfo$x : $(tinfo)/captoinfo.c $(TEST_DEPS)
 	 $(LIBTOOL_LINK) -o $@ $(CFLAGS_DEFAULT) -DMAIN $(tinfo)/captoinfo.c $(TEST_LDFLAGS)

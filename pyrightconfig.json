@@ -1,4 +1,3 @@
 {
-  "include": ["/src/workspace"],
-  "exclude": ["bazel-*"]
+  "exclude": ["**/node_modules", "**/__pycache__", "bazel-*", "external"]
 }

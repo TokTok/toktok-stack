@@ -7,50 +7,50 @@
 #endif
 
 #if NCURSES_EXPANDED
- void
+__attribute__((visibility ("default"))) void
 _nc_toggle_attr_on (attr_t *S, attr_t at)
 {
  { if (((int)((((unsigned long)(at) & ((chtype)((((1U) << 8) - 1U)) << ((0) + 8))) >> 8))) > 0) { (*S) = ((*S) & ALL_BUT_COLOR) | (attr_t) (at); } else { (*S) |= (attr_t) (at); } ;};
 }
 
- void
+__attribute__((visibility ("default"))) void
 _nc_toggle_attr_off (attr_t *S, attr_t at)
 {
  { if (((int)((((unsigned long)(at) & ((chtype)((((1U) << 8) - 1U)) << ((0) + 8))) >> 8))) > 0) { (*S) &= ~(at|((chtype)((((1U) << 8) - 1U)) << ((0) + 8))); } else { (*S) &= ~(at); } ;};
 }
 
- int
+__attribute__((visibility ("default"))) int
 _nc_DelCharCost_sp (SCREEN *sp, int count)
 {
  return (((cur_term)->type2. Strings[105] != 0) ? sp->_dch_cost : (((cur_term)->type2. Strings[21] != 0) ? (sp->_dch1_cost * count) : 1000000));
 }
 
- int
+__attribute__((visibility ("default"))) int
 _nc_InsCharCost_sp (SCREEN *sp, int count)
 {
  return (((cur_term)->type2. Strings[108] != 0) ? sp->_ich_cost : (((cur_term)->type2. Strings[31] && (cur_term)->type2. Strings[42]) ? sp->_smir_cost + sp->_rmir_cost + (sp->_ip_cost * count) : (((cur_term)->type2. Strings[52] != 0) ? ((sp->_ich1_cost + sp->_ip_cost) * count) : 1000000)));
 }
 
- void
+__attribute__((visibility ("default"))) void
 _nc_UpdateAttrs_sp (SCREEN *sp, const cchar_t * c)
 {
  if (!((((*((sp)->_current_attr))).attr) == (((*(c))).attr) && ((((*((sp)->_current_attr))).ext_color) ? (((*((sp)->_current_attr))).ext_color) : ((int)((((unsigned long)((((*((sp)->_current_attr))).attr)) & ((chtype)((((1U) << 8) - 1U)) << ((0) + 8))) >> 8)))) == ((((*(c))).ext_color) ? (((*(c))).ext_color) : ((int)((((unsigned long)((((*(c))).attr)) & ((chtype)((((1U) << 8) - 1U)) << ((0) + 8))) >> 8)))))) { do { int vid_pair = ((((*(c))).ext_color) ? (((*(c))).ext_color) : ((int)((((unsigned long)((((*(c))).attr)) & ((chtype)((((1U) << 8) - 1U)) << ((0) + 8))) >> 8)))); vid_puts_sp( sp, (((*(c))).attr), (short) ((((*(c))).ext_color) ? (((*(c))).ext_color) : ((int)((((unsigned long)((((*(c))).attr)) & ((chtype)((((1U) << 8) - 1U)) << ((0) + 8))) >> 8)))), &vid_pair, _nc_outch_sp); } while (0); };
 }
 
 #if NCURSES_SP_FUNCS
- int
+__attribute__((visibility ("default"))) int
 _nc_DelCharCost (int count)
 {
  return _nc_DelCharCost_sp (_nc_screen(), count);
 }
 
- int
+__attribute__((visibility ("default"))) int
 _nc_InsCharCost (int count)
 {
  return _nc_InsCharCost_sp(_nc_screen(), count);
 }
 
- void
+__attribute__((visibility ("default"))) void
 _nc_UpdateAttrs (const cchar_t * c)
 {
  _nc_UpdateAttrs_sp(_nc_screen(),c);

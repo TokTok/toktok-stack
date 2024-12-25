@@ -23,10 +23,9 @@ if ! (ps aux | grep nix-daemon | grep -v grep); then
   sleep 1
 fi
 
-# Generate compile_commands.json.
-bazel run //:refresh_compile_commands
-
 # Run all tests to completion, so the dev container starts out with all tests
 # passing (so any potential breakage is local only).
-# FIXME(iphydf)
-#tools/retry 5 bazel test --show_timestamps -- //...
+tools/retry 5 bazel test --show_timestamps -- //...
+
+# Generate compile_commands.json after having built everything.
+bazel run //:refresh_compile_commands

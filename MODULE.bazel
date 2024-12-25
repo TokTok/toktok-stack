@@ -6,6 +6,17 @@ module(
 # https://github.com/bazelbuild/platforms/releases
 bazel_dep(name = "platforms", version = "0.0.10")
 
+bazel_dep(name = "rules_license", version = "1.0.0")
+
+# https://github.com/bazelbuild/bazel-central-registry/tree/main/modules/curl
+bazel_dep(name = "curl", version = "8.8.0")
+
+# https://github.com/bazelbuild/bazel-central-registry/tree/main/modules/libconfig
+bazel_dep(name = "libconfig", version = "1.7.3")
+
+# https://github.com/bazelbuild/bazel-central-registry/tree/main/modules/protobuf
+bazel_dep(name = "protobuf", version = "28.3")
+
 # Hedron's Compile Commands Extractor for Bazel
 # https://github.com/hedronvision/bazel-compile-commands-extractor
 bazel_dep(name = "hedron_compile_commands", dev_dependency = True)

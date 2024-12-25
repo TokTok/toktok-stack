@@ -7,11 +7,9 @@ load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
 # https://github.com/bazelbuild/bazel-skylib
 github_archive(
     name = "bazel_skylib",
-    #integrity = "sha256-s6wuTWaJ/u/ZzA7hIycriiOmdRJg8+iK38fKheZjybs=",
+    integrity = "sha256-I+84CqYuLxtjHQLQydFj5DvgPogJU9r+Ez11T7jZbwo=",
     repo = "bazelbuild/bazel-skylib",
-    sha256 = "385c4e9cef8538388e7e457c8cf282ecd2415e70970ad99f885a934ca9071220",
-    # boringssl is not compatible with 1.7.0+.
-    version = "1.6.1",
+    version = "1.7.1",
 )
 
 # Third-party Bazel
@@ -42,9 +40,9 @@ register_toolchains(
 # https://github.com/aherrmann/rules_zig
 github_archive(
     name = "rules_zig",
-    integrity = "sha256-93KFvVQzhf5ptnFjDEc56wtntkTcD2kYTs3XEj3w4uA=",
+    integrity = "sha256-2CKwqWqx87hXsAhgfyztqzG3ikp+obARtWVAAPGnKsA=",
     repo = "aherrmann/rules_zig",
-    version = "v0.6.0",
+    version = "v0.7.0",
 )
 
 load(
@@ -68,9 +66,9 @@ load("//tools/workspace:python.bzl", "python_repository")
 # https://github.com/bazelbuild/rules_python
 github_archive(
     name = "rules_python",
-    integrity = "sha256-QztU/bqTx7ImS00d9FjdaV9VF4l+9Ihu7r2Ns9/53m4=",
+    integrity = "sha256-cUn/9F95JbttRVQ+2Zv9NUTsY9+C73DPDOOLZpydO9Y=",
     repo = "bazelbuild/rules_python",
-    version = "0.40.0",
+    version = "1.0.0",
 )
 
 load("@rules_python//python:repositories.bzl", "py_repositories")
@@ -84,32 +82,32 @@ python_repository(
 # https://github.com/cython/cython
 github_archive(
     name = "cython",
+    integrity = "sha256-dKFnMMGcdhd2NFEqCqO4HZLEzOQXIKlflHjm1s6ChyQ=",
     repo = "cython/cython",
-    sha256 = "74a16730c19c76177634512a0aa3b81d92c4cce41720a95f9478e6d6ce828724",
     version = "3.0.11-1",
 )
 
 # https://github.com/python/mypy
 new_github_archive(
     name = "mypy",
+    integrity = "sha256-fufY7rOarKQ9K+ZNpnSmlP6LXi71q6Fs7wrzpfyqzKU=",
     repo = "python/mypy",
-    sha256 = "44374d34dbd6f5bbf9f81fc86cc4ebd390a0d57b1afe461dbbc8bab205192318",
-    version = "v1.13.0",
+    version = "v1.14.0",
 )
 
 # https://github.com/python/mypy_extensions
 new_github_archive(
     name = "mypy_extensions",
+    integrity = "sha256-c6N0BjqeVoXZ5CRGK/i6EBPHkWlzPu+9IAEO5dYVenM=",
     repo = "python/mypy_extensions",
-    sha256 = "73a374063a9e5685d9e424462bf8ba1013c79169733eefbd20010ee5d6157a73",
     version = "1.0.0",
 )
 
 # https://github.com/python/typing_extensions
 new_github_archive(
     name = "typing_extensions",
+    integrity = "sha256-2H2q0wR96X4PoOpfoj0rpXSND5O2TMDXdefR3w1AkO0=",
     repo = "python/typing_extensions",
-    sha256 = "d87daad3047de97e0fa0ea5fa23d2ba5748d0f93b64cc0d775e7d1df0d4090ed",
     strip_prefix = "/src",
     version = "4.12.2",
 )
@@ -120,8 +118,8 @@ new_github_archive(
 # https://github.com/bazelbuild/rules_fuzzing
 github_archive(
     name = "rules_fuzzing",
+    integrity = "sha256-5rwhm/rJ4fg7Mn3QkPcoqflz7pm5tdjloYSicy7whiM=",
     repo = "bazelbuild/rules_fuzzing",
-    sha256 = "e6bc219bfac9e1f83b327dd090f728a9f973ee99b9b5d8e5a184a2732ef08623",
     version = "v0.5.2",
 )
 
@@ -143,9 +141,9 @@ install_deps()
 # https://github.com/bazelbuild/rules_go
 github_archive(
     name = "io_bazel_rules_go",
+    integrity = "sha256-imL9hSVITPu6m7OxO63g2SxCykaXFr4B2dI9m2a3DHQ=",
     repo = "bazelbuild/rules_go",
-    sha256 = "1f9702aef8d2b106a216f6a7729a7208bf1c110dec3dbff07d81e553115ff32b",
-    version = "v0.50.1",
+    version = "v0.51.0",
 )
 
 # https://github.com/bazelbuild/bazel-gazelle
@@ -273,14 +271,6 @@ nixpkgs_java_configure(
     toolchain_version = "21",
 )
 
-# https://github.com/bazelbuild/rules_proto
-github_archive(
-    name = "rules_proto",
-    integrity = "sha256-izdEYHo671xV0XkJ8HPV7UCZByP+/mMbIuqzXidriT0=",
-    repo = "bazelbuild/rules_proto",
-    version = "6.0.2",
-)
-
 http_archive(
     name = "remote_java_tools_linux",
     patch_cmds = [
@@ -309,9 +299,9 @@ http_archive(
 # https://github.com/bazelbuild/rules_jvm_external
 github_archive(
     name = "rules_jvm_external",
-    integrity = "sha256-xbJ5KO648HYfCAVUBYdmDw7MaUbpwEvw1MieL30zKys=",
+    integrity = "sha256-7GDSWOb1WhAUNo5AylIFixpkWj1FXKRxxO23wD9LjYg=",
     repo = "bazelbuild/rules_jvm_external",
-    version = "6.5",
+    version = "6.6",
 )
 
 load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
@@ -475,9 +465,9 @@ nixpkgs_package(
 http_archive(
     name = "ncurses",
     build_file = "@toktok//third_party:BUILD.ncurses",
-    sha256 = "97fc51ac2b085d4cde31ef4d2c3122c21abc217e9090a43a30fc5ec21684e059",
-    strip_prefix = "ncurses-6.3",
-    urls = ["https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.3.tar.gz"],
+    integrity = "sha256-E22RvCaamleF5fnpgLx2q1dCj2BM4+WlqQzrx2eXHMY=",
+    strip_prefix = "ncurses-6.5",
+    urls = ["https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.5.tar.gz"],
 )
 
 http_archive(
@@ -486,14 +476,6 @@ http_archive(
     sha256 = "507eb7b8d1015fbec5b935f34ebed15bf346bed04a11ab82b8eee848c4205aea",
     strip_prefix = "libev-4.33",
     urls = ["http://dist.schmorp.de/libev/libev-4.33.tar.gz"],
-)
-
-# https://github.com/google/boringssl
-github_archive(
-    name = "boringssl",
-    integrity = "sha256-aE4zQXpj8PfJFqCtg1a+qTcSpvQQpeR60Q4pqEo9Lgc=",
-    repo = "google/boringssl",
-    version = "391bd56eaaa8b0a00cdb0f9a4ed25cc0f11c9791",
 )
 
 http_archive(
@@ -518,14 +500,6 @@ github_archive(
     repo = "google/benchmark",
     sha256 = "8a63c9c6adf9e7ce8d0d81f251c47de83efb5e077e147d109fa2045daac8368b",
     version = "v1.9.1",
-)
-
-# https://github.com/curl/curl
-new_github_archive(
-    name = "curl",
-    repo = "curl/curl",
-    sha256 = "5216ed22ac04954d95d39bd5d796b31ca55b482d998a830e7493452a4c6ce7e9",
-    version = "curl-8_10_1",
 )
 
 # https://github.com/FFmpeg/nv-codec-headers
@@ -595,14 +569,6 @@ http_archive(
     sha256 = "db7de848064e656a0bb528dae6d53ff20c82e849d509cecd015a04d2fec8369d",
     strip_prefix = "libcap-2.33",
     urls = ["https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.33.tar.gz"],
-)
-
-# https://github.com/hyperrealm/libconfig
-new_github_archive(
-    name = "libconfig",
-    integrity = "sha256-hTSG4pEWJa0E/mHY7m5tZ5TUu5ID5qMQC9as6Loqrk0=",
-    repo = "hyperrealm/libconfig",
-    version = "e4c5d2cadb72c988ba0b7265610b448cba521f79",
 )
 
 # https://github.com/libexif/libexif
@@ -838,8 +804,8 @@ nixpkgs_package(
 # https://github.com/yasm/yasm
 new_github_archive(
     name = "yasm",
+    integrity = "sha256-KcUxZBAVaWQ+s+pzwbrdTkiWkBMgQrt1HtzUfs6MDqQ=",
     repo = "yasm/yasm",
-    sha256 = "29c53164101569643eb3ea73c1badd4e489690132042bb751edcd47ece8c0ea4",
     version = "121ab150b3577b666c79a79f4a511798d7ad2432",
 )
 
@@ -849,17 +815,17 @@ new_github_archive(
 # https://github.com/bazelbuild/rules_apple
 github_archive(
     name = "build_bazel_rules_apple",
-    integrity = "sha256-GhXdvG95AvfUVbLvJKutxf9C3FLcR2m6q7t7XZyEHcc=",
+    integrity = "sha256-OztB6L8l6N2UniF9+LoVOspzt4XOJLVn2zZiakUIULE=",
     repo = "bazelbuild/rules_apple",
-    version = "3.13.0",
+    version = "3.16.1",
 )
 
 # https://github.com/bazelbuild/rules_swift
 github_archive(
     name = "build_bazel_rules_swift",
-    integrity = "sha256-jrlSxoisDI576ktm9DCbw00427lz4FPW13K52i0HQPE=",
+    integrity = "sha256-ZTHYCMz0pFxgtNRVcYKCxgoYP6s1fQk9maUHyTzK6hM=",
     repo = "bazelbuild/rules_swift",
-    version = "2.2.4",
+    version = "2.3.1",
 )
 
 # https://github.com/bazelbuild/apple_support
