@@ -58,10 +58,6 @@ our %REPOS = (
       repo 'iphydf',
       repo 'camgunz',
    }],
-   'c-toxcore-hs' => ['c-toxcore-hs', {
-      upstream => 'toktok',
-      repo 'iphydf',
-   }],
    'dockerfiles' => ['dockerfiles', {
       upstream => 'toktok',
       repo 'iphydf',
@@ -154,6 +150,10 @@ our %REPOS = (
       repo 'qtox',
    }],
    'spec' => ['spec', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
+   'tokhub' => ['tokhub', {
       upstream => 'toktok',
       repo 'iphydf',
    }],

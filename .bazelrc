@@ -133,6 +133,10 @@ build:strict --host_linkopt='-Wl,--rosegment'
 build:strict      --linkopt='-Wl,--warn-common'
 build:strict --host_linkopt='-Wl,--warn-common'
 
+# UBSan is always enabled, but by default in trap mode (no runtime needed).
+build --copt='-fsanitize=undefined'
+build --copt='-fsanitize-trap=all'
+
 # Always enable assert() in tests.
 build --per_file_copt='_test.cc?@-UNDEBUG'
 # Optimize libsodium and opus even in debug mode.
@@ -195,8 +199,8 @@ build:asan --copt='-fsanitize=address'
 build:asan --copt='-fsanitize-address-use-after-return=always'
 build:asan --copt='-fsanitize-address-use-after-scope'
 build:asan --linkopt='-fsanitize=address'
-build:asan --action_env=ASAN_OPTIONS=color=always:detect_leaks=1:strict_string_checks=1:check_initialization_order=1:strict_init_order=1:external_symbolizer_path=/nix/store/d0r6r274cpcr6gslqx16gn0m38qpy5p3-llvm-16.0.6/bin/llvm-symbolizer
-build:asan --action_env=LSAN_OPTIONS=report_objects=1
+build:asan --test_env=ASAN_OPTIONS=color=always:detect_leaks=1:strict_string_checks=1:check_initialization_order=1:strict_init_order=1:external_symbolizer_path=/nix/store/h6rpdk8nb097diyqk1vsglw9chwgfsjr-llvm-18.1.8/bin/llvm-symbolizer
+build:asan --test_env=LSAN_OPTIONS=report_objects=1
 
 build:msan --config=sanitizer
 # TODO(iphydf): Get an msan-enabled libc++ into Nix.
@@ -204,25 +208,26 @@ build:msan --config=sanitizer
 build:msan --copt='-fsanitize=memory'
 build:msan --copt='-fsanitize-memory-track-origins=2'
 build:msan --linkopt='-fsanitize=memory'
-build:msan --test_env=MSAN_OPTIONS=color=always:external_symbolizer_path=/nix/store/d0r6r274cpcr6gslqx16gn0m38qpy5p3-llvm-16.0.6/bin/llvm-symbolizer
+build:msan --test_env=MSAN_OPTIONS=color=always:external_symbolizer_path=/nix/store/h6rpdk8nb097diyqk1vsglw9chwgfsjr-llvm-18.1.8/bin/llvm-symbolizer
 build:msan --per_file_copt='//toxic[:/]@-UAUDIO,-UVIDEO,-UPYTHON'
 
 build:tsan --config=sanitizer
 build:tsan --features=tsan
 build:tsan --copt='-fsanitize=thread'
 build:tsan --linkopt='-fsanitize=thread'
-build:tsan --test_env=TSAN_OPTIONS=color=always,history_size=7,force_seq_cst_atomics=1:external_symbolizer_path=/nix/store/d0r6r274cpcr6gslqx16gn0m38qpy5p3-llvm-16.0.6/bin/llvm-symbolizer
+build:tsan --test_env=TSAN_OPTIONS=color=always,history_size=7,force_seq_cst_atomics=1:external_symbolizer_path=/nix/store/h6rpdk8nb097diyqk1vsglw9chwgfsjr-llvm-18.1.8/bin/llvm-symbolizer
 
 build:ubsan --config=sanitizer
 build:ubsan --features=ubsan
-build:ubsan --copt='-fno-sanitize-recover=all'
 build:ubsan --copt='-fsanitize=nullability,undefined'
 #build:ubsan --per_file_copt='//c-toxcore[:/]@-fsanitize=integer'
+build:ubsan --copt='-fno-sanitize-recover=all'
+build:ubsan --copt='-fno-sanitize-trap=all'
 build:ubsan --linkopt='-fsanitize=integer,nullability,undefined'
 # https://github.com/bazelbuild/bazel/issues/11122
 build:ubsan --linkopt='-fsanitize-link-c++-runtime'
 build:ubsan --per_file_copt='//c-toxcore[:/]@-D_DEBUG'
-build:ubsan --test_env=UBSAN_OPTIONS=color=always,print_stacktrace=1:external_symbolizer_path=/nix/store/d0r6r274cpcr6gslqx16gn0m38qpy5p3-llvm-16.0.6/bin/llvm-symbolizer
+build:ubsan --test_env=UBSAN_OPTIONS=color=always,print_stacktrace=1:external_symbolizer_path=/nix/store/h6rpdk8nb097diyqk1vsglw9chwgfsjr-llvm-18.1.8/bin/llvm-symbolizer
 
 # Link-time optimization.
 build:lto --copt='-flto'
@@ -256,6 +261,9 @@ build --copt='-funsigned-char'
 build --cxxopt='-fno-exceptions'
 build --cxxopt='-fno-rtti'
 build --cxxopt='-DGOOGLE_PROTOBUF_NO_RTTI'
+
+# Disable deprecated Tox APIs.
+#build --copt='-DTOX_HIDE_DEPRECATED'
 
 # Enable trace logging for toxcore.
 build --per_file_copt='//c-toxcore/@-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_TRACE'
@@ -367,6 +375,8 @@ build --per_file_copt='//py_toxcore_c[:/]@-Wno-undef'
 build --per_file_copt='//py_toxcore_c[:/]@-Wno-unreachable-code'
 build --per_file_copt='//py_toxcore_c[:/]@-Wno-unused-macros'
 build --per_file_copt='//py_toxcore_c[:/]@-Wno-zero-as-null-pointer-constant'
+# https://github.com/cython/cython/issues/6586
+build --per_file_copt='//py_toxcore_c[:/]@-fno-sanitize=enum'
 
 # Protobuf generated code has so many warnings we just ignore all of them.
 build --per_file_copt='\.pb\.cc$@-w'
@@ -520,7 +530,6 @@ build --per_file_copt='external/ffmpeg[:/]@-Wno-format-pedantic'
 build --per_file_copt='external/ffmpeg[:/]@-Wno-implicit-const-int-float-conversion'
 build --per_file_copt='external/ffmpeg[:/]@-Wno-incompatible-function-pointer-types-strict'
 build --per_file_copt='external/ffmpeg[:/]@-Wno-incompatible-pointer-types-discards-qualifiers'
-build --per_file_copt='external/ffmpeg[:/]@-Wno-missing-braces'
 build --per_file_copt='external/ffmpeg[:/]@-Wno-overlength-strings'
 build --per_file_copt='external/ffmpeg[:/]@-Wno-parentheses'
 build --per_file_copt='external/ffmpeg[:/]@-Wno-pedantic'
@@ -565,6 +574,7 @@ build --per_file_copt='external/libzmq[:/]@-Wno-suggest-destructor-override'
 build --per_file_copt='external/libzmq[:/]@-Wno-suggest-override'
 build --per_file_copt='external/libzmq[:/]@-Wno-tautological-type-limit-compare'
 build --per_file_copt='external/libzmq[:/]@-Wno-unused-variable'
+build --per_file_copt='external/ncurses[:/]@-fno-sanitize=undefined'
 build --per_file_copt='external/ncurses[:/]@-Wno-tautological-value-range-compare'
 build --per_file_copt='external/ncurses[:/]@-Wno-unused-but-set-variable'
 build --per_file_copt='external/openal[:/]@-std=c++17'
@@ -672,7 +682,6 @@ build:zig-cross --features=fully_static_link
 # See: https://github.com/uber/hermetic_cc_toolchain/issues/134
 build:zig-cross --sandbox_add_mount_pair=/tmp
 build:zig-cross --per_file_copt='external/ffmpeg[:/]@-Wno-incompatible-function-pointer-types'
-build:zig-cross --per_file_copt='external/ncurses[:/]@-fno-sanitize=undefined'
 build:zig-cross --per_file_copt='external/sdl2[:/]@-DICONV_INBUF_NONCONST=1'
 
 build:linux-arm64-musl --config=zig-cross

@@ -28,9 +28,28 @@ def pyx_library(
         data = [],
         cython_directives = {},
         cython_options = [],
+        line_directives = True,
         tags = [],
         copts = [],
         **kwargs):
+    """Defines a Cython library.
+
+    Args:
+        name: Name of the library.
+        cdeps: List of C dependencies to link against.
+        srcs: List of source files. .pyx files will be compiled to C++ and then
+            linked into a shared object. .py files will be passed through.
+        data: List of data files.
+        cython_directives: Dictionary of Cython directives to pass to the Cython
+            compiler.
+        cython_options: List of additional options to pass to the Cython compiler.
+        line_directives: Whether to include line directives in the generated C++
+            code. Enabling it will point debugging tools to the original .pyx
+            file. Disabling this is useful for debugging the generated C++ code.
+        tags: List of build tags.
+        copts: List of compiler options.
+        **kwargs: Additional arguments to pass to py_library.
+    """
     # First filter out files that should be run compiled vs. passed through.
     py_srcs = []
     pyi_srcs = []
@@ -48,10 +67,14 @@ def pyx_library(
         else:
             pxd_srcs.append(src)
 
+    default_options = ["-Werror", "-Wextra", "--gdb"]
+    if line_directives:
+        default_options.append("--line-directives")
+
     # Invoke cython to generate C code.
     extra_flags = " ".join(
         ["-X '%s=%s'" % x for x in cython_directives.items()] +
-        cython_options + ["-Werror", "-Wextra", "--line-directives", "--gdb"],
+        cython_options + default_options,
     )
 
     cpp_srcs = ["%s.cpp" % src.split(".")[0] for src in pyx_srcs]
@@ -99,6 +122,15 @@ def pyx_library(
     )
 
 def mypy_test(name, srcs, deps = [], path = [], tags = []):
+    """Defines a Python type checking test.
+
+    Args:
+        name: Name of the test.
+        srcs: List of Python source files to check.
+        deps: List of dependencies.
+        path: List of paths to search for type stubs.
+        tags: List of build tags ("no-windows" is automatically added).
+    """
     py_test(
         name = name,
         size = "small",

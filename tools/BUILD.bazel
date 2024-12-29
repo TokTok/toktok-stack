@@ -3,7 +3,6 @@ load("//tools/project:build_defs.bzl", "workspace")
 workspace(projects = [
     "btox",
     "c-toxcore",
-    "c-toxcore-hs",
     "ci-tools",
     "dockerfiles",
     "experimental",
@@ -27,6 +26,7 @@ workspace(projects = [
     "py_toxcore_c",
     "qtox",
     "spec",
+    "tokhub",
     "tools/.github",
     "tools/toktok-fuzzer",
     "toxic",

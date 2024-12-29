@@ -4,9 +4,6 @@
 [submodule "ci-tools"]
 	path = ci-tools
 	url = https://github.com/TokTok/ci-tools
-[submodule "c-toxcore-hs"]
-	path = c-toxcore-hs
-	url = https://github.com/TokTok/c-toxcore-hs
 [submodule "c-toxcore"]
 	path = c-toxcore
 	url = https://github.com/TokTok/c-toxcore
@@ -76,6 +73,9 @@
 [submodule "spec"]
 	path = spec
 	url = https://github.com/TokTok/spec
+[submodule "tokhub"]
+	path = tokhub
+	url = https://github.com/TokTok/tokhub
 [submodule "tools/.github"]
 	path = tools/.github
 	url = https://github.com/TokTok/.github
