@@ -112,6 +112,14 @@ new_github_archive(
     version = "4.12.2",
 )
 
+# https://github.com/python/typeshed
+new_github_archive(
+    name = "typeshed",
+    integrity = "sha256-5xk4xOdabdwespPoOvc6ap1RrBkkTO8FpN3/HsW2f84=",
+    repo = "python/typeshed",
+    version = "ca6251ad64cf6747c61ed5a453d943264a106008",
+)
+
 # Fuzzing
 # =========================================================
 
