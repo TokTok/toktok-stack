@@ -222,49 +222,49 @@ nixpkgs_python_configure(
 
 nixpkgs_package(
     name = "diffutils",
-    build_file = "//third_party:BUILD.diffutils",
+    build_file = "//third_party:diffutils.BUILD",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "autoconf",
-    build_file = "//third_party:BUILD.autoconf",
+    build_file = "//third_party:autoconf.BUILD",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "automake",
-    build_file = "//third_party:BUILD.automake",
+    build_file = "//third_party:automake.BUILD",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "libtool",
-    build_file = "//third_party:BUILD.libtool",
+    build_file = "//third_party:libtool.BUILD",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "m4",
-    build_file = "//third_party:BUILD.m4",
+    build_file = "//third_party:m4.BUILD",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "cmake",
-    build_file = "//third_party:BUILD.cmake",
+    build_file = "//third_party:cmake.BUILD",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "gnumake",
-    build_file = "//third_party:BUILD.gnumake",
+    build_file = "//third_party:gnumake.BUILD",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "perl",
-    build_file = "//third_party:BUILD.perl",
+    build_file = "//third_party:perl.BUILD",
     repository = "@nixpkgs",
 )
 
@@ -383,7 +383,7 @@ haskell_register_ghc_nixpkgs(
 
 [nixpkgs_package(
     name = "haskellPackages." + tool,
-    build_file = "//third_party/haskell:BUILD." + tool,
+    build_file = "//third_party/haskell:" + tool + ".BUILD",
     repository = "@nixpkgs",
 ) for tool in [
     "alex",
@@ -452,7 +452,7 @@ nixpkgs_package(
 nixpkgs_package(
     name = "asound",
     attribute_path = "alsa-lib.dev",
-    build_file = "//third_party:BUILD.asound",
+    build_file = "//third_party:asound.BUILD",
     repository = "@nixpkgs",
 )
 
@@ -465,14 +465,14 @@ nixpkgs_package(
 nixpkgs_package(
     name = "openssl",
     attribute_path = "openssl.dev",
-    build_file = "//third_party:BUILD.openssl",
+    build_file = "//third_party:openssl.BUILD",
     repository = "@nixpkgs",
 )
 
 # https://ftp.gnu.org/pub/gnu/ncurses
 http_archive(
     name = "ncurses",
-    build_file = "@toktok//third_party:BUILD.ncurses",
+    build_file = "@toktok//third_party:ncurses.BUILD",
     integrity = "sha256-E22RvCaamleF5fnpgLx2q1dCj2BM4+WlqQzrx2eXHMY=",
     strip_prefix = "ncurses-6.5",
     urls = ["https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.5.tar.gz"],
@@ -480,7 +480,7 @@ http_archive(
 
 http_archive(
     name = "ev",
-    build_file = "@toktok//third_party:BUILD.ev",
+    build_file = "@toktok//third_party:ev.BUILD",
     sha256 = "507eb7b8d1015fbec5b935f34ebed15bf346bed04a11ab82b8eee848c4205aea",
     strip_prefix = "libev-4.33",
     urls = ["http://dist.schmorp.de/libev/libev-4.33.tar.gz"],
@@ -488,7 +488,7 @@ http_archive(
 
 http_archive(
     name = "bzip2",
-    build_file = "@toktok//third_party:BUILD.bzip2",
+    build_file = "@toktok//third_party:bzip2.BUILD",
     sha256 = "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269",
     strip_prefix = "bzip2-1.0.8",
     urls = ["https://www.sourceware.org/pub/bzip2/bzip2-latest.tar.gz"],
@@ -521,7 +521,7 @@ new_github_archive(
 # https://ffmpeg.org/releases
 http_archive(
     name = "ffmpeg",
-    build_file = "@toktok//third_party:BUILD.ffmpeg",
+    build_file = "@toktok//third_party:ffmpeg.BUILD",
     sha256 = "fd59e6160476095082e94150ada5a6032d7dcc282fe38ce682a00c18e7820528",
     strip_prefix = "ffmpeg-7.1",
     urls = ["https://ffmpeg.org/releases/ffmpeg-7.1.tar.bz2"],
@@ -530,7 +530,7 @@ http_archive(
 # https://ftp.gnu.org/pub/gnu/gettext
 http_archive(
     name = "gettext",
-    build_file = "@toktok//third_party:BUILD.gettext",
+    build_file = "@toktok//third_party:gettext.BUILD",
     sha256 = "ec1705b1e969b83a9f073144ec806151db88127f5e40fe5a94cb6c8fa48996a0",
     strip_prefix = "gettext-0.22.5",
     urls = ["https://ftp.gnu.org/pub/gnu/gettext/gettext-0.22.5.tar.gz"],
@@ -545,7 +545,7 @@ nixpkgs_package(
 nixpkgs_package(
     name = "gl",
     attribute_path = "libGL.dev",
-    build_file = "@toktok//third_party:BUILD.gl",
+    build_file = "@toktok//third_party:gl.BUILD",
     repository = "@nixpkgs",
 )
 
@@ -558,14 +558,14 @@ nixpkgs_package(
 nixpkgs_package(
     name = "glvnd",
     attribute_path = "libglvnd.dev",
-    build_file = "@toktok//third_party:BUILD.glvnd",
+    build_file = "@toktok//third_party:glvnd.BUILD",
     repository = "@nixpkgs",
 )
 
 # https://github.com/nlohmann/json
 http_archive(
     name = "json",
-    build_file = "@toktok//third_party:BUILD.json",
+    build_file = "@toktok//third_party:json.BUILD",
     sha256 = "a22461d13119ac5c78f205d3df1db13403e58ce1bb1794edc9313677313f4a9d",
     strip_prefix = "include",
     urls = ["https://github.com/nlohmann/json/releases/download/v3.11.3/include.zip"],
@@ -573,7 +573,7 @@ http_archive(
 
 http_archive(
     name = "libcap",
-    build_file = "@toktok//third_party:BUILD.libcap",
+    build_file = "@toktok//third_party:libcap.BUILD",
     sha256 = "db7de848064e656a0bb528dae6d53ff20c82e849d509cecd015a04d2fec8369d",
     strip_prefix = "libcap-2.33",
     urls = ["https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.33.tar.gz"],
@@ -589,7 +589,7 @@ new_github_archive(
 
 http_archive(
     name = "libidn2",
-    build_file = "@toktok//third_party:BUILD.libidn2",
+    build_file = "@toktok//third_party:libidn2.BUILD",
     sha256 = "e1cb1db3d2e249a6a3eb6f0946777c2e892d5c5dc7bd91c74394fc3a01cab8b5",
     strip_prefix = "libidn2-2.3.0",
     urls = ["https://ftp.gnu.org/gnu/libidn/libidn2-2.3.0.tar.gz"],
@@ -648,7 +648,7 @@ new_github_archive(
 
 http_archive(
     name = "pthread_w32",
-    build_file = "@toktok//third_party:BUILD.pthread_w32",
+    build_file = "@toktok//third_party:pthread_w32.BUILD",
     sha256 = "e6aca7aea8de33d9c8580bcb3a0ea3ec0a7ace4ba3f4e263ac7c7b66bc95fb4d",
     strip_prefix = "pthreads-w32-2-9-1-release",
     urls = ["https://sourceware.org/pub/pthreads-win32/pthreads-w32-2-9-1-release.tar.gz"],
@@ -656,20 +656,20 @@ http_archive(
 
 new_local_repository(
     name = "pthread",
-    build_file = "//third_party:BUILD.pthread",
+    build_file = "//third_party:pthread.BUILD",
     path = "third_party/pthread",
 )
 
 new_local_repository(
     name = "psocket",
-    build_file = "//third_party:BUILD.psocket",
+    build_file = "//third_party:psocket.BUILD",
     path = "third_party",
 )
 
 # https://github.com/tukaani-project/xz/releases
 http_archive(
     name = "libxz",
-    build_file = "@toktok//third_party:BUILD.libxz",
+    build_file = "@toktok//third_party:libxz.BUILD",
     sha256 = "b1d45295d3f71f25a4c9101bd7c8d16cb56348bbef3bbc738da0351e17c73317",
     strip_prefix = "xz-5.6.3",
     urls = ["https://github.com/tukaani-project/xz/releases/download/v5.6.3/xz-5.6.3.tar.gz"],
@@ -677,7 +677,7 @@ http_archive(
 
 http_archive(
     name = "sdl2",
-    build_file = "@toktok//third_party:BUILD.sdl2",
+    build_file = "@toktok//third_party:sdl2.BUILD",
     sha256 = "349268f695c02efbc9b9148a70b85e58cefbbf704abd3e91be654db7f1e2c863",
     strip_prefix = "SDL2-2.0.12",
     urls = ["https://github.com/libsdl-org/SDL/releases/download/release-2.0.12/SDL2-2.0.12.tar.gz"],
@@ -704,46 +704,6 @@ new_github_archive(
 )
 
 nixpkgs_package(
-    name = "libnotify.out",
-    attribute_path = "libnotify",
-    repository = "@nixpkgs",
-)
-
-nixpkgs_package(
-    name = "libnotify",
-    attribute_path = "libnotify.dev",
-    build_file = "@toktok//third_party:BUILD.libnotify",
-    repository = "@nixpkgs",
-)
-
-nixpkgs_package(
-    name = "gdk-pixbuf.out",
-    attribute_path = "gdk-pixbuf",
-    repository = "@nixpkgs",
-)
-
-nixpkgs_package(
-    name = "gdk-pixbuf",
-    attribute_path = "gdk-pixbuf.dev",
-    build_file = "@toktok//third_party:BUILD.gdk-pixbuf",
-    repository = "@nixpkgs",
-)
-
-nixpkgs_package(
-    name = "glib.out",
-    attribute_path = "glib.out",
-    build_file = "@toktok//third_party:BUILD.glib.out",
-    repository = "@nixpkgs",
-)
-
-nixpkgs_package(
-    name = "glib",
-    attribute_path = "glib.dev",
-    build_file = "@toktok//third_party:BUILD.glib",
-    repository = "@nixpkgs",
-)
-
-nixpkgs_package(
     name = "x11.out",
     attribute_path = "xorg.libX11.out",
     repository = "@nixpkgs",
@@ -752,7 +712,7 @@ nixpkgs_package(
 nixpkgs_package(
     name = "x11",
     attribute_path = "xorg.libX11.dev",
-    build_file = "@toktok//third_party:BUILD.x11",
+    build_file = "@toktok//third_party:x11.BUILD",
     repository = "@nixpkgs",
 )
 
@@ -765,7 +725,7 @@ nixpkgs_package(
 nixpkgs_package(
     name = "xcb",
     attribute_path = "xorg.libxcb.dev",
-    build_file = "@toktok//third_party:BUILD.xcb",
+    build_file = "@toktok//third_party:xcb.BUILD",
     repository = "@nixpkgs",
 )
 
@@ -778,7 +738,7 @@ nixpkgs_package(
 nixpkgs_package(
     name = "xext",
     attribute_path = "xorg.libXext.dev",
-    build_file = "@toktok//third_party:BUILD.xext",
+    build_file = "@toktok//third_party:xext.BUILD",
     repository = "@nixpkgs",
 )
 
@@ -791,21 +751,21 @@ nixpkgs_package(
 nixpkgs_package(
     name = "xxf86vm",
     attribute_path = "xorg.libXxf86vm.dev",
-    build_file = "@toktok//third_party:BUILD.xxf86vm",
+    build_file = "@toktok//third_party:xxf86vm.BUILD",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "xproto",
     attribute_path = "xorg.xorgproto.out",
-    build_file = "@toktok//third_party:BUILD.xproto",
+    build_file = "@toktok//third_party:xproto.BUILD",
     repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "xss",
     attribute_path = "xorg.libXScrnSaver",
-    build_file = "@toktok//third_party:BUILD.xss",
+    build_file = "@toktok//third_party:xss.BUILD",
     repository = "@nixpkgs",
 )
 
@@ -864,20 +824,20 @@ QT_LIBS = [
 
 [nixpkgs_package(
     name = "qt6.qt%s.out" % lib,
-    build_file = "//third_party/qt:BUILD.qt%s.out" % lib,
+    build_file = "//third_party/qt:qt%s.out.BUILD" % lib,
     repository = "@nixpkgs",
 ) for lib in QT_LIBS]
 
 [nixpkgs_package(
     name = "qt6.qt%s" % lib,
-    build_file = "//third_party/qt:BUILD.qt%s.dev" % lib,
+    build_file = "//third_party/qt:qt%s.dev.BUILD" % lib,
     repository = "@nixpkgs",
 ) for lib in QT_LIBS]
 
 nixpkgs_package(
     name = "qt",
     attribute_path = "qt6.qttools.dev",
-    build_file = "//third_party:BUILD.qt",
+    build_file = "//third_party:qt.BUILD",
     repository = "@nixpkgs",
 )
 

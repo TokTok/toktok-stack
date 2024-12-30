@@ -4,18 +4,17 @@ filegroup(
     name = "third_party",
     srcs = select({
         "@toktok//tools/config:arm64": [],
-        "@toktok//tools/config:linux-x86_64": ["@{pkg}//:{pkg}".format(pkg = pkg[len("BUILD."):]) for pkg in glob(
-            ["BUILD.*"],
+        "@toktok//tools/config:linux-x86_64": ["@{pkg}//:{pkg}".format(pkg = pkg[:-len(".BUILD")]) for pkg in glob(
+            ["*.BUILD"],
             exclude = [
-                "BUILD.bazel*",
-                "BUILD.*.out",
+                "*.out.BUILD",
                 # TODO
-                "BUILD.asound",
-                "BUILD.ffmpeg",
-                "BUILD.openal",
-                "BUILD.openssl",
-                "BUILD.sdl2",
-                "BUILD.x264",
+                "asound.BUILD",
+                "ffmpeg.BUILD",
+                "openal.BUILD",
+                "openssl.BUILD",
+                "sdl2.BUILD",
+                "x264.BUILD",
             ],
         )] + [
             "@com_google_googletest//:gtest",

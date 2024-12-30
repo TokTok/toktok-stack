@@ -12,7 +12,7 @@ def _impl(repository_ctx):
         "BUILD",
         repository_ctx.read(
             repository_ctx.path(
-                Label("@toktok//third_party:BUILD." + name),
+                Label("@toktok//third_party:" + name + ".BUILD"),
             ),
         ),
     )

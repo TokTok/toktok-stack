@@ -44,7 +44,7 @@ au BufEnter *.h,*.cc,*.cpp					:set syntax=cpp.doxygen
 au BufEnter *.c							:set syntax=c.doxygen
 au BufEnter *.y,*.x						:set noexpandtab tw=150
 
-au BufEnter BUILD.*						:set ft=starlark
+au BufEnter *.BUILD,BUILD.*					:set ft=starlark
 
 au BufEnter *.hs,*.lhs						:set autoindent nocindent smartindent
 

@@ -40,7 +40,7 @@ def github_archive(name, repo, version, is_release = False, strip_prefix = "", *
 def new_github_archive(name, **kwargs):
     """new_http_archive but for GitHub downloads."""
     if "build_file" not in kwargs and "build_file_content" not in kwargs:
-        kwargs["build_file"] = "@toktok//third_party:BUILD.%s" % name
+        kwargs["build_file"] = "@toktok//third_party:%s.BUILD" % name
     github_archive(
         name = name,
         **kwargs

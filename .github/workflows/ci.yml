@@ -69,6 +69,31 @@ jobs:
           sed -i -e 's/ --remote_download_outputs=all//' tools/built/src/setup-dev.sh
           docker build -t toxchat/toktok-stack:latest-dev -f tools/built/src/Dockerfile.dev .
 
+  local-build:
+    runs-on: ubuntu-22.04
+    if: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Download bazelisk
+        run: |
+          curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.25.0/bazelisk-amd64.deb -o bazelisk-amd64.deb
+          sudo apt-get install ./bazelisk-amd64.deb
+      - name: Install nix
+        run: |
+          curl -L https://nixos.org/nix/install -o install.sh
+          sh install.sh --no-channel-add --yes
+          rm install.sh
+          . "$HOME/.nix-profile/etc/profile.d/nix.sh"
+          nix-channel --add https://github.com/NixOS/nixpkgs/archive/a81bbdfb658428a45c69a42aa73d4bd18127c467.tar.gz nixpkgs
+          nix-channel --update
+      - name: Build
+        run: |
+          . /home/runner/.nix-profile/etc/profile.d/nix.sh
+          nix-shell -p patchelf --run "patchelf --version"
+          bazel build --config=local //...
+
   mypy:
     runs-on: ubuntu-22.04
     steps:

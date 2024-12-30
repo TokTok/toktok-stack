@@ -224,10 +224,7 @@ cc_library(
         "vpx/vpx_encoder.h",
         "vpx/vpx_image.h",
     ],
-    copts = [
-        "-I$(GENDIR)/external/libvpx",
-        "-Iexternal/libvpx",
-    ] + select({
+    copts = select({
         "@toktok//tools/config:windows": [],
         "//conditions:default": ["-fvisibility=protected"],
     }),
