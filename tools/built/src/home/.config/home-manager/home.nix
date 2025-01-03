@@ -12,11 +12,11 @@
         then lib.removeSuffix "\n" (builtins.readFile tokenFile)
         else "";
 
-    ASAN_OPTIONS = "color=always:detect_leaks=1:strict_string_checks=1:check_initialization_order=1:strict_init_order=1";
+    ASAN_OPTIONS = "color=always:detect_leaks=1:strict_string_checks=1:check_initialization_order=1:strict_init_order=1:external_symbolizer_path=${pkgs.llvm}/bin/llvm-symbolizer";
     LSAN_OPTIONS = "report_objects=1";
-    MSAN_OPTIONS = "color=always";
-    TSAN_OPTIONS = "color=always,history_size=7,force_seq_cst_atomics=1";
-    UBSAN_OPTIONS = "color=always,print_stacktrace=1";
+    MSAN_OPTIONS = "color=always:external_symbolizer_path=${pkgs.llvm}/bin/llvm-symbolizer";
+    TSAN_OPTIONS = "color=always,history_size=7,force_seq_cst_atomics=1:external_symbolizer_path=${pkgs.llvm}/bin/llvm-symbolizer";
+    UBSAN_OPTIONS = "color=always,print_stacktrace=1:external_symbolizer_path=${pkgs.llvm}/bin/llvm-symbolizer";
   };
   home.sessionPath = [
     "${config.home.homeDirectory}/.bin"
@@ -30,6 +30,7 @@
     clang-tools             # C++ code formatting
     connect                 # for ssh proxy via tor
     gdb                     # debugger for C code
+    github-cli              # utilities for dealing with GitHub repos
     gnupg                   # for signing git commits
     go                      # for vscode to understand Go
     haskell-language-server # for vscode to understand Haskell
