@@ -263,12 +263,16 @@ build --cxxopt='-fno-rtti'
 build --cxxopt='-DGOOGLE_PROTOBUF_NO_RTTI'
 
 # Disable deprecated Tox APIs.
-#build --copt='-DTOX_HIDE_DEPRECATED'
+build --copt='-DTOX_HIDE_DEPRECATED'
+build --per_file_copt='//c-toxcore/toxcore:tox(_api)?.c@-UTOX_HIDE_DEPRECATED'
+build --per_file_copt='//py_toxcore_c[:/]@-UTOX_HIDE_DEPRECATED'
 
 # Enable trace logging for toxcore.
 build --per_file_copt='//c-toxcore/@-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_TRACE'
 build --per_file_copt='//c-toxcore/@-DMAX_VLA_SIZE=2048'
 build --per_file_copt='//c-toxcore/@-Wframe-larger-than=20000'
+# build --per_file_copt='//c-toxcore/.*\\.cc$@-Wframe-larger-than=20000'
+# build --per_file_copt='//c-toxcore/.*\\.c$@-Wframe-larger-than=4096'
 
 # Disable most logging when running with flakynet (we get lots of warnings).
 build:flakynet --per_file_copt='//c-toxcore/@-UMIN_LOGGER_LEVEL,-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_ERROR'
@@ -379,7 +383,7 @@ build --per_file_copt='//py_toxcore_c[:/]@-Wno-zero-as-null-pointer-constant'
 build --per_file_copt='//py_toxcore_c[:/]@-fno-sanitize=enum'
 
 # Protobuf generated code has so many warnings we just ignore all of them.
-build --per_file_copt='\.pb\.cc$@-w'
+build --per_file_copt='\\.pb\\.cc$@-w'
 
 # X11/Xfuncproto.h does this.
 build --per_file_copt='//qtox[:/].*x11.cpp$@-Wno-variadic-macros'

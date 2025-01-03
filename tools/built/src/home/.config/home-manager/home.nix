@@ -17,6 +17,8 @@
     MSAN_OPTIONS = "color=always:external_symbolizer_path=${pkgs.llvm}/bin/llvm-symbolizer";
     TSAN_OPTIONS = "color=always,history_size=7,force_seq_cst_atomics=1:external_symbolizer_path=${pkgs.llvm}/bin/llvm-symbolizer";
     UBSAN_OPTIONS = "color=always,print_stacktrace=1:external_symbolizer_path=${pkgs.llvm}/bin/llvm-symbolizer";
+
+    QT_QPA_PLATFORM = "offscreen";
   };
   home.sessionPath = [
     "${config.home.homeDirectory}/.bin"
