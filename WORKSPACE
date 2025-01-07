@@ -324,8 +324,8 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 maven_install(
     artifacts = [
-        "org.jetbrains.kotlin:kotlin-test-junit:1.9.22",
-        "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0",
+        "org.jetbrains.kotlin:kotlin-test-junit:2.1.0",
+        "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1",
     ],
     repositories = [
         "https://repo1.maven.org/maven2",
@@ -335,10 +335,10 @@ maven_install(
 # https://github.com/bazelbuild/rules_kotlin
 github_archive(
     name = "rules_kotlin",
+    integrity = "sha256-3TLxnnPHDzLMuaFmxhXAykrtjifnLEpjMMNSPq+hqlU=",
     is_release = True,
     repo = "bazelbuild/rules_kotlin",
-    sha256 = "3b772976fec7bdcda1d84b9d39b176589424c047eb2175bed09aac630e50af43",
-    version = "v1.9.6",
+    version = "v2.1.0",
 )
 
 load("@rules_kotlin//kotlin:repositories.bzl", "kotlin_repositories")
