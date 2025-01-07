@@ -571,6 +571,13 @@ http_archive(
     urls = ["https://github.com/nlohmann/json/releases/download/v3.11.3/include.zip"],
 )
 
+new_github_archive(
+    name = "kimageformats",
+    integrity = "sha256-tetGe5OFkjjrsse9CPfCoqIUKYa6flCzYbd3ERDBoSo=",
+    repo = "KDE/kimageformats",
+    version = "v6.9.0",
+)
+
 http_archive(
     name = "libcap",
     build_file = "@toktok//third_party:libcap.BUILD",

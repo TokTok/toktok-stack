@@ -202,11 +202,13 @@ def _qt_moc_impl(ctx):
                 "moc_%s.cpp" % src.basename[:-2],
                 sibling = src,
             )
-        else:
+        elif src.extension == "cpp":
             out = ctx.actions.declare_file(
                 "%s.moc" % src.basename[:-4],
                 sibling = src,
             )
+        else:
+            continue
         outs.append(out)
 
         arguments = []
@@ -250,11 +252,8 @@ def _qt_moc_impl(ctx):
 
 qt_moc = rule(
     attrs = {
-        "srcs": attr.label_list(allow_files = [
-            ".cpp",
-            ".h",
-        ]),
-        "hdrs": attr.label_list(allow_files = [".h"]),
+        "srcs": attr.label_list(allow_files = [".cpp", ".h"]),
+        "hdrs": attr.label_list(allow_files = [".json", ".h"]),
         "metadata": attr.string_dict(),
         "out": attr.output(),
         "deps": attr.label_list(),

@@ -33,6 +33,7 @@ filegroup(
     "DBus",
     "Gui",
     "OpenGL",
+    "PrintSupport",
     "Network",
     "Test",
     "Widgets",
