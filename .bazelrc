@@ -411,6 +411,7 @@ build --per_file_copt='moc_.*\\.cpp$@-Wno-extra-semi-stmt'
 build --per_file_copt='moc_.*\\.cpp$@-Wno-gnu-zero-variadic-macro-arguments'
 build --per_file_copt='moc_.*\\.cpp$@-Wno-redundant-parens'
 build --per_file_copt='moc_.*\\.cpp$@-Wno-undefined-reinterpret-cast'
+build --per_file_copt='moc_.*\\.cpp$@-Wno-header-hygiene'
 
 # TODO(iphydf): Fix these soon.
 build --per_file_copt='//c-toxcore/toxcore:Messenger.c@-Wno-error=unused-but-set-variable'

@@ -826,6 +826,7 @@ apple_support_dependencies()
 
 QT_LIBS = [
     "base",
+    "remoteobjects",
     "svg",
 ]
 

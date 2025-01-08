@@ -7,7 +7,7 @@ This file defines three macros:
 - qt_moc, generates .cpp or .moc files for Qt MOC .h or .cpp files.
 """
 
-# Qt UI compiler rule.
+# Qt UI compiler rule (uic).
 # =========================================================
 
 load("@build_bazel_rules_apple//apple:macos.bzl", "macos_application")
@@ -56,7 +56,7 @@ qt_uic = rule(
     implementation = _qt_uic_impl,
 )
 
-# Qt language translation compiler rule.
+# Qt language translation compiler rule (lconvert).
 # =========================================================
 
 def _qt_lconvert_impl(ctx):
@@ -104,7 +104,7 @@ qt_lconvert = rule(
     implementation = _qt_lconvert_impl,
 )
 
-# Qt resource compiler rule.
+# Qt resource compiler rule (rcc).
 # =========================================================
 
 def _qt_rcc_impl(ctx):
@@ -162,7 +162,7 @@ qt_rcc = rule(
     implementation = _qt_rcc_impl,
 )
 
-# Qt MOC compiler rule.
+# Qt MOC compiler rule (moc).
 # =========================================================
 
 def _qt_moc_impl(ctx):
@@ -196,6 +196,9 @@ def _qt_moc_impl(ctx):
     ]
     outs = []
 
+    # Current project's bin_dir.
+    bin_dir = ctx.bin_dir.path + "/" + ctx.label.package.split("/")[0] + "/"
+
     for src in srcs:
         if src.extension == "h":
             out = ctx.actions.declare_file(
@@ -220,7 +223,7 @@ def _qt_moc_impl(ctx):
         # If we're compiling for a .h file, we #include it in the resulting
         # moc_$name.cpp.
         if src.path[src.path.rindex("."):] == ".h":
-            arguments.append("-f" + src.path)
+            arguments.append("-f" + src.path.removeprefix(bin_dir))
 
         # moc $src -o $out
         arguments.extend([src.path, "-o", out.path])
@@ -267,6 +270,65 @@ qt_moc = rule(
     },
     output_to_genfiles = True,
     implementation = _qt_moc_impl,
+)
+
+# Qt Remote Objects Compiler rule (repc).
+# =========================================================
+
+def _qt_repc_impl(ctx):
+    repc = ctx.executable._repc
+    type = ctx.attr.type
+
+    srcs = [
+        src
+        for tgt in ctx.attr.srcs
+        for src in tgt.files.to_list()
+    ]
+    outs = []
+
+    for src in srcs:
+        out = ctx.actions.declare_file("rep_%s_%s.h" % (src.basename[:-4], type), sibling = src)
+        outs.append(out)
+
+        arguments = [
+            "-o",
+            type,
+            src.path,
+            out.path,
+        ]
+
+        # Execute repc.
+        ctx.actions.run(
+            arguments = arguments,
+            executable = repc.path,
+            inputs = [src],
+            mnemonic = "CompileREPC",
+            outputs = [out],
+            progress_message = "Generating Qt Remote Objects source for " + src.basename,
+            tools = [repc],
+        )
+
+    return DefaultInfo(files = depset(outs))
+
+qt_repc = rule(
+    attrs = {
+        "srcs": attr.label_list(
+            allow_files = [".rep"],
+            doc = "The .rep files to compile.",
+        ),
+        "type": attr.string(
+            values = ["source", "replica"],
+            doc = "The type of the generated file (source/replica).",
+        ),
+        "_repc": attr.label(
+            default = Label("@qt//:repc"),
+            executable = True,
+            cfg = "exec",
+            allow_single_file = True,
+        ),
+    },
+    output_to_genfiles = True,
+    implementation = _qt_repc_impl,
 )
 
 # Qt binary, making sure we can `bazel run` it.

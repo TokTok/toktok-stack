@@ -10,6 +10,14 @@
 
 [alias(
     name = name,
+    actual = "@qt6.qtremoteobjects//:libexec/%s" % name,
+    visibility = ["//visibility:public"],
+) for name in [
+    "repc",
+]]
+
+[alias(
+    name = name,
     actual = "bin/%s" % name,
     visibility = ["//visibility:public"],
 ) for name in [
@@ -47,6 +55,14 @@ alias(
 
 [alias(
     name = "qt_" + mod.lower(),
+    actual = "@qt6.qtremoteobjects//:" + mod.lower(),
+    visibility = ["//visibility:public"],
+) for mod in [
+    "RemoteObjects",
+]]
+
+[alias(
+    name = "qt_" + mod.lower(),
     actual = "@qt6.qtsvg//:" + mod.lower(),
     visibility = ["//visibility:public"],
 ) for mod in [
@@ -63,6 +79,7 @@ filegroup(
         ":qt_network",
         ":qt_opengl",
         ":qt_printsupport",
+        ":qt_remoteobjects",
         ":qt_svg",
         ":qt_test",
         ":qt_widgets",
