@@ -3,16 +3,18 @@ load("@toktok//third_party/qt:build_defs.bzl", "qt_moc")
 
 qt_moc(
     name = "kimageformats_moc",
-    srcs = glob(
-        [
-            "src/imageformats/*.cpp",
-            "src/imageformats/*_p.h",
-        ],
+    srcs = ["src/imageformats/xcf.cpp"] + glob(
+        ["src/imageformats/*_p.h"],
         exclude = [
             "src/imageformats/avif_p.h",
             "src/imageformats/exr_p.h",
+            "src/imageformats/fastmath_p.h",
+            "src/imageformats/gimp_p.h",
             "src/imageformats/jxl_p.h",
             "src/imageformats/ora_p.h",
+            "src/imageformats/rle_p.h",
+            "src/imageformats/scanlineconverter_p.h",
+            "src/imageformats/util_p.h",
         ],
     ),
     hdrs = glob(["src/imageformats/*.json"]),

@@ -1,0 +1,27 @@
+load("@rules_fuzzing//fuzzing:cc_defs.bzl", "cc_fuzz_test")
+load("//third_party/qt:build_defs.bzl", "qt_test")
+
+cc_fuzz_test(
+    name = "qimage_fuzz_test",
+    size = "small",
+    testonly = True,
+    srcs = ["test/qimage_fuzz_test.cpp"],
+    tags = ["qt"],
+    deps = [
+        "@kimageformats",
+        "@qt//:qt_core",
+        "@qt//:qt_gui",
+    ],
+)
+
+qt_test(
+    name = "qimage_test",
+    size = "small",
+    src = "test/qimage_test.cpp",
+    tags = ["manual"],
+    deps = [
+        "@kimageformats",
+        "@qt//:qt_core",
+        "@qt//:qt_gui",
+    ],
+)

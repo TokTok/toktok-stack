@@ -293,20 +293,20 @@ def qt_binary(name, tags=[], **kwargs):
 # Qt test with MOC for the test .cpp file.
 # =========================================================
 
-def qt_test(name, src, deps, copts = [], mocopts = [], size = None, **kwargs):
+def qt_test(name, src, deps, copts = [], mocopts = [], size = None, tags = [], **kwargs):
     qt_moc(
         name = "%s_moc_src" % name,
         testonly = True,
         srcs = [src],
         mocopts = mocopts,
-        tags = ["qt"],
+        tags = ["qt"] + tags,
         deps = deps,
     )
     cc_library(
         name = "%s_moc" % name,
         testonly = True,
         hdrs = [":%s_moc_src" % name],
-        tags = ["qt"],
+        tags = ["qt"] + tags,
         **kwargs
     )
     cc_test(
@@ -333,7 +333,7 @@ def qt_test(name, src, deps, copts = [], mocopts = [], size = None, **kwargs):
             ":%s_moc" % name,
             "@qt//:qt_test",
         ],
-        tags = ["qt"],
+        tags = ["qt"] + tags,
         **kwargs
     )
 
