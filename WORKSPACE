@@ -527,13 +527,16 @@ http_archive(
     urls = ["https://ffmpeg.org/releases/ffmpeg-7.1.tar.bz2"],
 )
 
-# https://ftp.gnu.org/pub/gnu/gettext
-http_archive(
+nixpkgs_package(
     name = "gettext",
-    build_file = "@toktok//third_party:gettext.BUILD",
-    sha256 = "ec1705b1e969b83a9f073144ec806151db88127f5e40fe5a94cb6c8fa48996a0",
-    strip_prefix = "gettext-0.22.5",
-    urls = ["https://ftp.gnu.org/pub/gnu/gettext/gettext-0.22.5.tar.gz"],
+    attribute_path = "gettext",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "xz",
+    attribute_path = "xz",
+    repository = "@nixpkgs",
 )
 
 nixpkgs_package(
@@ -589,9 +592,9 @@ http_archive(
 # https://github.com/libexif/libexif
 new_github_archive(
     name = "libexif",
+    integrity = "sha256-tsLrkGxLL/VgM1k3AF9M5Ev02UCzGllAcUSI9usAOQU=",
     repo = "libexif/libexif",
-    sha256 = "8e418041aba29a956eaf4ae1e0aa46bbc1a73d66916f6c3bf596067f13f942a5",
-    version = "00ee559ac8293c6ab9b0b4d26d3650ec89d2b1fc",
+    version = "8f013418c2ee71f7aaa81b1699e48d9d3c22dd9b",
 )
 
 http_archive(

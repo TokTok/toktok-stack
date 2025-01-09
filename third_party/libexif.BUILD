@@ -18,15 +18,39 @@ genrule(
     ],
     outs = ["config.h"],
     cmd = """
-        cd `dirname $(location configure.ac)`
-        autoreconf -fi
-        ./configure
+        BASE=`pwd`
+        export PATH="$$PATH:$$BASE/$$(dirname $(location @autoconf//:autoconf))"
+        export PATH="$$PATH:$$BASE/$$(dirname $(location @automake//:aclocal))"
+        export PATH="$$PATH:$$BASE/$$(dirname $(location @diffutils//:cmp))"
+        export PATH="$$PATH:$$BASE/$$(dirname $(location @gettext//:bin/autopoint))"
+        export PATH="$$PATH:$$BASE/$$(dirname $(location @libtool//:libtoolize))"
+        export PATH="$$PATH:$$BASE/$$(dirname $(location @m4))"
+        export PATH="$$PATH:$$BASE/$$(dirname $(location @xz//:bin/xz))"
+        SRCDIR="$$(dirname $(location configure.ac))"
+        autoreconf -fi -I "$$PWD/$$(dirname $(location @libtool//:libtool.m4))" "$$SRCDIR"
+
+        cd "$$SRCDIR"
+        ./configure CC="$(CC)" AR="$(AR)" MAKE="$$BASE/$(location @gnumake)" || (cat config.log && false)
         DIR=`pwd`
         cd -
         for i in $(OUTS); do
           cp $$DIR/`echo $$i | sed -e 's|$(GENDIR)/external/libexif/||'` $$i
         done
     """,
+    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
+    tools = [
+        "@autoconf",
+        "@autoconf//:autoreconf",
+        "@automake",
+        "@automake//:aclocal",
+        "@diffutils//:cmp",
+        "@gettext//:bin/autopoint",
+        "@gnumake",
+        "@libtool//:libtool.m4",
+        "@libtool//:libtoolize",
+        "@m4",
+        "@xz//:bin/xz",
+    ],
 )
 
 genrule(
