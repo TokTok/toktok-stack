@@ -10,7 +10,7 @@ RUN ["sudo", "ln", "-s", "/bin/sh", "/bin/bash"]
 # download GHC and some other large dependencies that rarely change. We copy the
 # minimum number of files to avoid rebuilding this when making changes to the
 # toktok-stack tools.
-COPY --chown=builder:users tools/bazelrc.boot /src/workspace/.bazelrc
+COPY --chown=builder:users tools/boot.bazelrc /src/workspace/.bazelrc
 COPY --chown=builder:users BUILD.bazel MODULE.bazel WORKSPACE .bazelignore ghc.nix /src/workspace/
 COPY --chown=builder:users third_party /src/workspace/third_party
 COPY --chown=builder:users tools/config /src/workspace/tools/config

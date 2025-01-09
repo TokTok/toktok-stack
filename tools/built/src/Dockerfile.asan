@@ -1,11 +1,7 @@
 # Pre-build //third_party in asan mode for speedy PR builds on sub-repos.
 FROM toxchat/toktok-stack:latest
 
-RUN echo 'build --config=asan' >>.bazelrc.local; \
- if curl -s -m1 http://code.tox.chat/bazel/ \
-   | grep "resource name must be a SHA256 hash"; then \
-   echo 'build --config=remote-grpc' | tee -a .bazelrc.local; \
- fi
+RUN echo 'build --config=asan' >>.local.bazelrc
 
 RUN sudo nix-daemon --daemon \
   & bazel build -k //third_party/...

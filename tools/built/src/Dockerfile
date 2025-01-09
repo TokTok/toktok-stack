@@ -4,7 +4,11 @@ FROM toxchat/toktok-stack:latest-third_party
 # includes all of the sources of all projects.
 COPY --chown=builder:users . /src/workspace/
 
-RUN echo 'build --config=ci --config=nix' >/src/workspace/.bazelrc.local
+RUN echo 'build --config=ci --config=nix' >/src/workspace/.local.bazelrc; \
+ if curl -s -m1 http://code.tox.chat/bazel/ \
+   | grep "resource name must be a SHA256 hash"; then \
+   echo 'build --config=remote-grpc' | tee -a .local.bazelrc; \
+ fi
 
 # Finally, we run another aquery. This will download some more dependencies, but
 # the most expensive ones should already have been downloaded in the third_party

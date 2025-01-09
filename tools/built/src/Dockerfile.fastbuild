@@ -1,12 +1,6 @@
 # Pre-build //... in fastbuild mode for dev containers.
 FROM toxchat/toktok-stack:latest
 
-RUN \
- if curl -s -m1 http://code.tox.chat/bazel/ \
-   | grep "resource name must be a SHA256 hash"; then \
-   echo 'build --config=remote-grpc' | tee -a .bazelrc.local; \
- fi
-
 RUN sudo nix-daemon --daemon & bazel build -k //...
 
 # vim:ft=dockerfile

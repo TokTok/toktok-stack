@@ -1,6 +1,6 @@
 # Bazel developer-specific config.
 #
-# Copy this file to .bazelrc.local and adjust to meet your needs.
+# Copy this file to .local.bazelrc and adjust to meet your needs.
 
 # You may choose one of the possible sandboxing technologies.
 #build --config=sandboxfs

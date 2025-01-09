@@ -55,14 +55,26 @@ jobs:
       - name: Build toxchat/toktok-stack:latest
         run: docker build -t toxchat/toktok-stack:latest -f tools/built/src/Dockerfile .
 
-      - name: Build toxchat/toktok-stack:latest-fastbuild
-        run: docker build -t toxchat/toktok-stack:latest-fastbuild -f tools/built/src/Dockerfile.fastbuild .
+      - name: Build toxchat/toktok-stack:latest-asan
+        run: |
+          docker build -t toxchat/toktok-stack:latest-asan -f tools/built/src/Dockerfile.asan .
+          docker rmi toxchat/toktok-stack:latest-asan
+          docker system prune -f
 
       - name: Build toxchat/toktok-stack:latest-arm64
-        run: docker build -t toxchat/toktok-stack:latest-arm64 -f tools/built/src/Dockerfile.arm64 .
+        run: |
+          docker build -t toxchat/toktok-stack:latest-arm64 -f tools/built/src/Dockerfile.arm64 .
+          docker rmi toxchat/toktok-stack:latest-arm64
+          docker system prune -f
 
       - name: Build toxchat/toktok-stack:latest-windows
-        run: docker build -t toxchat/toktok-stack:latest-windows -f tools/built/src/Dockerfile.windows .
+        run: |
+          docker build -t toxchat/toktok-stack:latest-windows -f tools/built/src/Dockerfile.windows .
+          docker rmi toxchat/toktok-stack:latest-windows
+          docker system prune -f
+
+      - name: Build toxchat/toktok-stack:latest-fastbuild
+        run: docker build -t toxchat/toktok-stack:latest-fastbuild -f tools/built/src/Dockerfile.fastbuild .
 
       - name: Build toxchat/toktok-stack:latest-dev
         run: |

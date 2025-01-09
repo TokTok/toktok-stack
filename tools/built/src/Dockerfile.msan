@@ -1,11 +1,7 @@
 # Pre-build //third_party in msan mode for speedy PR builds on sub-repos.
 FROM toxchat/toktok-stack:latest
 
-RUN echo 'build --config=msan' >>.bazelrc.local; \
- if curl -s -m1 http://code.tox.chat/bazel/ \
-   | grep "resource name must be a SHA256 hash"; then \
-   echo 'build --config=remote-grpc' | tee -a .bazelrc.local; \
- fi
+RUN echo 'build --config=msan' >>.local.bazelrc
 
 # Don't build any Go code. It needs sanitizer/msan_interface.h.
 RUN sudo nix-daemon --daemon \

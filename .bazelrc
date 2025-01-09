@@ -1,6 +1,6 @@
 # Global bazel options for toktok-stack.
 
-import %workspace%/tools/bazelrc.boot
+import %workspace%/tools/boot.bazelrc
 
 ##############################################################################
 #
@@ -15,9 +15,8 @@ build --workspace_status_command=tools/project/mkstamp.sh
 build --check_licenses=true
 #build --enable_workspace
 build --process_headers_in_dependencies
-# TODO(iphydf): needs bazel 7
-#build --remote_build_event_upload=minimal
-#build --remote_cache_compression
+build --remote_build_event_upload=minimal
+build --remote_cache_compression
 build --remote_download_outputs=minimal  # use "all" to make YCM work
 build --strict_filesets=true
 build --strict_proto_deps=error
@@ -30,7 +29,7 @@ build --experimental_strict_java_deps=error
 build --enable_platform_specific_config
 build --run_validations
 build --watchfs
-#build --local_resources=cpu=HOST_CPUS  # TODO(iphydf): needs bazel 7
+build --local_resources=cpu=HOST_CPUS
 build --features=layering_check
 
 build --experimental_inmemory_dotd_files
@@ -182,8 +181,6 @@ build:asan-libfuzzer --@rules_fuzzing//fuzzing:cc_engine_sanitizer=asan
 build:sanitizer --config=debug
 build:sanitizer --copt='-UNDEBUG'
 build:sanitizer --copt='-O3'
-# TODO(https://github.com/tweag/rules_nixpkgs/issues/430): Remove when released.
-build:sanitizer --copt='-fno-sanitize-ignorelist'
 build:sanitizer --per_file_copt='//c-toxcore[:/]@-O0'
 build:sanitizer --per_file_copt='//c-toxcore[:/]@-fno-inline,-fno-omit-frame-pointer'
 build:sanitizer --flaky_test_attempts=1
@@ -270,9 +267,8 @@ build --per_file_copt='//py_toxcore_c[:/]@-UTOX_HIDE_DEPRECATED'
 # Enable trace logging for toxcore.
 build --per_file_copt='//c-toxcore/@-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_TRACE'
 build --per_file_copt='//c-toxcore/@-DMAX_VLA_SIZE=2048'
-build --per_file_copt='//c-toxcore/@-Wframe-larger-than=20000'
-# build --per_file_copt='//c-toxcore/.*\\.cc$@-Wframe-larger-than=20000'
-# build --per_file_copt='//c-toxcore/.*\\.c$@-Wframe-larger-than=4096'
+build --per_file_copt='//c-toxcore/.*\\.cc$@-Wframe-larger-than=20000'
+build --per_file_copt='//c-toxcore/.*\\.c$@-Wframe-larger-than=6000'
 
 # Disable most logging when running with flakynet (we get lots of warnings).
 build:flakynet --per_file_copt='//c-toxcore/@-UMIN_LOGGER_LEVEL,-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_ERROR'
@@ -711,6 +707,6 @@ build:windows-x86_64 --extra_toolchains=@zig_sdk//toolchain:windows_amd64
 build:windows-x86_64 --build_tag_filters=-no-cross,-qt,-macos,-java,-no-windows
 build:windows-x86_64 --test_tag_filters=-no-cross,-qt,-macos,-java,-no-windows
 
-try-import %workspace%/.bazelrc.local
+try-import %workspace%/.local.bazelrc
 
 # vim:set tw=120

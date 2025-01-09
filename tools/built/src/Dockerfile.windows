@@ -1,10 +1,6 @@
 FROM toxchat/toktok-stack:latest
 
-RUN echo 'build --config=windows-x86_64' >>.bazelrc.local; \
- if curl -s -m1 http://code.tox.chat/bazel/ \
-   | grep "resource name must be a SHA256 hash"; then \
-   echo 'build --config=remote-grpc' | tee -a .bazelrc.local; \
- fi
+RUN echo 'build --config=windows-x86_64' >>.local.bazelrc
 
 RUN sudo nix-daemon --daemon & bazel build -k //...
 

@@ -28,4 +28,4 @@ mallocfail_hashes*
 .DS_Store
 
 # Local bazel settings per developer.
-/.bazelrc.local
+/.local.bazelrc

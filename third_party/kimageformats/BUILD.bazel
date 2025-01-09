@@ -6,7 +6,10 @@ cc_fuzz_test(
     size = "small",
     testonly = True,
     srcs = ["test/qimage_fuzz_test.cpp"],
-    tags = ["qt"],
+    tags = [
+        "manual",
+        "qt",
+    ],
     deps = [
         "@kimageformats",
         "@qt//:qt_core",

@@ -9,10 +9,10 @@ rm -rf "$REPO"
 mv /tmp/cirrus-ci-build "$REPO"
 mkdir /tmp/cirrus-ci-build
 
-if [ -f "$REPO/.bazelrc.local" ]; then
+if [ -f "$REPO/.local.bazelrc" ]; then
   # If the repo has customisations, add those here.
-  cp "$REPO/.bazelrc.local" ".bazelrc.local"
+  cp "$REPO/.local.bazelrc" ".local.bazelrc"
 fi
 
 # Cirrus doesn't like gRPC.
-sed -i -e 's/build --config=remote-grpc/build --config=remote-http/' ".bazelrc.local"
+sed -i -e 's/build --config=remote-grpc/build --config=remote-http/' ".local.bazelrc"

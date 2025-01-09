@@ -18,9 +18,9 @@ github_archive(
 # https://github.com/uber/hermetic_cc_toolchain
 github_archive(
     name = "hermetic_cc_toolchain",
-    integrity = "sha256-MfL5fnXBtFa25YrsZkgAxjVP+4v5viC47EyZwyjDLsY=",
+    integrity = "sha256-aAo+AIl20sIbovu3FVrDiv47ek5MH2NPbtjlWmXjaOg=",
     repo = "uber/hermetic_cc_toolchain",
-    version = "8e68b7221ca72c10268338eb1734530438e5ccb7",
+    version = "v3.1.1",
 )
 
 # hermetic_cc_toolchain
