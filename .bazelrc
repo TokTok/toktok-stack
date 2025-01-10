@@ -267,8 +267,11 @@ build --per_file_copt='//py_toxcore_c[:/]@-UTOX_HIDE_DEPRECATED'
 # Enable trace logging for toxcore.
 build --per_file_copt='//c-toxcore/@-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_TRACE'
 build --per_file_copt='//c-toxcore/@-DMAX_VLA_SIZE=2048'
-build --per_file_copt='//c-toxcore/.*\\.cc$@-Wframe-larger-than=20000'
-build --per_file_copt='//c-toxcore/.*\\.c$@-Wframe-larger-than=6000'
+
+# In debug mode, more stack may be used by e.g. msan. In release mode, we
+# want to warn about large stack usage.
+build:release --per_file_copt='//c-toxcore/.*\\.cc$@-Wframe-larger-than=20000'
+build:release --per_file_copt='//c-toxcore/.*\\.c$@-Wframe-larger-than=6000'
 
 # Disable most logging when running with flakynet (we get lots of warnings).
 build:flakynet --per_file_copt='//c-toxcore/@-UMIN_LOGGER_LEVEL,-DMIN_LOGGER_LEVEL=LOGGER_LEVEL_ERROR'
