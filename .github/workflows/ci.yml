@@ -82,8 +82,11 @@ jobs:
           docker build -t toxchat/toktok-stack:latest-dev -f tools/built/src/Dockerfile.dev .
 
   local-build:
-    runs-on: ubuntu-22.04
-    if: false
+    runs-on: ubuntu-24.04
+    # if: false
+    env:
+      CC: clang
+      CXX: clang++
     steps:
       - uses: actions/checkout@v4
         with:
@@ -104,7 +107,7 @@ jobs:
         run: |
           . /home/runner/.nix-profile/etc/profile.d/nix.sh
           nix-shell -p patchelf --run "patchelf --version"
-          bazel build --config=local //...
+          bazel test --config=local --config=remote -- //... -//jvm-toxcore-c/... -//third_party/...
 
   mypy:
     runs-on: ubuntu-22.04

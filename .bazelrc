@@ -679,8 +679,8 @@ build:nix --build_tag_filters=-windows,-macos
 build:nix --test_tag_filters=-windows,-macos
 
 # Non-Nix local toolchains. Nix-Haskell doesn't work with local toolchains.
-build:local --build_tag_filters=-no-cross,-windows,-macos
-build:local --test_tag_filters=-no-cross,-windows,-macos
+build:local --build_tag_filters=-no-cross,-windows,-macos,-ui
+build:local --test_tag_filters=-no-cross,-windows,-macos,-ui
 
 build:zig-cross --copt=-fPIC
 build:zig-cross --dynamic_mode=off
