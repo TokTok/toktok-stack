@@ -120,6 +120,46 @@ new_github_archive(
     version = "ca6251ad64cf6747c61ed5a453d943264a106008",
 )
 
+# https://github.com/psf/requests
+new_github_archive(
+    name = "requests",
+    integrity = "sha256-znCcnHEQmvxtAwizl12rIxwD+0FKxXK8vVXkCQnworM=",
+    repo = "psf/requests",
+    version = "v2.32.3",
+)
+
+# https://github.com/urllib3/urllib3
+new_github_archive(
+    name = "urllib3",
+    integrity = "sha256-Gpe9Lvk9yoizguQQl9kg9dzU795IZsIwX/jq6oL38CE=",
+    repo = "urllib3/urllib3",
+    version = "2.3.0",
+)
+
+# https://github.com/kjd/idna
+new_github_archive(
+    name = "idna",
+    integrity = "sha256-X7o3TgVoDZvi/E+hMSRIHQMYVzuGEqC4yWWL/AJ1ZqU=",
+    repo = "kjd/idna",
+    version = "v3.10",
+)
+
+# https://github.com/certifi/python-certifi
+new_github_archive(
+    name = "certifi",
+    integrity = "sha256-OocLi+9du+EW33fdefMnwv1pLq+D8Ma71DF+iM9BERE=",
+    repo = "certifi/python-certifi",
+    version = "2024.12.14",
+)
+
+# https://github.com/chardet/chardet
+new_github_archive(
+    name = "chardet",
+    integrity = "sha256-h/AteE9Frz0y9xOPLUQCj42fhGQtgYw1KzA/B5Tgufw=",
+    repo = "chardet/chardet",
+    version = "5.2.0",
+)
+
 # Fuzzing
 # =========================================================
 
