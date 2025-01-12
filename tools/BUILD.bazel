@@ -32,7 +32,6 @@ workspace(projects = [
     "toxic",
     "toxins",
     "website",
-    "zig-toxcore-c",
 ])
 
 exports_files(srcs = glob(["LICENSE.*"]))

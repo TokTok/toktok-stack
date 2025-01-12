@@ -28,36 +28,6 @@ load("@hermetic_cc_toolchain//toolchain:defs.bzl", zig_toolchains = "toolchains"
 
 zig_toolchains()
 
-# Actual zig toolchain (the above is for C/C++)
-# =========================================================
-
-# Run before adding the default toolchains below, so this one gets used first.
-register_toolchains(
-    "//third_party/zig:aarch64-linux-nix_toolchain",
-    "//third_party/zig:x86_64-linux-nix_toolchain",
-)
-
-# https://github.com/aherrmann/rules_zig
-github_archive(
-    name = "rules_zig",
-    integrity = "sha256-2CKwqWqx87hXsAhgfyztqzG3ikp+obARtWVAAPGnKsA=",
-    repo = "aherrmann/rules_zig",
-    version = "v0.7.0",
-)
-
-load(
-    "@rules_zig//zig:repositories.bzl",
-    "rules_zig_dependencies",
-    "zig_register_toolchains",
-)
-
-rules_zig_dependencies()
-
-zig_register_toolchains(
-    name = "zig",
-    zig_version = "0.11.0",
-)
-
 # Python
 # =========================================================
 

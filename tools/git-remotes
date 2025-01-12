@@ -183,11 +183,6 @@ our %REPOS = (
       repo 'robinlinden',
       repo 'zoff99',
    }],
-   'zig-toxcore-c' => ['zig-toxcore-c', {
-      upstream => 'toktok',
-      repo 'iphydf',
-      repo ['nodecum', 'c-toxcore-zig'],
-   }],
 );
 
 # Get map of remote -> url in current directory.

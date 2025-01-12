@@ -94,6 +94,3 @@
 [submodule "wiki/qtox.wiki"]
 	path = wiki/qtox.wiki
 	url = https://github.com/TokTok/qtox.wiki
-[submodule "zig-toxcore-c"]
-	path = zig-toxcore-c
-	url = https://github.com/TokTok/zig-toxcore-c
