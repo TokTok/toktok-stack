@@ -584,6 +584,15 @@ http_archive(
     urls = ["https://github.com/nlohmann/json/releases/download/v3.11.3/include.zip"],
 )
 
+# https://github.com/libunwind/libunwind/releases
+http_archive(
+    name = "libunwind",
+    build_file = "@toktok//third_party:libunwind.BUILD",
+    integrity = "sha256-3fDjLdX6/lKDGY035L+d7Pe6F3C25+AGwz5t955qYVc=",
+    strip_prefix = "libunwind-1.8.1",
+    urls = ["https://github.com/libunwind/libunwind/releases/download/v1.8.1/libunwind-1.8.1.tar.gz"],
+)
+
 new_github_archive(
     name = "kimageformats",
     integrity = "sha256-tetGe5OFkjjrsse9CPfCoqIUKYa6flCzYbd3ERDBoSo=",
