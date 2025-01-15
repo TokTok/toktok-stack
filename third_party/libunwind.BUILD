@@ -40,7 +40,12 @@ genrule(
         export PATH="$$PATH:$$PWD/$$(dirname $(location @libtool//:libtoolize))"
 
         SRCDIR="$$(dirname $(location configure))"
-        "$$SRCDIR/configure" CC="$(CC)" CXX="$(CC)" AR="$(AR)" || (cat config.log && false)
+        "$$SRCDIR/configure" CC="$(CC)" CXX="$(CC)" AR="$(AR)" \
+            --disable-documentation \
+            --disable-minidebuginfo \
+            --disable-shared \
+            --enable-ptrace \
+            || (cat config.log && false)
 
         cp "include/config.h" "$(location include/config.h)"
         cp "include/libunwind-common.h" "$(location include/libunwind-common.h)"
@@ -108,7 +113,27 @@ cc_library(
         "src/elfxx.h",
     ],
     hdrs = [
+        "src/dwarf/Gexpr.c",
+        "src/dwarf/Gfde.c",
+        "src/dwarf/Gfind_proc_info-lsb.c",
+        "src/dwarf/Gfind_unwind_table.c",
+        "src/dwarf/Gparser.c",
+        "src/dwarf/Gpe.c",
         "src/elfxx.c",  # Included by elf32.c/elf64.c
+        "src/mi/Gdyn-extract.c",
+        "src/mi/Gfind_dynamic_proc_info.c",
+        "src/mi/Gget_proc_name.c",
+        "src/mi/Gget_reg.c",
+        "src/mi/Gput_dynamic_unwind_info.c",
+        "src/x86_64/Gcreate_addr_space.c",
+        "src/x86_64/Gglobal.c",
+        "src/x86_64/Ginit.c",
+        "src/x86_64/Ginit_local.c",
+        "src/x86_64/Gos-linux.c",
+        "src/x86_64/Gregs.c",
+        "src/x86_64/Gresume.c",
+        "src/x86_64/Gstash_frame.c",
+        "src/x86_64/Gstep.c",
     ],
 )
 
@@ -127,6 +152,12 @@ filegroup(
         "src/dwarf/Gfind_unwind_table.c",
         "src/dwarf/Gparser.c",
         "src/dwarf/Gpe.c",
+        "src/dwarf/Lexpr.c",
+        "src/dwarf/Lfde.c",
+        "src/dwarf/Lfind_proc_info-lsb.c",
+        "src/dwarf/Lfind_unwind_table.c",
+        "src/dwarf/Lparser.c",
+        "src/dwarf/Lpe.c",
         "src/dwarf/global.c",
         "src/mi/Gaddress_validator.c",
         "src/mi/Gdestroy_addr_space.c",
@@ -136,6 +167,12 @@ filegroup(
         "src/mi/Gget_proc_name.c",
         "src/mi/Gget_reg.c",
         "src/mi/Gput_dynamic_unwind_info.c",
+        "src/mi/Ldyn-extract.c",
+        "src/mi/Lfind_dynamic_proc_info.c",
+        "src/mi/Lget_proc_name.c",
+        "src/mi/Lget_reg.c",
+        "src/mi/Lput_dynamic_unwind_info.c",
+        "src/mi/dyn-info-list.c",
         "src/mi/flush_cache.c",
         "src/mi/init.c",
         "src/mi/mempool.c",
@@ -149,6 +186,15 @@ filegroup(
         "src/x86_64/Gresume.c",
         "src/x86_64/Gstash_frame.c",
         "src/x86_64/Gstep.c",
+        "src/x86_64/Lcreate_addr_space.c",
+        "src/x86_64/Lglobal.c",
+        "src/x86_64/Linit.c",
+        "src/x86_64/Linit_local.c",
+        "src/x86_64/Los-linux.c",
+        "src/x86_64/Lregs.c",
+        "src/x86_64/Lresume.c",
+        "src/x86_64/Lstash_frame.c",
+        "src/x86_64/Lstep.c",
         "src/x86_64/getcontext.S",
         "src/x86_64/is_fpreg.c",
         "src/x86_64/setcontext.S",
@@ -204,5 +250,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":included_sources",
+        "@libxz",
     ],
 )
