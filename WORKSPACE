@@ -550,6 +550,19 @@ nixpkgs_package(
 )
 
 nixpkgs_package(
+    name = "pcre.out",
+    attribute_path = "pcre.out",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "pcre",
+    attribute_path = "pcre.dev",
+    build_file = "@toktok//third_party:pcre.BUILD",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
     name = "gl.out",
     attribute_path = "libGL.out",
     repository = "@nixpkgs",

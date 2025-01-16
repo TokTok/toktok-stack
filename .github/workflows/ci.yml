@@ -103,6 +103,8 @@ jobs:
           . "$HOME/.nix-profile/etc/profile.d/nix.sh"
           nix-channel --add https://github.com/NixOS/nixpkgs/archive/a81bbdfb658428a45c69a42aa73d4bd18127c467.tar.gz nixpkgs
           nix-channel --update
+      - name: Install mold
+        run: sudo apt-get install mold
       - name: Build
         run: |
           . /home/runner/.nix-profile/etc/profile.d/nix.sh

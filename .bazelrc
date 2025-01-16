@@ -122,6 +122,7 @@ build --host_linkopt='-Wl,--warn-execstack'
 
 build:local      --linkopt='-Wl,--fatal-warnings'
 build:local --host_linkopt='-Wl,--fatal-warnings'
+build:local --linkopt='-fuse-ld=mold'
 
 build:strict      --linkopt='-Wl,--detect-odr-violations'
 build:strict --host_linkopt='-Wl,--detect-odr-violations'
@@ -181,6 +182,7 @@ build:asan-libfuzzer --@rules_fuzzing//fuzzing:cc_engine_sanitizer=asan
 build:sanitizer --config=debug
 build:sanitizer --copt='-UNDEBUG'
 build:sanitizer --copt='-O3'
+build:sanitizer --per_file_copt='//cyclone[:/]@-O0'
 build:sanitizer --per_file_copt='//c-toxcore[:/]@-O0'
 build:sanitizer --per_file_copt='//c-toxcore[:/]@-fno-inline,-fno-omit-frame-pointer'
 build:sanitizer --flaky_test_attempts=1
@@ -216,11 +218,14 @@ build:tsan --test_env=TSAN_OPTIONS=color=always,history_size=7,force_seq_cst_ato
 
 build:ubsan --config=sanitizer
 build:ubsan --features=ubsan
-build:ubsan --copt='-fsanitize=nullability,undefined'
-#build:ubsan --per_file_copt='//c-toxcore[:/]@-fsanitize=integer'
-build:ubsan --copt='-fno-sanitize-recover=all'
-build:ubsan --copt='-fno-sanitize-trap=all'
-build:ubsan --linkopt='-fsanitize=integer,nullability,undefined'
+build:ubsan      --copt='-fsanitize=nullability,undefined'
+build:ubsan --host_copt='-fsanitize=nullability,undefined'
+build:ubsan      --copt='-fno-sanitize-recover=all'
+build:ubsan --host_copt='-fno-sanitize-recover=all'
+build:ubsan      --copt='-fno-sanitize-trap=all'
+build:ubsan --host_copt='-fno-sanitize-trap=all'
+build:ubsan      --linkopt='-fsanitize=nullability,undefined'
+build:ubsan --host_linkopt='-fsanitize=nullability,undefined'
 # https://github.com/bazelbuild/bazel/issues/11122
 build:ubsan --linkopt='-fsanitize-link-c++-runtime'
 build:ubsan --per_file_copt='//c-toxcore[:/]@-D_DEBUG'
@@ -364,6 +369,34 @@ build:c-as-cpp --per_file_copt='//c-toxcore[:/]@-Wno-c99-extensions'
 build:c-as-cpp --per_file_copt='//c-toxcore[:/]@-Wno-old-style-cast'
 build:c-as-cpp --per_file_copt='//c-toxcore[:/]@-Wno-unreachable-code-return'
 build:c-as-cpp --per_file_copt='//c-toxcore[:/]@-Wno-unused-macros'
+
+# Cyclone.
+build --per_file_copt='//cyclone[:/]@-fno-sanitize=undefined'
+build --per_file_copt='//cyclone[:/]@-Wno-bad-function-cast'
+build --per_file_copt='//cyclone[:/]@-Wno-c++-compat'
+build --per_file_copt='//cyclone[:/]@-Wno-c2x-compat'
+build --per_file_copt='//cyclone[:/]@-Wno-cast-align'
+build --per_file_copt='//cyclone[:/]@-Wno-cast-function-type'
+build --per_file_copt='//cyclone[:/]@-Wno-cast-qual'
+build --per_file_copt='//cyclone[:/]@-Wno-double-promotion'
+build --per_file_copt='//cyclone[:/]@-Wno-float-equal'
+build --per_file_copt='//cyclone[:/]@-Wno-incompatible-function-pointer-types'
+build --per_file_copt='//cyclone[:/]@-Wno-missing-prototypes'
+build --per_file_copt='//cyclone[:/]@-Wno-missing-variable-declarations'
+build --per_file_copt='//cyclone[:/]@-Wno-pedantic'
+build --per_file_copt='//cyclone[:/]@-Wno-sign-compare'
+build --per_file_copt='//cyclone[:/]@-Wno-strict-prototypes'
+build --per_file_copt='//cyclone[:/]@-Wno-switch-enum'
+build --per_file_copt='//cyclone[:/]@-Wno-undef'
+build --per_file_copt='//cyclone[:/]@-Wno-unreachable-code-break'
+build --per_file_copt='//cyclone[:/]@-Wno-unreachable-code'
+build --per_file_copt='//cyclone[:/]@-Wno-unused-but-set-variable'
+build --per_file_copt='//cyclone[:/]@-Wno-unused-function'
+build --per_file_copt='//cyclone[:/]@-Wno-unused-macros'
+build --per_file_copt='//cyclone[:/]@-Wno-unused-variable'
+build --per_file_copt='//cyclone[:/]@-Wno-variadic-macros'
+
+build --host_per_file_copt='//cyclone[:/]@-Wno-incompatible-function-pointer-types'
 
 # Cython code isn't very clean.
 build --per_file_copt='//py_toxcore_c[:/]@-Wno-cast-align'
