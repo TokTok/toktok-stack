@@ -4,6 +4,7 @@ workspace(projects = [
     "btox",
     "c-toxcore",
     "ci-tools",
+    "cyclone",
     "dockerfiles",
     "experimental",
     "go-toxcore-c",

@@ -1,17 +1,18 @@
 version: "0.2"
 ignorePaths:
-  - "c-toxcore/**"
+  - c-toxcore/**
   - "*bazelrc*"
 words:
-  - "asan"
-  - "bazel"
-  - "bazelisk"
-  - "buildx"
-  - "fastbuild"
-  - "libfuzzer"
-  - "nixpkgs"
-  - "mypy"
-  - "patchelf"
-  - "toktok"
-  - "toxchat"
-  - "toxcore"
+  - asan
+  - bazel
+  - bazelisk
+  - buildx
+  - fastbuild
+  - LIBC
+  - libfuzzer
+  - mypy
+  - nixpkgs
+  - patchelf
+  - toktok
+  - toxchat
+  - toxcore

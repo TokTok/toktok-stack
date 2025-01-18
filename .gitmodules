@@ -1,12 +1,15 @@
 [submodule "btox"]
 	path = btox
 	url = https://github.com/TokTok/bTox
-[submodule "ci-tools"]
-	path = ci-tools
-	url = https://github.com/TokTok/ci-tools
 [submodule "c-toxcore"]
 	path = c-toxcore
 	url = https://github.com/TokTok/c-toxcore
+[submodule "ci-tools"]
+	path = ci-tools
+	url = https://github.com/TokTok/ci-tools
+[submodule "cyclone"]
+	path = cyclone
+	url = https://github.com/TokTok/cyclone
 [submodule "dockerfiles"]
 	path = dockerfiles
 	url = https://github.com/TokTok/dockerfiles

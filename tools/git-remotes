@@ -58,6 +58,10 @@ our %REPOS = (
       repo 'iphydf',
       repo 'camgunz',
    }],
+   'cyclone' => ['cyclone', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
    'dockerfiles' => ['dockerfiles', {
       upstream => 'toktok',
       repo 'iphydf',

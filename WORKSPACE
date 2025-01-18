@@ -606,6 +606,14 @@ http_archive(
     urls = ["https://github.com/libunwind/libunwind/releases/download/v1.8.1/libunwind-1.8.1.tar.gz"],
 )
 
+# https://github.com/ianlancetaylor/libbacktrace
+new_github_archive(
+    name = "libbacktrace",
+    integrity = "sha256-khG7h63XzNymJax129Tp9XJvHpnaVMTxWD0Poh44DJs=",
+    repo = "ianlancetaylor/libbacktrace",
+    version = "1db85642e3fca189cf4e076f840a45d6934b2456",
+)
+
 new_github_archive(
     name = "kimageformats",
     integrity = "sha256-tetGe5OFkjjrsse9CPfCoqIUKYa6flCzYbd3ERDBoSo=",
