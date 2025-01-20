@@ -61,6 +61,12 @@ jobs:
           docker rmi toxchat/toktok-stack:latest-asan
           docker system prune -f
 
+      - name: Build toxchat/toktok-stack:latest-release
+        run: |
+          docker build -t toxchat/toktok-stack:latest-release -f tools/built/src/Dockerfile.release .
+          docker rmi toxchat/toktok-stack:latest-release
+          docker system prune -f
+
       - name: Build toxchat/toktok-stack:latest-arm64
         run: |
           docker build -t toxchat/toktok-stack:latest-arm64 -f tools/built/src/Dockerfile.arm64 .

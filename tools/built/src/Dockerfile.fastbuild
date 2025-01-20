@@ -1,6 +1,8 @@
 # Pre-build //... in fastbuild mode for dev containers.
 FROM toxchat/toktok-stack:latest
 
-RUN sudo nix-daemon --daemon & bazel build -k //...
+RUN sudo nix-daemon --daemon \
+  & bazel build -k //...
+RUN bazel test  -k //...
 
 # vim:ft=dockerfile

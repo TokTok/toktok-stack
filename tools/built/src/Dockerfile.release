@@ -3,6 +3,8 @@ FROM toxchat/toktok-stack:latest
 
 RUN echo 'build --config=release' >>.local.bazelrc
 
-RUN sudo nix-daemon --daemon & bazel build -k //...
+RUN sudo nix-daemon --daemon \
+  & bazel build -k //...
+RUN bazel test  -k //...
 
 # vim:ft=dockerfile
