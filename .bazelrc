@@ -34,7 +34,6 @@ build --features=layering_check
 
 build --experimental_inmemory_dotd_files
 build --experimental_inmemory_jdeps_files
-build --experimental_omitfp
 build --experimental_remotable_source_manifests
 build --experimental_remote_merkle_tree_cache
 build --experimental_remote_require_cached
@@ -114,11 +113,12 @@ build:remote-exec --remote_download_outputs=all
 
 # Flags for systems with GNU linker or compatible.
 
-build --host_linkopt='-fPIE'
-build --host_linkopt='-Wl,-z,defs'
-build      --linkopt='-Wl,-z,noexecstack'
-build --host_linkopt='-Wl,-z,noexecstack'
-build --host_linkopt='-Wl,--warn-execstack'
+build:linux --experimental_omitfp
+build:linux --host_linkopt='-fPIE'
+build:linux --host_linkopt='-Wl,-z,defs'
+build:linux      --linkopt='-Wl,-z,noexecstack'
+build:linux --host_linkopt='-Wl,-z,noexecstack'
+build:linux --host_linkopt='-Wl,--warn-execstack'
 
 #build:local      --linkopt='-Wl,--fatal-warnings'
 #build:local --host_linkopt='-Wl,--fatal-warnings'
@@ -557,6 +557,7 @@ build --per_file_copt='external[:/]@-Wno-unused-macros'
 build --per_file_copt='external[:/]@-Wno-unused-template'
 build --per_file_copt='external[:/]@-Wno-weak-vtables'
 build --per_file_copt='external[:/]@-Wno-zero-as-null-pointer-constant'
+build --per_file_copt='external/benchmark[:/]@-Wno-unused-member-function'
 build --per_file_copt='external/boringssl[:/]@-Wno-c11-extensions'
 build --per_file_copt='external/boringssl[:/]@-Wno-cast-function-type'
 build --per_file_copt='external/boringssl[:/]@-Wno-extra-semi'
@@ -619,6 +620,8 @@ build --per_file_copt='external/ffmpeg[:/]@-Wno-unused-const-variable'
 build --per_file_copt='external/ffmpeg[:/]@-Wno-unused-function'
 build --per_file_copt='external/ffmpeg[:/]@-Wno-unused'
 build --per_file_copt='external/libbacktrace[:/]@-Wno-atomic-implicit-seq-cst'
+build --per_file_copt='external/libbacktrace[:/]@-Wno-pedantic'
+build --per_file_copt='external/libbacktrace[:/]@-Wno-unused-but-set-variable'
 build --per_file_copt='external/libcap[:/]@-Wno-gnu-zero-variadic-macro-arguments'
 build --per_file_copt='external/libcap[:/]@-Wno-sign-compare'
 build --per_file_copt='external/libcap[:/]@-Wno-tautological-unsigned-enum-zero-compare'
@@ -631,6 +634,7 @@ build --per_file_copt='external/libidn2[:/]@-Wno-pedantic'
 build --per_file_copt='external/libidn2[:/]@-Wno-sign-compare'
 build --per_file_copt='external/libidn2[:/]@-Wno-unused-const-variable'
 build --per_file_copt='external/libqrencode[:/]@-Wno-tautological-unsigned-enum-zero-compare'
+build --per_file_copt='external/libsodium[:/]@-Wno-vector-conversion'
 build --per_file_copt='external/libsodium[:/]@-Wno-unknown-pragmas'
 build --per_file_copt='external/libsodium[:/]@-Wno-unused-but-set-variable'
 build --per_file_copt='external/libsodium[:/]@-Wno-unused-function'

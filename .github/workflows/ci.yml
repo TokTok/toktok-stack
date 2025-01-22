@@ -117,6 +117,17 @@ jobs:
           nix-shell -p patchelf --run "patchelf --version"
           bazel test --config=local --config=remote -- //... -//jvm-toxcore-c/... -//third_party/...
 
+  macos:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Install Nix
+        run: sh <(curl -L https://nixos.org/nix/install) --yes
+      - name: Build
+        run: bazel test --config=remote //c-toxcore/toxcore/...
+
   mypy:
     runs-on: ubuntu-22.04
     steps:

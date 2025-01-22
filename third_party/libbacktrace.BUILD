@@ -20,7 +20,7 @@ genrule(
     ],
     cmd = """
         SRCDIR="$$(dirname $(location configure))"
-        "$$SRCDIR/configure" CC="$(CC)" CXX="$(CC)" AR="$(AR)" \
+        "$$SRCDIR/configure" CC="$(CC)" AR="$(AR)" LD="$(CC)" \
             || (cat config.log && false)
         sed -i -e 's/#define BACKTRACE_ELF_SIZE unused/#define BACKTRACE_ELF_SIZE 64/' config.h
 
@@ -37,8 +37,6 @@ cc_library(
         "atomic.c",
         "backtrace.c",
         "backtrace.h",
-        "backtrace-supported.h",
-        "config.h",
         "dwarf.c",
         "elf.c",
         "fileline.c",
@@ -49,6 +47,8 @@ cc_library(
         "read.c",
         "sort.c",
         "state.c",
+        "@toktok//third_party/libbacktrace:config",
     ],
+    copts = ["-I$(GENDIR)/third_party/libbacktrace"],
     visibility = ["//visibility:public"],
 )

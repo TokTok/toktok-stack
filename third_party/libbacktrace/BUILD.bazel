@@ -1,0 +1,27 @@
+genrule(
+    name = "config",
+    srcs = select({
+        "@toktok//tools/config:linux-arm64": [
+            "linux-arm64/backtrace-supported.h",
+            "linux-arm64/config.h",
+        ],
+        "@toktok//tools/config:linux-x86_64": [
+            "linux-x86_64/backtrace-supported.h",
+            "linux-x86_64/config.h",
+        ],
+        "@toktok//tools/config:macos-arm64": [
+            "macos-arm64/backtrace-supported.h",
+            "macos-arm64/config.h",
+        ],
+        "@toktok//tools/config:windows-x86_64": [
+            "windows-x86_64/backtrace-supported.h",
+            "windows-x86_64/config.h",
+        ],
+    }),
+    outs = [
+        "config.h",
+        "backtrace-supported.h",
+    ],
+    cmd = "cp $(SRCS) $$(dirname $(location config.h))",
+    visibility = ["@libbacktrace//:__pkg__"],
+)

@@ -17,19 +17,19 @@ genrule(
         "src/sodium_config.h",
     ],
     cmd = """
-        BASE=`pwd`
-        export PATH="$$PATH:$$BASE/$$(dirname $(location @autoconf//:autoconf))"
-        export PATH="$$PATH:$$BASE/$$(dirname $(location @automake//:aclocal))"
-        export PATH="$$PATH:$$BASE/$$(dirname $(location @diffutils//:cmp))"
-        export PATH="$$PATH:$$BASE/$$(dirname $(location @libtool//:libtoolize))"
-        export PATH="$$PATH:$$BASE/$$(dirname $(location @m4))"
-        cd "$$(dirname $(location configure.ac))"
-        autoreconf -fi
-        ./configure CC="$(CC)" MAKE="$$BASE/$(location @gnumake)" || (cat config.log && false)
-        cd -
-        find . -name sodium_config.h
-        cp "$$(dirname $(location configure.ac))/src/libsodium/include/sodium/version.h" "$(location src/libsodium/include/sodium/version.h)"
-        grep '^DEFS = ' $$(dirname $(location configure.ac))/Makefile $(location src/libsodium/include/sodium/version.h) \\
+        export PATH="$$PATH:$$PWD/$$(dirname $(location @autoconf//:autoconf))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(location @automake//:aclocal))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(location @diffutils//:cmp))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(location @gnumake))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(location @libtool//:libtoolize))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(location @m4))"
+
+        SRCDIR="$$(dirname $(location configure.ac))"
+        autoreconf -fi -I "$$PWD/$$(dirname $(location @libtool//:libtool.m4))" "$$SRCDIR"
+        "$$SRCDIR/configure" CC="$(CC)" || (cat config.log && false)
+
+        cp "src/libsodium/include/sodium/version.h" "$(location src/libsodium/include/sodium/version.h)"
+        grep '^DEFS = ' Makefile $(location src/libsodium/include/sodium/version.h) \\
           | grep -E -o -- '-D([^ ]|\\\\ )+' \\
           | sed -e 's/^-D/#define /;s/=/ /;s/\\\\//g' \\
           > "$(location src/sodium_config.h)"
@@ -42,6 +42,7 @@ genrule(
         "@automake//:aclocal",
         "@diffutils//:cmp",
         "@gnumake",
+        "@libtool//:libtool.m4",
         "@libtool//:libtoolize",
         "@m4",
     ],
@@ -76,8 +77,9 @@ SRCS_X86_64 = [
 alias(
     name = "config",
     actual = select({
-        "@toktok//tools/config:arm64": "@toktok//third_party/libsodium:config/arm64.h",
+        "@toktok//tools/config:linux-arm64": "@toktok//third_party/libsodium:config/linux-arm64.h",
         "@toktok//tools/config:linux-x86_64": "@toktok//third_party/libsodium:config/linux-x86_64.h",
+        "@toktok//tools/config:macos-arm64": "@toktok//third_party/libsodium:config/macos-arm64.h",
         "@toktok//tools/config:windows-x86_64": "@toktok//third_party/libsodium:config/windows-x86_64.h",
     }),
 )
