@@ -209,6 +209,10 @@ build:msan --copt='-fsanitize-memory-track-origins=2'
 build:msan --linkopt='-fsanitize=memory'
 build:msan --test_env=MSAN_OPTIONS=color=always:external_symbolizer_path=/nix/store/h6rpdk8nb097diyqk1vsglw9chwgfsjr-llvm-18.1.8/bin/llvm-symbolizer
 build:msan --per_file_copt='//toxic[:/]@-UAUDIO,-UVIDEO,-UPYTHON'
+# msan doesn't like Go (or Go doesn't like Bazel's msan):
+# gcc_traceback.c:15:10: fatal error: 'sanitizer/msan_interface.h' file not found
+build:msan --build_tag_filters=-no-san,-haskell,-windows,-macos,-go
+build:msan --test_tag_filters=-no-san,-haskell,-windows,-macos,-go
 
 build:tsan --config=sanitizer
 build:tsan --features=tsan
@@ -671,6 +675,7 @@ build --per_file_copt='external/sdl2[:/]@-Wno-pedantic'
 build --per_file_copt='external/sdl2[:/]@-Wno-sign-compare'
 build --per_file_copt='external/sdl2[:/]@-Wno-tautological-value-range-compare'
 build --per_file_copt='external/sdl2[:/]@-Wno-unused-but-set-variable'
+build --per_file_copt='external/simdjson[:/]@-Wno-unused-member-function'
 build --per_file_copt='external/sqlcipher[:/]@-Wno-atomic-implicit-seq-cst'
 build --per_file_copt='external/sqlcipher[:/]@-Wno-cast-function-type-strict'
 build --per_file_copt='external/sqlcipher[:/]@-Wno-empty-translation-unit'

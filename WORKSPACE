@@ -597,6 +597,14 @@ http_archive(
     urls = ["https://github.com/nlohmann/json/releases/download/v3.11.3/include.zip"],
 )
 
+# https://github.com/simdjson/simdjson/releases
+new_github_archive(
+    name = "simdjson",
+    integrity = "sha256-hl/62dOtM7ARIHS6iJ7pNNtT1hPq/GOS7A0aDJ5bAFc=",
+    repo = "simdjson/simdjson",
+    version = "v3.11.6",
+)
+
 # https://github.com/libunwind/libunwind/releases
 http_archive(
     name = "libunwind",

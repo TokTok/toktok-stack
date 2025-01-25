@@ -55,6 +55,12 @@ jobs:
       - name: Build toxchat/toktok-stack:latest
         run: docker build -t toxchat/toktok-stack:latest -f tools/built/src/Dockerfile .
 
+      - name: Build toxchat/toktok-stack:latest-msan
+        run: |
+          docker build -t toxchat/toktok-stack:latest-msan -f tools/built/src/Dockerfile.msan .
+          docker rmi toxchat/toktok-stack:latest-msan
+          docker system prune -f
+
       - name: Build toxchat/toktok-stack:latest-asan
         run: |
           docker build -t toxchat/toktok-stack:latest-asan -f tools/built/src/Dockerfile.asan .

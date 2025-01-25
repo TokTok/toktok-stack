@@ -1,6 +1,15 @@
+load("@rules_cc//cc:defs.bzl", "cc_test")
+
 licenses(["notice"])
 
 exports_files(
     srcs = glob(["config/*.h"]) + ["version.h"],
     visibility = ["@libsodium//:__pkg__"],
+)
+
+cc_test(
+    name = "libsodium_test",
+    size = "small",
+    srcs = ["libsodium_test.c"],
+    deps = ["@libsodium"],
 )
