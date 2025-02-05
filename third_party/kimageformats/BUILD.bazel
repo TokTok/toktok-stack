@@ -6,6 +6,8 @@ cc_fuzz_test(
     size = "small",
     testonly = True,
     srcs = ["test/qimage_fuzz_test.cpp"],
+    # Uncomment this to use it.
+    # corpus = ["//tools/toktok-fuzzer/corpus:qimage_fuzz_test"],
     tags = [
         "manual",
         "qt",

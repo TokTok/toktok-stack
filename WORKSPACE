@@ -624,9 +624,9 @@ new_github_archive(
 
 new_github_archive(
     name = "kimageformats",
-    integrity = "sha256-tetGe5OFkjjrsse9CPfCoqIUKYa6flCzYbd3ERDBoSo=",
+    integrity = "sha256-MyH1YZz8zHSUL6L6wgqEY7W7GBCYZLckMkaEOcWUgzM=",
     repo = "KDE/kimageformats",
-    version = "v6.9.0",
+    version = "v6.10.0",
 )
 
 http_archive(

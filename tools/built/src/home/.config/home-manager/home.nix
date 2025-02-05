@@ -47,6 +47,7 @@
       requests
       types-requests
     ]))
+    rsync                   # for syncing files to the container
     screen                  # terminal window manager
     strace                  # debugging system calls
     stylish-haskell         # formatter for Haskell
