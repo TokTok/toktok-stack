@@ -7,12 +7,15 @@ words:
   - bazel
   - bazelisk
   - buildx
+  - dups
   - fastbuild
-  - LIBC
+  - libc
   - libfuzzer
+  - mempty
   - mypy
   - nixpkgs
   - patchelf
+  - qtox
   - toktok
   - toxchat
   - toxcore

@@ -5,6 +5,7 @@ workspace(projects = [
     "c-toxcore",
     "ci-tools",
     "cyclone",
+    "debugtox",
     "dockerfiles",
     "experimental",
     "go-toxcore-c",

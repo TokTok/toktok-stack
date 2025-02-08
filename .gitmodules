@@ -10,6 +10,9 @@
 [submodule "cyclone"]
 	path = cyclone
 	url = https://github.com/TokTok/cyclone
+[submodule "debugtox"]
+	path = debugtox
+	url = https://github.com/TokTok/debugtox
 [submodule "dockerfiles"]
 	path = dockerfiles
 	url = https://github.com/TokTok/dockerfiles

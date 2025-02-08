@@ -62,6 +62,10 @@ our %REPOS = (
       upstream => 'toktok',
       repo 'iphydf',
    }],
+   'debugtox' => ['debugtox', {
+      upstream => 'toktok',
+      repo 'iphydf',
+   }],
    'dockerfiles' => ['dockerfiles', {
       upstream => 'toktok',
       repo 'iphydf',
