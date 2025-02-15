@@ -37,7 +37,7 @@ our %REPOS = (
       repo 'jfreegman',
       repo 'robinlinden',
    }],
-   'ci-tools' => ['ci-tools', {
+   'ci_tools' => ['ci-tools', {
       upstream => 'toktok',
       repo 'iphydf',
    }],

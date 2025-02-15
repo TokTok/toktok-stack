@@ -3,7 +3,7 @@ load("//tools/project:build_defs.bzl", "workspace")
 workspace(projects = [
     "btox",
     "c-toxcore",
-    "ci-tools",
+    "ci_tools",
     "cyclone",
     "debugtox",
     "dockerfiles",
