@@ -5,7 +5,11 @@ and correctness of the license text.
 """
 
 WORKFLOWS = {
-    "common": ["checks.base", "ci.base", "release.base"],
+    "common": [
+        "checks.base",
+        "ci.base",
+        # "draft.base",  # TODO(iphydf): Restore after rename.
+    ],
     "haskell": ["checks", "ci", "publish"],
 }
 
@@ -170,7 +174,7 @@ def project(name = "project", license = "gpl3", custom_cirrus = False):
 
     # ci-tools is special, because it provides the release workflow, so it
     # calls itself via a local path.
-    if native.package_name() != "ci-tools":
+    if native.package_name() != "ci_tools":
         for lang, wf, verbatim in _workflows(language):
             if native.glob([".github/workflows/%s.yml" % wf], allow_empty = True):
                 _workflow_test(lang, wf, verbatim, tests)

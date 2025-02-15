@@ -40,6 +40,8 @@
     man-pages               # libc documentation
     man-pages-posix         # libc documentation (POSIX functions)
     netlify-cli             # to perform local test deploys
+    nsis                    # Windows installer creation
+    nodePackages.prettier   # formatting JSON and JavaScript files
     openssh                 # ssh server
     protobuf                # needed to build protobuf files in jvm-toxcore-c
     # needed for .hie-bios

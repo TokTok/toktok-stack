@@ -3,19 +3,48 @@ ignorePaths:
   - c-toxcore/**
   - "*bazelrc*"
 words:
+  - appimage
   - asan
   - bazel
   - bazelisk
+  - blargh
+  - blyat
+  - blyatyfy
   - buildx
+  - ccache
+  - choco
+  - citri
+  - depfile
+  - dockerfiles
+  - dryrun
   - dups
+  - endforeach
   - fastbuild
+  - flathub
+  - icotool
   - libc
   - libfuzzer
+  - libsodium
+  - lojban
+  - lupdate
+  - magick
+  - makensis
   - mempty
   - mypy
+  - ncipollo
   - nixpkgs
+  - numerusform
   - patchelf
   - qtox
+  - qttools
+  - realpath
+  - sqlcipher
+  - teehee
   - toktok
+  - toplevel
   - toxchat
   - toxcore
+  - translatorcomment
+  - unblyatyfy
+  - vimcu
+  - weblate
