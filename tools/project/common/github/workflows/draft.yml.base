@@ -9,7 +9,7 @@ on:
 
 # Cancel old builds when pushing new commits.
 concurrency:
-  group: draft-${{ github.ref }}
+  group: draft-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:

@@ -49,6 +49,7 @@ cc_library(
         "state.c",
         "@toktok//third_party/libbacktrace:config",
     ],
+    hdrs = ["backtrace.h"],
     copts = ["-I$(GENDIR)/third_party/libbacktrace"],
     visibility = ["//visibility:public"],
 )

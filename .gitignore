@@ -8,6 +8,7 @@
 /bazel-*
 /cov-analysis*
 /external
+/go.work.sum
 /toolchain
 /MODULE.bazel.lock
 *.log

@@ -6,11 +6,19 @@ and correctness of the license text.
 
 WORKFLOWS = {
     "common": [
-        "checks.base",
-        "ci.base",
-        # "draft.base",  # TODO(iphydf): Restore after rename.
+        "github/ISSUE_TEMPLATE/release.yml.base",
+        "github/workflows/checks.yml.base",
+        "github/workflows/ci.yml.base",
+        "github/workflows/draft.yml.base",
+        "github/workflows/release.yml.base",
+        "reviewable/completion.js",
+        "reviewable/settings.yaml",
     ],
-    "haskell": ["checks", "ci", "publish"],
+    "haskell": [
+        "github/workflows/checks.yml",
+        "github/workflows/ci.yml",
+        "github/workflows/publish.yml",
+    ],
 }
 
 _COMMON = "common"
@@ -25,46 +33,52 @@ def _workflows(language):
     workflows = {}
     for lang in [_COMMON, language]:
         for wf_file in WORKFLOWS[lang]:
-            wf = wf_file[:wf_file.rfind(".")] if "." in wf_file else wf_file
-            workflows[wf] = [lang, wf, wf == wf_file]
+            cur = wf_file.removesuffix(".base")
+            workflows[cur] = struct(
+                language=lang,
+                ref=wf_file,
+                cur="." + cur,
+                type=cur.split("/")[1],
+                verbatim=not wf_file.endswith(".base"),
+            )
     return workflows.values()
 
-def _workflow_test(group, workflow, verbatim, tests):
-    suffix = "" if verbatim else ".base"
-    yml_cur = ".github/workflows/%s.yml" % workflow
-    yml_ref = "//tools/project:%s/github/workflows/%s%s.yml" % (group, workflow, suffix)
-    test_name = "github_%s_test" % workflow
-    tests.append(test_name)
-    if verbatim:
+def _workflow_test(wf, cur):
+    ref = "//tools/project:%s/%s" % (wf.language, wf.ref)
+    if wf.verbatim:
+        test_name = "%s_diff_test" % (wf.ref.replace("/", "_").replace(".", "_").lower())
         native.sh_test(
             name = test_name,
             size = "small",
             srcs = ["@diffutils//:diff"],
             args = [
                 "-u",
-                "$(location %s)" % yml_cur,
-                "$(location %s)" % yml_ref,
+                "$(location %s)" % cur,
+                "$(location %s)" % ref,
             ],
             data = [
-                yml_cur,
-                yml_ref,
+                cur,
+                ref,
             ],
         )
     else:
+        test_name = "%s_test" % wf.ref.replace("/", "_").replace(".", "_").lower()
         native.sh_test(
             name = test_name,
             size = "small",
             srcs = ["//hs-github-tools/tools:check-workflows"],
             args = [
-                "$(location %s)" % yml_ref,
-                "$(location %s)" % yml_cur,
+                wf.type,
+                "$(location %s)" % ref,
+                "$(location %s)" % cur,
             ],
             data = [
-                yml_ref,
-                yml_cur,
+                ref,
+                cur,
             ],
             tags = ["no-cross", "haskell"],
         )
+    return test_name
 
 def _expand_template_impl(ctx):
     output = ctx.actions.declare_file(ctx.attr.name + ".expected")
@@ -172,12 +186,14 @@ def project(name = "project", license = "gpl3", custom_cirrus = False):
     tests = []
     language = _detect_language()
 
-    # ci-tools is special, because it provides the release workflow, so it
-    # calls itself via a local path.
-    if native.package_name() != "ci_tools":
-        for lang, wf, verbatim in _workflows(language):
-            if native.glob([".github/workflows/%s.yml" % wf], allow_empty = True):
-                _workflow_test(lang, wf, verbatim, tests)
+    for wf in _workflows(language):
+        if native.package_name() == "ci_tools" and wf.ref.startswith("github/workflows/"):
+            # ci-tools is special, because it provides the release workflow, so
+            # it calls itself via a local path.
+            continue
+        cur = native.glob([wf.cur, wf.cur.replace(".yml", ".yaml")], allow_empty = True)
+        if cur:
+            tests.append(_workflow_test(wf, cur[0]))
 
     if language == _HASKELL:
         _haskell_project(
