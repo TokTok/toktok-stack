@@ -32,7 +32,7 @@ def happy_parser(name, src, glr = False, preproc = None, preproc_tool = None):
                 "$<",
                 "$@",
             ]),
-            tags = ["no-cross"],
+            tags = ["haskell"],
             tools = [preproc] + ([preproc_tool] if preproc_tool else []),
         )
         src = pp_src
@@ -48,6 +48,6 @@ def happy_parser(name, src, glr = False, preproc = None, preproc_tool = None):
             "-o $(location %s)" % driver_out,
             "$(location %s)" % src,
         ] + happy_flags),
-        tags = ["no-cross"],
+        tags = ["haskell"],
         tools = [_HAPPY],
     )

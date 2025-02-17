@@ -5,6 +5,6 @@ haskell_repl(
     name = "hie-bios",
     testonly = True,
     collect_data = False,
-    tags = ["no-cross"],
+    tags = ["haskell"],
     deps = HASKELL_TARGETS,
 )

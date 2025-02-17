@@ -68,29 +68,9 @@ jobs:
           cache-to: type=inline
           push: true
 
-  docker-fastbuild:
-    runs-on: ubuntu-22.04
-    needs: [docker]
-    steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          file: tools/built/src/Dockerfile.fastbuild
-          tags: toxchat/toktok-stack:latest-fastbuild
-          cache-from: type=registry,ref=toxchat/toktok-stack:latest-fastbuild
-          cache-to: type=inline
-          push: true
-
   docker-dev:
     runs-on: ubuntu-22.04
-    needs: [docker-fastbuild]
+    needs: [docker]
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -108,26 +88,30 @@ jobs:
           cache-to: type=inline
           push: true
 
-  docker-built:
+  bazel-cache:
     strategy:
       fail-fast: false
       matrix:
-        flavour: [release, debug, asan, msan, tsan, arm64, windows]
+        flavour: [fastbuild, release, debug, asan, msan, tsan, arm64, windows]
     runs-on: ubuntu-22.04
     needs: [docker]
     steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
+      - name: Set up environment
+        run: |
+          echo "GROUP_ID=$(id -g)" >.env
+          echo "USER_ID=$(id -u)" >>.env
+      - name: Download current cache and run the build
+        run: |
+          tar -C .. -xf <(curl -L https://github.com/TokTok/toktok-stack/releases/download/nightly/${{ matrix.flavour }}.tar) || mkdir -p ../bazel-cache
+          docker compose run --rm ${{ matrix.flavour }}
+          tar -C .. -cf ${{ matrix.flavour }}.tar bazel-cache
+      - name: Upload updated cache to nightly release
+        uses: ncipollo/release-action@v1
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          file: tools/built/src/Dockerfile.${{ matrix.flavour }}
-          tags: toxchat/toktok-stack:latest-${{ matrix.flavour }}
-          cache-from: type=registry,ref=toxchat/toktok-stack:latest-${{ matrix.flavour }}
-          cache-to: type=inline
-          push: true
+          allowUpdates: true
+          tag: nightly
+          omitBodyDuringUpdate: true
+          omitNameDuringUpdate: true
+          prerelease: true
+          replacesArtifacts: true
+          artifacts: ${{ matrix.flavour }}.tar

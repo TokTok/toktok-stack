@@ -1,6 +1,7 @@
 # Build artifacts.
 /.cache
 /.clangd
+/.env
 /.vs
 /.vscode
 /.stack-work
@@ -8,6 +9,7 @@
 /bazel-*
 /cov-analysis*
 /external
+/go.work.sum
 /toolchain
 /MODULE.bazel.lock
 *.log

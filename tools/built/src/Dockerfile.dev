@@ -4,7 +4,7 @@
 # contains a few basic tools and has built and ran all the tests once, so the
 # results are cached. This is the quickest way to get started with TokTok
 # development.
-FROM toxchat/toktok-stack:latest-fastbuild
+FROM toxchat/toktok-stack:latest
 
 # Install our wrapper for lhs support in stylish-haskell.
 #RUN mv /usr/bin/stylish-haskell /usr/bin/stylish-haskell.distrib \

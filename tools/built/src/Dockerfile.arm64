@@ -1,7 +1,0 @@
-FROM toxchat/toktok-stack:latest
-
-RUN echo 'build --config=linux-arm64-musl' >>.local.bazelrc
-
-RUN sudo nix-daemon --daemon & bazel build -k //...
-
-# vim:ft=dockerfile

@@ -1,0 +1,79 @@
+x-shared-params: &shared_params
+  container_name: bazel-build
+  depends_on:
+    - bazel-cache
+  build:
+    context: .
+    dockerfile: tools/built/src/Dockerfile
+  image: toxchat/toktok-stack:latest
+  environment:
+    HOME: /home/builder
+
+services:
+  bazel-cache:
+    user: ${USER_ID}:${GROUP_ID}
+    container_name: bazel-cache
+    image: buchgr/bazel-remote-cache
+    restart: on-failure
+    ports:
+      - "9092:9092"
+    command: --max_size=1
+    volumes:
+      - ../bazel-cache:/data
+    environment:
+      BAZEL_REMOTE_GRPC_PORT: 9092
+  third_party:
+    build:
+      context: .
+      dockerfile: tools/built/src/Dockerfile.third_party
+    image: toxchat/toktok-stack:latest-third_party
+
+  latest:
+    <<: *shared_params
+
+  fastbuild:
+    <<: *shared_params
+    command: bazel test
+      --remote_cache=grpc://bazel-cache:9092
+      //...
+
+  arm64:
+    <<: *shared_params
+    command: bazel build
+      --remote_cache=grpc://bazel-cache:9092
+      --config=linux-arm64-musl
+      //...
+
+  asan:
+    <<: *shared_params
+    command: bazel test
+      --remote_cache=grpc://bazel-cache:9092
+      --config=asan
+      --build_tag_filters=-haskell,-fuzz-test
+      --test_tag_filters=-haskell,-fuzz-test
+      //c-toxcore/...
+
+  msan:
+    <<: *shared_params
+    command: bazel test
+      --remote_cache=grpc://bazel-cache:9092
+      --config=msan
+      --build_tag_filters=-haskell,-fuzz-test
+      --test_tag_filters=-haskell,-fuzz-test
+      --
+      //c-toxcore/auto_tests/...
+      -//c-toxcore/auto_tests:proxy_test
+
+  release:
+    <<: *shared_params
+    command: bazel test
+      --remote_cache=grpc://bazel-cache:9092
+      --config=release
+      //...
+
+  windows:
+    <<: *shared_params
+    command: bazel build
+      --remote_cache=grpc://bazel-cache:9092
+      --config=windows-x86_64
+      //...

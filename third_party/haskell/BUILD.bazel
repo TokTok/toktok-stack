@@ -9,7 +9,7 @@ licenses(["notice"])
 # can be referenced as dependencies.
 [haskell_toolchain_library(
     name = name,
-    tags = ["no-cross"],
+    tags = ["haskell"],
 ) for name in [
     "aeson",
     "aeson-pretty",

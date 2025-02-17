@@ -10,17 +10,26 @@ words:
   - blargh
   - blyat
   - blyatyfy
+  - buildifier
   - buildx
   - ccache
   - choco
   - citri
+  - codesign
+  - createdmg
   - depfile
+  - depset
+  - diffutils
   - dockerfiles
   - dryrun
   - dups
   - endforeach
   - fastbuild
   - flathub
+  - fmap
+  - genrule
+  - gitmodules
+  - hditool
   - icotool
   - libc
   - libfuzzer
@@ -30,6 +39,7 @@ words:
   - magick
   - makensis
   - mempty
+  - mkstamp
   - mypy
   - ncipollo
   - nixpkgs
@@ -38,7 +48,11 @@ words:
   - qtox
   - qttools
   - realpath
+  - rfind
+  - runfiles
   - sqlcipher
+  - srcs
+  - startswith
   - teehee
   - toktok
   - toplevel

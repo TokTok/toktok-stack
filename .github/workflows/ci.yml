@@ -42,60 +42,68 @@ jobs:
   docker-test:
     runs-on: ubuntu-22.04
     steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
       - uses: actions/checkout@v4
         with:
           submodules: recursive
 
       - name: Build toxchat/toktok-stack:latest-third_party
-        run: docker build -t toxchat/toktok-stack:latest-third_party -f tools/built/src/Dockerfile.third_party .
+        run: docker compose build third_party
 
       - name: Build toxchat/toktok-stack:latest
-        run: docker build -t toxchat/toktok-stack:latest -f tools/built/src/Dockerfile .
+        run: docker compose build latest
 
-      - name: Build toxchat/toktok-stack:latest-msan
+      - name: Set up environment
         run: |
-          docker build -t toxchat/toktok-stack:latest-msan -f tools/built/src/Dockerfile.msan .
-          docker rmi toxchat/toktok-stack:latest-msan
-          docker system prune -f
+          echo "GROUP_ID=$(id -g)" >.env
+          echo "USER_ID=$(id -u)" >>.env
 
-      - name: Build toxchat/toktok-stack:latest-asan
+      - name: Build for msan
         run: |
-          docker build -t toxchat/toktok-stack:latest-asan -f tools/built/src/Dockerfile.asan .
-          docker rmi toxchat/toktok-stack:latest-asan
-          docker system prune -f
+          tar -C .. -xf <(curl -L https://github.com/TokTok/toktok-stack/releases/download/nightly/msan.tar)
+          docker compose run --rm msan
+          docker kill bazel-cache
+          rm -rf ../bazel-cache
 
-      - name: Build toxchat/toktok-stack:latest-release
+      - name: Build for asan
         run: |
-          docker build -t toxchat/toktok-stack:latest-release -f tools/built/src/Dockerfile.release .
-          docker rmi toxchat/toktok-stack:latest-release
-          docker system prune -f
+          tar -C .. -xf <(curl -L https://github.com/TokTok/toktok-stack/releases/download/nightly/asan.tar)
+          docker compose run --rm asan
+          docker kill bazel-cache
+          rm -rf ../bazel-cache
 
-      - name: Build toxchat/toktok-stack:latest-arm64
+      - name: Build for release
         run: |
-          docker build -t toxchat/toktok-stack:latest-arm64 -f tools/built/src/Dockerfile.arm64 .
-          docker rmi toxchat/toktok-stack:latest-arm64
-          docker system prune -f
+          tar -C .. -xf <(curl -L https://github.com/TokTok/toktok-stack/releases/download/nightly/release.tar)
+          docker compose run --rm release
+          docker kill bazel-cache
+          rm -rf ../bazel-cache
 
-      - name: Build toxchat/toktok-stack:latest-windows
+      - name: Build for arm64
         run: |
-          docker build -t toxchat/toktok-stack:latest-windows -f tools/built/src/Dockerfile.windows .
-          docker rmi toxchat/toktok-stack:latest-windows
-          docker system prune -f
+          tar -C .. -xf <(curl -L https://github.com/TokTok/toktok-stack/releases/download/nightly/arm64.tar)
+          docker compose run --rm arm64
+          docker kill bazel-cache
+          rm -rf ../bazel-cache
 
-      - name: Build toxchat/toktok-stack:latest-fastbuild
-        run: docker build -t toxchat/toktok-stack:latest-fastbuild -f tools/built/src/Dockerfile.fastbuild .
+      - name: Build for windows
+        run: |
+          tar -C .. -xf <(curl -L https://github.com/TokTok/toktok-stack/releases/download/nightly/windows.tar)
+          docker compose run --rm windows
+          docker kill bazel-cache
+          rm -rf ../bazel-cache
+
+      - name: Build for fastbuild
+        run: |
+          tar -C .. -xf <(curl -L https://github.com/TokTok/toktok-stack/releases/download/nightly/fastbuild.tar)
+          docker compose run --rm fastbuild
+          docker kill bazel-cache
+          rm -rf ../bazel-cache
 
       - name: Build toxchat/toktok-stack:latest-dev
-        run: |
-          sed -i -e 's/ --remote_download_outputs=all//' tools/built/src/setup-dev.sh
-          docker build -t toxchat/toktok-stack:latest-dev -f tools/built/src/Dockerfile.dev .
+        run: docker build -t toxchat/toktok-stack:latest-dev -f tools/built/src/Dockerfile.dev .
 
   local-build:
     runs-on: ubuntu-24.04
-    # if: false
     env:
       CC: clang
       CXX: clang++
@@ -121,7 +129,7 @@ jobs:
         run: |
           . /home/runner/.nix-profile/etc/profile.d/nix.sh
           nix-shell -p patchelf --run "patchelf --version"
-          bazel test --config=local --config=remote -- //... -//jvm-toxcore-c/... -//third_party/...
+          bazel test --config=ci --config=local --config=remote -- //... -//jvm-toxcore-c/... -//third_party/...
 
   macos:
     runs-on: macos-14
