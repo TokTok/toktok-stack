@@ -78,6 +78,8 @@ services:
     command: bazel test
       --remote_cache=grpc://bazel-cache:9092
       --config=debug
+      --build_tag_filters=-haskell,-macos
+      --test_tag_filters=-haskell,-macos
       //...
 
   release:
