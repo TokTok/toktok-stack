@@ -273,6 +273,12 @@ nixpkgs_package(
 )
 
 nixpkgs_package(
+    name = "patchelf",
+    build_file = "//third_party:patchelf.BUILD",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
     name = "perl",
     build_file = "//third_party:perl.BUILD",
     repository = "@nixpkgs",
