@@ -64,6 +64,22 @@ services:
       //c-toxcore/auto_tests/...
       -//c-toxcore/auto_tests:proxy_test
 
+  tsan:
+    <<: *shared_params
+    command: bazel test
+      --remote_cache=grpc://bazel-cache:9092
+      --config=tsan
+      --build_tag_filters=-haskell,-fuzz-test
+      --test_tag_filters=-haskell,-fuzz-test
+      //c-toxcore/...
+
+  debug:
+    <<: *shared_params
+    command: bazel test
+      --remote_cache=grpc://bazel-cache:9092
+      --config=debug
+      //...
+
   release:
     <<: *shared_params
     command: bazel test
