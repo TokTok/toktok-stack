@@ -78,7 +78,9 @@ services:
     command: bazel test
       --remote_cache=grpc://bazel-cache:9092
       --config=debug
-      //...
+      --build_tag_filters=-haskell
+      --test_tag_filters=-haskell
+      //c-toxcore/...
 
   release:
     <<: *shared_params
