@@ -1,4 +1,4 @@
-FROM toxchat/haskell:latest
+FROM ghcr.io/toktok/haskell:latest
 
 WORKDIR /work
 COPY --chown=builder:users c-toxcore/ /work/c-toxcore/

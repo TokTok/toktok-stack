@@ -14,9 +14,12 @@ packages:
   - hs-tokstyle/
   - hs-toxcore/
   - hs-toxcore-c/
-resolver: lts-21.9
+resolver: lts-23.9
 extra-deps:
-  - monad-validate-1.3.0.0
-  - suspend-0.2.0.0
-  - timers-0.2.0.4
+  - monad-validate-1.3.0.0@sha256:eb6ddd5c9cf72ff0563cba604fa00291376e96138fdb4932d00ff3a99d66706e,2605
+  - saltine-0.2.1.0@sha256:8d06951dc677f45e25bc1f96b559ee7860e7c355c892bce4db2fbc46f2f7d84d,5233
+  - suspend-0.2.0.0@sha256:0d98526558b773c3ff792664bc45d7a083a32eedb6206d4101a7570869c75a28,1115
+  - timers-0.2.0.4@sha256:081e81f1f7384795acc4f887cf3c07cc6e7a9c1bf6e65f0f94507f3d2e0585c2,1175
 allow-newer: true
+allow-newer-deps:
+  - saltine
