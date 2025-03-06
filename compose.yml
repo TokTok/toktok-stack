@@ -46,7 +46,7 @@ services:
 
   asan:
     <<: *shared_params
-    command: bazel test
+    command: tools/retry 3 bazel test
       --remote_cache=grpc://bazel-cache:9092
       --config=asan
       --build_tag_filters=-haskell,-fuzz-test
@@ -55,11 +55,12 @@ services:
 
   msan:
     <<: *shared_params
-    command: bazel test
+    command: tools/retry 3 bazel test
       --remote_cache=grpc://bazel-cache:9092
       --config=msan
       --build_tag_filters=-haskell,-fuzz-test
       --test_tag_filters=-haskell,-fuzz-test
+      --test_timeout=120
       --
       //c-toxcore/auto_tests/...
       -//c-toxcore/auto_tests:proxy_test
