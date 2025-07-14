@@ -11,3 +11,8 @@ exclude:
   - "third_party/libzmq/**/*.hpp"
   - "third_party/ncurses/src/**/*"
   - "third_party/opus/**/*.h"
+
+restylers:
+  - pyment:
+      enabled: false
+  - "*"

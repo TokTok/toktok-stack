@@ -491,7 +491,10 @@ http_archive(
     build_file = "@toktok//third_party:ncurses.BUILD",
     integrity = "sha256-E22RvCaamleF5fnpgLx2q1dCj2BM4+WlqQzrx2eXHMY=",
     strip_prefix = "ncurses-6.5",
-    urls = ["https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.5.tar.gz"],
+    urls = [
+        "https://invisible-island.net/archives/ncurses/ncurses-6.5.tar.gz",
+        "https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.5.tar.gz",
+    ],
 )
 
 http_archive(

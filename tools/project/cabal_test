@@ -24,18 +24,19 @@ def parse_bazel(build: str) -> PackageData:
                 and stmt.value.func.id in ("haskell_library", "hspec_test")):
             section: Dict[str, Union[str, List[str]]] = {}
             for arg in stmt.value.keywords:
-                if arg.arg == "name" and isinstance(arg.value, ast.Str):
-                    data[arg.value.s] = section
-                if arg.arg == "version" and isinstance(arg.value, ast.Str):
-                    section["version"] = arg.value.s
+                if arg.arg == "name" and isinstance(arg.value, ast.Constant):
+                    data[arg.value.value] = section
+                if arg.arg == "version" and isinstance(arg.value,
+                                                       ast.Constant):
+                    section["version"] = arg.value.value
                 if arg.arg == "deps" and isinstance(arg.value, ast.List):
                     deps = []
                     for dep in arg.value.elts:
                         if isinstance(dep, ast.Call) and isinstance(
-                                dep.args[0], ast.Str):
-                            deps.append(dep.args[0].s)
-                        elif isinstance(dep, ast.Str):
-                            deps.append(dep.s)
+                                dep.args[0], ast.Constant):
+                            deps.append(dep.args[0].value)
+                        elif isinstance(dep, ast.Constant):
+                            deps.append(dep.value)
                         else:
                             raise Exception(ast.dump(dep))
                     section["deps"] = deps
@@ -44,8 +45,8 @@ def parse_bazel(build: str) -> PackageData:
 
 
 def parse_cabal(cabal: str) -> Dict[str, PackageData]:
-    data: Dict[str, PackageData] = (
-        collections.defaultdict(lambda: collections.defaultdict(dict)))
+    data: Dict[str, PackageData] = collections.defaultdict(
+        lambda: collections.defaultdict(dict))
     section = data[""][""]
     key = ""
     value = ""
@@ -78,10 +79,11 @@ def parse_cabal(cabal: str) -> Dict[str, PackageData]:
 
 
 def resolve_bazel_deps(
-        bazel: str,
-        data: PackageData,
-        name: str,
+    bazel: str,
+    data: PackageData,
+    name: str,
 ) -> Set[str]:
+
     def go(name: str) -> List[str]:
         deps = []
         rule = data.get(name, None)
@@ -122,11 +124,11 @@ def must_str(maybe_list: Union[str, List[str]]) -> str:
 
 
 def check_deps(
-        bazel: str,
-        cabal: str,
-        bazel_data: PackageData,
-        bazel_name: str,
-        cabal_section: PackageSection,
+    bazel: str,
+    cabal: str,
+    bazel_data: PackageData,
+    bazel_name: str,
+    cabal_section: PackageSection,
 ) -> None:
     bazel_deps = resolve_bazel_deps(bazel, bazel_data, bazel_name)
     cabal_deps = {
@@ -163,9 +165,9 @@ def check_deps(
 
 
 def check_version(
-        root: PackageSection,
-        bazel_data: PackageData,
-        package_name: str,
+    root: PackageSection,
+    bazel_data: PackageData,
+    package_name: str,
 ) -> None:
     cabal_version = root["version"]
     bazel_version = bazel_data["hs-" + package_name]["version"]
