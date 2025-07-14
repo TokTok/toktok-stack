@@ -374,6 +374,10 @@ build:c-as-cpp --per_file_copt='//c-toxcore[:/]@-Wno-old-style-cast'
 build:c-as-cpp --per_file_copt='//c-toxcore[:/]@-Wno-unreachable-code-return'
 build:c-as-cpp --per_file_copt='//c-toxcore[:/]@-Wno-unused-macros'
 
+# Use _Nullable and _Nonnull on toxcore.
+build --per_file_copt='//c-toxcore[:/]@-Wno-nullability-extension'
+build --per_file_copt='//c-toxcore[:/]@-Wno-nullable-to-nonnull-conversion'
+
 # Cyclone.
 build --host_per_file_copt='//cyclone[:/]@-w'
 build --per_file_copt='//cyclone/stage0[:/]@-w'
