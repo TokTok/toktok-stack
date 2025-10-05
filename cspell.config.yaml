@@ -14,6 +14,7 @@ words:
   - buildx
   - ccache
   - choco
+  - cimple
   - citri
   - codesign
   - createdmg
@@ -54,6 +55,7 @@ words:
   - srcs
   - startswith
   - teehee
+  - tokstyle
   - toktok
   - toplevel
   - toxchat
