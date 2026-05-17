@@ -5,48 +5,49 @@ module(
 )
 
 # https://github.com/bazelbuild/platforms/releases
-bazel_dep(name = "platforms", version = "1.0.0")
+bazel_dep(name = "platforms", version = "1.1.0")
 bazel_dep(name = "rules_license", version = "1.0.0")
 
 # Core Rules
 bazel_dep(name = "bazel_skylib", version = "1.9.0")
-bazel_dep(name = "rules_cc", version = "0.2.16")
-bazel_dep(name = "rules_python", version = "1.8.2")
+bazel_dep(name = "rules_cc", version = "0.2.19")
+bazel_dep(name = "rules_python", version = "2.0.2")
 single_version_override(
     module_name = "rules_python",
     patch_strip = 1,
     patches = ["//third_party/patches:rules_python_no_host_check.patch"],
 )
 
-bazel_dep(name = "rules_go", version = "0.59.0", repo_name = "io_bazel_rules_go")
-bazel_dep(name = "gazelle", version = "0.40.0", repo_name = "bazel_gazelle")
-bazel_dep(name = "rules_kotlin", version = "2.2.1")
-bazel_dep(name = "rules_jvm_external", version = "6.7")
+bazel_dep(name = "rules_go", version = "0.60.0", repo_name = "io_bazel_rules_go")
+bazel_dep(name = "gazelle", version = "0.51.1", repo_name = "bazel_gazelle")
+bazel_dep(name = "package_metadata", version = "0.0.10")
+bazel_dep(name = "rules_kotlin", version = "2.3.20")
+bazel_dep(name = "rules_jvm_external", version = "7.0")
 bazel_dep(name = "rules_apple", version = "4.3.3", repo_name = "build_bazel_rules_apple")
 bazel_dep(name = "rules_swift", version = "3.4.1", repo_name = "build_bazel_rules_swift")
 
 # Rust
-bazel_dep(name = "rules_rust", version = "0.68.1")
+bazel_dep(name = "rules_rust", version = "0.70.0")
 
 # Rust bindgen
-bazel_dep(name = "rules_rust_bindgen", version = "0.68.1")
+bazel_dep(name = "rules_rust_bindgen", version = "0.70.0")
 
 # Fuzzing
-bazel_dep(name = "rules_fuzzing", version = "0.5.2")
+bazel_dep(name = "rules_fuzzing", version = "0.6.0")
 archive_override(
     module_name = "rules_fuzzing",
-    integrity = "sha256-5rwhm/rJ4fg7Mn3QkPcoqflz7pm5tdjloYSicy7whiM=",
+    integrity = "sha256-5LAym7YzVonQOWFUmoInGSzGv5RYsgsHy9c17FxY59c=",
     patch_strip = 1,
     patches = ["//third_party/patches:rules_fuzzing_nix.patch"],
-    strip_prefix = "rules_fuzzing-0.5.2",
-    urls = ["https://github.com/bazel-contrib/rules_fuzzing/releases/download/v0.5.2/rules_fuzzing-0.5.2.zip"],
+    strip_prefix = "rules_fuzzing-v0.6.0",
+    urls = ["https://github.com/bazel-contrib/rules_fuzzing/releases/download/v0.6.0/rules_fuzzing-v0.6.0.tar.gz"],
 )
 
-bazel_dep(name = "hermetic_cc_toolchain", version = "4.0.1")
+bazel_dep(name = "hermetic_cc_toolchain", version = "4.1.0")
 
 # Haskell
 bazel_dep(name = "rules_haskell", version = "1.0")
-bazel_dep(name = "rules_sh", version = "0.3.0")
+bazel_dep(name = "rules_sh", version = "0.5.0")
 
 git_override(
     module_name = "rules_haskell",
@@ -70,10 +71,10 @@ git_override(
 # Patch rules_java to apply patchelf to the downloaded Java tools for Nix compatibility
 archive_override(
     module_name = "rules_java",
-    integrity = "sha256-bvJtT5eOi0z1zh1HUy1wy2LNGEMSJ6HIAHyPeEMkPAY=",
+    integrity = "sha256-neTheMLE+Y0yqv5RlMPytxeuEEBcqhG9y0YKwqb2FRY=",
     patch_args = ["-p1"],
     patches = ["//third_party/patches:rules_java_nix.patch"],
-    urls = ["https://github.com/bazelbuild/rules_java/releases/download/9.3.0/rules_java-9.3.0.tar.gz"],
+    urls = ["https://github.com/bazelbuild/rules_java/releases/download/9.6.1/rules_java-9.6.1.tar.gz"],
 )
 
 # Nixpkgs
@@ -160,10 +161,10 @@ archive_override(
 )
 
 # Libraries
-bazel_dep(name = "boringssl", version = "0.20241209.0")
-bazel_dep(name = "bzip2", version = "1.0.8")
-bazel_dep(name = "curl", version = "8.11.0.bcr.4")
-bazel_dep(name = "cython", version = "3.0.11-1", repo_name = "cython")
+bazel_dep(name = "boringssl", version = "0.20260526.0")
+bazel_dep(name = "bzip2", version = "1.0.8.bcr.4")
+bazel_dep(name = "curl", version = "8.12.0.bcr.1")
+bazel_dep(name = "cython", version = "3.2.4", repo_name = "cython")
 bazel_dep(name = "ftxui", version = "6.1.9")
 bazel_dep(name = "google_benchmark", version = "1.9.5", repo_name = "benchmark")
 single_version_override(
@@ -172,12 +173,12 @@ single_version_override(
     patches = ["//third_party/patches:google_benchmark_windows_gnu.patch"],
 )
 
-bazel_dep(name = "googletest", version = "1.17.0", repo_name = "com_google_googletest")
+bazel_dep(name = "googletest", version = "1.17.0.bcr.2", repo_name = "com_google_googletest")
 bazel_dep(name = "libconfig", version = "1.7.3")
 bazel_dep(name = "nlohmann_json", version = "3.12.0.bcr.1", repo_name = "json")
-bazel_dep(name = "protobuf", version = "32.1")
+bazel_dep(name = "protobuf", version = "35.0")
 bazel_dep(name = "rules_java", version = "9.3.0")
-bazel_dep(name = "zlib", version = "1.3.1.bcr.5")
+bazel_dep(name = "zlib", version = "1.3.2")
 
 # Note: libzmq, libvpx, ffmpeg are not in BCR or require complex setup, keeping in non_module_deps for now.
 
@@ -224,7 +225,7 @@ register_toolchains("@nixpkgs_bindgen//:toolchain")
 
 register_toolchains("@rules_haskell_ghc_nixpkgs_toolchain//:all")
 
-crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
+crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate", isolate = True)
 crate.spec(
     package = "anyhow",
     version = "1.0.100",
@@ -517,8 +518,8 @@ use_repo(toolchains, "zig_sdk")
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     artifacts = [
-        "org.jetbrains.kotlin:kotlin-test-junit:2.1.0",
-        "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1",
+        "org.jetbrains.kotlin:kotlin-test-junit:2.3.21",
+        "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0",
     ],
     repositories = [
         "https://repo1.maven.org/maven2",
@@ -528,7 +529,7 @@ maven.artifact(
     testonly = True,
     artifact = "kotlin-test-junit",
     group = "org.jetbrains.kotlin",
-    version = "2.1.0",
+    version = "2.3.21",
 )
 use_repo(maven, "maven")
 
