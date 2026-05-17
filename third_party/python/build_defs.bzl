@@ -121,7 +121,7 @@ def pyx_library(
         **kwargs
     )
 
-def mypy_test(name, srcs, deps = [], path = [], tags = []):
+def mypy_test(name, srcs, deps = [], path = [], tags = [], size = None):
     """Defines a Python type checking test.
 
     Args:
@@ -130,6 +130,7 @@ def mypy_test(name, srcs, deps = [], path = [], tags = []):
         deps: List of dependencies.
         path: List of paths to search for type stubs.
         tags: List of build tags ("no-windows" is automatically added).
+        size: Test size (defaults to py_test's default, "medium").
     """
     py_test(
         name = name,
@@ -144,4 +145,5 @@ def mypy_test(name, srcs, deps = [], path = [], tags = []):
         data = srcs + [p for p in path if ":" in p or p.startswith("@")],
         tags = tags + ["no-windows"],
         deps = deps + ["@mypy"],
+        size = size,
     )

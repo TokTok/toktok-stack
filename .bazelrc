@@ -12,6 +12,11 @@ build --show_progress_rate_limit=0.5
 build --experimental_ui_max_stdouterr_bytes=50000
 build --test_timeout=5,30,60,300
 
+# Isolate our `crate` extension so its repo names don't collide with other
+# modules that also use `@rules_rust//crate_universe:extension.bzl` (e.g.
+# protobuf, since 32.x).
+common --experimental_isolated_extension_usages
+
 build --host_compilation_mode=fastbuild
 
 build --workspace_status_command=tools/project/mkstamp.sh
