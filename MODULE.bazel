@@ -235,22 +235,6 @@ crate.spec(
     version = "0.22.1",
 )
 crate.spec(
-    package = "bitflags",
-    version = "2.10.0",
-)
-crate.spec(
-    package = "blake3",
-    version = "1.8.2",
-)
-crate.spec(
-    package = "chacha20",
-    version = "0.9.1",
-)
-crate.spec(
-    package = "chacha20poly1305",
-    version = "0.10.1",
-)
-crate.spec(
     features = ["serde"],
     package = "chrono",
     version = "0.4.42",
@@ -269,32 +253,12 @@ crate.spec(
     version = "0.8.1",
 )
 crate.spec(
-    package = "crossbeam",
-    version = "0.8.4",
-)
-crate.spec(
     package = "crossterm",
     version = "0.29.0",
 )
 crate.spec(
-    package = "curve25519-dalek",
-    version = "5.0.0-pre.3",
-)
-crate.spec(
     package = "directories",
     version = "6.0.0",
-)
-crate.spec(
-    package = "ed25519-dalek",
-    version = "3.0.0-pre.3",
-)
-crate.spec(
-    package = "filetime",
-    version = "0.2.26",
-)
-crate.spec(
-    package = "fs2",
-    version = "0.4.3",
 )
 crate.spec(
     package = "futures",
@@ -310,10 +274,6 @@ crate.spec(
     version = "0.4.3",
 )
 crate.spec(
-    package = "hkdf",
-    version = "0.13.0-rc.3",
-)
-crate.spec(
     package = "indexmap",
     version = "2.12.1",
 )
@@ -326,24 +286,8 @@ crate.spec(
     version = "0.14.0",
 )
 crate.spec(
-    package = "lru",
-    version = "0.16.3",
-)
-crate.spec(
-    package = "memmap2",
-    version = "0.9.9",
-)
-crate.spec(
-    package = "parking_lot",
-    version = "0.12.5",
-)
-crate.spec(
     package = "petgraph",
     version = "0.8.3",
-)
-crate.spec(
-    package = "proc-macro2",
-    version = "1.0.104",
 )
 crate.spec(
     package = "proptest",
@@ -360,10 +304,6 @@ crate.spec(
 crate.spec(
     package = "qrcode",
     version = "0.14.1",
-)
-crate.spec(
-    package = "quote",
-    version = "1.0.42",
 )
 crate.spec(
     package = "rand",
@@ -386,6 +326,7 @@ crate.spec(
     features = [
         "json",
         "rustls-tls",
+        "socks",
     ],
     package = "reqwest",
     version = "0.12.12",
@@ -396,63 +337,17 @@ crate.spec(
     version = "1.23.6",
 )
 crate.spec(
-    package = "rmp",
-    version = "0.8.15",
-)
-crate.spec(
-    package = "rmp-serde",
-    version = "1.3.1",
-)
-crate.spec(
-    features = ["serialize"],
-    package = "rusqlite",
-    version = "0.38.0",
-)
-crate.spec(
     features = ["derive"],
     package = "serde",
     version = "1.0.218",
-)
-crate.spec(
-    package = "serde-big-array",
-    version = "0.5.1",
-)
-crate.spec(
-    package = "serde_bytes",
-    version = "0.11.19",
 )
 crate.spec(
     package = "serde_json",
     version = "1.0.147",
 )
 crate.spec(
-    package = "serde_repr",
-    version = "0.1.20",
-)
-crate.spec(
-    package = "sha2",
-    version = "0.11.0-rc.3",
-)
-crate.spec(
-    features = ["serde"],
-    package = "smallvec",
-    version = "2.0.0-alpha.12",
-)
-crate.spec(
-    package = "subtle",
-    version = "2.6.1",
-)
-crate.spec(
-    package = "syn",
-    version = "2.0.111",
-)
-crate.spec(
     package = "tempfile",
     version = "3.24.0",
-)
-crate.spec(
-    package = "thiserror",
-    version = "2.0.17",
 )
 crate.spec(
     package = "tiny-skia",
@@ -479,24 +374,6 @@ crate.spec(
 crate.spec(
     package = "unicode-width",
     version = "0.2.2",
-)
-crate.spec(
-    features = ["static_secrets"],
-    package = "x25519-dalek",
-    version = "3.0.0-pre.3",
-)
-crate.spec(
-    features = ["derive"],
-    package = "zeroize",
-    version = "1.8.2",
-)
-crate.spec(
-    package = "zstd",
-    version = "0.13.3",
-)
-crate.annotation(
-    crate = "libsqlite3-sys",
-    deps = ["@@+non_module_deps+sqlcipher//:sqlite3"],
 )
 crate.from_specs(
     host_tools = "@nixpkgs_rust//:BUILD.bazel",
