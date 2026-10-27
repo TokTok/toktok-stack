@@ -290,6 +290,10 @@ crate.spec(
     version = "0.8.3",
 )
 crate.spec(
+    package = "proc-macro2",
+    version = "1.0.106",
+)
+crate.spec(
     package = "proptest",
     version = "1.9.0",
 )
@@ -304,6 +308,10 @@ crate.spec(
 crate.spec(
     package = "qrcode",
     version = "0.14.1",
+)
+crate.spec(
+    package = "quote",
+    version = "1.0.45",
 )
 crate.spec(
     package = "rand",
@@ -332,9 +340,8 @@ crate.spec(
     version = "0.12.12",
 )
 crate.spec(
-    features = ["sync"],
-    package = "rhai",
-    version = "1.23.6",
+    package = "rmp",
+    version = "0.8.15",
 )
 crate.spec(
     features = ["derive"],
@@ -344,6 +351,14 @@ crate.spec(
 crate.spec(
     package = "serde_json",
     version = "1.0.147",
+)
+crate.spec(
+    package = "sha2",
+    version = "0.11.1",
+)
+crate.spec(
+    package = "syn",
+    version = "2.0.117",
 )
 crate.spec(
     package = "tempfile",
@@ -461,6 +476,7 @@ use_repo(
     "mypy_extensions",
     "ncurses",
     "openal",
+    "openh264",
     "openssl",
     "openssl.out",
     "opus",

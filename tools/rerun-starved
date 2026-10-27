@@ -1,0 +1,125 @@
+#!/usr/bin/env python3
+import argparse
+import json
+import os
+import subprocess
+import sys
+import time
+from dataclasses import dataclass
+from datetime import datetime
+from datetime import timezone
+
+
+@dataclass(frozen=True)
+class RunState:
+    status: str
+    starved: list[str]
+    unsuccessful: list[str]
+
+
+def gh(*args: str) -> str:
+    return subprocess.run(["gh", *args],
+                          check=True,
+                          capture_output=True,
+                          text=True).stdout
+
+
+def log(message: str) -> None:
+    stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    print(f"{stamp} {message}", flush=True)
+
+
+def pr_runs(repo: str, pr: str) -> list[str]:
+    sha = gh("pr", "view", pr, "-R", repo, "--json", "headRefOid", "--jq",
+             ".headRefOid").strip()
+    runs = json.loads(
+        gh(
+            "run",
+            "list",
+            "-R",
+            repo,
+            "--commit",
+            sha,
+            "--limit",
+            "100",
+            "--json",
+            "databaseId",
+        ))
+    return [str(run["databaseId"]) for run in runs]
+
+
+def run_state(repo: str, run: str) -> RunState:
+    view = json.loads(
+        gh("run", "view", run, "-R", repo, "--json", "status,jobs"))
+    jobs = view["jobs"]
+    return RunState(
+        status=view["status"],
+        starved=[
+            job["name"] for job in jobs
+            if job["conclusion"] == "cancelled" and not job["steps"]
+        ],
+        unsuccessful=[
+            job["name"] for job in jobs
+            if job["conclusion"] not in ("success", "skipped")
+        ],
+    )
+
+
+def still_pending(repo: str, run: str) -> bool:
+    state = run_state(repo, run)
+    if state.status != "completed":
+        return True
+    if state.starved:
+        log(f"run {run}: never got a runner: {', '.join(state.starved)}; "
+            "re-running failed jobs")
+        gh("run", "rerun", run, "-R", repo, "--failed")
+        return True
+    outcome = (f", not successful: {', '.join(state.unsuccessful)}"
+               if state.unsuccessful else "")
+    log(f"run {run}: done{outcome}")
+    return False
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Wait for GitHub Actions runs to finish, re-running "
+        "failed jobs of any run with a job cancelled before it got a runner.",
+        epilog="Environment: RERUN_STARVED_HOURS (default 8), "
+        "RERUN_STARVED_POLL in seconds (default 120).",
+    )
+    parser.add_argument("repo", help="owner/repo")
+    parser.add_argument("runs", nargs="*", metavar="run-id")
+    parser.add_argument("--pr",
+                        action="append",
+                        default=[],
+                        help="all runs on the PR's head commit")
+    args = parser.parse_args()
+    if not args.runs and not args.pr:
+        parser.error("give at least one run-id or --pr")
+    return args
+
+
+def main() -> int:
+    args = parse_args()
+    hours = float(os.environ.get("RERUN_STARVED_HOURS", "8"))
+    poll = float(os.environ.get("RERUN_STARVED_POLL", "120"))
+    deadline = time.monotonic() + hours * 3600
+
+    pending = list(args.runs)
+    for pr in args.pr:
+        pending += pr_runs(args.repo, pr)
+
+    while pending:
+        if time.monotonic() >= deadline:
+            log(f"giving up, still pending: {' '.join(pending)}")
+            return 1
+        pending = [run for run in pending if still_pending(args.repo, run)]
+        if pending:
+            time.sleep(poll)
+
+    log("all done")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

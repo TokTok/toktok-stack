@@ -188,9 +188,19 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
+# Written by configure, called by ffmpeg.
+genrule(
+    name = "vpx_config_c",
+    outs = ["vpx_config.c"],
+    cmd = """cat > $@ <<EOF
+#include "vpx/vpx_codec.h"
+const char *vpx_codec_build_config(void) { return ""; }
+EOF""",
+)
+
 cc_library(
     name = "libvpx",
-    srcs = glob(
+    srcs = [":vpx_config_c"] + glob(
         ["vp*/**/*.c"],
         exclude = [
             "**/arm/**",

@@ -382,6 +382,14 @@ def _non_module_deps_impl(ctx):
         version = "openal-soft-1.20.1",
     )
 
+    # https://github.com/cisco/openh264
+    new_github_archive(
+        name = "openh264",
+        repo = "cisco/openh264",
+        sha256 = "b1ca643eadbbf16f74c86a66ab487f38691d8dbdda435683b149b2ce2c8077ec",
+        version = "v2.6.0",
+    )
+
     # https://github.com/xiph/opus
     new_github_archive(
         name = "opus",

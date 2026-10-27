@@ -61,6 +61,7 @@ def parse_bazel(build: str) -> Dict[str, BazelTarget]:
         if (isinstance(stmt, ast.Expr) and isinstance(stmt.value, ast.Call)
                 and isinstance(stmt.value.func, ast.Name)
                 and stmt.value.func.id in (
+                    "cc_library",
                     "haskell_library",
                     "hspec_test",
                     "alex_lexer",
@@ -167,6 +168,8 @@ def resolve_bazel_deps(
         if not target:
             print(f"missing rule for '{current_name}' in {bazel}")
             sys.exit(1)
+        if target.rule_type == "cc_library":
+            return []  # native code, like //c- deps
         for dep in target.deps:
             if dep.startswith(":hs-"):
                 resolved.append(dep[len(":hs-"):])
@@ -217,7 +220,7 @@ def resolve_bazel_modules(
     default_src_strip_prefix: Optional[str] = None,
 ) -> Set[str]:
     target = targets.get(name)
-    if not target:
+    if not target or target.rule_type == "cc_library":
         return set()
 
     bazel_dir = os.path.dirname(bazel_path)

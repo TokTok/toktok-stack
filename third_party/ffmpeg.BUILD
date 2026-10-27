@@ -504,6 +504,9 @@ alias(
 cc_library(
     name = "ffmpeg_linux",
     srcs = [
+        "libavcodec/libopenh264.c",
+        "libavcodec/libopenh264enc.c",
+        "libavcodec/libvpxenc.c",
         "libavcodec/v4l2_buffers.c",
         "libavcodec/v4l2_context.c",
         "libavcodec/v4l2_fmt.c",
@@ -525,6 +528,8 @@ cc_library(
     deps = [
         ":ffmpeg_unix",
         ":headers",
+        "@libvpx",
+        "@openh264",
         "@toktok//third_party/ffmpeg:config",
     ],
 )
@@ -2650,7 +2655,9 @@ cc_library(
         "libavcodec/avcodec.h",
         "libavdevice/avdevice.h",
         "libavformat/avformat.h",
+        "libavutil/frame.h",
         "libavutil/imgutils.h",
+        "libavutil/opt.h",
         "libswscale/swscale.h",
     ],
     copts = COPTS + ["-DHAVE_AV_CONFIG_H"],
