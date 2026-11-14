@@ -1,6 +1,8 @@
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load(":build_defs.bzl", "WORKFLOWS")
 
 exports_files(srcs = [
+    "actions.lock",
     "cabal_test",
     "diff_test.sh",
     "haskell/cirrus.yml.in",
@@ -23,8 +25,8 @@ exports_files(srcs = [
     srcs = ["//hs-github-tools/tools:check-workflows"],
     args = [
         "workflows",
-        "$(location common/github/workflows/%s.base)" % wf,
-        "$(location %s/github/workflows/%s)" % (lang, wf),
+        "$(rootpath common/github/workflows/%s.base)" % wf,
+        "$(rootpath %s/github/workflows/%s)" % (lang, wf),
     ],
     data = [
         "common/github/workflows/%s.base" % wf,
@@ -42,3 +44,16 @@ exports_files(srcs = [
         allow_empty = True,
     )
 ]]
+
+# Test that every action is pinned, and used at one ref in all repositories.
+sh_test(
+    name = "actions_lock_test",
+    size = "small",
+    srcs = ["//hs-github-tools/tools:check-workflows"],
+    args = [
+        "actions-lock-combined",
+        "$(rootpath actions.lock)",
+    ],
+    data = ["actions.lock"],
+    tags = ["haskell"],
+)

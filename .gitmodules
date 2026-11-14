@@ -67,6 +67,9 @@
 [submodule "jvm-toxcore-c"]
 	path = jvm-toxcore-c
 	url = https://github.com/TokTok/jvm-toxcore-c
+[submodule "nix-cache"]
+	path = nix-cache
+	url = https://github.com/TokTok/nix-cache
 [submodule "py-toxcore-c"]
 	path = py_toxcore_c
 	url = https://github.com/TokTok/py-toxcore-c
@@ -93,7 +96,7 @@
 	url = https://github.com/TokTok/toxins
 [submodule "website"]
 	path = website
-	url = https://github.com/TokTok/website
+	url = https://github.com/TokTok/toktok.github.io
 [submodule "wiki/qtox.wiki"]
 	path = wiki/qtox.wiki
 	url = https://github.com/TokTok/qtox.wiki

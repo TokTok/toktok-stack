@@ -139,6 +139,9 @@ our %REPOS = (
       upstream => 'toktok',
       repo 'iphydf',
    }],
+   'nix-cache' => ['nix-cache', {
+      upstream => 'toktok',
+   }],
    'py_toxcore_c' => ['py-toxcore-c', {
       upstream => 'toktok',
       repo ['aitjcize', 'PyTox'],

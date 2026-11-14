@@ -1,7 +1,0 @@
-dockerfiles/buildfarm/test
-dockerfiles/local-deps
-qtox/.ci-scripts
-bazel-bin
-bazel-out
-bazel-testlogs
-bazel-workspace

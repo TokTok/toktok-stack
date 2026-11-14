@@ -1,5 +1,11 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
+filegroup(
+    name = "metatypes",
+    srcs = glob(["metatypes/*.json"]),
+    visibility = ["//visibility:public"],
+)
+
 [cc_library(
     name = mod.lower(),
     srcs = glob(["lib/libQt6%s.so*" % mod]),

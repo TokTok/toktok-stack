@@ -10,24 +10,121 @@ interoperability, so don't rely on the security or even error-freeness of
 anything here. If you need that, use released versions of the submodules
 themselves.
 
-Beyond the clients, bindings, and programs directly maintained and supported by
-the TokTok team, here are some additional repositories of interest that develop
-their code separately. We hope to integrate some of them into toktok-stack at
-some point.
+## Tox Clients
 
-- [aTox](https://github.com/evilcorpltd/aTox) Android Tox client. Developed in a
-  fairly rigorous manner and moves slowly but safely. Not as feature-rich as
-  other clients, but reliable and secure.
-- [rstox](https://github.com/tox-rs/rstox) Rust bindings to c-toxcore.
-- [trifa_material](https://github.com/Zoxcore/trifa_material) Experimental
-  desktop client using zoxcore (below) written in Kotlin. Works on macOS,
-  Windows, and Linux.
-- [zoxcore](https://github.com/Zoxcore/c-toxcore) Experimental c-toxcore fork
-  with additional toxav (audio/video) development such as x264 video encoding,
-  an improved messaging protocol (with stable message IDs). Go here if you want
-  to implement your own experimental features in a more fast-paced environment.
-  Features here can eventually be merged back into TokTok's toxcore after more
-  rigorous testing and review.
+|                   | [qTox]               | [toxic]               | [bTox]                 | [hTox]                | [toxxi]             | [Go Tox] | [PyTox]      | [kTox]          |
+| ----------------- | -------------------- | --------------------- | ---------------------- | --------------------- | ------------------- | -------- | ------------ | --------------- |
+| Written in        | C++, Qt              | C, ncurses            | Dart, Flutter          | Haskell, Hatter       | Rust, ratatui       | Go, Gio  | Python, Kivy | Kotlin, Compose |
+| **Platforms**     |                      |                       |                        |                       |                     |          |              |                 |
+| Linux             | ✓                    | ✓                     | ✓                      | ✓                     | ✓                   | ✓        | ✓            | ✓               |
+| Windows           | ✓                    | ✗                     | ✓                      | ✗                     | ✗                   | ✗        | ✗            | ✗               |
+| macOS             | ✓                    | ✓                     | ✓                      | ✗                     | ✗                   | ✗        | ✗            | ✗               |
+| Android           | ✓                    | ✓                     | ✓                      | ✓                     | ✗                   | ✓        | ✓            | ✓               |
+| iOS               | ✗                    | ✗                     | ✓                      | ✗                     | ✗                   | ✗        | ✗            | ✗               |
+| Web               | ✓                    | ✗                     | ✓                      | ✓                     | ✗                   | ✗        | ✗            | ✗               |
+| Terminal          | ✗                    | ✓                     | ✗                      | ✓                     | ✓                   | ✗        | ✗            | ✗               |
+| **Features**      |                      |                       |                        |                       |                     |          |              |                 |
+| Messages, history | ✓                    | history if logging on | ✓                      | ✓                     | ✓                   | ✓        | ✓            | ✓               |
+| Replies           | quotes selected text | ✗                     | ✓                      | ✓                     | ✗                   | ✗        | ✗            | ✗               |
+| Links open        | ✓                    | by the terminal       | ✓                      | from the message menu | by the terminal     | ✗        | ✗            | ✗               |
+| Groups (NGC)      | ✓                    | ✓                     | ✓                      | ✓                     | ✓                   | ✓        | ✓            | ✓               |
+| Conferences       | ✓                    | ✓                     | through a linked toxxi | text only             | ✓                   | ✓        | ✗            | ✗               |
+| File transfers    | ✓                    | ✓                     | not on web             | ✓                     | ✓                   | ✓        | ✓            | ✓               |
+| Avatars           | ✓                    | send only             | ✓                      | ✓                     | for linked devices  | ✓        | ✓            | ✓               |
+| Audio calls       | ✓                    | ✓                     | not on web             | not in the terminal   | for linked devices  | ✓        | ✓            | ✓               |
+| Video calls       | ✓                    | ✓                     | not on web             | not in the terminal   | for linked devices  | ✓        | ✓            | ✓               |
+| Conference calls  | ✓                    | ✓                     | ✗                      | ✗                     | ✗                   | ✗        | ✗            | ✗               |
+| Notifications     | ✓                    | not on Android        | Android only           | not on web            | ✗                   | ✓        | ✓            | Android only    |
+| Encrypted storage | ✓                    | profile, not logs     | not on web             | not on web            | ✗                   | ✓        | ✗            | ✗               |
+| Several profiles  | ✓                    | one per run           | ✓                      | ✓                     | one per run         | ✓        | ✓            | ✓               |
+| Linked devices    | ✗                    | ✗                     | ✓                      | ✓                     | ✓ (the home device) | ✗        | ✗            | ✗               |
+
+[qtox]: qtox
+[toxic]: toxic
+[btox]: btox
+[htox]: htox
+[toxxi]: rs-toxcore-c/toxxi
+[go tox]: go-toxcore-c/apps/client
+[pytox]: py_toxcore_c/apps/client
+[ktox]: jvm-toxcore-c/apps/client
+
+## Android clients
+
+The Android apps on our bindings should be roughly the same to use. This table
+shows where they differ; what they all have or all lack is listed under it.
+
+|                            | [hTox]                              | [bTox]                              | [kTox]             | [Go Tox]           | [PyTox]               |
+| -------------------------- | ----------------------------------- | ----------------------------------- | ------------------ | ------------------ | --------------------- |
+| **Chats**                  |                                     |                                     |                    |                    |                       |
+| Away/busy in the list      | ✗                                   | ✗                                   | ✓                  | ✓                  | ✓                     |
+| Set own away/busy          | ✓                                   | ✗                                   | ✓                  | ✓                  | ✓                     |
+| Friend nicknames           | ✗                                   | ✗                                   | ✗                  | ✓                  | ✗                     |
+| Mute a chat                | ✓                                   | ✓                                   | ✗                  | ✗                  | ✗                     |
+| **Messages**               |                                     |                                     |                    |                    |                       |
+| /me actions                | receive only                        | ✓                                   | ✓                  | ✓                  | ✓                     |
+| Delivery marks             | waiting, sent, delivered            | waiting, sent, delivered            | waiting, delivered | waiting, delivered | waiting, delivered    |
+| Time shown                 | last of a run                       | last of a run                       | last of a run      | every message      | every message         |
+| Replies                    | ✓                                   | ✓                                   | ✗                  | ✗                  | ✗                     |
+| Forward                    | to friends                          | ✓                                   | ✗                  | ✗                  | ✗                     |
+| Copy                       | ✓                                   | ✓                                   | text selection     | ✗                  | text selection        |
+| Select several             | ✓                                   | ✓                                   | ✗                  | ✗                  | ✗                     |
+| Message info               | ✓                                   | ✓                                   | ✗                  | ✗                  | ✗                     |
+| Links open                 | from the message menu               | ✓                                   | ✗                  | ✗                  | ✗                     |
+| Big emoji-only messages    | friends only                        | one emoji only                      | ✗                  | ✗                  | ✗                     |
+| Drafts kept                | ✓                                   | ✓                                   | ✗                  | ✗                  | until it closes       |
+| **Files**                  |                                     |                                     |                    |                    |                       |
+| Send files                 | friends and groups                  | friends only                        | friends only       | friends only       | friends only          |
+| Receive files              | ask, or auto by size                | auto up to 4 MB                     | ask                | ask                | ask                   |
+| Pause transfers            | group downloads                     | ✗                                   | ✗                  | ✓                  | ✗                     |
+| Received files             | open                                | open                                | save, open         | save               | save, open            |
+| Picture from the camera    | ✓                                   | ✓                                   | ✗                  | ✗                  | ✗                     |
+| **Groups**                 |                                     |                                     |                    |                    |                       |
+| Private messages           | ✓                                   | ✓                                   | receive only       | ✓                  | receive only          |
+| Ignore a peer              | ✗                                   | ✗                                   | ✗                  | ✓                  | ✗                     |
+| Conferences                | text only                           | through a linked toxxi              | ✗                  | text only          | ✗                     |
+| Notifications              | all, or mentions                    | all, or mentions                    | mentions, private  | mentions           | all                   |
+| **Calls**                  |                                     |                                     |                    |                    |                       |
+| Rings over the lock screen | ✓                                   | ✓                                   | ✓                  | in the app only    | ✓                     |
+| Audio output               | earpiece, speaker, wired, Bluetooth | earpiece, speaker, wired, Bluetooth | earpiece, speaker  | speaker only       | earpiece, speaker     |
+| Switch camera              | ✓                                   | ✓                                   | ✓                  | front only         | ✓                     |
+| Calls tab                  | ✓                                   | ✓                                   | ✗                  | ✗                  | ✗                     |
+| **Network**                |                                     |                                     |                    |                    |                       |
+| Proxy                      | ✓                                   | ✓                                   | ✗                  | ✓                  | ✗                     |
+| Own bootstrap nodes        | ✗                                   | ✗                                   | ✗                  | ✓                  | ✗                     |
+| **Profiles**               |                                     |                                     |                    |                    |                       |
+| Encrypted storage          | key in the keystore                 | key in the keystore                 | ✗                  | password           | ✗                     |
+| Several profiles           | all online at once                  | all online at once                  | all online at once | all online at once | all online at once    |
+| Export, import             | ✓                                   | encrypted backups                   | ✗                  | .tox files         | ✗                     |
+| Delete a profile           | ✓                                   | ✓                                   | ✓                  | ✓                  | ✓                     |
+| **Look**                   |                                     |                                     |                    |                    |                       |
+| Theme                      | follows the system                  | dark only                           | follows the system | light or dark      | system, light or dark |
+| Wallpaper colours          | ✗                                   | ✗                                   | ✓                  | ✗                  | ✗                     |
+| Languages                  | English                             | 16                                  | English            | English            | English               |
+| Text size                  | ✗                                   | ✗                                   | ✗                  | ✓                  | ✗                     |
+| **Formats and sync**       |                                     |                                     |                    |                    |                       |
+| Linked devices (toxsync)   | ✓                                   | ✓                                   | ✗                  | ✗                  | ✗                     |
+| Tox.Share files            | in groups                           | ✗                                   | ✗                  | ✗                  | ✗                     |
+| Locations                  | friends only                        | ✓                                   | ✗                  | ✗                  | ✗                     |
+| Relay-bot names            | ✓                                   | ✓                                   | ✗                  | ✗                  | ✗                     |
+| Hide after a zero byte     | ✓                                   | ✓                                   | ✗                  | ✗                  | ✓                     |
+| Pictures sent as QOI       | ✓                                   | ✓                                   | ✗                  | ✗                  | ✗                     |
+
+All five have: friends and groups in one chat list with unread counts and
+previews, adding friends by Tox ID, their own QR code, friend requests, their
+own name, status message and avatar, day headings, older history loaded while
+scrolling, long messages split to fit, typing in friend chats, pictures shown
+in the chat, file transfers that go on after reconnecting, NGC groups (create,
+join, invite, peers, roles, topic, leave), audio and video calls with notes in
+the chat, notifications that open the chat, staying connected in the
+background and starting at boot, UDP, IPv6 and LAN discovery switches, and
+built-in bootstrap nodes.
+
+None has yet: searching chats or messages, scanning QR codes, sharing the Tox
+ID through Android's share sheet, blocking friends, deleting messages, sharing
+into the app from other apps, and replying from a notification.
+
+hTox also has a debug screen and runs on either Tox library (hs-toxcore or
+c-toxcore), which the others don't need.
 
 ## Dev Containers
 

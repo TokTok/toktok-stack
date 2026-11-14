@@ -4,7 +4,7 @@ def _nix_python_impl(ctx):
     nixpkgs_python_configure(
         name = "nixpkgs_python_toolchain",
         repository = "@nixpkgs",
-        python3_attribute_path = "python313",
+        python3_attribute_path = "python3",
         register = False,
     )
 

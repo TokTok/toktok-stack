@@ -1,0 +1,20 @@
+--- a/rust.bzl
++++ b/rust.bzl
+@@ -108,11 +108,12 @@
+             name = "rust_std",
+             srcs = glob(
+                 [
+-                    "lib/rustlib/*/lib/*.rlib",
+-                    "lib/rustlib/*/lib/*.so",
+-                    "lib/rustlib/*/lib/*.dylib",
+-                    "lib/rustlib/*/lib/*.a",
+-                    "lib/rustlib/*/lib/self-contained/**",
++                    "lib/rustlib/${{target-triple}}/lib/*.rlib",
++                    "lib/rustlib/${{target-triple}}/lib/*.rmeta",
++                    "lib/rustlib/${{target-triple}}/lib/*.so",
++                    "lib/rustlib/${{target-triple}}/lib/*.dylib",
++                    "lib/rustlib/${{target-triple}}/lib/*.a",
++                    "lib/rustlib/${{target-triple}}/lib/self-contained/**",
+                 ],
+                 # Some patterns (e.g. `lib/*.a`) don't match anything, see https://github.com/bazelbuild/rules_rust/pull/245
+                 allow_empty = True,

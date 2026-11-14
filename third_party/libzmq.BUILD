@@ -6,9 +6,9 @@ genrule(
     outs = ["platform.hpp"],
     cmd = """
         BASE=`pwd`
-        mkdir `dirname $(location CMakeLists.txt)`/_build
-        cd `dirname $(location CMakeLists.txt)`/_build
-        "$$BASE/$(location @cmake)" .. -DCMAKE_MAKE_PROGRAM="$$BASE/$(location @gnumake)" -DCMAKE_C_COMPILER=$$BASE/$(CC) -DPOLLER=select
+        mkdir `dirname $(execpath CMakeLists.txt)`/_build
+        cd `dirname $(execpath CMakeLists.txt)`/_build
+        "$$BASE/$(execpath @cmake)" .. -DCMAKE_MAKE_PROGRAM="$$BASE/$(execpath @gnumake)" -DCMAKE_C_COMPILER=$$BASE/$(CC) -DPOLLER=select
         DIR=`pwd`
         cd -
         for i in $(OUTS); do

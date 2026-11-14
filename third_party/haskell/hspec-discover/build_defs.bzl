@@ -47,13 +47,16 @@ def hspec_test(name, srcs=None, visibility=["//tools/haskell:__pkg__"], **kwargs
 
     driver_file = "test/%s_Spec.hs" % name
 
+    # From the package's test directory back to the execution root.
+    up = "/".join([".." for _ in native.package_name().split("/")] + [".."])
+
     native.genrule(
         name = name + "_hspec_driver",
         srcs = srcs,
         outs = [driver_file],
         cmd = ";".join([
             "cd %s/test" % native.package_name(),
-            "../../$(location %s) $$(basename $@) Main.hs ../../$@" % _HSPEC_DISCOVER,
+            "{up}/$(location {discover}) $$(basename $@) Main.hs {up}/$@".format(up = up, discover = _HSPEC_DISCOVER),
         ]),
         tags = ["haskell"],
         tools = [_HSPEC_DISCOVER],

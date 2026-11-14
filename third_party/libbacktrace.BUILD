@@ -19,13 +19,13 @@ genrule(
         "config.h",
     ],
     cmd = """
-        SRCDIR="$$(dirname $(location configure))"
+        SRCDIR="$$(dirname $(execpath configure))"
         "$$SRCDIR/configure" CC="$(CC)" AR="$(AR)" LD="$(CC)" \
             || (cat config.log && false)
         sed -i -e 's/#define BACKTRACE_ELF_SIZE unused/#define BACKTRACE_ELF_SIZE 64/' config.h
 
-        cp "backtrace-supported.h" "$(location backtrace-supported.h)"
-        cp "config.h" "$(location config.h)"
+        cp "backtrace-supported.h" "$(execpath backtrace-supported.h)"
+        cp "config.h" "$(execpath config.h)"
     """,
     toolchains = ["@rules_cc//cc:current_cc_toolchain"],
 )

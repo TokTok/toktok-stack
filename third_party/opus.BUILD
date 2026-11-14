@@ -20,15 +20,15 @@ genrule(
     ],
     outs = ["config.h"],
     cmd = """
-        export PATH="$$PATH:$$PWD/$$(dirname $(location @autoconf//:autoconf))"
-        export PATH="$$PATH:$$PWD/$$(dirname $(location @automake//:aclocal))"
-        export PATH="$$PATH:$$PWD/$$(dirname $(location @diffutils//:cmp))"
-        export PATH="$$PATH:$$PWD/$$(dirname $(location @gnumake))"
-        export PATH="$$PATH:$$PWD/$$(dirname $(location @libtool//:libtoolize))"
-        export PATH="$$PATH:$$PWD/$$(dirname $(location @m4))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(execpath @autoconf//:autoconf))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(execpath @automake//:aclocal))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(execpath @diffutils//:cmp))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(execpath @gnumake))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(execpath @libtool//:libtoolize))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(execpath @m4))"
 
-        SRCDIR="$$(dirname $(location configure.ac))"
-        autoreconf -fi -I "$$PWD/$$(dirname $(location @libtool//:libtool.m4))" "$$SRCDIR"
+        SRCDIR="$$(dirname $(execpath configure.ac))"
+        autoreconf -fi -I "$$PWD/$$(dirname $(execpath @libtool//:libtool.m4))" "$$SRCDIR"
         "$$SRCDIR/configure" CC="$(CC)"
         cp config.h "$@"
     """,

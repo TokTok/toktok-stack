@@ -8,10 +8,10 @@
 +        if name == "java_tools_linux":
 +            patch_cmds = [
 +                "chmod 755 java_tools/ijar/ijar",
-+                "$(ls /nix/store/*-patchelf-*/bin/patchelf | head -n1) --set-interpreter $(ls /nix/store/*-glibc-2.*/lib/ld-linux-x86-64.so.2 | head -n1) --add-rpath $(ls -d /nix/store/*-gcc-*-lib/lib | head -n1) java_tools/ijar/ijar",
++                "P=$(ls /nix/store/*-patchelf-*/bin/patchelf | head -n1); G=$(ls -d /nix/store/*-gcc-[0-9]*-lib/lib | head -n1); $P --set-interpreter $($P --print-rpath $G/libstdc++.so.6 | tr : '\\n' | grep -- -glibc- | head -n1)/ld-linux-x86-64.so.2 --add-rpath $G java_tools/ijar/ijar",
 +                "chmod 555 java_tools/ijar/ijar",
 +                "chmod 755 java_tools/src/tools/singlejar/singlejar_local",
-+                "$(ls /nix/store/*-patchelf-*/bin/patchelf | head -n1) --set-interpreter $(ls /nix/store/*-glibc-2.*/lib/ld-linux-x86-64.so.2 | head -n1) --add-rpath $(ls -d /nix/store/*-gcc-*-lib/lib | head -n1) java_tools/src/tools/singlejar/singlejar_local",
++                "P=$(ls /nix/store/*-patchelf-*/bin/patchelf | head -n1); G=$(ls -d /nix/store/*-gcc-[0-9]*-lib/lib | head -n1); $P --set-interpreter $($P --print-rpath $G/libstdc++.so.6 | tr : '\\n' | grep -- -glibc- | head -n1)/ld-linux-x86-64.so.2 --add-rpath $G java_tools/src/tools/singlejar/singlejar_local",
 +                "chmod 555 java_tools/src/tools/singlejar/singlejar_local",
 +            ]
          maybe(

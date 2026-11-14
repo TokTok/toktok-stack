@@ -1,4 +1,5 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
 cc_library(
     name = "bzip2",
@@ -31,7 +32,7 @@ filegroup(
 sh_test(
     name = "test",
     srcs = ["@toktok//third_party/bzip2:test_prog.sh"],
-    args = ["$(location :bzip2_prog)"],
+    args = ["$(rootpath :bzip2_prog)"],
     data = [
         ":bzip2_prog",
         ":sample_data",

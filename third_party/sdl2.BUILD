@@ -12,7 +12,7 @@ genrule(
     name = "regen_config",
     srcs = glob(["**/*"]),
     outs = ["SDL_config.h"],
-    cmd = "$(location configure) CC='$(CC)' && cp include/SDL_config.h $@",
+    cmd = "$(execpath configure) CC='$(CC)' && cp include/SDL_config.h $@",
     toolchains = ["@rules_cc//cc:current_cc_toolchain"],
 )
 
@@ -26,7 +26,7 @@ genrule(
     srcs = HDRS,
     outs = ["include/SDL2/%s" % hdr[hdr.rindex("/") + 1:] for hdr in HDRS],
     cmd = "mkdir -p $(RULEDIR)/include/SDL2 && " + " && ".join([
-        "cp -f $(location %s) $(RULEDIR)/include/SDL2/%s" % (
+        "cp -f $(execpath %s) $(RULEDIR)/include/SDL2/%s" % (
             hdr,
             hdr[hdr.rindex("/") + 1:],
         )

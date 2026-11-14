@@ -1,0 +1,8 @@
+load("@rules_kotlin//kotlin:core.bzl", "define_kt_toolchain")
+
+# rules_kotlin's default is JVM 1.8 bytecode, which can't inline Compose's
+# functions.
+define_kt_toolchain(
+    name = "kotlin_toolchain",
+    jvm_target = "21",
+)

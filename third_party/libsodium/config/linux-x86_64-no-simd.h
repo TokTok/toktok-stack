@@ -1,11 +1,11 @@
 #define PACKAGE_NAME "libsodium"
 #define PACKAGE_TARNAME "libsodium"
-#define PACKAGE_VERSION "1.0.21"
-#define PACKAGE_STRING "libsodium 1.0.21"
+#define PACKAGE_VERSION "1.0.22"
+#define PACKAGE_STRING "libsodium 1.0.22"
 #define PACKAGE_BUGREPORT "https://github.com/jedisct1/libsodium/issues"
 #define PACKAGE_URL "https://libsodium.org"
 #define PACKAGE "libsodium"
-#define VERSION "1.0.21"
+#define VERSION "1.0.22"
 #define HAVE_STDIO_H 1
 #define HAVE_STDLIB_H 1
 #define HAVE_STRING_H 1

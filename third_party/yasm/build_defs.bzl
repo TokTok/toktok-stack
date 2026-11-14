@@ -1,6 +1,7 @@
 """Skylark build rule for assembly code to be assembled by yasm."""
 
 load("@rules_cc//cc:action_names.bzl", "CPP_LINK_STATIC_LIBRARY_ACTION_NAME")
+load("@rules_cc//cc:defs.bzl", "CcInfo", "cc_common")
 load("@rules_cc//cc:toolchain_utils.bzl", "find_cpp_toolchain")
 
 def _c_archive_impl(ctx, objs):

@@ -7,7 +7,7 @@ genrule(
     srcs = ["libcap/include/uapi/linux/capability.h"],
     outs = ["cap_names.list.h"],
     cmd = """
-    $(location @perl) -e 'while ($$l=<>) { if ($$l =~ /^#define[ \\t](CAP[_A-Z]+)[ \\t]+([0-9]+)\\s+$$/) { $$tok=$$1; $$val=$$2; $$tok =~ tr/A-Z/a-z/; print "{\\"$$tok\\",$$val},\\n"; } }' $< | fgrep -v 0x > $@
+    $(execpath @perl) -e 'while ($$l=<>) { if ($$l =~ /^#define[ \\t](CAP[_A-Z]+)[ \\t]+([0-9]+)\\s+$$/) { $$tok=$$1; $$val=$$2; $$tok =~ tr/A-Z/a-z/; print "{\\"$$tok\\",$$val},\\n"; } }' $< | fgrep -v 0x > $@
     """,
     tools = ["@perl"],
 )
@@ -25,7 +25,7 @@ cc_binary(
 genrule(
     name = "cap_names",
     outs = ["cap_names.h"],
-    cmd = "$(location _makenames) > $@",
+    cmd = "$(execpath _makenames) > $@",
     tools = ["_makenames"],
 )
 

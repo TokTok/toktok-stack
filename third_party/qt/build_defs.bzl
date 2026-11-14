@@ -11,7 +11,8 @@ This file defines three macros:
 # =========================================================
 
 load("@build_bazel_rules_apple//apple:macos.bzl", "macos_application")
-load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
+load("@rules_cc//cc:defs.bzl", "CcInfo", "cc_binary", "cc_library", "cc_test")
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 
 def _qt_uic_impl(ctx):
     uic = ctx.executable._uic
@@ -331,6 +332,191 @@ qt_repc = rule(
     implementation = _qt_repc_impl,
 )
 
+# QML module rule: a C++ library's QML types and its .qml files.
+# =========================================================
+
+def _moc_metatypes(ctx, name, hdrs, includes, inputs):
+    """What moc knows of the classes in hdrs, collected in name_metatypes.json."""
+    moc = ctx.executable._moc
+    jsons = []
+    for hdr in hdrs:
+        moc_cpp = ctx.actions.declare_file("%s_types/moc_%s.cpp" % (name, hdr.basename[:-2]))
+        moc_json = ctx.actions.declare_file("%s_types/moc_%s.cpp.json" % (name, hdr.basename[:-2]))
+        jsons.append(moc_json)
+        ctx.actions.run(
+            arguments = list(includes) + ctx.attr.mocopts + [hdr.path, "--output-json", "-o", moc_cpp.path],
+            executable = moc.path,
+            inputs = inputs,
+            mnemonic = "CompileMocJson",
+            outputs = [moc_cpp, moc_json],
+            progress_message = "Reading QML types of " + hdr.basename,
+            tools = [moc],
+        )
+
+    metatypes = ctx.actions.declare_file(name + "_metatypes.json")
+    ctx.actions.run(
+        arguments = ["--collect-json", "-o", metatypes.path] + [json.path for json in jsons],
+        executable = moc.path,
+        inputs = jsons,
+        mnemonic = "CollectMocJson",
+        outputs = [metatypes],
+        tools = [moc],
+    )
+    return metatypes
+
+def _qt_qml_module_impl(ctx):
+    moc = ctx.executable._moc
+    registrar = ctx.executable._qmltyperegistrar
+    rcc = ctx.executable._rcc
+    name = ctx.attr.name
+    uri = ctx.attr.uri
+
+    includes = {
+        "-I%s" % inc: None
+        for dep in ctx.attr.deps
+        if CcInfo in dep
+        for inc in dep[CcInfo].compilation_context.system_includes.to_list()
+    }.keys()
+    dep_hdrs = [
+        hdr
+        for tgt in ctx.attr.deps
+        if CcInfo in tgt
+        for hdr in tgt[CcInfo].compilation_context.headers.to_list()
+    ]
+
+    # What moc knows of each header's classes, for the type registrar.
+    inputs = ctx.files.hdrs + ctx.files.foreign_hdrs + ctx.files.data + dep_hdrs
+    metatypes = _moc_metatypes(ctx, name, ctx.files.hdrs, includes, inputs)
+    foreign_types = ctx.files._foreign_types
+    if ctx.files.foreign_hdrs:
+        foreign = _moc_metatypes(ctx, name + "_foreign", ctx.files.foreign_hdrs, includes, inputs)
+        foreign_types = foreign_types + [foreign]
+
+    # The code that tells the QML engine the C++ types.
+    registrations = ctx.actions.declare_file(name + "_qmltyperegistrations.cpp")
+    qmltypes = ctx.actions.declare_file(name + ".qmltypes")
+    ctx.actions.run(
+        arguments = [
+            "--generate-qmltypes=" + qmltypes.path,
+            "--import-name=" + uri,
+            "--major-version=1",
+            "--minor-version=0",
+            "--foreign-types=" + ",".join([f.path for f in foreign_types]),
+            "-o",
+            registrations.path,
+            metatypes.path,
+        ],
+        executable = registrar.path,
+        inputs = [metatypes] + foreign_types,
+        mnemonic = "QmlTypeRegistrar",
+        outputs = [registrations, qmltypes],
+        progress_message = "Generating QML type registrations for " + uri,
+        tools = [registrar],
+    )
+
+    # The .qml files and their qmldir, where the QML engine looks for modules in
+    # resources. rcc reads paths from where the .qrc is.
+    prefix = "/qt/qml/" + uri.replace(".", "/")
+    qmldir = ctx.actions.declare_file(name + "_qmldir/qmldir")
+    ctx.actions.write(qmldir, "".join(
+        ["module %s\n" % uri, "typeinfo %s\n" % qmltypes.basename, "prefer :%s/\n" % prefix] +
+        ["%s 1.0 %s\n" % (qml.basename[:-4], qml.basename) for qml in ctx.files.srcs],
+    ))
+    qrc = ctx.actions.declare_file(name + ".qrc")
+    up = "../" * len(qrc.dirname.split("/"))
+    ctx.actions.write(qrc, "".join(
+        ["<RCC><qresource prefix=\"%s\">\n" % prefix] +
+        ["<file alias=\"%s\">%s%s</file>\n" % (f.basename, up, f.path) for f in ctx.files.srcs + [qmldir]] +
+        ["</qresource></RCC>\n"],
+    ))
+    rcc_cpp = ctx.actions.declare_file("rcc_%s.cpp" % name)
+    ctx.actions.run(
+        arguments = [qrc.path, "--name", name, "-format-version", "1", "-o", rcc_cpp.path],
+        executable = rcc.path,
+        inputs = [qrc, qmldir] + ctx.files.srcs,
+        mnemonic = "CompileRCC",
+        outputs = [rcc_cpp],
+        progress_message = "Generating Qt resource file " + rcc_cpp.path,
+        tools = [rcc],
+    )
+
+    # The static plugin that Q_IMPORT_QML_PLUGIN names, as qt_add_qml_module makes one.
+    plugin_class = uri.replace(".", "") + "Plugin"
+    plugin_h = ctx.actions.declare_file(name + "_plugin.h")
+    ctx.actions.write(plugin_h, """#pragma once
+#ifndef QT_STATICPLUGIN
+#define QT_STATICPLUGIN
+#endif
+#include <QtQml/qqmlextensionplugin.h>
+class %s : public QQmlEngineExtensionPlugin
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID QQmlEngineExtensionInterface_iid)
+public:
+    using QQmlEngineExtensionPlugin::QQmlEngineExtensionPlugin;
+};
+""" % plugin_class)
+    plugin_cpp = ctx.actions.declare_file("moc_%s_plugin.cpp" % name)
+    ctx.actions.run(
+        arguments = list(includes) + ["-Muri=" + uri, "-f" + plugin_h.basename, plugin_h.path, "-o", plugin_cpp.path],
+        executable = moc.path,
+        inputs = [plugin_h] + dep_hdrs,
+        mnemonic = "CompileMoc",
+        outputs = [plugin_cpp],
+        progress_message = "Generating the QML plugin of " + uri,
+        tools = [moc],
+    )
+
+    return [
+        DefaultInfo(files = depset([registrations, rcc_cpp, plugin_h, plugin_cpp])),
+        OutputGroupInfo(qmltypes = depset([qmltypes, qmldir])),
+    ]
+
+qt_qml_module = rule(
+    attrs = {
+        "srcs": attr.label_list(
+            allow_files = [".qml"],
+            doc = "The .qml files of the module.",
+        ),
+        "hdrs": attr.label_list(
+            allow_files = [".h"],
+            doc = "The headers of the C++ types the module has (QML_ELEMENT and the like).",
+        ),
+        "data": attr.label_list(
+            allow_files = True,
+            doc = "Other headers that those include.",
+        ),
+        "foreign_hdrs": attr.label_list(
+            allow_files = [".h"],
+            doc = "The headers of other libraries' types that the module's QML_FOREIGN names.",
+        ),
+        "uri": attr.string(mandatory = True),
+        "deps": attr.label_list(),
+        "mocopts": attr.string_list(),
+        "_foreign_types": attr.label(default = Label("@qt//:qt_metatypes")),
+        "_moc": attr.label(
+            default = Label("@qt//:moc"),
+            executable = True,
+            cfg = "exec",
+            allow_single_file = True,
+        ),
+        "_qmltyperegistrar": attr.label(
+            default = Label("@qt//:qmltyperegistrar"),
+            executable = True,
+            cfg = "exec",
+            allow_single_file = True,
+        ),
+        "_rcc": attr.label(
+            default = Label("@qt//:rcc"),
+            executable = True,
+            cfg = "exec",
+            allow_single_file = True,
+        ),
+    },
+    doc = "Generates the sources of a QML module: compile them into a cc_library with alwayslink.",
+    implementation = _qt_qml_module_impl,
+)
+
 # Qt binary, making sure we can `bazel run` it.
 # =========================================================
 
@@ -341,8 +527,9 @@ def _runfiles_path(path):
 
 _QT_BASE_PLUGINS_PATH = _runfiles_path(Label("@qt6.qtbase//:plugins").workspace_root) + "/lib/qt-6/plugins"
 _QT_SVG_PLUGINS_PATH = _runfiles_path(Label("@qt6.qtsvg//:plugins").workspace_root) + "/lib/qt-6/plugins"
+_QT_QML_MODULES_PATH = _runfiles_path(Label("@qt6.qtdeclarative.out//:qml_modules").workspace_root) + "/lib/qt-6/qml"
 
-def qt_binary(name, tags=[], **kwargs):
+def qt_binary(name, tags = [], **kwargs):
     cc_binary(
         name = name,
         env = {
@@ -363,7 +550,7 @@ def qt_binary(name, tags=[], **kwargs):
 # Qt test with MOC for the test .cpp file.
 # =========================================================
 
-def qt_test(name, src, deps, copts = [], mocopts = [], size = None, tags = [], **kwargs):
+def qt_test(name, src, deps, copts = [], mocopts = [], size = None, tags = [], qml = False, **kwargs):
     qt_moc(
         name = "%s_moc_src" % name,
         testonly = True,
@@ -393,12 +580,12 @@ def qt_test(name, src, deps, copts = [], mocopts = [], size = None, tags = [], *
                 _QT_SVG_PLUGINS_PATH,
             ]),
             "QT_QPA_PLATFORM": "offscreen",
-        },
+        } | ({"QML_IMPORT_PATH": _QT_QML_MODULES_PATH} if qml else {}),
         data = [
             "@openssl.out//:lib",
             "@qt//:qt_base_plugins",
             "@qt//:qt_svg_plugins",
-        ],
+        ] + (["@qt//:qt_qml_modules"] if qml else []),
         deps = deps + [
             ":%s_moc" % name,
             "@qt//:qt_test",
@@ -461,7 +648,7 @@ def qt_win_deploy(name, deps):
         tools = ["@qt//:windeployqt"],
     )
 
-    native.sh_binary(
+    sh_binary(
         name = name,
         srcs = ["//third_party/qt:winlaunch.sh"],
         args = [name, "$(location %s.tar.gz)" % name],

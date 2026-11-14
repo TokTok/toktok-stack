@@ -2,7 +2,8 @@
 
 This repository is available as dev containers including `vim` and an `ssh`
 server. You can customise it by creating a Docker image derived from
-`toxchat/toktok-stack:latest-dev`. An example can be found in the
+`toxchat/toktok-stack:latest-devtools` (or the leaner
+`toxchat/toktok-stack:latest-dev`). An example can be found in the
 [Dockerfile](Dockerfile) in this directory.
 
 ![Visual Studio Code](vscode.png)

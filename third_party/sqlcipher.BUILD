@@ -19,10 +19,10 @@ genrule(
         "parse.h",
     ],
     cmd = " ".join([
-        "$(location :lemon)",
-        "-T$(location tool/lempar.c)",
-        "-d`dirname $(location parse.c)`",
-        "$(location src/parse.y)",
+        "$(execpath :lemon)",
+        "-T$(execpath tool/lempar.c)",
+        "-d`dirname $(execpath parse.c)`",
+        "$(execpath src/parse.y)",
     ]),
     tools = [":lemon"],
 )
@@ -35,7 +35,7 @@ genrule(
         "@tcl//:library",
     ],
     outs = ["opcodes.c"],
-    cmd = TCLSH + " $(location tool/mkopcodec.tcl) $(location opcodes.h) > $@",
+    cmd = TCLSH + " $(execpath tool/mkopcodec.tcl) $(execpath opcodes.h) > $@",
     tools = ["@tcl//:tclsh"],
 )
 
@@ -49,8 +49,8 @@ genrule(
     ],
     outs = ["opcodes.h"],
     cmd = " ".join([
-        "cat $(location parse.h) $(location src/vdbe.c) |",
-        TCLSH + " $(location tool/mkopcodeh.tcl) > $@",
+        "cat $(execpath parse.h) $(execpath src/vdbe.c) |",
+        TCLSH + " $(execpath tool/mkopcodeh.tcl) > $@",
     ]),
     tools = ["@tcl//:tclsh"],
 )
@@ -74,8 +74,8 @@ genrule(
     ],
     outs = ["include/sqlite3.h"],
     cmd = " ".join([
-        "cp $(location :mksourceid) mksourceid;",
-        TCLSH + " $(location tool/mksqlite3h.tcl) " + REPO_ROOT + " > $@",
+        "cp $(execpath :mksourceid) mksourceid;",
+        TCLSH + " $(execpath tool/mksqlite3h.tcl) " + REPO_ROOT + " > $@",
     ]),
     tools = [
         ":mksourceid",
@@ -91,7 +91,7 @@ cc_binary(
 genrule(
     name = "keywordhash",
     outs = ["keywordhash.h"],
-    cmd = "$(location :mkkeywordhash) > $@",
+    cmd = "$(execpath :mkkeywordhash) > $@",
     tools = [":mkkeywordhash"],
 )
 

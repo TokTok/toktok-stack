@@ -39,9 +39,9 @@ genrule(
     ],
     outs = ["out/" + f for f in GENFILES] + ["out/configure.log"],
     cmd = """
-        PATH=$$PATH:`pwd`/`dirname $(location @diffutils//:cmp)`
-        MAKE=`pwd`/$(location @gnumake)
-        cd `dirname $(location configure)`
+        PATH=$$PATH:`pwd`/`dirname $(execpath @diffutils//:cmp)`
+        MAKE=`pwd`/$(execpath @gnumake)
+        cd `dirname $(execpath configure)`
         ./configure CC=$(CC) MAKE=$$MAKE \
             --datadir=/lib \
             --enable-widec \
@@ -96,9 +96,9 @@ genrule(
     ],
     outs = ["include/term.h"],
     cmd = """
-        PATH=$$PATH:`pwd`/`dirname $(location @diffutils//:cmp)`
-        awk -f $(location include/MKterm.h.awk) $(locations :caplist) > $@
-        $(location include/edit_cfg.sh) $(location include/ncurses_cfg.h) $@
+        PATH=$$PATH:`pwd`/`dirname $(execpath @diffutils//:cmp)`
+        awk -f $(execpath include/MKterm.h.awk) $(execpaths :caplist) > $@
+        $(execpath include/edit_cfg.sh) $(execpath include/ncurses_cfg.h) $@
     """,
     tools = ["@diffutils//:cmp"],
 )
@@ -111,7 +111,7 @@ genrule(
     ],
     outs = ["include/hashsize.h"],
     cmd = """
-        $(location include/MKhashsize.sh) $(locations :caplist) > $@
+        $(execpath include/MKhashsize.sh) $(execpaths :caplist) > $@
     """,
 )
 
@@ -123,7 +123,7 @@ genrule(
     ],
     outs = ["include/ncurses_def.h"],
     cmd = """
-        $(location include/MKncurses_def.sh) $(locations include/ncurses_defs) > $@
+        $(execpath include/MKncurses_def.sh) $(execpaths include/ncurses_defs) > $@
     """,
 )
 
@@ -135,7 +135,7 @@ genrule(
     ],
     outs = ["include/parameterized.h"],
     cmd = """
-        $(location include/MKparametrized.sh) $(locations :caplist) > $@
+        $(execpath include/MKparametrized.sh) $(execpaths :caplist) > $@
     """,
 )
 
@@ -154,7 +154,7 @@ genrule(
         "ncurses/tinfo/MKcodes.awk",
     ],
     outs = ["ncurses/codes.c"],
-    cmd = "awk -f $(location ncurses/tinfo/MKcodes.awk) $(locations :caplist) > $@",
+    cmd = "awk -f $(execpath ncurses/tinfo/MKcodes.awk) $(execpaths :caplist) > $@",
 )
 
 genrule(
@@ -164,7 +164,7 @@ genrule(
         "ncurses/tinfo/MKnames.awk",
     ],
     outs = ["ncurses/names.c"],
-    cmd = "awk -f $(location ncurses/tinfo/MKnames.awk) $(locations :caplist) > $@",
+    cmd = "awk -f $(execpath ncurses/tinfo/MKnames.awk) $(execpaths :caplist) > $@",
 )
 
 genrule(
@@ -217,8 +217,8 @@ genrule(
     ],
     outs = ["ncurses/comp_captab.c"],
     cmd = """
-        cp $(location :make_hash) .
-        $$BASH $(location ncurses/tinfo/MKcaptab.sh) awk 1 $(location ncurses/tinfo/MKcaptab.awk) $(locations :caplist) > $@
+        cp $(execpath :make_hash) .
+        $$BASH $(execpath ncurses/tinfo/MKcaptab.sh) awk 1 $(execpath ncurses/tinfo/MKcaptab.awk) $(execpaths :caplist) > $@
     """,
     tools = [":make_hash"],
 )
@@ -232,8 +232,8 @@ genrule(
     ],
     outs = ["ncurses/comp_userdefs.c"],
     cmd = """
-        cp $(location :make_hash) .
-        $$BASH $(location ncurses/tinfo/MKuserdefs.sh) awk 1 $(locations :caplist) > $@
+        cp $(execpath :make_hash) .
+        $$BASH $(execpath ncurses/tinfo/MKuserdefs.sh) awk 1 $(execpaths :caplist) > $@
     """,
     tools = [":make_hash"],
 )

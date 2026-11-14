@@ -26,15 +26,15 @@ _REGEN_TOOLS = [
 # Get autotools on PATH and run autoreconf. Each genrule then calls ./configure
 # with its own flags and extracts the DEFS into a header.
 _REGEN_SETUP = """
-    export PATH="$$PATH:$$PWD/$$(dirname $(location @autoconf//:autoconf))"
-    export PATH="$$PATH:$$PWD/$$(dirname $(location @automake//:aclocal))"
-    export PATH="$$PATH:$$PWD/$$(dirname $(location @diffutils//:cmp))"
-    export PATH="$$PATH:$$PWD/$$(dirname $(location @gnumake))"
-    export PATH="$$PATH:$$PWD/$$(dirname $(location @libtool//:libtoolize))"
-    export PATH="$$PATH:$$PWD/$$(dirname $(location @m4))"
+    export PATH="$$PATH:$$PWD/$$(dirname $(execpath @autoconf//:autoconf))"
+    export PATH="$$PATH:$$PWD/$$(dirname $(execpath @automake//:aclocal))"
+    export PATH="$$PATH:$$PWD/$$(dirname $(execpath @diffutils//:cmp))"
+    export PATH="$$PATH:$$PWD/$$(dirname $(execpath @gnumake))"
+    export PATH="$$PATH:$$PWD/$$(dirname $(execpath @libtool//:libtoolize))"
+    export PATH="$$PATH:$$PWD/$$(dirname $(execpath @m4))"
 
-    SRCDIR="$$(dirname $(location configure.ac))"
-    autoreconf -fi -I "$$PWD/$$(dirname $(location @libtool//:libtool.m4))" "$$SRCDIR"
+    SRCDIR="$$(dirname $(execpath configure.ac))"
+    autoreconf -fi -I "$$PWD/$$(dirname $(execpath @libtool//:libtool.m4))" "$$SRCDIR"
 """
 
 genrule(
@@ -47,11 +47,11 @@ genrule(
     cmd = _REGEN_SETUP + """
         "$$SRCDIR/configure" CC="$(CC)" || (cat config.log && false)
 
-        cp "src/libsodium/include/sodium/version.h" "$(location src/libsodium/include/sodium/version.h)"
-        grep '^DEFS = ' Makefile $(location src/libsodium/include/sodium/version.h) \\
+        cp "src/libsodium/include/sodium/version.h" "$(execpath src/libsodium/include/sodium/version.h)"
+        grep '^DEFS = ' Makefile $(execpath src/libsodium/include/sodium/version.h) \\
           | grep -E -o -- '-D([^ ]|\\\\ )+' \\
           | sed -e 's/^-D/#define /;s/=/ /;s/\\\\//g' \\
-          > "$(location src/sodium_config.h)"
+          > "$(execpath src/sodium_config.h)"
     """,
     toolchains = ["@rules_cc//cc:current_cc_toolchain"],
     tools = _REGEN_TOOLS,
@@ -73,7 +73,7 @@ genrule(
           | grep -E -o -- '-D([^ ]|\\\\ )+' \\
           | sed -e 's/^-D/#define /;s/=/ /;s/\\\\//g' \\
           | grep -v -E '^#define HAVE_[A-Z0-9]*INTRIN_H ' \\
-          > "$(location src/sodium_config_no_simd.h)"
+          > "$(execpath src/sodium_config_no_simd.h)"
     """,
     toolchains = ["@rules_cc//cc:current_cc_toolchain"],
     tools = _REGEN_TOOLS,
@@ -87,8 +87,8 @@ genrule(
     name = "headers",
     srcs = HEADERS + ["@toktok//third_party/libsodium:version.h"],
     outs = [hdr[len("src/libsodium/"):] for hdr in HEADERS] + ["include/sodium/version.h"],
-    cmd = "\n".join(["cp $(location @toktok//third_party/libsodium:version.h) $(location include/sodium/version.h)"] + [
-        "cp $(location %s) $(location %s)" % (
+    cmd = "\n".join(["cp $(execpath @toktok//third_party/libsodium:version.h) $(execpath include/sodium/version.h)"] + [
+        "cp $(execpath %s) $(execpath %s)" % (
             hdr,
             hdr[len("src/libsodium/"):],
         )
@@ -99,6 +99,7 @@ genrule(
 
 SRCS_X86_64 = [
     "src/libsodium/**/*-avx2.c",
+    "src/libsodium/**/*-avx512.c",
     "src/libsodium/**/*-avx512f.c",
     "src/libsodium/**/sse/*.c",
     "src/libsodium/**/*-sse41.c",
@@ -132,7 +133,7 @@ cc_library(
     hdrs = [":headers"],
     copts = [
         "-DSODIUM_DLL_EXPORT",
-        "-include $(location :config)",
+        "-include $(execpath :config)",
         "-Wno-strict-aliasing",
         "-Wno-unknown-pragmas",
         "-Wno-unused",

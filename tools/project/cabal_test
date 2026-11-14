@@ -115,12 +115,21 @@ def parse_bazel(build: str) -> Dict[str, BazelTarget]:
     return targets
 
 
+def applies(condition: str) -> bool:
+    """Whether a conditional block is for the host Bazel builds for."""
+    return condition.replace(" ", "") != "arch(wasm32)"
+
+
 def parse_cabal(cabal: str) -> Dict[str, PackageData]:
     data: Dict[str, PackageData] = collections.defaultdict(
         lambda: collections.defaultdict(dict))
     section = data[""][""]
     key = ""
     value = ""
+    # By indentation, whether the last "if" there applied.
+    conditions: Dict[int, bool] = {}
+    # The indentation of a block that doesn't apply, while in it.
+    skipping: Optional[int] = None
 
     def save_key():
         nonlocal key, value
@@ -129,6 +138,8 @@ def parse_cabal(cabal: str) -> Dict[str, PackageData]:
                 values = [v.strip() for v in value.split(",")]
             else:
                 values = value.split()
+            if key in section:
+                values = must_list(section[key]) + values
             section[key] = values if len(values) > 1 else (
                 values[0] if values else "")
             key = ""
@@ -137,7 +148,23 @@ def parse_cabal(cabal: str) -> Dict[str, PackageData]:
     with open(cabal, "r") as fh:
         for line in fh.readlines():
             line = line.rstrip()
-            if not line or line.isspace():
+            if not line or line.isspace() or line.lstrip().startswith("--"):
+                continue
+            indent = len(line) - len(line.lstrip())
+            if skipping is not None:
+                if indent > skipping:
+                    continue
+                skipping = None
+            res = re.match(r"\s+(if|else)\b\s*(.*)$", line)
+            if res:
+                save_key()
+                if res.group(1) == "if":
+                    conditions[indent] = applies(res.group(2))
+                    taken = conditions[indent]
+                else:
+                    taken = not conditions.get(indent, True)
+                if not taken:
+                    skipping = indent
                 continue
             res = re.match(r"\s*([a-z-]+):\s*(.*)$", line)
             if res:
@@ -174,7 +201,7 @@ def resolve_bazel_deps(
             if dep.startswith(":hs-"):
                 resolved.append(dep[len(":hs-"):])
             elif dep.startswith("//hs-"):
-                resolved.append(dep[len("//hs-"):])
+                resolved.append(dep[len("//hs-"):].split(":")[0])
             elif dep.startswith("//c-"):
                 pass  # ignore native deps for now
             elif dep.startswith(":"):
@@ -189,7 +216,18 @@ def resolve_bazel_deps(
     return set(go(name))
 
 
-def path_to_module(path: str, prefix: Optional[str]) -> str:
+def path_to_module(path: str, prefix: Optional[str], file: str) -> str:
+    """The module a source file declares, as GHC sees it, else the one its
+    path names."""
+    try:
+        with open(file, "r") as fh:
+            res = re.search(r"^>?\s*module\s+([A-Z][\w.']*)", fh.read(),
+                            re.MULTILINE)
+        if res:
+            return res.group(1)
+    except OSError:
+        pass
+
     if prefix:
         if path.startswith(prefix + "/"):
             path = path[len(prefix) + 1:]
@@ -246,9 +284,11 @@ def resolve_bazel_modules(
             matches = glob.glob(pattern, recursive=True)
             for match in matches:
                 rel_match = os.path.relpath(match, bazel_dir)
-                modules.add(path_to_module(rel_match, src_strip_prefix))
+                modules.add(path_to_module(rel_match, src_strip_prefix, match))
         else:
-            modules.add(path_to_module(src, src_strip_prefix))
+            modules.add(
+                path_to_module(src, src_strip_prefix,
+                               os.path.join(bazel_dir, src)))
 
     # Also include modules from local dependencies
     if recursive:

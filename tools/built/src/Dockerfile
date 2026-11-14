@@ -9,4 +9,12 @@ RUN echo 'build --config=ci --config=nix' >/src/workspace/.local.bazelrc
 # Finally, we run another aquery. This will download some more dependencies, but
 # the most expensive ones should already have been downloaded in the third_party
 # image we built before this one.
-RUN sudo nix-daemon --daemon & sleep 3; bazel aquery --output=proto //... >/dev/null
+RUN sudo rm -f /nix/var/nix/daemon-socket/socket \
+ && (sudo nix-daemon --daemon >/dev/null 2>&1 &) \
+ && for _ in $(seq 1 50); do [ -S /nix/var/nix/daemon-socket/socket ] && break; sleep 0.2; done \
+ && export NIX_REMOTE=daemon \
+ && bazel aquery --output=proto //... >/dev/null \
+ && nix-collect-garbage -d \
+ && rm -rf /home/builder/.cache/bazel/_bazel_builder/cache/repos/v1/content_addressable \
+ && (sudo pkill -x nix-daemon || true) \
+ && sudo rm -f /nix/var/nix/daemon-socket/socket
