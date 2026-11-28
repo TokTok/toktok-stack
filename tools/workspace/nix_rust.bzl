@@ -12,13 +12,45 @@ def _nix_rust_impl(ctx):
     nixpkgs_package(
         name = "nixpkgs_libclang",
         repository = "@nixpkgs",
-        attribute_path = "libclang.lib",
+        attribute_path = "rustc.llvmPackages.libclang.lib",
         build_file_content = """
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
 cc_library(
     name = "libclang",
     srcs = glob(["lib/libclang.so*", "lib/libclang.dylib*"], allow_empty = True),
+    visibility = ["//visibility:public"],
+)
+""",
+    )
+
+    # Tools built on the compiler (rustc_private) link against rustc's own
+    # library and the LLVM that rustc was built with.
+    nixpkgs_package(
+        name = "nixpkgs_librustc_driver",
+        repository = "@nixpkgs",
+        attribute_path = "rustc.unwrapped",
+        build_file_content = """
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "librustc_driver",
+    srcs = glob(["lib/librustc_driver-*.so"]),
+    visibility = ["//visibility:public"],
+)
+""",
+    )
+
+    nixpkgs_package(
+        name = "nixpkgs_libllvm",
+        repository = "@nixpkgs",
+        attribute_path = "rustc.llvmPackages.llvm.lib",
+        build_file_content = """
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "libllvm",
+    srcs = glob(["lib/libLLVM*.so*"]),
     visibility = ["//visibility:public"],
 )
 """,

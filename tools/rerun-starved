@@ -80,6 +80,17 @@ def still_pending(repo: str, run: str) -> bool:
     return False
 
 
+def poll_run(repo: str, run: str) -> bool:
+    """Like still_pending, but a failing gh call only costs this poll."""
+    try:
+        return still_pending(repo, run)
+    except subprocess.CalledProcessError as e:
+        command = " ".join(e.cmd[:3])
+        log(f"run {run}: `{command}` failed with exit status {e.returncode}, "
+            f"trying again at the next poll: {e.stderr.strip()}")
+        return True
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Wait for GitHub Actions runs to finish, re-running "
@@ -113,7 +124,7 @@ def main() -> int:
         if time.monotonic() >= deadline:
             log(f"giving up, still pending: {' '.join(pending)}")
             return 1
-        pending = [run for run in pending if still_pending(args.repo, run)]
+        pending = [run for run in pending if poll_run(args.repo, run)]
         if pending:
             time.sleep(poll)
 

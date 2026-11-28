@@ -19,18 +19,18 @@ genrule(
     outs = ["config.h"],
     cmd = """
         BASE=`pwd`
-        export PATH="$$PATH:$$BASE/$$(dirname $(location @autoconf//:autoconf))"
-        export PATH="$$PATH:$$BASE/$$(dirname $(location @automake//:aclocal))"
-        export PATH="$$PATH:$$BASE/$$(dirname $(location @diffutils//:cmp))"
-        export PATH="$$PATH:$$BASE/$$(dirname $(location @gettext//:bin/autopoint))"
-        export PATH="$$PATH:$$BASE/$$(dirname $(location @libtool//:libtoolize))"
-        export PATH="$$PATH:$$BASE/$$(dirname $(location @m4))"
-        export PATH="$$PATH:$$BASE/$$(dirname $(location @xz//:bin/xz))"
-        SRCDIR="$$(dirname $(location configure.ac))"
-        autoreconf -fi -I "$$PWD/$$(dirname $(location @libtool//:libtool.m4))" "$$SRCDIR"
+        export PATH="$$PATH:$$BASE/$$(dirname $(execpath @autoconf//:autoconf))"
+        export PATH="$$PATH:$$BASE/$$(dirname $(execpath @automake//:aclocal))"
+        export PATH="$$PATH:$$BASE/$$(dirname $(execpath @diffutils//:cmp))"
+        export PATH="$$PATH:$$BASE/$$(dirname $(execpath @gettext//:bin/autopoint))"
+        export PATH="$$PATH:$$BASE/$$(dirname $(execpath @libtool//:libtoolize))"
+        export PATH="$$PATH:$$BASE/$$(dirname $(execpath @m4))"
+        export PATH="$$PATH:$$BASE/$$(dirname $(execpath @xz//:bin/xz))"
+        SRCDIR="$$(dirname $(execpath configure.ac))"
+        autoreconf -fi -I "$$PWD/$$(dirname $(execpath @libtool//:libtool.m4))" "$$SRCDIR"
 
         cd "$$SRCDIR"
-        ./configure CC="$(CC)" AR="$(AR)" MAKE="$$BASE/$(location @gnumake)" || (cat config.log && false)
+        ./configure CC="$(CC)" AR="$(AR)" MAKE="$$BASE/$(execpath @gnumake)" || (cat config.log && false)
         DIR=`pwd`
         cd -
         for i in $(OUTS); do

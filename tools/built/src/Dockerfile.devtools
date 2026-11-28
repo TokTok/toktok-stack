@@ -1,0 +1,19 @@
+# Full developer toolchain image built on top of latest-dev.
+#
+# Pre-populates /nix/store with the full home.packages dev toolset (LSPs,
+# formatters, debuggers, etc.) so derived personal dev containers only need to
+# overlay user dotfiles/keys and run a fast home-manager switch.
+FROM toxchat/toktok-stack:latest-dev
+
+COPY --chown=builder:users tools/built/src/home/.config/home-manager/home.nix /src/workspace/tools/built/src/home/.config/home-manager/home.nix
+
+RUN sudo rm -f /nix/var/nix/daemon-socket/socket \
+ && (sudo nix-daemon --daemon >/dev/null 2>&1 &) \
+ && for _ in $(seq 1 50); do [ -S /nix/var/nix/daemon-socket/socket ] && break; sleep 0.2; done \
+ && export NIX_REMOTE=daemon \
+ && /home/builder/.nix-profile/bin/home-manager switch \
+ && nix-collect-garbage -d \
+ && (sudo pkill -x nix-daemon || true) \
+ && sudo rm -f /nix/var/nix/daemon-socket/socket
+
+# vim:ft=dockerfile

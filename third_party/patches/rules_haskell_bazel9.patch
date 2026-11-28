@@ -1,0 +1,70 @@
+diff --git a/haskell/cabal.bzl b/haskell/cabal.bzl
+index 03ccd67..a46b2c0 100644
+--- a/haskell/cabal.bzl
++++ b/haskell/cabal.bzl
+@@ -1980,6 +1980,7 @@ def _stack_snapshot_unpinned_impl(repository_ctx):
+         "BUILD.bazel",
+         executable = False,
+         content = """\
++load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+ sh_binary(
+     name = "pin",
+     data = ["snapshot.json"],
+diff --git a/haskell/defs.bzl b/haskell/defs.bzl
+index 6487b36..dc163f5 100644
+--- a/haskell/defs.bzl
++++ b/haskell/defs.bzl
+@@ -165,7 +165,6 @@ def _mk_binary_rule(**kwargs):
+                 default = Label("@rules_haskell//haskell:private/coverage_wrapper.sh.tpl"),
+             ),
+             "_bash_runfiles": attr.label(
+-                allow_single_file = True,
+                 default = Label("@bazel_tools//tools/bash/runfiles:runfiles"),
+             ),
+         })
+diff --git a/haskell/ghc_bindist.bzl b/haskell/ghc_bindist.bzl
+index dc259d1..d167eeb 100644
+--- a/haskell/ghc_bindist.bzl
++++ b/haskell/ghc_bindist.bzl
+@@ -628,6 +628,7 @@ def _configure_python3_toolchain_impl(repository_ctx):
+     else:
+         stub_shebang = ""
+     repository_ctx.file("BUILD.bazel", executable = False, content = """
++load("@rules_python//python:defs.bzl", "py_runtime")
+ load("@rules_python//python:py_runtime_pair.bzl", "py_runtime_pair")
+ py_runtime(
+     name = "python3_runtime",
+diff --git a/haskell/private/haskell_impl.bzl b/haskell/private/haskell_impl.bzl
+index 4028bde..43c8c3c 100644
+--- a/haskell/private/haskell_impl.bzl
++++ b/haskell/private/haskell_impl.bzl
+@@ -367,21 +367,24 @@ def _haskell_binary_common_impl(ctx, is_test):
+         mix_runfiles = [datum.mix_file for datum in coverage_data]
+         srcs_runfiles = [_condition_coverage_src(hs, datum.src_file) for datum in coverage_data]
+         extra_runfiles = [
+-            ctx.file._bash_runfiles,
+             hs.toolchain.tools.hpc,
+             binary,
+         ] + mix_runfiles + srcs_runfiles + java.inputs.to_list()
+ 
++    runfiles = ctx.runfiles(
++        files = extra_runfiles + solibs,
++        collect_data = True,
++    )
++    if inspect_coverage:
++        runfiles = runfiles.merge(ctx.attr._bash_runfiles[DefaultInfo].default_runfiles)
++
+     return [
+         hs_info,
+         cc_info,
+         DefaultInfo(
+             executable = executable,
+             files = target_files,
+-            runfiles = ctx.runfiles(
+-                files = extra_runfiles + solibs,
+-                collect_data = True,
+-            ),
++            runfiles = runfiles,
+         ),
+         # Advertise sources and transitive deps for HPC coverage. Without an
+         # InstrumentedFilesInfo provider, Bazel does not deterministically

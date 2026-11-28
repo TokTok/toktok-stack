@@ -5,6 +5,7 @@ set -eux
 REPO="$1"
 
 cd /src/workspace
+[ -d "$REPO" ]
 rm -rf "$REPO"
 mv /tmp/cirrus-ci-build "$REPO"
 mkdir /tmp/cirrus-ci-build

@@ -32,10 +32,10 @@ asm_library(
 )
 
 CONFIGURE = """
-export PATH="$$PATH:$$PWD/$$(dirname $(location @diffutils//:diff))"
-export PATH="$$PATH:$$PWD/$$(dirname $(location @gnumake))"
-export PATH="$$PATH:$$PWD/$$(dirname $(location @perl))"
-export PATH="$$PATH:$$PWD/$$(dirname $(location @yasm))"
+export PATH="$$PATH:$$PWD/$$(dirname $(execpath @diffutils//:diff))"
+export PATH="$$PATH:$$PWD/$$(dirname $(execpath @gnumake))"
+export PATH="$$PATH:$$PWD/$$(dirname $(execpath @perl))"
+export PATH="$$PATH:$$PWD/$$(dirname $(execpath @yasm))"
 if [[ "$(CC)" == /* ]]; then
   export CC="$(CC)"
   export CXX="$(CC)"
@@ -44,7 +44,7 @@ else
   export CXX="$$PWD/$(CC)"
 fi
 
-cd `dirname $(location configure)`
+cd `dirname $(execpath configure)`
 mkdir -p gcc-wrapper
 echo '"$$CC" "$$@"' > gcc-wrapper/gcc
 chmod +x gcc-wrapper/gcc
@@ -149,13 +149,13 @@ RTCDS = [
     ],
     outs = ["%s/%s_rtcd.h" % (cpu, mod)],
     cmd = " ".join([
-        "$(location @perl)",
-        "$(location build/make/rtcd.pl)",
+        "$(execpath @perl)",
+        "$(execpath build/make/rtcd.pl)",
         "--arch=%s" % cpu,
         "--sym=%s_rtcd" % mod,
         "--disable-avx512",
-        "--config=$(location @toktok//third_party/libvpx:libs.mk)",
-        "$(location %s)" % defs,
+        "--config=$(execpath @toktok//third_party/libvpx:libs.mk)",
+        "$(execpath %s)" % defs,
         "> $@",
     ]),
     tools = ["@perl"],

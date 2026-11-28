@@ -1,38 +1,6 @@
+load("//tools:projects.bzl", "PROJECTS")
 load("//tools/project:build_defs.bzl", "workspace")
 
-workspace(projects = [
-    "btox",
-    "c-toxcore",
-    "ci_tools",
-    "cyclone",
-    "debugtox",
-    "dockerfiles",
-    "experimental",
-    "go-toxcore-c",
-    "hs-apigen",
-    "hs-cimple",
-    "hs-github-tools",
-    "hs-happy-arbitrary",
-    "hs-msgpack-arbitrary",
-    "hs-msgpack-binary",
-    "hs-msgpack-json",
-    "hs-msgpack-rpc-conduit",
-    "hs-msgpack-testsuite",
-    "hs-msgpack-types",
-    "hs-schema",
-    "hs-tokstyle",
-    "hs-toxcore",
-    "hs-toxcore-c",
-    "jvm-toxcore-c",
-    "py_toxcore_c",
-    "qtox",
-    "spec",
-    "tokhub",
-    "tools/.github",
-    "tools/toktok-fuzzer",
-    "toxic",
-    "toxins",
-    "website",
-])
+workspace(projects = PROJECTS)
 
 exports_files(srcs = glob(["LICENSE.*"]))

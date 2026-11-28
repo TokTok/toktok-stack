@@ -1,6 +1,7 @@
 """Haskell c2hs FFI generator."""
 
-load("@bazel_tools//tools/cpp:toolchain_utils.bzl", "find_cpp_toolchain", "use_cpp_toolchain")
+load("@rules_cc//cc:defs.bzl", "CcInfo", "cc_common")
+load("@rules_cc//cc:find_cc_toolchain.bzl", "find_cpp_toolchain")
 
 def _c2hs_library_impl(ctx):
     src = ctx.file.src

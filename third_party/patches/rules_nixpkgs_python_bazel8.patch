@@ -1,17 +1,17 @@
 diff --git a/python.bzl b/python.bzl
-index 38b25e7..73c25e7 100644
+index fb055a3..59a722c 100644
 --- a/python.bzl
 +++ b/python.bzl
-@@ -23,13 +23,13 @@ def _nixpkgs_python_toolchain_impl(repository_ctx):
+@@ -27,7 +27,7 @@ def _nixpkgs_python_toolchain_impl(repository_ctx):
          python3_runtime = repository_ctx.attr.python3_repo + ":runtime"
-
+ 
      repository_ctx.file("BUILD.bazel", executable = False, content = """
 -load("@bazel_tools//tools/python:toolchain.bzl", "py_runtime_pair")
 +load("@rules_python//python:defs.bzl", "py_runtime_pair")
  py_runtime_pair(
      name = "py_runtime_pair",
      py3_runtime = {python3_runtime},
- )
+@@ -35,7 +35,7 @@ py_runtime_pair(
  toolchain(
      name = "toolchain",
      toolchain = ":py_runtime_pair",
@@ -20,3 +20,11 @@ index 38b25e7..73c25e7 100644
      exec_compatible_with = {exec_constraints},
      target_compatible_with = {target_constraints},
  )
+@@ -89,6 +89,7 @@ runCommand "bazel-nixpkgs-python-toolchain"
+     ln -s ${{interpreterPath}} $out/bin/python
+ 
+     cat >>$n <<EOF
++    load("@rules_python//python:defs.bzl", "py_runtime")
+     py_runtime(
+         name = "runtime",
+         interpreter_path = "${{interpreterPath}}",

@@ -22,6 +22,6 @@ genrule(
         "config.h",
         "backtrace-supported.h",
     ],
-    cmd = "cp $(SRCS) $$(dirname $(location config.h))",
+    cmd = "cp $(SRCS) $$(dirname $(execpath config.h))",
     visibility = ["@libbacktrace//:__pkg__"],
 )

@@ -1,0 +1,41 @@
+"""Directories Bazel never reads: git data, caches and other tools' build
+output. Globs, so they also cover repos added later.
+"""
+
+ignore_directories([
+    # Bazel's own output.
+    "bazel-*",
+    "external",
+
+    # Version control.
+    "**/.git",
+
+    # Caches.
+    "**/.cache",
+    "**/.cxx",
+    "**/.dart_tool",
+    "**/.gradle",
+    "**/.kotlin",
+    "**/.mypy_cache",
+    "**/.pytest_cache",
+    "**/__pycache__",
+
+    # Other build tools' output.
+    "**/.buildozer",
+    "**/.stack-work",
+    "**/dist-newstyle",
+    "**/flutter/ephemeral",
+    "**/node_modules",
+    "btox/build",
+    "hs-hic/out",
+    "jvm-toxcore-c/**/build",
+    "jvm-toxcore-c/apps/client/native/out",
+    "py_toxcore_c/apps/client/android_support/aar/build",
+    "third_party/hatter/browser/host/dist",
+    "toxic/android/**/build",
+
+    # Not part of the Bazel build.
+    "dockerfiles/buildfarm/test",
+    "dockerfiles/local-deps",
+    "qtox/.ci-scripts",
+])

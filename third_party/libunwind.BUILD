@@ -37,11 +37,11 @@ genrule(
         "include/tdep/libunwind_i.h",
     ],
     cmd = """
-        export PATH="$$PATH:$$PWD/$$(dirname $(location @diffutils//:cmp))"
-        export PATH="$$PATH:$$PWD/$$(dirname $(location @gnumake))"
-        export PATH="$$PATH:$$PWD/$$(dirname $(location @libtool//:libtoolize))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(execpath @diffutils//:cmp))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(execpath @gnumake))"
+        export PATH="$$PATH:$$PWD/$$(dirname $(execpath @libtool//:libtoolize))"
 
-        SRCDIR="$$(dirname $(location configure))"
+        SRCDIR="$$(dirname $(execpath configure))"
         "$$SRCDIR/configure" CC="$(CC)" CXX="$(CC)" AR="$(AR)" \
             --disable-documentation \
             --disable-minidebuginfo \
@@ -49,10 +49,10 @@ genrule(
             --enable-ptrace \
             || (cat config.log && false)
 
-        cp "include/config.h" "$(location include/config.h)"
-        cp "include/libunwind-common.h" "$(location include/libunwind-common.h)"
-        cp "include/libunwind.h" "$(location include/libunwind.h)"
-        cp "include/tdep/libunwind_i.h" "$(location include/tdep/libunwind_i.h)"
+        cp "include/config.h" "$(execpath include/config.h)"
+        cp "include/libunwind-common.h" "$(execpath include/libunwind-common.h)"
+        cp "include/libunwind.h" "$(execpath include/libunwind.h)"
+        cp "include/tdep/libunwind_i.h" "$(execpath include/tdep/libunwind_i.h)"
     """,
     toolchains = ["@rules_cc//cc:current_cc_toolchain"],
     tools = [

@@ -17,7 +17,7 @@ genrule(
     name = "regen_config",
     srcs = glob(["**/*"]),
     outs = ["config.h"],
-    cmd = "cmake `dirname $(location CMakeLists.txt)` && cp config.h $@",
+    cmd = "cmake `dirname $(execpath CMakeLists.txt)` && cp config.h $@",
 )
 
 genrule(
@@ -51,14 +51,14 @@ genrule(
     name = "hrtf_default",
     srcs = ["hrtf/Default HRTF.mhr"],
     outs = ["hrtf_default.h"],
-    cmd = "$(location :bin2h) '$<' '$@' hrtf_default",
+    cmd = "$(execpath :bin2h) '$<' '$@' hrtf_default",
     tools = [":bin2h"],
 )
 
 genrule(
     name = "bsinc",
     outs = ["bsinc_inc.h"],
-    cmd = "$(location :bsincgen) $@",
+    cmd = "$(execpath :bsincgen) $@",
     tools = [":bsincgen"],
 )
 

@@ -231,8 +231,8 @@ genrule(
         "libavutil/avconfig.h",
     ],
     cmd = """
-        export PATH=$$PWD/$$(dirname $(location @yasm)):$$PATH
-        cd `dirname $(location configure)`
+        export PATH=$$PWD/$$(dirname $(execpath @yasm)):$$PATH
+        cd `dirname $(execpath configure)`
         ./configure --cc="$(CC)" || (cat ffbuild/config.log && false)
         DIR=`pwd`
         cd -
@@ -251,7 +251,7 @@ genrule(
         "VERSION",
     ],
     outs = ["libavutil/ffversion.h"],
-    cmd = "mkdir -p $$(dirname $@) && $(location ffbuild/version.sh) " + REPO_ROOT + " ffversion.h && mv ffversion.h $@",
+    cmd = "mkdir -p $$(dirname $@) && $(execpath ffbuild/version.sh) " + REPO_ROOT + " ffversion.h && mv ffversion.h $@",
 )
 
 cc_library(
@@ -2655,6 +2655,7 @@ cc_library(
         "libavcodec/avcodec.h",
         "libavdevice/avdevice.h",
         "libavformat/avformat.h",
+        "libavutil/display.h",
         "libavutil/frame.h",
         "libavutil/imgutils.h",
         "libavutil/opt.h",

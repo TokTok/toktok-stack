@@ -9,9 +9,10 @@ bazel_dep(name = "platforms", version = "1.1.0")
 bazel_dep(name = "rules_license", version = "1.0.0")
 
 # Core Rules
-bazel_dep(name = "bazel_skylib", version = "1.9.0")
-bazel_dep(name = "rules_cc", version = "0.2.19")
-bazel_dep(name = "rules_python", version = "2.0.2")
+bazel_dep(name = "bazel_skylib", version = "1.9.2")
+bazel_dep(name = "rules_cc", version = "0.2.22")
+bazel_dep(name = "rules_shell", version = "0.6.1")
+bazel_dep(name = "rules_python", version = "2.2.0")
 single_version_override(
     module_name = "rules_python",
     patch_strip = 1,
@@ -20,8 +21,8 @@ single_version_override(
 
 bazel_dep(name = "rules_go", version = "0.60.0", repo_name = "io_bazel_rules_go")
 bazel_dep(name = "gazelle", version = "0.51.1", repo_name = "bazel_gazelle")
-bazel_dep(name = "package_metadata", version = "0.0.10")
-bazel_dep(name = "rules_kotlin", version = "2.3.20")
+bazel_dep(name = "package_metadata", version = "0.0.15")
+bazel_dep(name = "rules_kotlin", version = "2.4.21")
 bazel_dep(name = "rules_jvm_external", version = "7.0")
 bazel_dep(name = "rules_apple", version = "4.3.3", repo_name = "build_bazel_rules_apple")
 bazel_dep(name = "rules_swift", version = "3.4.1", repo_name = "build_bazel_rules_swift")
@@ -43,17 +44,33 @@ archive_override(
     urls = ["https://github.com/bazel-contrib/rules_fuzzing/releases/download/v0.6.0/rules_fuzzing-v0.6.0.tar.gz"],
 )
 
-bazel_dep(name = "hermetic_cc_toolchain", version = "4.1.0")
+bazel_dep(name = "hermetic_cc_toolchain")
+git_override(
+    module_name = "hermetic_cc_toolchain",
+    commit = "316845e7778f06bca922dfe1dea0be0e2d6e7420",
+    remote = "https://github.com/Zer0-One/toolchains_zig_cc.git",
+)
 
 # Haskell
 bazel_dep(name = "rules_haskell", version = "1.0")
 bazel_dep(name = "rules_sh", version = "0.5.0")
 
+single_version_override(
+    module_name = "aspect_bazel_lib",
+    version = "2.22.5",
+)
+
+single_version_override(
+    module_name = "rules_nodejs",
+    version = "6.7.7",
+)
+
 git_override(
     module_name = "rules_haskell",
-    commit = "10a0d8daa89f02c71fb7634b76f2fd3b99d4133e",
+    commit = "4e2ca791054859a622d012d0b84c2e52ef1c1f36",
     patch_args = ["-p1"],
     patches = [
+        "//third_party/patches:rules_haskell_bazel9.patch",
         "//third_party/patches:rules_haskell_nix.patch",
         "//third_party/patches:rules_haskell_cc_wrapper_filter.patch",
     ],
@@ -78,93 +95,107 @@ archive_override(
 )
 
 # Nixpkgs
-bazel_dep(name = "rules_nixpkgs_core", version = "0.13.0")
-bazel_dep(name = "rules_nixpkgs_cc", version = "0.13.0")
-bazel_dep(name = "rules_nixpkgs_java", version = "0.13.0")
-bazel_dep(name = "rules_nixpkgs_python", version = "0.13.0")
-bazel_dep(name = "rules_nixpkgs_go", version = "0.13.0")
-bazel_dep(name = "rules_nixpkgs_rust", version = "0.13.0")
-bazel_dep(name = "rules_nixpkgs_posix", version = "0.13.0")
-bazel_dep(name = "rules_nixpkgs_nodejs", version = "0.13.0")
+bazel_dep(name = "rules_nixpkgs_core", version = "0.14.1")
+bazel_dep(name = "rules_nixpkgs_cc", version = "0.14.1")
+bazel_dep(name = "rules_nixpkgs_java", version = "0.14.1")
+bazel_dep(name = "rules_nixpkgs_python", version = "0.14.1")
+bazel_dep(name = "rules_nixpkgs_go", version = "0.14.1")
+bazel_dep(name = "rules_nixpkgs_rust", version = "0.14.1")
+bazel_dep(name = "rules_nixpkgs_posix", version = "0.14.1")
+bazel_dep(name = "rules_nixpkgs_nodejs", version = "0.14.1")
 
 nix_repo = use_extension("@rules_nixpkgs_core//extensions:repository.bzl", "nix_repo")
 nix_repo.github(
     name = "nixpkgs",
-    commit = "1329c5271e0606536ef0c7b73b32417756a4ae07",
+    commit = "2786a2a72088ecf32aea5b3ec52099e6a7cff78f",
     org = "NixOS",
     repo = "nixpkgs",
-    sha256 = "f2fcbb09a6816de882e482759706c7b5eeadbaec6b69680f0bfda8668072e3e6",
+    sha256 = "85fbbb73c160b4853999d409f36617ad59a377dfc5f2a25b3f9479badc29428b",
 )
 use_repo(nix_repo, "nixpkgs")
 
-# TODO(iphydf): Remove these overrides once rules_nixpkgs 0.13.0 is in the registry.
+# TODO(iphydf): Remove these overrides once rules_nixpkgs patches are upstreamed.
 archive_override(
     module_name = "rules_nixpkgs_core",
-    integrity = "sha256-MCcfe9OA5OIOTXEywySUbE/bwx6+C7tmOKD2GjfnQ5c=",
+    integrity = "sha256-VAJWiTZyBbg1GYZ35obYIItXC/2E5ocmhK5ld0dnO5c=",
     patch_strip = 1,
     patches = ["//third_party/patches:rules_nixpkgs_core_layering_check.patch"],
-    strip_prefix = "rules_nixpkgs-0.13.0/core",
-    urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.13.0/rules_nixpkgs-0.13.0.tar.gz"],
+    strip_prefix = "rules_nixpkgs-0.14.1/core",
+    urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.14.1/rules_nixpkgs-0.14.1.tar.gz"],
 )
 
 archive_override(
     module_name = "rules_nixpkgs_cc",
-    integrity = "sha256-MCcfe9OA5OIOTXEywySUbE/bwx6+C7tmOKD2GjfnQ5c=",
+    integrity = "sha256-VAJWiTZyBbg1GYZ35obYIItXC/2E5ocmhK5ld0dnO5c=",
     patch_strip = 1,
     patches = ["//third_party/patches:rules_nixpkgs_cc_layering_check.patch"],
-    strip_prefix = "rules_nixpkgs-0.13.0/toolchains/cc",
-    urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.13.0/rules_nixpkgs-0.13.0.tar.gz"],
+    strip_prefix = "rules_nixpkgs-0.14.1/toolchains/cc",
+    urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.14.1/rules_nixpkgs-0.14.1.tar.gz"],
 )
 
 archive_override(
     module_name = "rules_nixpkgs_java",
-    integrity = "sha256-MCcfe9OA5OIOTXEywySUbE/bwx6+C7tmOKD2GjfnQ5c=",
-    strip_prefix = "rules_nixpkgs-0.13.0/toolchains/java",
-    urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.13.0/rules_nixpkgs-0.13.0.tar.gz"],
+    integrity = "sha256-VAJWiTZyBbg1GYZ35obYIItXC/2E5ocmhK5ld0dnO5c=",
+    patch_strip = 1,
+    patches = ["//third_party/patches:rules_nixpkgs_java_bazel9.patch"],
+    strip_prefix = "rules_nixpkgs-0.14.1/toolchains/java",
+    urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.14.1/rules_nixpkgs-0.14.1.tar.gz"],
 )
 
 archive_override(
     module_name = "rules_nixpkgs_python",
-    integrity = "sha256-MCcfe9OA5OIOTXEywySUbE/bwx6+C7tmOKD2GjfnQ5c=",
+    integrity = "sha256-VAJWiTZyBbg1GYZ35obYIItXC/2E5ocmhK5ld0dnO5c=",
     patch_strip = 1,
     patches = ["//third_party/patches:rules_nixpkgs_python_bazel8.patch"],
-    strip_prefix = "rules_nixpkgs-0.13.0/toolchains/python",
-    urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.13.0/rules_nixpkgs-0.13.0.tar.gz"],
+    strip_prefix = "rules_nixpkgs-0.14.1/toolchains/python",
+    urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.14.1/rules_nixpkgs-0.14.1.tar.gz"],
 )
 
 archive_override(
     module_name = "rules_nixpkgs_go",
-    integrity = "sha256-MCcfe9OA5OIOTXEywySUbE/bwx6+C7tmOKD2GjfnQ5c=",
-    strip_prefix = "rules_nixpkgs-0.13.0/toolchains/go",
-    urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.13.0/rules_nixpkgs-0.13.0.tar.gz"],
+    integrity = "sha256-VAJWiTZyBbg1GYZ35obYIItXC/2E5ocmhK5ld0dnO5c=",
+    strip_prefix = "rules_nixpkgs-0.14.1/toolchains/go",
+    urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.14.1/rules_nixpkgs-0.14.1.tar.gz"],
 )
 
 archive_override(
     module_name = "rules_nixpkgs_rust",
-    integrity = "sha256-MCcfe9OA5OIOTXEywySUbE/bwx6+C7tmOKD2GjfnQ5c=",
-    strip_prefix = "rules_nixpkgs-0.13.0/toolchains/rust",
-    urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.13.0/rules_nixpkgs-0.13.0.tar.gz"],
+    integrity = "sha256-VAJWiTZyBbg1GYZ35obYIItXC/2E5ocmhK5ld0dnO5c=",
+    patch_strip = 1,
+    patches = ["//third_party/patches:rules_nixpkgs_rust_rmeta.patch"],
+    strip_prefix = "rules_nixpkgs-0.14.1/toolchains/rust",
+    urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.14.1/rules_nixpkgs-0.14.1.tar.gz"],
 )
 
 archive_override(
     module_name = "rules_nixpkgs_posix",
-    integrity = "sha256-MCcfe9OA5OIOTXEywySUbE/bwx6+C7tmOKD2GjfnQ5c=",
-    strip_prefix = "rules_nixpkgs-0.13.0/toolchains/posix",
-    urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.13.0/rules_nixpkgs-0.13.0.tar.gz"],
+    integrity = "sha256-VAJWiTZyBbg1GYZ35obYIItXC/2E5ocmhK5ld0dnO5c=",
+    strip_prefix = "rules_nixpkgs-0.14.1/toolchains/posix",
+    urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.14.1/rules_nixpkgs-0.14.1.tar.gz"],
 )
 
 archive_override(
     module_name = "rules_nixpkgs_nodejs",
-    integrity = "sha256-MCcfe9OA5OIOTXEywySUbE/bwx6+C7tmOKD2GjfnQ5c=",
-    strip_prefix = "rules_nixpkgs-0.13.0/toolchains/nodejs",
-    urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.13.0/rules_nixpkgs-0.13.0.tar.gz"],
+    integrity = "sha256-VAJWiTZyBbg1GYZ35obYIItXC/2E5ocmhK5ld0dnO5c=",
+    strip_prefix = "rules_nixpkgs-0.14.1/toolchains/nodejs",
+    urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.14.1/rules_nixpkgs-0.14.1.tar.gz"],
 )
 
 # Libraries
-bazel_dep(name = "boringssl", version = "0.20260526.0")
+
+# abseil-cpp@20260817.0 uses clang::lifetime_capture_by_this (avoiding Clang 23
+# -Wdeprecated-attributes on lifetime_capture_by(this)). single_version_override
+# bridges compatibility_level 1 (abseil-cpp <= 20260107.1, pinned by protobuf)
+# to compatibility_level 0 (>= 20260526.0).
+single_version_override(
+    module_name = "abseil-cpp",
+    version = "20260817.0",
+)
+
+bazel_dep(name = "boringssl", version = "0.20260616.0")
 bazel_dep(name = "bzip2", version = "1.0.8.bcr.4")
-bazel_dep(name = "curl", version = "8.12.0.bcr.1")
-bazel_dep(name = "cython", version = "3.2.4", repo_name = "cython")
+bazel_dep(name = "curl", version = "8.23.0")
+bazel_dep(name = "cython", version = "3.2.8", repo_name = "cython")
 bazel_dep(name = "ftxui", version = "6.1.9")
 bazel_dep(name = "google_benchmark", version = "1.9.5", repo_name = "benchmark")
 single_version_override(
@@ -173,8 +204,17 @@ single_version_override(
     patches = ["//third_party/patches:google_benchmark_windows_gnu.patch"],
 )
 
-bazel_dep(name = "googletest", version = "1.17.0.bcr.2", repo_name = "com_google_googletest")
+bazel_dep(name = "googletest", version = "1.18.0", repo_name = "com_google_googletest")
 bazel_dep(name = "libconfig", version = "1.7.3")
+archive_override(
+    module_name = "libconfig",
+    integrity = "sha256-VFFm1srAN3RDgdHpzFpUBQlOe/rRakEWmbz/QLuzHuc=",
+    patch_strip = 1,
+    patches = ["//third_party/patches:libconfig_bazel9.patch"],
+    strip_prefix = "libconfig-1.7.3",
+    urls = ["https://github.com/hyperrealm/libconfig/releases/download/v1.7.3/libconfig-1.7.3.tar.gz"],
+)
+
 bazel_dep(name = "nlohmann_json", version = "3.12.0.bcr.1", repo_name = "json")
 bazel_dep(name = "protobuf", version = "35.0")
 bazel_dep(name = "rules_java", version = "9.3.0")
@@ -192,7 +232,7 @@ nix_python = use_extension("//tools/workspace:nix_python.bzl", "nix_python")
 use_repo(nix_python, "nixpkgs_python_toolchain")
 
 nix_rust = use_extension("//tools/workspace:nix_rust.bzl", "nix_rust")
-use_repo(nix_rust, "nixpkgs_bindgen", "nixpkgs_libclang", "nixpkgs_rust", "nixpkgs_rust_toolchain")
+use_repo(nix_rust, "nixpkgs_bindgen", "nixpkgs_libclang", "nixpkgs_libllvm", "nixpkgs_librustc_driver", "nixpkgs_rust", "nixpkgs_rust_toolchain")
 
 # Fallback Rust toolchain for non-nix builds (e.g., the local-build CI job).
 # Must be recent enough to compile our crate-universe deps (edition 2024, const
@@ -400,6 +440,8 @@ bazel_dep(name = "hedron_compile_commands", dev_dependency = True)
 git_override(
     module_name = "hedron_compile_commands",
     commit = "abb61a688167623088f8768cc9264798df6a9d10",
+    patch_args = ["-p1"],
+    patches = ["//third_party/patches:hedron_compile_commands_bazel9.patch"],
     remote = "https://github.com/hedronvision/bazel-compile-commands-extractor.git",
 )
 
@@ -424,6 +466,106 @@ maven.artifact(
     version = "2.3.21",
 )
 use_repo(maven, "maven")
+
+# kTox (jvm-toxcore-c/apps/client): Compose Multiplatform for the desktop. Gradle
+# metadata picks each library's JVM variant, so this set uses the Gradle resolver.
+# Pin after changing it: bazel run @ktox_maven//:pin
+maven.install(
+    name = "ktox_maven",
+    artifacts = [
+        "androidx.sqlite:sqlite-bundled:2.7.1",
+        "com.google.zxing:core:3.5.4",
+        "org.jetbrains.compose.desktop:desktop-jvm-linux-x64:1.12.2",
+        "org.jetbrains.compose.foundation:foundation:1.12.2",
+        "org.jetbrains.compose.material3:material3:1.9.0",
+        "org.jetbrains.compose.material:material-icons-core:1.7.3",
+        "org.jetbrains.compose.runtime:runtime:1.12.2",
+        "org.jetbrains.compose.ui:ui:1.12.2",
+        "org.jetbrains.kotlin:kotlin-compose-compiler-plugin-embeddable:2.4.21",
+        "org.jetbrains.kotlin:kotlin-test-junit:2.4.21",
+        "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0",
+        "org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.11.0",
+    ],
+    lock_file = "//jvm-toxcore-c/apps/client:ktox_maven_install.json",
+    repositories = [
+        "https://maven.google.com",
+        "https://repo1.maven.org/maven2",
+    ],
+    resolver = "gradle",
+)
+
+# Gradle redirects these multiplatform roots to the artifact on the right, but
+# the Gradle resolver pins the roots themselves (Android .aar files, or jars
+# with another file's checksum). The desktop build uses what they redirect to.
+[
+    maven.override(
+        name = "ktox_maven",
+        coordinates = root,
+        target = "@ktox_maven//:" + jvm.replace(".", "_").replace(":", "_").replace("-", "_"),
+    )
+    for root, jvm in [
+        ("androidx.annotation:annotation", "androidx.annotation:annotation-jvm"),
+        ("androidx.collection:collection", "androidx.collection:collection-jvm"),
+        ("androidx.compose.runtime:runtime", "androidx.compose.runtime:runtime-desktop"),
+        ("androidx.compose.runtime:runtime-annotation", "androidx.compose.runtime:runtime-annotation-jvm"),
+        ("androidx.compose.runtime:runtime-retain", "androidx.compose.runtime:runtime-retain-desktop"),
+        ("androidx.compose.runtime:runtime-saveable", "androidx.compose.runtime:runtime-saveable-desktop"),
+        ("androidx.lifecycle:lifecycle-common", "androidx.lifecycle:lifecycle-common-jvm"),
+        ("androidx.lifecycle:lifecycle-runtime", "androidx.lifecycle:lifecycle-runtime-desktop"),
+        ("androidx.lifecycle:lifecycle-runtime-compose", "androidx.lifecycle:lifecycle-runtime-compose-desktop"),
+        ("androidx.lifecycle:lifecycle-viewmodel", "androidx.lifecycle:lifecycle-viewmodel-desktop"),
+        ("androidx.lifecycle:lifecycle-viewmodel-compose", "androidx.lifecycle:lifecycle-viewmodel-compose-desktop"),
+        ("androidx.lifecycle:lifecycle-viewmodel-savedstate", "androidx.lifecycle:lifecycle-viewmodel-savedstate-desktop"),
+        ("androidx.navigationevent:navigationevent", "androidx.navigationevent:navigationevent-desktop"),
+        ("androidx.navigationevent:navigationevent-compose", "androidx.navigationevent:navigationevent-compose-desktop"),
+        ("androidx.savedstate:savedstate", "androidx.savedstate:savedstate-desktop"),
+        ("androidx.savedstate:savedstate-compose", "androidx.savedstate:savedstate-compose-desktop"),
+        ("androidx.sqlite:sqlite", "androidx.sqlite:sqlite-jvm"),
+        ("androidx.sqlite:sqlite-bundled", "androidx.sqlite:sqlite-bundled-jvm"),
+        ("org.jetbrains.androidx.lifecycle:lifecycle-common", "androidx.lifecycle:lifecycle-common-jvm"),
+        ("org.jetbrains.androidx.lifecycle:lifecycle-runtime", "androidx.lifecycle:lifecycle-runtime-desktop"),
+        ("org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose-desktop"),
+        ("org.jetbrains.androidx.navigationevent:navigationevent-compose", "org.jetbrains.androidx.navigationevent:navigationevent-compose-desktop"),
+        ("org.jetbrains.androidx.savedstate:savedstate", "androidx.savedstate:savedstate-desktop"),
+        ("org.jetbrains.androidx.savedstate:savedstate-compose", "org.jetbrains.androidx.savedstate:savedstate-compose-desktop"),
+        ("org.jetbrains.compose.animation:animation", "org.jetbrains.compose.animation:animation-desktop"),
+        ("org.jetbrains.compose.animation:animation-core", "org.jetbrains.compose.animation:animation-core-desktop"),
+        ("org.jetbrains.compose.annotation-internal:annotation", "androidx.annotation:annotation-jvm"),
+        ("org.jetbrains.compose.collection-internal:collection", "androidx.collection:collection-jvm"),
+        ("org.jetbrains.compose.desktop:desktop", "org.jetbrains.compose.desktop:desktop-jvm"),
+        ("org.jetbrains.compose.foundation:foundation", "org.jetbrains.compose.foundation:foundation-desktop"),
+        ("org.jetbrains.compose.foundation:foundation-layout", "org.jetbrains.compose.foundation:foundation-layout-desktop"),
+        ("org.jetbrains.compose.material3:material3", "org.jetbrains.compose.material3:material3-desktop"),
+        ("org.jetbrains.compose.material:material", "org.jetbrains.compose.material:material-desktop"),
+        ("org.jetbrains.compose.material:material-icons-core", "org.jetbrains.compose.material:material-icons-core-desktop"),
+        ("org.jetbrains.compose.material:material-ripple", "org.jetbrains.compose.material:material-ripple-desktop"),
+        ("org.jetbrains.compose.runtime:runtime", "org.jetbrains.compose.runtime:runtime-desktop"),
+        ("org.jetbrains.compose.runtime:runtime-saveable", "org.jetbrains.compose.runtime:runtime-saveable-desktop"),
+        ("org.jetbrains.compose.ui:ui", "org.jetbrains.compose.ui:ui-desktop"),
+        ("org.jetbrains.compose.ui:ui-backhandler", "org.jetbrains.compose.ui:ui-backhandler-desktop"),
+        ("org.jetbrains.compose.ui:ui-geometry", "org.jetbrains.compose.ui:ui-geometry-desktop"),
+        ("org.jetbrains.compose.ui:ui-graphics", "org.jetbrains.compose.ui:ui-graphics-desktop"),
+        ("org.jetbrains.compose.ui:ui-text", "org.jetbrains.compose.ui:ui-text-desktop"),
+        ("org.jetbrains.compose.ui:ui-tooling-preview", "org.jetbrains.compose.ui:ui-tooling-preview-desktop"),
+        ("org.jetbrains.compose.ui:ui-unit", "org.jetbrains.compose.ui:ui-unit-desktop"),
+        ("org.jetbrains.compose.ui:ui-util", "org.jetbrains.compose.ui:ui-util-desktop"),
+        ("org.jetbrains.kotlinx:atomicfu", "org.jetbrains.kotlinx:atomicfu-jvm"),
+        ("org.jetbrains.kotlinx:kotlinx-datetime", "org.jetbrains.kotlinx:kotlinx-datetime-jvm"),
+        ("org.jetbrains.kotlinx:kotlinx-serialization-core", "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm"),
+        ("org.jetbrains.skiko:skiko", "org.jetbrains.skiko:skiko-awt"),
+    ]
+]
+
+# skiko-awt lists both this root and its variant, and a label may appear only
+# once in deps, so the root takes the variant's versioned label.
+maven.override(
+    name = "ktox_maven",
+    coordinates = "org.jetbrains.kotlinx:kotlinx-coroutines-core",
+    target = "@ktox_maven//:org_jetbrains_kotlinx_kotlinx_coroutines_core_jvm_1_11_0",
+)
+use_repo(maven, "ktox_maven")
+
+register_toolchains("//tools/kotlin:kotlin_toolchain")
 
 # Non-module deps (legacy WORKSPACE deps)
 non_module_deps = use_extension("//tools/workspace:non_module_deps.bzl", "non_module_deps")
@@ -459,10 +601,12 @@ use_repo(
     "haskellPackages.happy",
     "haskellPackages.hspec-discover",
     "idna",
+    "jdk21",
     "kimageformats",
     "libbacktrace",
     "libcap",
     "libexif",
+    "libgl",
     "libidn2",
     "libqrencode",
     "libsodium",
@@ -472,6 +616,7 @@ use_repo(
     "libxz",
     "libzmq",
     "m4",
+    "mesa",
     "mypy",
     "mypy_extensions",
     "ncurses",
@@ -483,16 +628,17 @@ use_repo(
     "pandoc",
     "patchelf",
     "pcre",
-    "pcre.out",
     "perl",
     "psocket",
     "pthread",
     "pthread_w32",
     "python3",
     "python3_config",
+    "python3_kivy",
     "qt",
     "qt6.qtbase",
     "qt6.qtbase.out",
+    "qt6.qtdeclarative.out",
     "qt6.qtremoteobjects",
     "qt6.qtremoteobjects.out",
     "qt6.qtsvg",
@@ -515,6 +661,7 @@ use_repo(
     "xext.out",
     "xproto",
     "xss",
+    "xvfb",
     "xxf86vm",
     "xxf86vm.out",
     "xz",

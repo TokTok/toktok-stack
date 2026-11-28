@@ -1,10 +1,10 @@
-load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
-load("//tools/workspace:python.bzl", "python_repository")
+load("@bazel_gazelle//:deps.bzl", "go_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:local.bzl", "new_local_repository")
-load("@bazel_gazelle//:deps.bzl", "go_repository")
-load("@rules_nixpkgs_core//:nixpkgs.bzl", "nixpkgs_package")
 load("@rules_haskell//haskell:nixpkgs.bzl", "haskell_register_ghc_nixpkgs")
+load("@rules_nixpkgs_core//:nixpkgs.bzl", "nixpkgs_package")
+load("//tools/workspace:github.bzl", "github_archive", "new_github_archive")
+load("//tools/workspace:python.bzl", "python_repository")
 
 def _non_module_deps_impl(ctx):
     haskell_register_ghc_nixpkgs(
@@ -248,13 +248,12 @@ def _non_module_deps_impl(ctx):
     # C/C++ dependencies
     # =========================================================
 
-    # https://github.com/jedisct1/libsodium/releases
-    http_archive(
+    # https://github.com/jedisct1/libsodium/tree/stable
+    new_github_archive(
         name = "libsodium",
-        build_file = "//third_party:libsodium.BUILD",
-        sha256 = "9e4285c7a419e82dedb0be63a72eea357d6943bc3e28e6735bf600dd4883feaf",
-        strip_prefix = "libsodium-1.0.21",
-        urls = ["https://github.com/jedisct1/libsodium/releases/download/1.0.21-RELEASE/libsodium-1.0.21.tar.gz"],
+        integrity = "sha256-6lBZFumnoIC2PIOswlwlAAr1va1C8wwvMMt++85VqXU=",
+        repo = "jedisct1/libsodium",
+        version = "0a5f2423db76c6fd323c5496b8635bf84b3cf040",
     )
 
     # https://ftp.gnu.org/pub/gnu/ncurses
@@ -478,6 +477,49 @@ cc_library(
         version = "a18a9d248b4794c7a0c70698c2575bc78d3c1ae4",
     )
 
+    # A JDK with AWT's X11 libraries, to run desktop apps: the build's is headless.
+    nixpkgs_package(
+        name = "jdk21",
+        attribute_path = "jdk21",
+        build_file_content = """
+package(default_visibility = ["//visibility:public"])
+filegroup(name = "java", srcs = ["bin/java"])
+""",
+        repository = "@nixpkgs",
+    )
+
+    # OpenGL for desktop apps on hosts without a system libGL.
+    nixpkgs_package(
+        name = "libgl",
+        attribute_path = "libGL",
+        build_file_content = """
+package(default_visibility = ["//visibility:public"])
+filegroup(name = "libGL", srcs = ["lib/libGL.so.1"])
+""",
+        repository = "@nixpkgs",
+    )
+
+    # Software OpenGL (llvmpipe) and Xvfb for headless UI tests.
+    nixpkgs_package(
+        name = "mesa",
+        attribute_path = "mesa",
+        build_file_content = """
+package(default_visibility = ["//visibility:public"])
+filegroup(name = "egl_vendor", srcs = ["share/glvnd/egl_vendor.d/50_mesa.json"])
+""",
+        repository = "@nixpkgs",
+    )
+
+    nixpkgs_package(
+        name = "xvfb",
+        attribute_path = "xvfb",
+        build_file_content = """
+package(default_visibility = ["//visibility:public"])
+filegroup(name = "bin", srcs = ["bin/Xvfb"])
+""",
+        repository = "@nixpkgs",
+    )
+
     nixpkgs_package(
         name = "pandoc",
         attribute_path = "pandoc",
@@ -555,17 +597,15 @@ filegroup(name = "bin", srcs = ["bin/yasm"])
         repository = "@nixpkgs",
     )
 
-    nixpkgs_package(
-        name = "pcre.out",
-        attribute_path = "pcre.out",
-        repository = "@nixpkgs",
-    )
-
-    nixpkgs_package(
+    http_archive(
         name = "pcre",
-        attribute_path = "pcre.dev",
         build_file = "//third_party:pcre.BUILD",
-        repository = "@nixpkgs",
+        sha256 = "4dae6fdcd2bb0bb6c37b5f97c33c2be954da743985369cddac3546e3218bffb8",
+        strip_prefix = "pcre-8.45",
+        urls = [
+            "https://ftp.exim.org/pub/pcre/pcre-8.45.tar.bz2",
+            "https://downloads.sourceforge.net/project/pcre/pcre/8.45/pcre-8.45.tar.bz2",
+        ],
     )
 
     nixpkgs_package(
@@ -596,66 +636,66 @@ filegroup(name = "bin", srcs = ["bin/yasm"])
 
     nixpkgs_package(
         name = "x11.out",
-        attribute_path = "xorg.libX11.out",
+        attribute_path = "libx11.out",
         repository = "@nixpkgs",
     )
 
     nixpkgs_package(
         name = "x11",
-        attribute_path = "xorg.libX11.dev",
+        attribute_path = "libx11.dev",
         build_file = "//third_party:x11.BUILD",
         repository = "@nixpkgs",
     )
 
     nixpkgs_package(
         name = "xcb.out",
-        attribute_path = "xorg.libxcb.out",
+        attribute_path = "libxcb.out",
         repository = "@nixpkgs",
     )
 
     nixpkgs_package(
         name = "xcb",
-        attribute_path = "xorg.libxcb.dev",
+        attribute_path = "libxcb.dev",
         build_file = "//third_party:xcb.BUILD",
         repository = "@nixpkgs",
     )
 
     nixpkgs_package(
         name = "xext.out",
-        attribute_path = "xorg.libXext.out",
+        attribute_path = "libxext.out",
         repository = "@nixpkgs",
     )
 
     nixpkgs_package(
         name = "xext",
-        attribute_path = "xorg.libXext.dev",
+        attribute_path = "libxext.dev",
         build_file = "//third_party:xext.BUILD",
         repository = "@nixpkgs",
     )
 
     nixpkgs_package(
         name = "xxf86vm.out",
-        attribute_path = "xorg.libXxf86vm.out",
+        attribute_path = "libxxf86vm.out",
         repository = "@nixpkgs",
     )
 
     nixpkgs_package(
         name = "xxf86vm",
-        attribute_path = "xorg.libXxf86vm.dev",
+        attribute_path = "libxxf86vm.dev",
         build_file = "//third_party:xxf86vm.BUILD",
         repository = "@nixpkgs",
     )
 
     nixpkgs_package(
         name = "xproto",
-        attribute_path = "xorg.xorgproto",
+        attribute_path = "xorgproto",
         build_file = "//third_party:xproto.BUILD",
         repository = "@nixpkgs",
     )
 
     nixpkgs_package(
         name = "xss",
-        attribute_path = "xorg.libXScrnSaver",
+        attribute_path = "libxscrnsaver",
         build_file = "//third_party:xss.BUILD",
         repository = "@nixpkgs",
     )
@@ -672,6 +712,13 @@ filegroup(name = "bin", srcs = ["bin/yasm"])
             repository = "@nixpkgs",
         )
 
+    # All of it is in the one output: the "dev" one only has mkspecs.
+    nixpkgs_package(
+        name = "qt6.qtdeclarative.out",
+        build_file = "//third_party/qt:qtdeclarative.out.BUILD",
+        repository = "@nixpkgs",
+    )
+
     nixpkgs_package(
         name = "qt",
         attribute_path = "qt6.qttools.dev",
@@ -681,8 +728,23 @@ filegroup(name = "bin", srcs = ["bin/yasm"])
 
     nixpkgs_package(
         name = "python3_config",
-        attribute_path = "python313",
+        attribute_path = "python3",
         build_file_content = "exports_files(['bin/python3-config'])",
+        repository = "@nixpkgs",
+    )
+
+    nixpkgs_package(
+        name = "python3_kivy",
+        build_file = "//third_party:python3_kivy.BUILD",
+        nix_file_content = """
+            let pkgs = import <nixpkgs> {}; in
+            pkgs.python3.withPackages (ps: [
+                ps.kivy
+                ps.pillow
+                ps.segno
+                ps.sounddevice
+            ])
+        """,
         repository = "@nixpkgs",
     )
 

@@ -1,6 +1,9 @@
 #with ((import <nixpkgs> { }).pkgsMusl);
 with (import <nixpkgs> { });
 
+let
+  inherit (haskell.lib) doJailbreak markUnbroken;
+in
 {
   ghc = haskellPackages.ghcWithPackages.override { installDocumentation = false; } (
     p: with p; [
@@ -24,7 +27,8 @@ with (import <nixpkgs> { });
       conduit
       conduit-extra
       containers
-      cryptohash
+      cryptohash-sha1
+      cryptohash-sha256
       data-binary-ieee754
       data-default-class
       data-fix
@@ -69,6 +73,8 @@ with (import <nixpkgs> { });
       prettyprinter
       prettyprinter-ansi-terminal
       process
+      # Broken in nixpkgs only for its version bounds.
+      (doJailbreak (markUnbroken qrcode-core))
       quickcheck-instances
       quickcheck-text
       random
@@ -98,6 +104,7 @@ with (import <nixpkgs> { });
       wai-cors
       wai-extra
       warp
+      websockets
       word-wrap
       yaml
     ]

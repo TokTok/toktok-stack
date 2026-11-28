@@ -18,6 +18,31 @@
 
 [alias(
     name = name,
+    actual = "@qt6.qtdeclarative.out//:libexec/%s" % name,
+    visibility = ["//visibility:public"],
+) for name in [
+    "qmltyperegistrar",
+]]
+
+# The QML modules of Qt Quick, for QML_IMPORT_PATH.
+alias(
+    name = "qt_qml_modules",
+    actual = "@qt6.qtdeclarative.out//:qml_modules",
+    visibility = ["//visibility:public"],
+)
+
+# What qmltyperegistrar knows Qt's own types from.
+filegroup(
+    name = "qt_metatypes",
+    srcs = [
+        "@qt6.qtbase.out//:metatypes",
+        "@qt6.qtdeclarative.out//:metatypes",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+[alias(
+    name = name,
     actual = "bin/%s" % name,
     visibility = ["//visibility:public"],
 ) for name in [
@@ -59,6 +84,16 @@ alias(
     visibility = ["//visibility:public"],
 ) for mod in [
     "RemoteObjects",
+]]
+
+[alias(
+    name = "qt_" + mod.lower(),
+    actual = "@qt6.qtdeclarative.out//:" + mod.lower(),
+    visibility = ["//visibility:public"],
+) for mod in [
+    "Qml",
+    "Quick",
+    "QuickControls2",
 ]]
 
 [alias(

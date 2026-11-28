@@ -1,11 +1,11 @@
 #define PACKAGE_NAME "libsodium"
 #define PACKAGE_TARNAME "libsodium"
-#define PACKAGE_VERSION "1.0.19"
-#define PACKAGE_STRING "libsodium 1.0.19"
+#define PACKAGE_VERSION "1.0.22"
+#define PACKAGE_STRING "libsodium 1.0.22"
 #define PACKAGE_BUGREPORT "https://github.com/jedisct1/libsodium/issues"
 #define PACKAGE_URL "https://libsodium.org"
 #define PACKAGE "libsodium"
-#define VERSION "1.0.19"
+#define VERSION "1.0.22"
 #define HAVE_STDIO_H 1
 #define HAVE_STDLIB_H 1
 #define HAVE_STRING_H 1
@@ -27,6 +27,7 @@
 #define __STDC_WANT_IEC_60559_ATTRIBS_EXT__ 1
 #define __STDC_WANT_IEC_60559_BFP_EXT__ 1
 #define __STDC_WANT_IEC_60559_DFP_EXT__ 1
+#define __STDC_WANT_IEC_60559_EXT__ 1
 #define __STDC_WANT_IEC_60559_FUNCS_EXT__ 1
 #define __STDC_WANT_IEC_60559_TYPES_EXT__ 1
 #define __STDC_WANT_LIB_EXT2__ 1
@@ -56,12 +57,14 @@
 #define HAVE_SYS_RANDOM_H 1
 #define HAVE_SYS_AUXV_H 1
 #define HAVE_CET_H 1
+#define HAVE_THREADS_H 1
 #define NATIVE_LITTLE_ENDIAN 1
 #define HAVE_INLINE_ASM 1
 #define HAVE_AMD64_ASM 1
 #define HAVE_AVX_ASM 1
 #define HAVE_TI_MODE 1
 #define HAVE_CPUID 1
+#define HAVE_XGETBV_ASM 1
 #define ASM_HIDE_SYMBOL .hidden
 #define HAVE_WEAK_SYMBOLS 1
 #define HAVE_ATOMIC_OPS 1

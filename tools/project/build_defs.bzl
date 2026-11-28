@@ -4,6 +4,9 @@ It checks constraints such as the use of the correct license and the presence
 and correctness of the license text.
 """
 
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+load("//tools:projects.bzl", "PROJECTS")
+
 WORKFLOWS = {
     "common": [
         "github/ISSUE_TEMPLATE/release.yml.base",
@@ -47,7 +50,7 @@ def _workflow_test(wf, cur):
     ref = "//tools/project:%s/%s" % (wf.language, wf.ref)
     if wf.verbatim:
         test_name = "%s_diff_test" % (wf.ref.replace("/", "_").replace(".", "_").lower())
-        native.sh_test(
+        sh_test(
             name = test_name,
             size = "small",
             srcs = ["@diffutils//:diff"],
@@ -63,7 +66,7 @@ def _workflow_test(wf, cur):
         )
     else:
         test_name = "%s_test" % wf.ref.replace("/", "_").replace(".", "_").lower()
-        native.sh_test(
+        sh_test(
             name = test_name,
             size = "small",
             srcs = ["//hs-github-tools/tools:check-workflows"],
@@ -112,7 +115,7 @@ def _haskell_ci_tests(haskell_package, custom_cirrus, tests):
     )
 
     tests.append("dockerfile_test")
-    native.sh_test(
+    sh_test(
         name = "dockerfile_test",
         size = "small",
         srcs = ["@diffutils//:diff"],
@@ -135,7 +138,7 @@ def _haskell_ci_tests(haskell_package, custom_cirrus, tests):
         )
 
         tests.append("cirrus_test")
-        native.sh_test(
+        sh_test(
             name = "cirrus_test",
             size = "small",
             srcs = ["@diffutils//:diff"],
@@ -155,7 +158,7 @@ def _haskell_project(custom_cirrus, tests):
     cabal_file = haskell_package + ".cabal"
 
     tests.append("cabal_test")
-    native.sh_test(
+    sh_test(
         name = "cabal_test",
         size = "small",
         srcs = ["//tools/project:cabal_test"],
@@ -168,11 +171,10 @@ def _haskell_project(custom_cirrus, tests):
             cabal_file,
         ] + native.glob(
             [
-                "src/**/*.hs",
-                "src/**/*.lhs",
-                "test/**/*.hs",
-                "test/**/*.lhs",
+                "**/*.hs",
+                "**/*.lhs",
             ],
+            exclude = ["dist-newstyle/**"],
             allow_empty = True,
         ),
     )
@@ -182,6 +184,30 @@ def _haskell_project(custom_cirrus, tests):
         custom_cirrus = custom_cirrus,
         tests = tests,
     )
+
+def _actions_lock_test():
+    """Checks that actions.lock is the project's part of the combined lock."""
+    workflows = native.glob([".github/workflows/*.yml", ".github/workflows/*.yaml"], allow_empty = True)
+    if not workflows:
+        return None
+    lock = native.glob([".github/workflows/actions.lock"], allow_empty = True)
+    combined = "//tools/project:actions.lock"
+    test_name = "github_workflows_actions_lock_test"
+    sh_test(
+        name = test_name,
+        size = "small",
+        srcs = ["//hs-github-tools/tools:check-workflows"],
+        args = [
+                   "actions-lock",
+                   "$(location %s)" % combined,
+                   native.package_name(),
+                   "$(location %s)" % lock[0] if lock else "-",
+               ] +
+               ["$(location %s)" % wf for wf in workflows],
+        data = [combined] + lock + workflows,
+        tags = ["no-cross", "haskell"],
+    )
+    return test_name
 
 def project(name = "project", license = "gpl3", custom_cirrus = False):
     """Adds some checks to make sure the project is uniform.
@@ -203,6 +229,11 @@ def project(name = "project", license = "gpl3", custom_cirrus = False):
         if cur:
             tests.append(_workflow_test(wf, cur[0]))
 
+    # The combined lock only has the workspace's submodules.
+    lock_test = _actions_lock_test() if native.package_name() in PROJECTS else None
+    if lock_test:
+        tests.append(lock_test)
+
     if language == _HASKELL:
         _haskell_project(
             custom_cirrus = custom_cirrus,
@@ -210,7 +241,7 @@ def project(name = "project", license = "gpl3", custom_cirrus = False):
         )
 
     tests.append("license_test")
-    native.sh_test(
+    sh_test(
         name = "license_test",
         size = "small",
         srcs = ["@diffutils//:diff"],
@@ -226,7 +257,7 @@ def project(name = "project", license = "gpl3", custom_cirrus = False):
     )
 
     tests.append("readme_test")
-    native.sh_test(
+    sh_test(
         name = "readme_test",
         size = "small",
         srcs = ["//tools/project:readme_test.sh"],
@@ -241,7 +272,7 @@ def project(name = "project", license = "gpl3", custom_cirrus = False):
     )
 
 def workspace(projects, name = "workspace"):
-    native.sh_test(
+    sh_test(
         name = "git_modules_test",
         size = "small",
         srcs = ["@perl"],

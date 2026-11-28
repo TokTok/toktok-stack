@@ -1,7 +1,7 @@
 # Example dev container Dockerfile.
 #
 # See run_dev_container.sh for an example usage.
-FROM toxchat/toktok-stack:latest-dev
+FROM toxchat/toktok-stack:latest-devtools
 
 # Add user config overrides and keys.
 COPY --chown=builder:users home /home/builder/
